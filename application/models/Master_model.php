@@ -20,6 +20,18 @@ class Master_model extends CI_Model {
 		parent::__construct();
 	}
 
+	public function get_data_by_machine_id($machine_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE_NEWMASTER);
+		$sql->where('machine_id', $machine_id);
+
+		$get = $sql->get();
+		return $get->result();
+	}
+
 	/**
 	 * sinkronisasi data view ke newmaster
 	 */

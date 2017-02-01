@@ -46,7 +46,8 @@ class Dashboard extends CI_Controller
 				    'billet_id'             => $row->BilletTypeId,
 				    'weight_standard'       => $row->WeightStandard,
 				    'die_type_name'         => $row->DieTypeName,
-				    'actual_pressure_time'  => NULL
+				    'actual_pressure_time'  => NULL,
+				    'machine_id'            => $row->MachineId,
 				);
 			}
 			$save = $this->master_model->insert_master($data);

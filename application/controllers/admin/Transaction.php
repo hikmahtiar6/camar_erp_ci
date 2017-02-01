@@ -54,7 +54,8 @@ class Transaction extends CI_Controller
 					'no'         => $no,
 					'id'    => $gmd->master_detail_id,
 					'machine_id'	=> $gmd->machine_id,
-					'tanggal'    => '',//date('D, j/M/y', strtotime($gmd->tanggal)),
+					'header_id'	=> $gmd->header_id,
+					'tanggal'    => $gmd->tanggal,//date('D, j/M/y', strtotime($gmd->tanggal)),
 					'shift'      => $gmd->shift,
 					'section_id' => $gmd->section_id,
 					'section_name' => '',//$gmd->SectionDescription,
@@ -222,7 +223,53 @@ class Transaction extends CI_Controller
 	 */
 	public function update_inline()
 	{
+		$post = $this->input->post();
+		$id = $post['id'];
+		$type = $post['type'];
+		$val = $post['value'];
 
+		switch ($type) {
+			case 'section':
+				
+				$data = array(
+					$type => $val
+				);
+
+				$update = $this->section_model->update($id, $data);
+				if($update) 
+				{
+					$response = 'yes updated';
+				}
+				else
+				{
+					$response = 'no updated';
+				}
+
+				return $response;
+
+				break;
+			
+			default:
+				
+				$data = array(
+					$type => $val
+				);
+
+				$update = $this->section_model->update($id, $data);
+				if($update) 
+				{
+					$response = 'yes updated';
+				}
+				else
+				{
+					$response = 'no updated';
+				}
+
+				return $response;
+
+				break;
+		}
+ 
 	}
 
 }

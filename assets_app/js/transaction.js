@@ -17,7 +17,7 @@ window.TRANSACTION = (function($) {
     }
 
     var renderSection = function(d,t,f,m){
-        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-id="'+f['id']+'" data-value="'+d+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
+        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+d+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
         return btn;
     }
 
@@ -35,9 +35,25 @@ window.TRANSACTION = (function($) {
 		},
 
 		handleEditable: function() {
+
 			$.fn.editable.defaults.mode = 'inline';
 			
-			$('.transaction-date').editable();
+			$('.transaction-date').click(function() {
+				$(this).editable({
+					inputclass: 'some_class'
+				});
+
+				if($(this).hasClass('hasclass') == false){
+					$(this).editable('toggle');
+				}
+
+				$(this).addClass('hasclass');
+
+				$('.some_class').bootstrapMaterialDatePicker({ 
+					weekStart : 0,
+					time: false 
+				});
+			});
 
 			$('.transaction-shift').editable({
 				type: 'select',
@@ -45,13 +61,15 @@ window.TRANSACTION = (function($) {
 				emptytext: 'Silahkan pilih',
 				mode: 'popup',
 				source: window.APP.siteUrl + 'admin/master/get_data_shift',
-				success: function(response) {
+				success: function(response, newValue) {
+
 					$.ajax({
 						url: window.APP.siteUrl + 'admin/transaction/update_inline',
 						type: 'post',
 						data: {
 							id: $(this).attr('data-id'),
-							type: 'shift'
+							type: 'shift',
+							value: newValue
 						},
 						success: function() {
 							console.log($(this));
@@ -61,16 +79,56 @@ window.TRANSACTION = (function($) {
 			});
 
 			$('.transaction-sectionid').click(function() {
-				$.ajax({
-					url: window.APP.siteUrl + 'admin/master/get_data_section/',
-					type: 'post',
-					dataType: 'json',
-					data: {
-						id: $(this).attr('data-id')
-					},
-					async: true,
-				}).done(function(result) {
-					$(this).editable({
+
+				$(this).editable({
+					type: 'select',
+					sourceCache: false,
+					emptytext: 'Silahkan pilih',
+					mode: 'popup',
+					source: window.APP.siteUrl + 'admin/master/get_data_section/'+$(this).attr('data-header'),
+					success: function(response, newValue) {
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/transaction/update_inline',
+							type: 'post',
+							data: {
+								id: $(this).attr('data-id'),
+								type: 'section_id',
+								value: newValue
+							},
+							success: function() {
+								console.log($(this));
+							}
+						});
+					}
+				});
+
+				if($(this).hasClass('hasclass') == false){
+					$(this).editable('toggle');
+				}
+
+				$(this).addClass('hasclass');
+
+			});
+
+
+			//$('.transaction-sectionid').click(function() {
+
+				function getSource() {
+			        var url = window.APP.siteUrl + 'admin/master/get_data_section/';
+			        return $.ajax({
+			            type:  'POST',
+			            async: true,
+			            url:   url,
+			            data: {
+							id: $(this).attr('data-id')
+						},
+			            dataType: "json"
+			        });
+			    }
+
+			    //getSource().done(function(result) {
+			    	/*$(this).editable({
 						type: 'select',
 						sourceCache: false,
 						emptytext: 'Silahkan pilih',
@@ -89,9 +147,34 @@ window.TRANSACTION = (function($) {
 								}
 							});
 						}
-					});
-				});
-			});
+					});*/
+
+			        /*$(this).editable({
+			            type: 'select',
+			            title: 'Select status',
+			            placement: 'right',
+			            value: 2,
+			            source: result,
+			            success: function(response) {
+							$.ajax({
+								url: window.APP.siteUrl + 'admin/transaction/update_inline',
+								type: 'post',
+								data: {
+									id: $(this).attr('data-id'),
+									type: 'section'
+								},
+								success: function() {
+									console.log($(this));
+								}
+							});
+						}
+			        });
+
+			    }).fail(function() {
+			        alert("Error with editable section")
+			    });*/
+
+			//});
 
 		},
 
