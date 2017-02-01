@@ -1,0 +1,34 @@
+{
+  "name": "camar_erp_ci",
+  "authors": [
+    "hikmahtiar.cool <hikmahtiar.cool@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1",
+    "bootstrap": "^3.3.7",
+    "jquery-validation": "^1.16.0",
+    "node-waves": "https://github.com/fians/Waves.git",
+    "animate.css": "animate-css#^3.5.2",
+    "material-design-icons": "^3.0.1",
+    "mdi": "^1.8.36",
+    "bootstrap-select": "^1.12.1",
+    "jquery-slimscroll": "https://github.com/rochal/jQuery-slimScroll/archive/v1.3.8.zip",
+    "jquery-countto": "https://github.com/mhuggins/jquery-countTo/archive/v1.2.0.zip",
+    "jquery-sparkline": "https://github.com/gwatts/jquery.sparkline/archive/v2.1.2.zip",
+    "sweetalert": "^1.1.3",
+    "jquery-form": "^3.46.0",
+    "datatables": "datatable#^1.10.13",
+    "x-editable": "^1.5.1"
+  }
+}

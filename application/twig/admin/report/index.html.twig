@@ -1,0 +1,92 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	REPORTING
+{% endblock %}
+
+{% block content %}
+	
+	<div class="row clearfix">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	        <div class="card">
+	            <div class="header">
+	                <h2>
+	                    Form Transaksi
+	                </h2>
+	                <!--
+	                <ul class="header-dropdown m-r--5">
+	                    <li class="dropdown">
+	                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+	                            <i class="material-icons">more_vert</i>
+	                        </a>
+	                        <ul class="dropdown-menu pull-right">
+	                            <li><a href="javascript:void(0);">Action</a></li>
+	                            <li><a href="javascript:void(0);">Another action</a></li>
+	                            <li><a href="javascript:void(0);">Something else here</a></li>
+	                        </ul>
+	                    </li>
+	                </ul>
+	                -->
+	            </div>
+	            <div class="body">
+	                
+	                <form class="report-form" method="POST" action="{{ site_url('admin/report/search') }}" target="_blank">
+
+                		<label for="email_address">Mulai Tanggal</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input  class="form-control report-date-start" name="date_start" type="text">
+                            </div>
+                        </div>
+
+                        <label>Sampai Tanggal</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input  class="form-control report-date-finish" name="date_finish"  type="text">
+                            </div>
+                        </div>
+
+                        <label for="email_address">Shift</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input  class="form-control" name="shift" type="text">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect" name="action" style="float: left" value="layar">
+                        	Layar
+                        </button>
+                        <button type="submit" class="btn btn-success m-t-15 m-l-10 waves-effect" name="action" style="float: left" value="excel">
+                        	Excel
+                        </button>
+
+                        <div class="preloader pl-size-xs m-t-15 m-l-10" style="float: left; display: none;">
+                            <div class="spinner-layer pl-teal">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+		                <div class="clearfix">&nbsp;</div>
+                    </form>
+
+
+	            </div>
+	        </div>
+	    </div>
+	 </div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/report.js') }}"></script>
+	<script type="text/javascript">
+		window.REPORT.init();
+	</script>
+
+{% endblock %}

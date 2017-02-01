@@ -1,0 +1,204 @@
+<form class="transaction-form" method="POST" action="{{ site_url('admin/transaction/save') }}">
+	<div class="modal-header">
+	    <h4 class="modal-title" id="defaultModalLabel">
+	    	Form Transaksi
+	    </h4>
+	</div>
+	<div class="modal-body">
+	    
+
+	        <div class="row clearfix">
+
+	        	<div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+
+	        	<input name="id" type="hidden" value="{% if get_detail %}{{ get_detail.master_detail_id }}{% endif %}">
+
+	                <label>Tanggal</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+	                        <input class="transaksi-tanggal form-control" name="tanggal" type="text" required="required" value="{% if get_detail %}{{ get_detail.tanggal }}{% endif %}">
+	                    </div>
+	                </div>
+	                
+	                <label for="email_address">
+	                Shift
+
+	                </label>
+	                <div class="form-group">
+	                    <div class="form-line">
+		                	<select class="form-control" name="shift">
+		                        <option value="">-- Silahkan Pilih --</option>
+		                        {% if shift_data %}
+
+		                        	{% for shift_row in shift_data %}
+		                        		<option value="{{ shift_row.ShiftNo }}" {% if same(get_detail.shift, shift_row.ShiftNo) %} selected="selected" {% endif %}>
+		                        			{{ shift_row.ShiftDescription }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>
+		                </div>
+	                </div>
+
+	                <label>Section Name</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+
+		                    <select class="form-control section-name" data-live-search="true">
+		                        <option value="">-- Silahkan Pilih --</option>
+		                        {% if section_data %}
+
+		                        	{% for section_row in section_data %}
+		                        		<option value="{{ section_row.SectionId }}" {% if same(get_detail.section_id, section_row.SectionId) %} selected="selected" {% endif %}>
+		                        			{{ section_row.SectionDescription }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>
+		                </div>
+	                </div>
+
+
+	                <label for="email_address">Section Id
+	                </label>
+	                <div class="form-group m-t-10">
+	                    <div class="form-line">
+	                        <label class="section-id">{% if get_detail %}{{ get_detail.section_id }}{% endif %}</label>
+	                        <input class="section-id-input" name="section_id" type="hidden" value="{% if get_detail %}{{ get_detail.section_id }}{% endif %}">
+	                        <input class="section-master-id" name="master_id" type="hidden" value="{% if get_detail %}{{ get_detail.master_id }}{% endif %}">
+	                    </div>
+	                </div>
+
+	                
+	        		<label for="email_address">Machine Type Id</label>
+	                <div class="form-group m-t-10">
+	                    <div class="form-line">
+	                    	<label class="section-machine">{% if get_detail %}{{ get_detail.machine_type_id }}{% endif %}</label>
+		                    <!--<select class="form-control" name="mesin">
+		                        <option value="">-- Silahkan Pilih --</option>
+		                        {% if machine_data %}
+
+		                        	{% for machine_row in machine_data %}
+		                        		<option value="{{ machine_row.MachineTypeId }}" {% if same(get_detail.machine_id, machine_row.MachineTypeId) %} selected="selected" {% endif %}>
+		                        			{{ machine_row.MachineTypeId }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>-->
+	                    </div>
+	                </div>
+	                
+	                <label>Billet Type Id</label>
+	                <div class="form-group m-t-10">
+	                    <div class="form-line">
+	                    	<label class="section-billet">{% if get_detail %}{{ get_detail.billet_id }}{% endif %}</label>
+
+	                        <!--<select class="form-control" name="billet">
+		                        <option value="">-- Silahkan Pilih --</option>
+		                        {% if billet_data %}
+
+		                        	{% for billet_row in billet_data %}
+		                        		<option value="{{ billet_row.BilletTypeId }}" {% if same(get_detail.billet_id, billet_row.BilletTypeId) %} selected="selected" {% endif %}>
+		                        			{{ billet_row.BilletTypeId }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>-->
+	                    </div>
+	                </div>
+
+	        	</div>
+
+	        	<div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+	        	
+	                <label>Len (m)</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+		                    <select class="form-control" name="len">
+		                    	<option value="">-- Silahkan Pilih --</option>
+			                    {% if len_data %}
+
+		                        	{% for len_row in len_data %}
+		                        		<option value="{{ len_row.LengthId }}" {% if same(get_detail.len, len_row.LengthId) %} selected="selected" {% endif %}>
+		                        			{{ len_row.Length }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>
+	                	</div>
+	                </div>
+
+	                <label>Finishing</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+	                    	<!--<input class="form-control" name="finishing" type="text" value="{% if get_detail %}{{ get_detail.finishing }}{% endif %}">-->
+		                
+	                    	<select class="form-control" name="finishing">
+		                    	<option value="">-- Silahkan Pilih --</option>
+			                    {% if len_data %}
+
+		                        	{% for finishing_row in finishing_data %}
+		                        		<option value="{{ finishing_row.finishing_id }}" {% if same(get_detail.finishing, finishing_row.finishing_id) %} selected="selected" {% endif %}>
+		                        			{{ finishing_row.finishing_name }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>
+		                </div>
+	                </div>
+
+	                <label>Target Prod (Billet)</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+	                        <input class="input-number form-control" name="target_prod" type="text" value="{% if get_detail %}{{ get_detail.target_prod }}{% endif %}">
+	                    </div>
+	                </div>
+
+	                <label>Index Dice</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+	                        <input  class="form-control" name="index_dice" type="text" value="{% if get_detail %}{{ get_detail.index_dice }}{% endif %}">
+	                    </div>
+	                </div>
+
+	                <label>PPIC Note</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+	                        <input  class="form-control" name="ppic_note" type="text" value="{% if get_detail %}{{ get_detail.ppic_note }}{% endif %}">
+	                    </div>
+	                </div>
+
+	        	</div>
+
+
+
+	        </div>
+
+	        <div class="clearfix">&nbsp;</div>
+
+	</div>
+	<div class="modal-footer">
+	    <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
+	    <button type="button" class="btn btn-default waves-effect btn-close-modal" data-dismiss="modal">Tutup</button>
+	    <div class="preloader pl-size-xs m-t-20 m-l-10" style="visibility: hidden;">
+            <div class="spinner-layer pl-teal">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	window.TRANSACTION.init();
+</script>

@@ -1,0 +1,80 @@
+<form class="transaction-form" method="POST" action="{{ site_url('admin/transaction/save') }}">
+	<div class="modal-header">
+	    <h4 class="modal-title" id="defaultModalLabel">
+	    	Form Transaksi
+	    </h4>
+	</div>
+	<div class="modal-body">
+	    
+
+        <div class="row clearfix">
+
+        	<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+
+	        	<input name="id" type="hidden" value="{% if get_detail %}{{ get_detail.master_detail_id }}{% endif %}">
+	                
+	        		<label for="email_address">Machine</label>
+	                <div class="form-group">
+	                    <div class="form-line">
+	                    	
+		                    <select class="form-control" name="mesin" required="required">
+		                        <option value="">-- Silahkan Pilih --</option>
+		                        {% if machine_data %}
+
+		                        	{% for machine_row in machine_data %}
+		                        		<option value="{{ machine_row.MachineId }}">
+		                        			{{ machine_row.MachineId }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>
+	                    </div>
+	                </div>
+
+	                <label>Tanggal</label>
+	                <div class="form-group">
+
+	                	<div class="input-group">
+	                        <div class="form-line">
+	                            <input class="form-control report-date-start" name="date_start" type="text" style="text-align: center;" required="required">
+	                        </div>
+	                        <span class="input-group-addon">
+	                        	s/d
+	                        </span>
+	                        <div class="form-line">
+	                            <input class="form-control report-date-finish" name="date_finish" type="text" style="text-align: center;" required="required">
+	                        </div>
+	                    </div>
+
+	                </div>
+                
+                
+	        </div>
+
+        </div>
+
+        <div class="clearfix">&nbsp;</div>
+
+	</div>
+	<div class="modal-footer">
+	    <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
+	    <button type="button" class="btn btn-default waves-effect btn-close-modal" data-dismiss="modal">Tutup</button>
+	    <div class="preloader pl-size-xs m-t-20 m-l-10" style="visibility: hidden;">
+            <div class="spinner-layer pl-teal">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+	</div>
+</form>
+
+<script type="text/javascript" src="{{ base_url('assets_app/js/report.js') }}"></script>
+<script type="text/javascript">
+	window.TRANSACTION.handleSave();
+	window.REPORT.handleDatepicker();
+</script>

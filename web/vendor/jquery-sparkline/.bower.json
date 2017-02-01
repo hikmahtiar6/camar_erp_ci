@@ -1,0 +1,12 @@
+{
+  "name": "jquery-sparkline",
+  "_cacheHeaders": {
+    "ETag": "\"0ab30df52d464f54ea0fb4b8b58c317ecba0fb8d\"",
+    "Content-Type": "application/zip",
+    "Content-Disposition": "attachment; filename=jquery.sparkline-2.1.2.zip"
+  },
+  "_release": "e-tag:0ab30df52",
+  "_source": "https://github.com/gwatts/jquery.sparkline/archive/v2.1.2.zip",
+  "_target": "*",
+  "_originalSource": "https://github.com/gwatts/jquery.sparkline/archive/v2.1.2.zip"
+}
