@@ -22,6 +22,18 @@ class Header_model extends CI_Model {
 		$get = $sql->get();
 		return $get->row();
 	}
+
+	public function delete($id)
+	{
+		$this->db->where('header_id', $id);
+		return $this->db->delete(static::TABLE);
+	}
+
+	public function update($id, $data)
+	{
+		$this->db->where('header_id', $id);
+		return $this->db->update(static::TABLE, $data);
+	}
 }
 
 ?>

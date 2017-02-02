@@ -11,8 +11,8 @@
 
         	<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
 
-	        	<input name="id" type="hidden" value="{% if get_detail %}{{ get_detail.master_detail_id }}{% endif %}">
-	                
+	        	<input name="id" type="hidden" value="{% if get_header %}{{ get_header.header_id }}{% endif %}">
+
 	        		<label for="email_address">Machine</label>
 	                <div class="form-group">
 	                    <div class="form-line">
@@ -22,7 +22,8 @@
 		                        {% if machine_data %}
 
 		                        	{% for machine_row in machine_data %}
-		                        		<option value="{{ machine_row.MachineId }}">
+
+		                        		<option value="{{ machine_row.MachineId }}" {% if same(get_header.machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
 		                        			{{ machine_row.MachineId }}
 		                        		</option>
 		                        	{% endfor %}
@@ -37,13 +38,13 @@
 
 	                	<div class="input-group">
 	                        <div class="form-line">
-	                            <input class="form-control report-date-start" name="date_start" type="text" style="text-align: center;" required="required">
+	                            <input class="form-control report-date-start" name="date_start" type="text" style="text-align: center;" required="required" value="{% if get_header %}{{ get_header.date_start }}{% endif %}">
 	                        </div>
 	                        <span class="input-group-addon">
 	                        	s/d
 	                        </span>
 	                        <div class="form-line">
-	                            <input class="form-control report-date-finish" name="date_finish" type="text" style="text-align: center;" required="required">
+	                            <input class="form-control report-date-finish" name="date_finish" type="text" style="text-align: center;" required="required" value="{% if get_header %}{{ get_header.date_finish }}{% endif %}">
 	                        </div>
 	                    </div>
 

@@ -1,7 +1,7 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block content_title %}
-	TRANSAKSI
+	KOREKSI SPK
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
 	        <div class="card">
 	            <div class="header">
 	                <h2>
-	                    Data Transaksi
+	                    Data SPK
 	                </h2>
 	            </div>
 	            <div class="body" style="overflow: auto; padding: 5px">
@@ -20,13 +20,23 @@
 
 		            	<br>
 		            	<button class="btn btn-primary tambah-transaksi" url="{{ site_url('admin/transaction/edit/new') }}" data-toggle="modal" data-target="#defaultModal">
-		            		Tambah
+		            		Pembuatan SPK
+		            	</button>
+
+		            	<button class="btn btn-danger hapus-transaksi">
+		            		Hapus
 		            	</button>
 		            	<br>
 		                
 		                <table class="table table-bordered table-striped table-transaksi">
 		                	<thead>
 		                		<tr>
+									<th style="vertical-align: middle;">
+										<center>
+											<input id="basic_checkbox_2" class="filled-in parent-checkbox" type="checkbox">
+											<label for="basic_checkbox_2">&nbsp;</label>
+										</center>
+									</th>
 		                			<th style="vertical-align: middle;">No.</th>
 									<th style="vertical-align: middle;">Tanggal</th>
 									<th style="vertical-align: middle;">Shift</th>
@@ -65,7 +75,6 @@
 									<th style="vertical-align: middle;">EstStart</th>
 									<th style="vertical-align: middle;">EstEnd</th>
 									<th style="vertical-align: middle;">EstDiesPrep</th>
-									<th style="vertical-align: middle;">Action</th>
 		                		</tr>
 		                	</thead>
 		                	<tbody>
@@ -119,6 +128,7 @@
 	<script type="text/javascript">
 		window.TRANSACTION.handleDatatable();
 		window.TRANSACTION.handleModal();
+		window.TRANSACTION.handleDelete();
 	</script>
 
 {% endblock %}

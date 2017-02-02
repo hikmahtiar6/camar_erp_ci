@@ -29,7 +29,7 @@
 
 						<td valign="bottom">
 							<h2>
-								SN1150.01
+								{{ post.mesin }}
 							</h2>
 						</td>
 
@@ -192,20 +192,20 @@
 							<td>{{ row_data.shift }}</td>
 							<td>{{ row_data.section_id }}</td>
 							<td>{{ row_data.SectionDescription }}</td>
-							<td>{{ row_data.machine_type_id }}</td>
-							<td>{{ row_data.billet_type_id }}</td>
+							<td>{{ row_data.machine_type }}</td>
+							<td>{{ row_data.billet_id }}</td>
 							<td>{{ row_data.Length }}</td>
 							<td>{{ row_data.finishing_name }}</td>
 							<td>{{ row_data.target_prod }}</td>
 							<td>{{ row_data.index_dice }}</td>
 							<td>{{ row_data.ppic_note }}</td>
 							<td>{{ target_btg }}</td>
-							<td>{{ row_data.WeightStandard }}</td>
-							<td>{{ row_data.WeightStandard * row_data.target_prod * row_data.Length }}</td>
+							<td>{{ row_data.weight_standard }}</td>
+							<td>{{ row_data.weight_standard * row_data.target_prod * row_data.Length }}</td>
 							
 							<td>{{ arr_sum(total_btg_arr) }}</td>
 
-							<td>{{ row_data.DieTypeId }}</td>
+							<td>{{ row_data.die_type_name }}</td>
 							<td>{{ row_data.actual_pressure_time }}</td>
 							<td>{{ row_data.ShiftStart|date('H:i:s') }}</td>
 							<td>{{ get_shift_end(row_data.ShiftStart, row_data.actual_pressure_time, row_data.target_prod) }}</td>

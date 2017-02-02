@@ -1,5 +1,11 @@
 window.TRANSACTION = (function($) {
 
+	var renderCheckbox = function(d,t,f,m){
+        var btn = '<center><input id="basic_checkbox_3" class="filled-in sub-checkbox" name="master_detail_id[]" value="'+f['id']+'" type="checkbox">' +
+				 '<label for="basic_checkbox_3">&nbsp;</label></center>';
+        return btn;
+    }
+
 	var renderCol1 = function(d,t,f,m){
         var btn = '<a class="btn btn-default edit-modal-transaksi" data-toggle="modal" data-target="#defaultModal" href="'+window.APP.siteUrl+'admin/transaction/edit/'+f['id']+'">Edit</a>' +
         	'<a class="btn btn-danger delete-transaksi" href="javascript:;" data-id="'+f['id']+'">Hapus</a>';
@@ -7,17 +13,67 @@ window.TRANSACTION = (function($) {
     }
 
     var renderDate = function(d,t,f,m){
-        var btn = '<label class="transaction-date" data-id="'+f['id']+'">'+d+'</label>';
+        var btn = '<label class="transaction-date" data-id="'+f['id']+'" data-value="'+f['tanggal1']+'"> '+f['tanggal2']+'</label>';
         return btn;
     }
 
     var renderShift = function(d,t,f,m){
-        var btn = '<label class="transaction-shift" data-id="'+f['id']+'" data-value="'+d+'">'+d+'</label>';
+        var btn = '<label class="transaction-shift" data-id="'+f['id']+'" data-value="'+d+'">'+f['shift_name']+'</label>';
         return btn;
     }
 
     var renderSection = function(d,t,f,m){
-        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+d+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
+        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+d+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
+        return btn;
+    }
+
+    var renderSectionName = function(d,t,f,m){
+        var btn = '<label id="sectionname'+f['id']+'">'+d+'</label>';
+        return btn;
+    }
+
+    var renderMachine = function(d,t,f,m){
+        var btn = '<a class="transaction-machine" id="transaction-machine'+f['id']+'" href="javascript:;" data-toggle="modal" data-target="#defaultModal" data-id="'+f['id']+'">'+d+'</a>';
+        return btn;
+    }
+
+    var renderLen = function(d,t,f,m){
+        var btn = '<label class="transaction-len" data-id="'+f['id']+'" data-value="'+d+'">'+f['len_name']+'</label>';
+        return btn;
+    }
+
+    var renderFinishing = function(d,t,f,m){
+        var btn = '<label class="transaction-finishing" data-id="'+f['id']+'" data-value="'+d+'" >'+f['finishing_name']+'</label>';
+        return btn;
+    }
+
+    var renderTargetProdBillet = function(d,t,f,m){
+        var btn = '<label class="transaction-targetprodbillet" data-id="'+f['id']+'" data-value="'+d+'" >'+d+'</label>';
+        return btn;
+    }
+
+    var renderIndexDIce = function(d,t,f,m){
+        var btn = '<label class="transaction-indexdice" data-id="'+f['id']+'" data-value="'+d+'" >'+d+'</label>';
+        return btn;
+    }
+
+    var renderPPICNote = function(d,t,f,m){
+        var btn = '<label class="transaction-ppicnote" data-id="'+f['id']+'" data-value="'+d+'" >'+d+'</label>';
+        return btn;
+    }
+
+    var renderBillet = function(d,t,f,m){
+        var btn = '<label id="transaction-billet'+f['id']+'" data-id="'+f['id']+'" data-value="'+d+'">'+d+'</label>';
+        return btn;
+    }
+
+    var renderWS = function(d,t,f,m){
+        var btn = '<label id="transaction-weightstandard'+f['id']+'" data-id="'+f['id']+'" data-value="'+d+'">'+d+'</label>';
+        return btn;
+    }
+
+    var renderDieType = function(d,t,f,m){
+        var btn = '<label id="transaction-dietype'+f['id']+'" data-id="'+f['id']+'" data-value="'+d+'">'+d+'</label>';
         return btn;
     }
 
@@ -36,11 +92,30 @@ window.TRANSACTION = (function($) {
 
 		handleEditable: function() {
 
-			$.fn.editable.defaults.mode = 'inline';
-			
+			var _this = this;
+
+			$.fn.editable.defaults.mode = 'popup';
+			$.fn.editable.defaults.emptytext = 'Silahkan diisi';
+
 			$('.transaction-date').click(function() {
 				$(this).editable({
-					inputclass: 'some_class'
+					inputclass: 'some_class',
+					type: 'text',
+					success: function(response, newValue) {
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/transaction/update_inline',
+							type: 'post',
+							data: {
+								id: $(this).attr('data-id'),
+								type: 'tanggal',
+								value: newValue
+							},
+							success: function() {
+								console.log($(this));
+							}
+						});
+					}
 				});
 
 				if($(this).hasClass('hasclass') == false){
@@ -58,7 +133,7 @@ window.TRANSACTION = (function($) {
 			$('.transaction-shift').editable({
 				type: 'select',
 				sourceCache: false,
-				emptytext: 'Silahkan pilih',
+				emptyText: 'Silahkan pilih',
 				mode: 'popup',
 				source: window.APP.siteUrl + 'admin/master/get_data_shift',
 				success: function(response, newValue) {
@@ -80,6 +155,8 @@ window.TRANSACTION = (function($) {
 
 			$('.transaction-sectionid').click(function() {
 
+				var _inputThis = this;
+
 				$(this).editable({
 					type: 'select',
 					sourceCache: false,
@@ -91,13 +168,19 @@ window.TRANSACTION = (function($) {
 						$.ajax({
 							url: window.APP.siteUrl + 'admin/transaction/update_inline',
 							type: 'post',
+							dataType: 'json',
 							data: {
 								id: $(this).attr('data-id'),
 								type: 'section_id',
 								value: newValue
 							},
-							success: function() {
-								console.log($(this));
+							success: function(response) {
+								if(response.status == 'success') {
+									$('#sectionname'+ $(_inputThis).attr('data-id')).html(response.section_name);
+									$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
+									$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
+									$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
+								}
 							}
 						});
 					}
@@ -111,70 +194,117 @@ window.TRANSACTION = (function($) {
 
 			});
 
+			$('.transaction-machine').click(function() {
+				$(document).find('.content-modal-transaksi').load(window.APP.siteUrl + 'admin/transaction/edit/'+ $(this).attr('data-id'));
+			});
 
-			//$('.transaction-sectionid').click(function() {
+			$('.transaction-len').editable({
+				type: 'select',
+				sourceCache: false,
+				mode: 'popup',
+				source: window.APP.siteUrl + 'admin/master/get_data_len',
+				success: function(response, newValue) {
 
-				function getSource() {
-			        var url = window.APP.siteUrl + 'admin/master/get_data_section/';
-			        return $.ajax({
-			            type:  'POST',
-			            async: true,
-			            url:   url,
-			            data: {
-							id: $(this).attr('data-id')
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/transaction/update_inline',
+						type: 'post',
+						data: {
+							id: $(this).attr('data-id'),
+							type: 'len',
+							value: newValue
 						},
-			            dataType: "json"
-			        });
-			    }
-
-			    //getSource().done(function(result) {
-			    	/*$(this).editable({
-						type: 'select',
-						sourceCache: false,
-						emptytext: 'Silahkan pilih',
-						mode: 'popup',
-						source: result,
-						success: function(response) {
-							$.ajax({
-								url: window.APP.siteUrl + 'admin/transaction/update_inline',
-								type: 'post',
-								data: {
-									id: $(this).attr('data-id'),
-									type: 'section'
-								},
-								success: function() {
-									console.log($(this));
-								}
-							});
+						success: function() {
+							console.log($(this));
 						}
-					});*/
+					});
+				}
+			});
 
-			        /*$(this).editable({
-			            type: 'select',
-			            title: 'Select status',
-			            placement: 'right',
-			            value: 2,
-			            source: result,
-			            success: function(response) {
-							$.ajax({
-								url: window.APP.siteUrl + 'admin/transaction/update_inline',
-								type: 'post',
-								data: {
-									id: $(this).attr('data-id'),
-									type: 'section'
-								},
-								success: function() {
-									console.log($(this));
-								}
-							});
+			$('.transaction-finishing').editable({
+				type: 'select',
+				sourceCache: false,
+				mode: 'popup',
+				source: window.APP.siteUrl + 'admin/master/get_data_finishing',
+				success: function(response, newValue) {
+
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/transaction/update_inline',
+						type: 'post',
+						data: {
+							id: $(this).attr('data-id'),
+							type: 'finishing',
+							value: newValue
+						},
+						success: function() {
+							console.log($(this));
 						}
-			        });
+					});
+				}
+			});
 
-			    }).fail(function() {
-			        alert("Error with editable section")
-			    });*/
+			$('.transaction-targetprodbillet').editable({
+				inputclass: 'input-number',
+				type: 'text',
+				success: function(response, newValue) {
 
-			//});
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/transaction/update_inline',
+						type: 'post',
+						data: {
+							id: $(this).attr('data-id'),
+							type: 'target_prod',
+							value: newValue
+						},
+						success: function() {
+							console.log($(this));
+						}
+					});
+				}
+			});
+
+			_this.handleNumberInput();
+
+
+			$('.transaction-indexdice').editable({
+				type: 'text',
+				success: function(response, newValue) {
+
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/transaction/update_inline',
+						type: 'post',
+						data: {
+							id: $(this).attr('data-id'),
+							type: 'index_dice',
+							value: newValue
+						},
+						success: function() {
+							console.log($(this));
+						}
+					});
+				}
+			});
+
+			$('.transaction-ppicnote').editable({
+				type: 'text',
+				success: function(response, newValue) {
+
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/transaction/update_inline',
+						type: 'post',
+						data: {
+							id: $(this).attr('data-id'),
+							type: 'ppic_note',
+							value: newValue
+						},
+						success: function() {
+							console.log($(this));
+						}
+					});
+				}
+			});
+
+
+			
 
 		},
 
@@ -220,8 +350,8 @@ window.TRANSACTION = (function($) {
 					});
 
 					if(response.status == 'success') {
-						_this.dataTable.ajax.reload();
-						//window.location.reload();
+						//_this.dataTable.ajax.reload();
+						window.location.reload();
 						$('.btn-close-modal').click();
 					}
 				}
@@ -292,6 +422,11 @@ window.TRANSACTION = (function($) {
 				columns: [
 					{
 						data: 'no',
+						render: renderCheckbox,
+						orderable: false
+					},
+					{
+						data: 'no',
 					},
 					{
 						data: 'tanggal',
@@ -307,33 +442,42 @@ window.TRANSACTION = (function($) {
 					},
 					{
 						data: 'section_name',
+						render: renderSectionName
 					},
 					{
 						data: 'mesin',
+						render: renderMachine
 					},
 					{
 						data: 'billet',
+						render: renderBillet
 					},
 					{
 						data: 'len',
+						render: renderLen
 					},
 					{
 						data: 'finishing',
+						render: renderFinishing
 					},
 					{
 						data: 'target_prod',
+						render: renderTargetProdBillet
 					},
 					{
 						data: 'index_dice',
+						render: renderIndexDIce
 					},
 					{
 						data: 'ppic_note',
+						render: renderPPICNote
 					},
 					{
 						data: 'target_prod_btg',
 					},
 					{
 						data: 'weight_standard',
+						render: renderWS
 					},
 					{
 						data: 'target_section',
@@ -343,6 +487,7 @@ window.TRANSACTION = (function($) {
 					},
 					{
 						data: 'die_type',
+						render: renderDieType
 					},
 					{
 						data: 'apt',
@@ -355,10 +500,6 @@ window.TRANSACTION = (function($) {
 					},
 					{
 						data: 'null',
-					},
-					{
-						data: 'action',
-						width: '200px'
 					},
 
 				],
@@ -394,31 +535,71 @@ window.TRANSACTION = (function($) {
 
 			var _this = this;
 
-			swal({
-		        title: "Are you sure?",
-		        text: "Akan menghapus transaksi terpilih ?",
-		        type: "warning",
-		        showCancelButton: true,
-		        confirmButtonColor: "#DD6B55",
-		        confirmButtonText: "Ya",
-		        closeOnConfirm: false
-		    }, function () {
-		    	$.ajax({
-		    		url: window.APP.siteUrl + 'admin/transaction/delete/'+id,
-		    		dataType: 'json',
-		    		type: 'post',
-		    		success: function(response) {
-		    			if(response.status == 'success') {	
-			        		swal("Deleted!", response.message, response.status);
-			        		setTimeout(function() {
-			        			_this.dataTable.ajax.reload();
-			        		}, 1000);
-		    			} else {
-			        		swal("Failed!", response.message, response.status);
-		    			}
-		    		}
-		    	});
-		    });
+			/**/
+
+			$('.parent-checkbox').click(function(){
+				checkboxes = $('.sub-checkbox');
+				for(var i=0, n=checkboxes.length;i<n;i++) {
+					checkboxes[i].checked = $('.parent-checkbox').is(':checked');
+				}
+			});
+
+			$('.hapus-transaksi').click(function(){
+
+				swal({
+			        title: "Are you sure?",
+			        text: "Akan menghapus transaksi terpilih ?",
+			        type: "warning",
+			        showCancelButton: true,
+			        confirmButtonColor: "#DD6B55",
+			        confirmButtonText: "Ya",
+			        closeOnConfirm: false
+			    }, function () {
+			    	var checkboxes = $('.sub-checkbox');
+					var id = checkboxes.filter(':checked');
+
+					var ids = [];
+
+					// counting checked checkbox
+					for(var x=0; x<id.length; x++){
+
+						// value checkbox in checked
+						var getValue = $(id[x]).val();
+
+						// set merge array value checkbox
+						ids.push(getValue);
+					}
+
+					if(ids.length > 0) {
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/transaction/delete_selected',
+							data: {
+								id: ids
+							},
+							type: 'post',
+							dataType: 'json',
+							success: function(response) {
+				        		if(response.status == 'success') {	
+					        		setTimeout(function() {
+										window.location.reload();
+					        			
+					        			//_this.dataTable.ajax.reload();
+					        		}, 1000);
+				    			}
+					        	swal(response.status+'!', response.message, response.status);
+							}
+						});
+					} else {
+					    swal('warning!', 'belum ada yg dipilih untuk dihapus', 'warning');
+						
+					}
+
+			    });
+
+				
+
+			});
+
 		}
 	}
 })(jQuery);

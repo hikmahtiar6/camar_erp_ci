@@ -23,6 +23,7 @@
 
     <!-- datepicker material bootstrap -->
     <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
+    <link href="{{ base_url('web/vendor/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 
     <!-- Waves Effect Css -->
     <link href="{{ base_url('web/vendor/node-waves/dist/waves.min.css') }}" rel="stylesheet" />
@@ -46,6 +47,9 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ base_url('assets_app/css/themes/all-themes.min.css') }}" rel="stylesheet" />
+
+    <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
+    
     {% endblock %}
 </head> 
 
@@ -327,13 +331,13 @@
                     <li>
                         <a href="{{ site_url('admin/transaction') }}">
                             <i class="material-icons">text_fields</i>
-                            <span>Transaksi</span>
+                            <span>Koreksi SPK</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ site_url('admin/report') }}">
                             <i class="material-icons">layers</i>
-                            <span>Reporting</span>
+                            <span>Laporan SPK</span>
                         </a>
                     </li>
                     <!--
@@ -1136,7 +1140,6 @@
     </script>
 
     <!-- Jquery Core Js -->
-    <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Bootstrap Core Js -->
     <script src="{{ base_url('web/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -1147,6 +1150,7 @@
     <!-- datepicker material bootstrap -->
     <script src="{{ base_url('web/vendor/plugins-admin/momentjs/moment.js') }}"></script>
     <script src="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+    <script src="{{ base_url('web/vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
 
     <!-- Slimscroll Plugin Js -->
     <script src="{{ base_url('web/vendor/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>

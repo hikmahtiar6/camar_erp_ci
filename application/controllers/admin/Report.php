@@ -16,6 +16,8 @@ class Report extends CI_Controller
 
 		// load model section
 		$this->load->model('section_model');
+		$this->load->model('master/machine_model');
+		$this->load->model('master/shift_model');
 
 	}
 
@@ -24,6 +26,13 @@ class Report extends CI_Controller
 	 */
 	public function index()
 	{
+		$machine = $this->machine_model->get_data();
+		$shift = $this->shift_model->get_data();
+		$section = $this->section_model->get_data();
+
+		$this->twiggy->set('machines', $machine);
+		$this->twiggy->set('shifts', $shift);
+		$this->twiggy->set('sections', $section);
 		$this->twiggy->template('admin/report/index')->display();
 	}
 
@@ -36,9 +45,10 @@ class Report extends CI_Controller
 
 		if($post['action'] == 'layar')
 		{
-			$search_data = $this->section_model->search($post['date_start'], $post['date_finish'], $post['shift']);
+			$search_data = $this->section_model->get_data_detail($post['date_start'], $post['date_finish'], $post['shift'], $post['mesin'], $post['section']);
 
 			$this->twiggy->set('search_data', $search_data);
+			$this->twiggy->set('post', $post);
 			$this->twiggy->template('admin/report/layar')->display();
 		}
 		else

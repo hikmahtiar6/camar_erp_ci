@@ -10,6 +10,8 @@ class Master extends CI_Controller {
 	
 		$this->load->model('master_model');
 		$this->load->model('master/header_model');
+		$this->load->model('master/finishing_model');
+		$this->load->model('master/len_model');
 	}
 
 	public function get_data_shift()
@@ -24,6 +26,26 @@ class Master extends CI_Controller {
 				$row[] = array(
 					'value' => $r->ShiftNo,
 					'text' => $r->ShiftDescription,
+				);
+			}
+		}
+
+		return $this->output->set_output(json_encode($row));
+	}
+
+	public function get_data_finishing()
+	{
+		$row = array();
+
+		$data = $this->finishing_model->get_data();
+
+		if($data)
+		{
+			foreach($data as $r)
+			{
+				$row[] = array(
+					'value' => $r->finishing_id,
+					'text'  => $r->finishing_name,
 				);
 			}
 		}
@@ -50,8 +72,27 @@ class Master extends CI_Controller {
 			foreach($data as $r)
 			{
 				$row[] = array(
-					'value' => $r->section_id,
-					'text' => $r->section_id,
+					'value' => $r->section_id.'|'.$r->master_id,
+					'text'  => $r->section_id,
+				);
+			}
+		}
+
+		return $this->output->set_output(json_encode($row));
+	}
+
+	public function get_data_len()
+	{
+		$row = array();
+		$data = $this->len_model->get_data();
+
+		if($data)
+		{
+			foreach($data as $r)
+			{
+				$row[] = array(
+					'value' => $r->LengthId,
+					'text'  => $r->Length,
 				);
 			}
 		}

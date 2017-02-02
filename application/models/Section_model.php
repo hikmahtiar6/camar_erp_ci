@@ -6,7 +6,7 @@ class Section_model extends CI_Model {
 	
 	const TABLE = 'MasterDetail';
 	const TABLE_BARANG = 'Inventory.Sections';
-	const TABLE_MACHINE = 'Factory.MasterMachineType';
+	const TABLE_MACHINE = 'Factory.Machines';
 	const TABLE_LEN = 'Inventory.MasterDimensionLength';
 	const TABLE_SHIFT = 'Factory.Shifts';
 	const TABLE_DIMENSION = 'Inventory.SectionsDimension';
@@ -66,19 +66,45 @@ class Section_model extends CI_Model {
 	/**
 	 * get data section
 	 */
-	public function get_data_detail()
+	public function get_data_detail($date_start = '', $date_finish = '', $shift = '', $machine_id = '', $section_id = '')
 	{
 		$sql = $this->db;
 
-		$sql->select('a.*, b.*');
+		$sql->select('a.*, b.*, c.SectionDescription, d.MachineTypeId as machine_type, e.ShiftDescription, e.ShiftStart, g.finishing_name, h.billet_id, h.weight_standard, h.actual_pressure_time, h.die_type_name, h.f2_estfg, i.*');
 		$sql->from(static::TABLE.' a');
-		//$sql->join(static::TABLE_BARANG.' b', 'a.section_id = b.SectionId', 'inner');
-		//$sql->join(static::TABLE_LEN.' d', 'a.len = d.LengthId', 'inner');
-		//$sql->join(static::TABLE_SHIFT.' e', 'a.shift = e.ShiftNo', 'inner');
-		//$sql->join(static::TABLE_FINISHING.' g', 'a.finishing = g.finishing_id', 'inner');
-		//$sql->join(static::TABLE_NEWMASTER.' h', 'a.master_id = h.master_id', 'inner');
-		//$sql->join(static::TABLE_MACHINE.' c', 'h.machine_type_id = c.MachineTypeId', 'inner');
-		$sql->join(static::TABLE_HEAD.' b', 'b.header_id = a.header_id', 'inner');
+		$sql->join(static::TABLE_HEAD.' b', 'a.header_id = b.header_id', 'inner');
+		$sql->join(static::TABLE_BARANG.' c', 'a.section_id = c.SectionId', 'left');
+		$sql->join(static::TABLE_MACHINE.' d', 'b.machine_id = d.MachineId', 'inner');
+		$sql->join(static::TABLE_SHIFT.' e', 'a.shift = e.ShiftNo', 'left');
+		$sql->join(static::TABLE_FINISHING.' g', 'a.finishing = g.finishing_id', 'left');
+		$sql->join(static::TABLE_NEWMASTER.' h', 'a.master_id = h.master_id', 'left');
+		$sql->join(static::TABLE_LEN.' i', 'a.len = i.LengthId', 'left');
+
+		if($date_start != '')
+		{
+			$sql->where('b.date_start >=', "$date_start");
+		}
+
+		if($date_finish != '')
+		{
+			$sql->where('b.date_finish <=', "$date_finish");
+		}
+
+		if($shift != '')
+		{
+			$sql->where('a.shift', $shift);
+		}
+
+		if($machine_id != '')
+		{
+			$sql->where('b.machine_id', $machine_id);
+		}
+
+		if($section_id != '')
+		{
+			$sql->where('a.section_id', $section_id);
+		}
+
 		$sql->order_by('a.tanggal', 'DESC');
 		$get = $sql->get();
 

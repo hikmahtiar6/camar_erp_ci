@@ -4,7 +4,7 @@
  */
 class Detail_model extends CI_Model {
 
-	const TABLE = 'HeaderSpk';
+	const TABLE = 'MasterDetail';
 
 	public function __construct()
 	{
@@ -17,10 +17,16 @@ class Detail_model extends CI_Model {
 
 		$sql->select('*');
 		$sql->from(static::TABLE);
-		$sql->where('header_id');
+		$sql->where('master_detail_id', $id);
 
 		$get = $sql->get();
 		return $get->row();
+	}
+
+	public function delete($id)
+	{
+		$this->db->where('master_detail_id', $id);
+		return $this->db->delete(static::TABLE);
 	}
 }
 

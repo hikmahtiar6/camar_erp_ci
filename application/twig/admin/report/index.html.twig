@@ -1,7 +1,7 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block content_title %}
-	REPORTING
+	LAPORAN SPK
 {% endblock %}
 
 {% block content %}
@@ -11,22 +11,8 @@
 	        <div class="card">
 	            <div class="header">
 	                <h2>
-	                    Form Transaksi
+	                    Form Filter Laporan SPK
 	                </h2>
-	                <!--
-	                <ul class="header-dropdown m-r--5">
-	                    <li class="dropdown">
-	                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-	                            <i class="material-icons">more_vert</i>
-	                        </a>
-	                        <ul class="dropdown-menu pull-right">
-	                            <li><a href="javascript:void(0);">Action</a></li>
-	                            <li><a href="javascript:void(0);">Another action</a></li>
-	                            <li><a href="javascript:void(0);">Something else here</a></li>
-	                        </ul>
-	                    </li>
-	                </ul>
-	                -->
 	            </div>
 	            <div class="body">
 	                
@@ -49,7 +35,42 @@
                         <label for="email_address">Shift</label>
                         <div class="form-group">
                             <div class="form-line">
-                                <input  class="form-control" name="shift" type="text">
+                                 <select  class="form-control" name="shift">
+                                    <option value="">-silihkan pilih-</option>
+                                    {% if shifts %}
+                                        {% for shift in shifts %}
+                                            <option value="{{ shift.ShiftNo }}">{{ shift.ShiftDescription }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <label for="email_address">Mesin</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select  class="form-control" name="mesin">
+                                    <option value="">-silihkan pilih-</option>
+                                    {% if machines %}
+                                        {% for machine in machines %}
+                                        	<option value="{{ machine.MachineId }}">{{ machine.MachineId }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <label for="email_address">Section Id</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select  class="form-control" name="section">
+                                	<option value="">-silihkan pilih-</option>
+                                    {% if sections %}
+                                        {% for section in sections %}
+                                            <option value="{{ section.SectionId }}">{{ section.SectionId }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
                             </div>
                         </div>
 
