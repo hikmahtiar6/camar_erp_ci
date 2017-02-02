@@ -405,7 +405,9 @@ class Transaction extends CI_Controller
 				$get_header = $this->header_model->get_data_by_id($get_detail->header_id);
 				if($get_header)
 				{
-					$del = $this->header_model->delete($get_header->header_id);
+					$del = $this->detail_model->delete($get_detail->master_detail_id);
+
+					//$del = $this->header_model->delete($get_header->header_id);
 					if($del)
 					{
 						$response = array(
