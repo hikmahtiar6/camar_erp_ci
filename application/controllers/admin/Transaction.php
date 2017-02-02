@@ -52,6 +52,7 @@ class Transaction extends CI_Controller
 
 	public function detail($header_id)
 	{
+		$this->twiggy->set('header_id', $header_id);
 		$this->twiggy->template('admin/transaction/index')->display();
 	}
 
@@ -61,7 +62,7 @@ class Transaction extends CI_Controller
 	public function data($header_id = '')
 	{
 		$data = array(); 
-		$get_md = $this->section_model->get_data_detail();
+		$get_md = $this->section_model->get_data_detail($date_start = '', $date_finish = '', $shift = '', $machine_id = '', $section_id = '',$header_id);
 
 		$sum = array();
 
@@ -136,6 +137,31 @@ class Transaction extends CI_Controller
 		$date_start =  $post['date_start'];
 		$date_finish =  $post['date_finish'];
 
+		$searching = array(
+			'machine_id' => $machine_id
+		);
+
+		$get_header = $this->header_model->get_data_by($searching);
+
+		if(!$get_header)
+		{
+			$response = array(
+				'status'  => 'warning',
+				'message' => 'Mesin belum diinputkan, silahkan buat SPK baru sesuai mesin yg diinginkan'
+			);
+		} 
+		else
+		{
+			$url = site_url('admin/transaction/detail/'.$get_header->header_id);
+
+			$response = array(
+				'status'  => 'success',
+				'message' => 'Data tersedia, anda bisa mengedit detail spk',
+				'url'     => $url
+			);
+		}
+
+		return $this->output->set_output(json_encode($response));
 		
 	}
 
@@ -147,14 +173,32 @@ class Transaction extends CI_Controller
 		$post = $this->input->post();
 
 		$id = $post['id'];
+		$machine_id  = $post['mesin'];
+		$date_start =  $post['date_start'];
+		$date_finish =  $post['date_finish'];
 
 		$data_for_insert_header = array(
-			'machine_id'  => $post['mesin'],
-			'date_start'  => $post['date_start'],
-			'date_finish' => $post['date_finish'],
+			'machine_id'  => $machine_id,
+			'date_start'  => $date_start,
+			'date_finish' => $date_finish,
 		);
-		
-		if($id == "")
+
+		$searching = array(
+			'machine_id' => $machine_id
+		);
+
+		$get_header = $this->header_model->get_data_by($searching);
+		if($get_header)
+		{
+			$url = site_url('admin/transaction/detail/'.$get_header->header_id);
+
+			$response = array(
+				'status'  => 'success',
+				'message' => 'Data sudah tersedia, anda bisa mengedit detail spk',
+				'url'     => $url
+			);
+		}
+		else
 		{
 			$saving = $this->section_model->save('header', $data_for_insert_header);
 			if($saving)
@@ -178,26 +222,7 @@ class Transaction extends CI_Controller
 			{
 				$response = array(
 					'message' => 'Transaksi gagal disimpan',
-					'status'  => 'danger',
-				);
-			}
-			
-		}
-		else
-		{
-			$saving = $this->header_model->update($id, $data_for_insert_header);
-			if($saving)
-			{
-				$response = array(
-					'message' => 'Transaksi berhasil diupdate',
-					'status'  => 'success',
-				);
-			}
-			else
-			{
-				$response = array(
-					'message' => 'Transaksi gagal diupdate',
-					'status'  => 'danger',
+					'status'  => 'error',
 				);
 			}
 		}
@@ -318,11 +343,12 @@ class Transaction extends CI_Controller
 						$die_type_name = $get_master->die_type_name; 
 					}
 					$response = array(
-						'status'       => 'success',
-						'section_name' => $section_name,
-						'billet_id'    => $billet,
+						'status'          => 'success',
+						'section_name'    => $section_name,
+						'section_id'      => $expl[0],
+						'billet_id'       => $billet,
 						'weight_standard' => $weight_standard,
-						'die_type_name' => $die_type_name,
+						'die_type_name'   => $die_type_name,
 					);
 				}
 				else
@@ -382,26 +408,50 @@ class Transaction extends CI_Controller
 					$del = $this->header_model->delete($get_header->header_id);
 					if($del)
 					{
-						$del_detail = $this->detail_model->delete($get_detail->master_detail_id);
-						if($del_detail)
-						{
-							$response = array(
-								'status'  => 'success',
-								'message' => 'transaksi berhasil dihapus'
-							);
-						}
-						else
-						{
-							$response = array(
-								'status'  => 'error',
-								'message' => 'transaksi gagal dihapus'
-							);
-						}
+						$response = array(
+							'status'  => 'success',
+							'message' => 'transaksi berhasil dihapus'
+						);
+					
+						//$del_detail = $this->detail_model->delete($get_detail->master_detail_id);
+					}
+					else
+					{
+						$response = array(
+							'status'  => 'error',
+							'message' => 'transaksi gagal dihapus'
+						);
 					}
 				}
 			}
 		}
 
+		return $this->output->set_output(json_encode($response));
+	}
+
+	public function add_row_by_header()
+	{
+		$header_id = $this->input->post('header_id');
+
+		$data_insert_detail = array(
+			'header_id' => $header_id
+		);
+
+		$saving = $this->detail_model->save($data_insert_detail);
+		if($saving)
+		{
+			$response = array(
+				'status'  => 'success',
+				'message' => 'transaksi berhasil ditambahkan'
+			);
+		}
+		else
+		{
+			$response = array(
+				'status'  => 'error',
+				'message' => 'transaksi gagal ditambahkan'
+			);
+		}
 		return $this->output->set_output(json_encode($response));
 	}
 

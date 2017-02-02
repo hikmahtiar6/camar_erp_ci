@@ -19,7 +19,7 @@
 		            <div class="col-md-12">
 
 		            	<br>
-		            	<button class="btn btn-primary tambah-transaksi">
+		            	<button class="btn btn-primary tambah-transaksi" data-header="{{ header_id }}">
 		            		Tambah
 		            	</button>
 
@@ -27,6 +27,8 @@
 		            		Hapus
 		            	</button>
 		            	<br>
+
+		            	<input class="header-id" type="hidden" value="{{ header_id }}">
 		                
 		                <table class="table table-bordered table-striped table-transaksi">
 		                	<thead>
@@ -129,6 +131,7 @@
 		window.TRANSACTION.handleDatatable();
 		window.TRANSACTION.handleModal();
 		window.TRANSACTION.handleDelete();
+		window.TRANSACTION.handleAddRow();
 	</script>
 
 {% endblock %}

@@ -12,6 +12,7 @@ class Master extends CI_Controller {
 		$this->load->model('master/header_model');
 		$this->load->model('master/finishing_model');
 		$this->load->model('master/len_model');
+		$this->load->model('master/indexdice_model');
 	}
 
 	public function get_data_shift()
@@ -93,6 +94,39 @@ class Master extends CI_Controller {
 				$row[] = array(
 					'value' => $r->LengthId,
 					'text'  => $r->Length,
+				);
+			}
+		}
+
+		return $this->output->set_output(json_encode($row));
+	}
+
+	public function get_data_index_dice($section_id, $machine_type_id)
+	{
+		$row = array();
+
+		if($section_id == 'null' || $section_id == '')
+		{
+			$r = 'b';
+			$get_dice = $this->indexdice_model->get_data();
+		}
+		else
+		{
+			$r = 'a';
+			$get_data = array(
+				'SectionId'     => str_replace('%20', ' ', $section_id),
+				'MachineTypeId' => $machine_type_id
+			);
+			$get_dice = $this->indexdice_model->get_data_by($get_data)->result();
+		}
+
+		if($get_dice)
+		{
+			foreach($get_dice as $r)
+			{
+				$row[] = array(
+					'value' => $r->DiesId,
+					'text'  => $r->DiesId,
 				);
 			}
 		}

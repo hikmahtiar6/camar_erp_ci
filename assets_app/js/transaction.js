@@ -33,7 +33,7 @@ window.TRANSACTION = (function($) {
     }
 
     var renderMachine = function(d,t,f,m){
-        var btn = '<a class="transaction-machine" id="transaction-machine'+f['id']+'" href="javascript:;" data-toggle="modal" data-target="#defaultModal" data-id="'+f['id']+'">'+d+'</a>';
+        var btn = '<labelclass="transaction-machine" id="transaction-machine'+f['id']+'">'+d+'</label>';
         return btn;
     }
 
@@ -53,7 +53,10 @@ window.TRANSACTION = (function($) {
     }
 
     var renderIndexDIce = function(d,t,f,m){
-        var btn = '<label class="transaction-indexdice" data-id="'+f['id']+'" data-value="'+d+'" >'+d+'</label>';
+        var btn = '<label class="transaction-indexdice" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-sectionid="'+f['section_id']+'" data-machine="'+f['mesin']+'" data-value="'+d+'">'+d+'</label>';
+    	if(d == '' || d == null) {
+	        var btn = '<label class="transaction-indexdice editable-empty" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-sectionid="'+f['section_id']+'" data-machine="'+f['mesin']+'" data-value="">Silahkan diisi</label>';
+    	}
         return btn;
     }
 
@@ -180,6 +183,8 @@ window.TRANSACTION = (function($) {
 									$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
 									$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
 									$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
+									$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).removeAttr('data-sectionid');
+									$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).attr('data-sectionid', response.section_id);
 								}
 							}
 						});
@@ -265,23 +270,43 @@ window.TRANSACTION = (function($) {
 			_this.handleNumberInput();
 
 
-			$('.transaction-indexdice').editable({
-				type: 'text',
-				success: function(response, newValue) {
+			
+			$('.transaction-indexdice').click(function() {
 
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/transaction/update_inline',
-						type: 'post',
-						data: {
-							id: $(this).attr('data-id'),
-							type: 'index_dice',
-							value: newValue
-						},
-						success: function() {
-							console.log($(this));
-						}
-					});
+				var _inputThis = this;
+				var sectionId = $(this).attr('data-sectionid');
+
+				alert($(_inputThis).attr('data-sectionid'));
+
+
+				$(this).editable({
+					type: 'select',
+					sourceCache: false,
+					mode: 'popup',
+					source: window.APP.siteUrl + 'admin/master/get_data_index_dice/'+$(_inputThis).attr('data-sectionid')+'/'+$(_inputThis).attr('data-machine'),
+					success: function(response, newValue) {
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/transaction/update_inline',
+							type: 'post',
+							dataType: 'json',
+							data: {
+								id: $(this).attr('data-id'),
+								type: 'index_dice',
+								value: newValue
+							},
+							success: function(response) {
+							}
+						});
+					}
+				});
+
+				if($(this).hasClass('hasclass') == false){
+					$(this).editable('toggle');
 				}
+
+				$(this).addClass('hasclass');
+
 			});
 
 			$('.transaction-ppicnote').editable({
@@ -337,7 +362,7 @@ window.TRANSACTION = (function($) {
 					$('.preloader').css('visibility', 'hidden');
 					//console.log(response);
 
-					$.notify({
+					/*$.notify({
 						message: response.message
 					},{
 						element: 'body',
@@ -347,7 +372,7 @@ window.TRANSACTION = (function($) {
             			placement: {
             				align: 'center'
             			}
-					});
+					});*/
 
 					if(response.status == 'success') {
 						//_this.dataTable.ajax.reload();
@@ -359,6 +384,7 @@ window.TRANSACTION = (function($) {
 						}
 
 					}
+					swal(response.status+'!', response.message, response.status);
 				}
 			});
 		},
@@ -421,7 +447,7 @@ window.TRANSACTION = (function($) {
 			var _this = this;
 			_this.dataTable = $('.table-transaksi').DataTable({
 				ajax: {
-					url: window.APP.siteUrl + 'admin/transaction/data',
+					url: window.APP.siteUrl + 'admin/transaction/data/'+$('.header-id').val(),
 					dataType: 'json',
 				},
 				columns: [
@@ -605,6 +631,31 @@ window.TRANSACTION = (function($) {
 
 			});
 
+		},
+
+		handleAddRow: function() {
+			$('.tambah-transaksi').click(function() {
+				$.ajax({
+					url: window.APP.siteUrl + 'admin/transaction/add_row_by_header',
+					type: 'post',
+					dataType: 'json',
+					data: {
+						header_id: $(this).attr('data-header')
+					},
+					success: function(response) {
+						
+						swal(response.status + '!', response.message, response.status);
+
+						if(response.status == 'success') {
+							setTimeout(function() {
+								window.location.reload();							
+							}, 1000);
+						}
+
+
+					}
+				});
+			});
 		}
 	}
 })(jQuery);

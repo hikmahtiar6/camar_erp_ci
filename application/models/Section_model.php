@@ -66,7 +66,7 @@ class Section_model extends CI_Model {
 	/**
 	 * get data section
 	 */
-	public function get_data_detail($date_start = '', $date_finish = '', $shift = '', $machine_id = '', $section_id = '')
+	public function get_data_detail($date_start = '', $date_finish = '', $shift = '', $machine_id = '', $section_id = '', $header_id = '')
 	{
 		$sql = $this->db;
 
@@ -103,6 +103,11 @@ class Section_model extends CI_Model {
 		if($section_id != '')
 		{
 			$sql->where('a.section_id', $section_id);
+		}
+
+		if($header_id != '')
+		{
+			$sql->where('a.header_id', $header_id);
 		}
 
 		$sql->order_by('a.tanggal', 'DESC');
