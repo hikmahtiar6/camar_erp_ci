@@ -15,12 +15,11 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.2",
+    "jquery": "~2.1",
     "bootstrap": "^3.3.7",
     "jquery-validation": "^1.16.0",
     "node-waves": "https://github.com/fians/Waves.git",
     "animate.css": "animate-css#^3.5.2",
-    "material-design-icons": "^3.0.1",
     "mdi": "^1.8.36",
     "bootstrap-select": "^1.12.1",
     "jquery-slimscroll": "https://github.com/rochal/jQuery-slimScroll/archive/v1.3.8.zip",

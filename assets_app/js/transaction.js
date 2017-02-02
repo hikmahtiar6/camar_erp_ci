@@ -335,7 +335,7 @@ window.TRANSACTION = (function($) {
 				},
 				success: function(response) {
 					$('.preloader').css('visibility', 'hidden');
-					console.log(response);
+					//console.log(response);
 
 					$.notify({
 						message: response.message
@@ -351,8 +351,13 @@ window.TRANSACTION = (function($) {
 
 					if(response.status == 'success') {
 						//_this.dataTable.ajax.reload();
-						window.location.reload();
-						$('.btn-close-modal').click();
+						//window.location.reload();
+						//$('.btn-close-modal').click();
+						
+						if(response.url != undefined) {
+							window.location = response.url;
+						}
+
 					}
 				}
 			});

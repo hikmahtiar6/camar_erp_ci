@@ -33,9 +33,6 @@
     <!-- Animation Css -->
     <link href="{{ base_url('web/vendor/animate.css/animate.min.css') }}" rel="stylesheet" />
 
-    <!-- Morris Chart Css-->
-    <link href="{{ base_url('web/vendor/plugins-admin/morrisjs/morris.css') }}" rel="stylesheet" />
-
     <!-- editable -->
     <link href="{{ base_url('web/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css') }}" rel="stylesheet" />
 
@@ -47,8 +44,6 @@
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ base_url('assets_app/css/themes/all-themes.min.css') }}" rel="stylesheet" />
-
-    <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
     
     {% endblock %}
 </head> 
@@ -335,7 +330,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ site_url('admin/transaction') }}">
+                        <a href="{{ site_url('admin/transaction/create/search') }}">
                             <i class="material-icons">text_fields</i>
                             <span>Koreksi SPK</span>
                         </a>
@@ -1146,6 +1141,7 @@
     </script>
 
     <!-- Jquery Core Js -->
+    <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
 
     <!-- Bootstrap Core Js -->
     <script src="{{ base_url('web/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -1173,25 +1169,9 @@
     <!-- Jquery CountTo Plugin Js -->
     <script src="{{ base_url('web/vendor/jquery-countto/jquery.countTo.js') }}"></script>
 
-    <!-- Morris Plugin Js -->
-    <script src="{{ base_url('web/vendor/plugins-admin/raphael/raphael.min.js') }}"></script>
-    <script src="{{ base_url('web/vendor/plugins-admin/morrisjs/morris.js') }}"></script>
-
     <!-- editable -->
     <script src="{{ base_url('web/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
 
-    <!-- ChartJs -->
-    <script src="{{ base_url('web/vendor/plugins-admin/chartjs/Chart.bundle.js') }}"></script>
-
-    <!-- Flot Charts Plugin Js -->
-    <script src="{{ base_url('web/vendor/plugins-admin/flot-charts/jquery.flot.js') }}"></script>
-    <script src="{{ base_url('web/vendor/plugins-admin/flot-charts/jquery.flot.resize.js') }}"></script>
-    <script src="{{ base_url('web/vendor/plugins-admin/flot-charts/jquery.flot.pie.js') }}"></script>
-    <script src="{{ base_url('web/vendor/plugins-admin/flot-charts/jquery.flot.categories.js') }}"></script>
-    <script src="{{ base_url('web/vendor/plugins-admin/flot-charts/jquery.flot.time.js') }}"></script>
-
-    <!-- Sparkline Chart Plugin Js -->
-    <script src="{{ base_url('web/vendor/plugins-admin/jquery-sparkline/jquery.sparkline.js') }}"></script>
 
     <!-- bootstrap notify -->
     <script src="{{ base_url('web/vendor/plugins-admin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>

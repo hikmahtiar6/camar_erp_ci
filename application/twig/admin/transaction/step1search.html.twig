@@ -1,0 +1,105 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	PEMBUATAN SPK
+{% endblock %}
+
+{% block content %}
+	
+	<div class="row clearfix">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	        <div class="card">
+	            <div class="header">
+	                <h2>
+	                    Form Isian SPK
+	                </h2>
+	            </div>
+	            <div class="body" style="padding: 20px">
+
+
+	            	<div class="row clearfix">
+
+	            		<div class="col-md-12">
+
+	            			<form class="transaction-form" method="POST" action="{{ site_url('admin/transaction/koreksi') }}">
+
+				        		<label for="email_address">Machine</label>
+				                <div class="form-group">
+				                    <div class="form-line">
+				                    	
+					                    <select class="form-control" name="mesin" required="required">
+					                        <option value="">-- Silahkan Pilih --</option>
+					                        {% if machine_data %}
+
+					                        	{% for machine_row in machine_data %}
+
+					                        		<option value="{{ machine_row.MachineId }}">
+					                        			{{ machine_row.MachineId }}
+					                        		</option>
+					                        	{% endfor %}
+
+					                        {% endif %}
+					                    </select>
+				                    </div>
+				                </div>
+
+				                <label>Tanggal</label>
+				                <div class="form-group">
+
+				                	<div class="input-group">
+				                        <div class="form-line">
+				                            <input class="form-control report-date-start" name="date_start" type="text" style="text-align: center;" >
+				                        </div>
+				                        <span class="input-group-addon">
+				                        	s/d
+				                        </span>
+				                        <div class="form-line">
+				                            <input class="form-control report-date-finish" name="date_finish" type="text" style="text-align: center;">
+				                        </div>
+				                    </div>
+
+				                </div>
+
+				                <div class="text-right">
+								    <button type="submit" class="btn btn-primary waves-effect">Submit</button>
+
+								    <div class="preloader pl-size-xs m-t-20 m-l-10" style="visibility: hidden;">
+							            <div class="spinner-layer pl-teal">
+							                <div class="circle-clipper left">
+							                    <div class="circle"></div>
+							                </div>
+							                <div class="circle-clipper right">
+							                    <div class="circle"></div>
+							                </div>
+							            </div>
+							        </div>
+				                </div>
+						                
+
+							</form>
+
+
+	            		</div>
+
+	            	</div>
+
+		        </div>
+		    </div>
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/report.js') }}"></script>
+	<script type="text/javascript">
+		window.TRANSACTION.handleSave();
+		window.REPORT.handleDatepicker();
+	</script>
+{% endblock %}
+
+

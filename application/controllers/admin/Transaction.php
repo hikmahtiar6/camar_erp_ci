@@ -19,6 +19,7 @@ class Transaction extends CI_Controller
 		$this->load->model('master_model');
 		$this->load->model('master/detail_model');
 		$this->load->model('master/header_model');
+		$this->load->model('master/shift_model');
 	}
 
 	/**
@@ -32,17 +33,32 @@ class Transaction extends CI_Controller
 	/**
 	 * Create or Edit page (select machine)
 	 */
-	public function create()
+	public function create($search = '')
 	{
+		$shift_data = $this->shift_model->get_data();
 		$machine_data = $this->master_model->get_data_machine();
 		$this->twiggy->set('machine_data', $machine_data);
-		$this->twiggy->template('admin/transaction/step1')->display();
+		$this->twiggy->set('shift_data', $shift_data);
+
+		if($search != '')
+		{
+			$this->twiggy->template('admin/transaction/step1search')->display();
+		}
+		else
+		{
+			$this->twiggy->template('admin/transaction/step1')->display();
+		}
+	}
+
+	public function detail($header_id)
+	{
+		$this->twiggy->template('admin/transaction/index')->display();
 	}
 
 	/**
 	 * Data Transacation
 	 */
-	public function data()
+	public function data($header_id = '')
 	{
 		$data = array(); 
 		$get_md = $this->section_model->get_data_detail();
@@ -110,6 +126,20 @@ class Transaction extends CI_Controller
 	}
 
 	/**
+	 * Koreksi
+	 */
+	public function koreksi()
+	{
+		$post = $this->input->post();
+
+		$machine_id  = $post['mesin'];
+		$date_start =  $post['date_start'];
+		$date_finish =  $post['date_finish'];
+
+		
+	}
+
+	/**
 	 * Save action
 	 */
 	public function save()
@@ -133,11 +163,15 @@ class Transaction extends CI_Controller
 				$data_for_insert_detail = array(
 					'header_id'  => $this->section_model->get_last_insert_id(),
 				);
+
+				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());
+
 				$saving_detail = $this->section_model->save('detail', $data_for_insert_detail);
 
 				$response = array(
 					'message' => 'Transaksi berhasil disimpan',
 					'status'  => 'success',
+					'url'     => $url,
 				);
 			}
 			else

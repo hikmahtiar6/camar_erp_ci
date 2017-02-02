@@ -23,6 +23,18 @@ class Header_model extends CI_Model {
 		return $get->row();
 	}
 
+	public function get_data_by($array)
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE);
+		$sql->where($array);
+
+		$get = $sql->get();
+		return $get->row();
+	}
+
 	public function delete($id)
 	{
 		$this->db->where('header_id', $id);
