@@ -30,6 +30,16 @@ class Transaction extends CI_Controller
 	}
 
 	/**
+	 * Create or Edit page (select machine)
+	 */
+	public function create()
+	{
+		$machine_data = $this->master_model->get_data_machine();
+		$this->twiggy->set('machine_data', $machine_data);
+		$this->twiggy->template('admin/transaction/step1')->display();
+	}
+
+	/**
 	 * Data Transacation
 	 */
 	public function data()
