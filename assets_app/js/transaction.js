@@ -1,8 +1,8 @@
 window.TRANSACTION = (function($) {
 
 	var renderCheckbox = function(d,t,f,m){
-        var btn = '<center><input id="basic_checkbox_3" class="filled-in sub-checkbox" name="master_detail_id[]" value="'+f['id']+'" type="checkbox">' +
-				 '<label for="basic_checkbox_3">&nbsp;</label></center>';
+        var btn = '<center><input id="basic_checkbox_'+f['id']+'" class="filled-in sub-checkbox" name="master_detail_id[]" value="'+f['id']+'" type="checkbox">' +
+				 '<label for="basic_checkbox_'+f['id']+'">&nbsp;</label></center>';
         return btn;
     }
 
