@@ -210,7 +210,7 @@ class Transaction extends CI_Controller
 
 				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());
 
-				$saving_detail = $this->section_model->save('detail', $data_for_insert_detail);
+				//$saving_detail = $this->section_model->save('detail', $data_for_insert_detail);
 
 				$response = array(
 					'message' => 'Transaksi berhasil disimpan',
