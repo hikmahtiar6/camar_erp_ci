@@ -54,7 +54,7 @@ window.TRANSACTION = (function($) {
 
     var renderIndexDIce = function(d,t,f,m){
         var btn = '<label class="transaction-indexdice" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-sectionid="'+f['section_id']+'" data-machine="'+f['mesin']+'" data-value="'+d+'">'+d+'</label>';
-    	if(d == '' || d == null) {
+    	if(d == '' || d == null || d == ' ') {
 	        var btn = '<label class="transaction-indexdice editable-empty" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-sectionid="'+f['section_id']+'" data-machine="'+f['mesin']+'" data-value="">Silahkan diisi</label>';
     	}
         return btn;
@@ -83,6 +83,7 @@ window.TRANSACTION = (function($) {
 	return {
 		dataTable: null,
 		detailId: null,
+		sectionId: null,
 		init: function() {
 			var _this = this;
 
@@ -276,14 +277,19 @@ window.TRANSACTION = (function($) {
 				var _inputThis = this;
 				var sectionId = $(this).attr('data-sectionid');
 
+				_this.sectionId = sectionId;
+
 				//alert($(_inputThis).attr('data-sectionid'));
+				//
+				var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+$(_inputThis).attr('data-id')+'/'+$(_inputThis).attr('data-machine')
 
+				//alert(url);
 
-				$(this).editable({
+				$(_inputThis).editable({
 					type: 'select',
 					sourceCache: false,
 					mode: 'popup',
-					source: window.APP.siteUrl + 'admin/master/get_data_index_dice/'+$(_inputThis).attr('data-sectionid')+'/'+$(_inputThis).attr('data-machine'),
+					source: url,
 					success: function(response, newValue) {
 
 						$.ajax({

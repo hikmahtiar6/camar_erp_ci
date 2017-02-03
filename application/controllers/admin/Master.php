@@ -10,6 +10,7 @@ class Master extends CI_Controller {
 	
 		$this->load->model('master_model');
 		$this->load->model('master/header_model');
+		$this->load->model('master/detail_model');
 		$this->load->model('master/finishing_model');
 		$this->load->model('master/len_model');
 		$this->load->model('master/indexdice_model');
@@ -101,8 +102,15 @@ class Master extends CI_Controller {
 		return $this->output->set_output(json_encode($row));
 	}
 
-	public function get_data_index_dice($section_id, $machine_type_id)
+	public function get_data_index_dice($id, $machine_type_id)
 	{
+		$section_id = '';
+		$get_section_in_detail = $this->detail_model->get_data_by_id($id);
+		if($get_section_in_detail)
+		{
+			$section_id = $get_section_in_detail->section_id;
+		}
+
 		$row = array();
 
 		if($section_id == 'null' || $section_id == '')
