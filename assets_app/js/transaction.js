@@ -23,17 +23,17 @@ window.TRANSACTION = (function($) {
     }
 
     var renderSection = function(d,t,f,m){
-        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+d+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
+        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" >'+d+'</label>';
         return btn;
     }
 
     var renderSectionName = function(d,t,f,m){
-        var btn = '<label id="sectionname'+f['id']+'">'+d+'</label>';
+        var btn = '<label class="transaction-sectionname" id="sectionname'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
         return btn;
     }
 
     var renderMachine = function(d,t,f,m){
-        var btn = '<labelclass="transaction-machine" id="transaction-machine'+f['id']+'">'+d+'</label>';
+        var btn = '<label class="transaction-machine" id="transaction-machine'+f['id']+'">'+d+'</label>';
         return btn;
     }
 
@@ -156,7 +156,7 @@ window.TRANSACTION = (function($) {
 				}
 			});
 
-			$('.transaction-sectionid').click(function() {
+			$('.transaction-sectionname').click(function() {
 
 				var _inputThis = this;
 
@@ -179,7 +179,7 @@ window.TRANSACTION = (function($) {
 							},
 							success: function(response) {
 								if(response.status == 'success') {
-									$('#sectionname'+ $(_inputThis).attr('data-id')).html(response.section_name);
+									$('#sectionid'+ $(_inputThis).attr('data-id')).html(response.section_id);
 									$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
 									$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
 									$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
@@ -276,7 +276,7 @@ window.TRANSACTION = (function($) {
 				var _inputThis = this;
 				var sectionId = $(this).attr('data-sectionid');
 
-				alert($(_inputThis).attr('data-sectionid'));
+				//alert($(_inputThis).attr('data-sectionid'));
 
 
 				$(this).editable({

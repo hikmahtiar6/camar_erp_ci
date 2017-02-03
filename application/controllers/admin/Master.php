@@ -74,7 +74,7 @@ class Master extends CI_Controller {
 			{
 				$row[] = array(
 					'value' => $r->section_id.'|'.$r->master_id,
-					'text'  => $r->section_id,
+					'text'  => $r->section_name,
 				);
 			}
 		}

@@ -11,6 +11,7 @@ class Master_model extends CI_Model {
 	const TABLE_BILLET = 'Inventory.MasterBilletTypes';
 	const TABLE_FINISHING = 'Finishing';
 	const TABLE_NEWMASTER = 'NewMaster';
+	const TABLE_SECTION = 'Inventory.Sections';
 
 	/**
 	 * constructor
@@ -36,9 +37,10 @@ class Master_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('*');
-		$sql->from(static::TABLE_NEWMASTER);
-		$sql->where('machine_id', $machine_id);
+		$sql->select('a.*, b.SectionDescription as section_name');
+		$sql->from(static::TABLE_NEWMASTER.' a');
+		$sql->join(static::TABLE_SECTION.' b', 'a.section_id = b.SectionId', 'inner');
+		$sql->where('a.machine_id', $machine_id);
 
 		$get = $sql->get();
 		return $get->result();
