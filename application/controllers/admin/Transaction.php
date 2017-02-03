@@ -103,7 +103,7 @@ class Transaction extends CI_Controller
 					'target_prod_btg'    => $target_prod_btg,
 					'die_type'    => $gmd->die_type_name,
 					'weight_standard'    => $gmd->weight_standard,
-					'target_section'    => $gmd->weight_standard.'-'.$target_prod_btg.'-'.$gmd->Length,
+					'target_section'    => $gmd->weight_standard * $target_prod_btg * $gmd->Length,
 					'total_target'    => array_sum($sum),
 					'shift_start'    => date('H:i:s', strtotime($gmd->ShiftStart)),
 					'shift_end'    => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
