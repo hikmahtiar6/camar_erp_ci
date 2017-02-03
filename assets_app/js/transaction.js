@@ -18,17 +18,29 @@ window.TRANSACTION = (function($) {
     }
 
     var renderShift = function(d,t,f,m){
-        var btn = '<label class="transaction-shift" data-id="'+f['id']+'" data-value="'+d+'">'+f['shift_name']+'</label>';
+    	var txt = f['shift_name'];
+    	if(d == '' || d == null || d == ' ') {
+    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
+    	}
+        var btn = '<label class="transaction-shift" data-id="'+f['id']+'" data-value="'+d+'">'+txt+'</label>';
         return btn;
     }
 
     var renderSection = function(d,t,f,m){
-        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" >'+d+'</label>';
+    	var txt = d;
+    	if(d == '' || d == null || d == ' ') {
+    		var txt = '-';
+    	}
+        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" >'+txt+'</label>';
         return btn;
     }
 
     var renderSectionName = function(d,t,f,m){
-        var btn = '<label class="transaction-sectionname" id="sectionname'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+d+'</label>';
+    	var txt = d;
+    	if(d == '' || d == null || d == ' ') {
+    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
+    	}
+        var btn = '<label class="transaction-sectionname" id="sectionname'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+txt+'</label>';
         return btn;
     }
 
@@ -38,12 +50,20 @@ window.TRANSACTION = (function($) {
     }
 
     var renderLen = function(d,t,f,m){
-        var btn = '<label class="transaction-len" data-id="'+f['id']+'" data-value="'+d+'">'+f['len_name']+'</label>';
+    	var txt = f['len_name'];
+    	if(d == '' || d == null || d == ' ') {
+    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
+    	}
+        var btn = '<label class="transaction-len" data-id="'+f['id']+'" data-value="'+d+'">'+txt+'</label>';
         return btn;
     }
 
     var renderFinishing = function(d,t,f,m){
-        var btn = '<label class="transaction-finishing" data-id="'+f['id']+'" data-value="'+d+'" >'+f['finishing_name']+'</label>';
+    	var txt = f['finishing_name'];
+    	if(d == '' || d == null || d == ' ') {
+    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
+    	}
+        var btn = '<label class="transaction-finishing" data-id="'+f['id']+'" data-value="'+d+'" >'+txt+'</label>';
         return btn;
     }
 
@@ -66,7 +86,11 @@ window.TRANSACTION = (function($) {
     }
 
     var renderBillet = function(d,t,f,m){
-        var btn = '<label id="transaction-billet'+f['id']+'" data-id="'+f['id']+'" data-value="'+d+'">'+d+'</label>';
+    	var txt = d;
+    	if(d == '' || d == null || d == ' ') {
+    		var txt = '-';
+    	}
+        var btn = '<label id="transaction-billet'+f['id']+'" data-id="'+f['id']+'" data-value="'+d+'">'+txt+'</label>';
         return btn;
     }
 
@@ -154,7 +178,8 @@ window.TRANSACTION = (function($) {
 							console.log($(this));
 						}
 					});
-				}
+				},
+				onblur: 'submit'
 			});
 
 			$('.transaction-sectionname').click(function() {
@@ -189,7 +214,8 @@ window.TRANSACTION = (function($) {
 								}
 							}
 						});
-					}
+					},
+					onblur: 'submit'
 				});
 
 				if($(this).hasClass('hasclass') == false){
@@ -223,7 +249,8 @@ window.TRANSACTION = (function($) {
 							console.log($(this));
 						}
 					});
-				}
+				},
+				onblur: 'submit'
 			});
 
 			$('.transaction-finishing').editable({
@@ -245,7 +272,8 @@ window.TRANSACTION = (function($) {
 							console.log($(this));
 						}
 					});
-				}
+				},
+				onblur: 'submit'
 			});
 
 			$('.transaction-targetprodbillet').editable({
@@ -289,6 +317,7 @@ window.TRANSACTION = (function($) {
 					type: 'select',
 					sourceCache: false,
 					mode: 'popup',
+					emptyText: 'Silahkan pilih',
 					source: url,
 					success: function(response, newValue) {
 
@@ -304,7 +333,8 @@ window.TRANSACTION = (function($) {
 							success: function(response) {
 							}
 						});
-					}
+					},
+					onblur: 'submit'
 				});
 
 				if($(this).hasClass('hasclass') == false){
