@@ -13,7 +13,7 @@ window.TRANSACTION = (function($) {
     }
 
     var renderDate = function(d,t,f,m){
-        var btn = '<label class="transaction-date" data-id="'+f['id']+'" data-value="'+f['tanggal1']+'"> '+f['tanggal2']+'</label>';
+        var btn = '<label class="transaction-date" data-id="'+f['id']+'" data-value="'+f['tanggal1']+'" data-header="'+f['header_id']+'"> '+f['tanggal2']+'</label>';
         return btn;
     }
 
@@ -73,11 +73,17 @@ window.TRANSACTION = (function($) {
     }
 
     var renderIndexDIce = function(d,t,f,m){
-        var btn = '<label class="transaction-indexdice" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-sectionid="'+f['section_id']+'" data-machine="'+f['mesin']+'" data-value="'+d+'">'+d+'</label>';
+    	var txt = d;
     	if(d == '' || d == null || d == ' ') {
-	        var btn = '<label class="transaction-indexdice editable-empty" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-sectionid="'+f['section_id']+'" data-machine="'+f['mesin']+'" data-value="">Silahkan diisi</label>';
+    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
     	}
+        var btn = '<label class="transaction-indexdice" id="transaction-indexdice'+f['id']+'" data-id="'+f['id']+'" data-machine="'+f['mesin']+'" data-value="'+f['index_dice_value']+'">'+txt+'</label>';
+
         return btn;
+    }
+
+    var renderIndexDIceCount = function(d, t, f, m) {
+    	return '<label id="count_dice'+f['id']+'">'+d+'</label>';
     }
 
     var renderPPICNote = function(d,t,f,m){
@@ -108,6 +114,7 @@ window.TRANSACTION = (function($) {
 		dataTable: null,
 		detailId: null,
 		sectionId: null,
+		res: null,
 		init: function() {
 			var _this = this;
 
@@ -124,11 +131,14 @@ window.TRANSACTION = (function($) {
 
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.emptytext = 'Silahkan diisi';
+			$.fn.editableform.buttons = '';
 
 			$('.transaction-date').click(function() {
 				$(this).editable({
 					inputclass: 'some_class',
-					type: 'text',
+					type: 'select',
+					sourceCache: false,
+					source: window.APP.siteUrl + 'admin/transaction/get_tanggal_header/'+$(this).attr('data-header'),
 					success: function(response, newValue) {
 
 						$.ajax({
@@ -143,7 +153,8 @@ window.TRANSACTION = (function($) {
 								console.log($(this));
 							}
 						});
-					}
+					},
+					onblur: 'submit'
 				});
 
 				if($(this).hasClass('hasclass') == false){
@@ -151,11 +162,6 @@ window.TRANSACTION = (function($) {
 				}
 
 				$(this).addClass('hasclass');
-
-				$('.some_class').bootstrapMaterialDatePicker({ 
-					weekStart : 0,
-					time: false 
-				});
 			});
 
 			$('.transaction-shift').editable({
@@ -293,7 +299,8 @@ window.TRANSACTION = (function($) {
 							console.log($(this));
 						}
 					});
-				}
+				},
+				onblur: 'submit'
 			});
 
 			_this.handleNumberInput();
@@ -307,41 +314,118 @@ window.TRANSACTION = (function($) {
 
 				_this.sectionId = sectionId;
 
+				var count = 4, sources = [];
+
+				for(var i = 1; i <= count; i++){
+				    //sources.push({ id : i, text : 's-'+String(i) })
+				}
+
 				//alert($(_inputThis).attr('data-sectionid'));
 				//
 				var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+$(_inputThis).attr('data-id')+'/'+$(_inputThis).attr('data-machine')
 
-				//alert(url);
+				$.ajax({
+					url: url,
+					type: 'get',
+					dataType: 'json',
+					success: function(response) {
+						for(var i in response){
+							sources.push({ id : response[i]['text'], text : response[i]['text'] });
+						}
 
-				$(_inputThis).editable({
-					type: 'select',
-					sourceCache: false,
-					mode: 'popup',
-					emptyText: 'Silahkan pilih',
-					source: url,
-					success: function(response, newValue) {
+						var getDisplay = function(){
+						    return function(value, sourceData) {
+						       //display checklist as comma-separated values
+						       var html = [],
+						           checked = $.fn.editableutils.itemsByValue(value, getSource(), 'id');  // it was needed to send 'id' as idKey otherwise it was fetching with value
+						       if(checked.length) {
+						           $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text) + ' '); });
+						           $(this).html(html.join(', '));
+						       } else {
+						           $(this).html('Silahkan pilih'); 
+						       }
+						    };
+						};
 
-						$.ajax({
-							url: window.APP.siteUrl + 'admin/transaction/update_inline',
-							type: 'post',
-							dataType: 'json',
-							data: {
-								id: $(this).attr('data-id'),
-								type: 'index_dice',
-								value: newValue
+						var getSource = function() {
+							return JSON.parse(JSON.stringify(sources));
+
+						    //i want this function must be called whenever available options is rendred. to ensure i used JSON.parse
+						};
+
+						var getQuery = function(options){
+						    options.callback({ results : getSource() });
+						};
+
+						var getInitSel = function(multiple) {
+						    return function(el, cb){
+						        var t, toSet = [], sc = getSource();
+						        el[0].value.split(',').forEach(function(a){
+						            t = _.findWhere(sc, { id : Number(a.trim()) });
+						            if(t) toSet.push(t);
+						        });
+						        cb(multiple ? toSet : (toSet.length ? toSet[0] : null));
+						    };
+						};
+
+
+						$(_inputThis).editable({
+							source : getSource(),
+						    display: getDisplay(),
+						    select2: {
+						        multiple : true,
+						        initSelection : getInitSel(true),
+						        query :getQuery,
+						        width: 200,
+						    },
+							type: 'select2',
+							mode: 'inline',
+							emptyText: 'Silahkan pilih',
+							showButtons: false,
+							success: function(response, newValue) {
+
+								var _ne = newValue;
+
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/transaction/update_inline',
+									type: 'post',
+									dataType: 'json',
+									data: {
+										id: $(_inputThis).attr('data-id'),
+										type: 'index_dice',
+										value: newValue
+									},
+									success: function(response) {
+										$(_inputThis).html(response.dice);
+										$('#count_dice'+$(_inputThis).attr('data-id')).html(response.dice_count);
+										if(response.dice != 'Silahkan pilih') {
+											$(_inputThis).removeClass('editable-empty');
+										} else {
+											$(_inputThis).addClass('editable-empty');
+										}
+									}
+								});
 							},
-							success: function(response) {
-							}
+							onblur: 'submit'
 						});
-					},
-					onblur: 'submit'
+
+						if($(_inputThis).hasClass('hasclass') == false){
+							
+								$(_inputThis).editable('toggle');
+						}
+
+						$(_inputThis).addClass('hasclass');
+
+
+
+
+					}
 				});
+				//	alert(sources);
 
-				if($(this).hasClass('hasclass') == false){
-					$(this).editable('toggle');
-				}
-
-				$(this).addClass('hasclass');
+				//alert(url);
+				//
+				
 
 			});
 
@@ -361,7 +445,8 @@ window.TRANSACTION = (function($) {
 							console.log($(this));
 						}
 					});
-				}
+				},
+				onblur: 'submit'
 			});
 
 
@@ -536,6 +621,10 @@ window.TRANSACTION = (function($) {
 						render: renderIndexDIce
 					},
 					{
+						data: 'index_dice_count',
+						render: renderIndexDIceCount
+					},
+					{
 						data: 'ppic_note',
 						render: renderPPICNote
 					},
@@ -549,14 +638,14 @@ window.TRANSACTION = (function($) {
 					{
 						data: 'target_section',
 					},
-					{
+					/*{
 						data: 'total_target',
-					},
+					},*/
 					{
 						data: 'die_type',
 						render: renderDieType
 					},
-					{
+					/*{
 						data: 'apt',
 					},
 					{
@@ -567,7 +656,7 @@ window.TRANSACTION = (function($) {
 					},
 					{
 						data: 'null',
-					},
+					},*/
 
 				],
 				lengthChange: false,

@@ -45,7 +45,7 @@ class Report extends CI_Controller
 
 		if($post['action'] == 'layar')
 		{
-			$search_data = $this->section_model->get_data_detail($date_start = '', $date_finish = '', $post['shift'], $post['mesin'], $post['section']);
+			$search_data = $this->section_model->get_data_detail($post['date_start'], $post['date_finish'], $post['shift'], $post['mesin'], $post['section']);
 
 			$this->twiggy->set('search_data', $search_data);
 			$this->twiggy->set('post', $post);

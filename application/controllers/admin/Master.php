@@ -134,6 +134,7 @@ class Master extends CI_Controller {
 			{
 				$row[] = array(
 					'value' => $r->DiesId,
+					'id' => $r->DiesId,
 					'text'  => $r->DiesId,
 				);
 			}

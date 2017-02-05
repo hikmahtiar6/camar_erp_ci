@@ -192,7 +192,7 @@ $config['twiggy']['default_template'] = 'index';
 
 $config['twiggy']['register_functions'] = array
 (
-    'site_url', 'base_url', 'uri_string', 'anchor', 'url_title', 'get_user', 'dump', 'same', 'arr_push', 'arr_sum', 'get_shift_end'
+    'site_url', 'base_url', 'uri_string', 'anchor', 'url_title', 'get_user', 'dump', 'same', 'arr_push', 'arr_sum', 'get_shift_end', 'convert_dice', 'count_dice'
 );
 
 

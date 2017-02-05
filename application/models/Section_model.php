@@ -82,12 +82,12 @@ class Section_model extends CI_Model {
 
 		if($date_start != '')
 		{
-			$sql->where('b.date_start >=', "$date_start");
+			$sql->where('a.tanggal >=', "$date_start");
 		}
 
 		if($date_finish != '')
 		{
-			$sql->where('b.date_finish <=', "$date_finish");
+			$sql->where('a.tanggal <=', "$date_finish");
 		}
 
 		if($shift != '')

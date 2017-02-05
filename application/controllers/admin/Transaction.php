@@ -62,7 +62,7 @@ class Transaction extends CI_Controller
 	public function data($header_id = '')
 	{
 		$data = array(); 
-		$get_md = $this->section_model->get_data_detail($date_start = '', $date_finish = '', $shift = '', $machine_id = '', $section_id = '',$header_id);
+		$get_md = $this->section_model->get_data_detail($this->session->userdata('date_start'), $this->session->userdata('date_finish'), $shift = '', $machine_id = '', $section_id = '',$header_id);
 
 		$sum = array();
 
@@ -80,36 +80,38 @@ class Transaction extends CI_Controller
 				array_push($sum, $gmd->weight_standard * $target_prod_btg * $gmd->Length);
 				
 				$data[] = array(
-					'no'         => $no,
-					'id'    => $gmd->master_detail_id,
-					'machine_id'	=> $gmd->machine_id,
-					'header_id'	=> $gmd->header_id,
-					'tanggal1'    => ($gmd->tanggal == null) ? '' : $gmd->tanggal,//date('D, j/M/y', strtotime($gmd->tanggal)),
-					'tanggal2'    => ($gmd->tanggal == null) ? '<label class="editable-empty">Silahkan diisi</label>' : $gmd->tanggal,//date('D, j/M/y', strtotime($gmd->tanggal)),
-					'shift'      => $gmd->shift,
-					'shift_name'      => $gmd->ShiftDescription,
-					'section_id' => $gmd->section_id,
-					'section_name' => $gmd->SectionDescription,
-					'mesin'    => $gmd->machine_type,
-					'billet'    => $gmd->billet_id,
-					'len'    => $gmd->LengthId,
-					'len_name'    => $gmd->Length,
-					'finishing'          => $gmd->finishing,
-					'finishing_name'     => $gmd->finishing_name,
-					'target_prod'       => ($gmd->target_prod == null) ? '' : $gmd->target_prod,
-					'index_dice'       => ($gmd->index_dice == null) ? '' : $gmd->index_dice,
-					'ppic_note'       => ($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
-					'master_id'          => $gmd->master_id,
-					'target_prod_btg'    => $target_prod_btg,
-					'die_type'    => $gmd->die_type_name,
-					'weight_standard'    => $gmd->weight_standard,
-					'target_section'    => $gmd->weight_standard * $target_prod_btg * $gmd->Length,
-					'total_target'    => array_sum($sum),
-					'shift_start'    => date('H:i:s', strtotime($gmd->ShiftStart)),
-					'shift_end'    => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
-					'null'    => '-',
-					'apt'     => '',//$gmd->actual_pressure_time,
-					'action' => '',//
+					'no'               => $no,
+					'id'               => $gmd->master_detail_id,
+					'machine_id'	   => $gmd->machine_id,
+					'header_id'	       => $gmd->header_id,
+					'tanggal1'         => ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal)),//date('D, j/M/y', strtotime($gmd->tanggal)),
+					'tanggal2'         => ($gmd->tanggal == null) ? '<label class="editable-empty">Silahkan diisi</label>' : date('d-m-Y', strtotime($gmd->tanggal)),//date('D, j/M/y', strtotime($gmd->tanggal)),
+					'shift'            => $gmd->shift,
+					'shift_name'       => $gmd->ShiftDescription,
+					'section_id'       => $gmd->section_id,
+					'section_name'     => $gmd->SectionDescription,
+					'mesin'            => $gmd->machine_type,
+					'billet'           => $gmd->billet_id,
+					'len'              => $gmd->LengthId,
+					'len_name'         => $gmd->Length,
+					'finishing'        => $gmd->finishing,
+					'finishing_name'   => $gmd->finishing_name,
+					'target_prod'      => ($gmd->target_prod == null) ? '' : $gmd->target_prod,
+					'index_dice_value' => ($gmd->index_dice == null) ? '' : $gmd->index_dice,
+					'index_dice'       => $this->convert_dice($gmd->index_dice),
+					'index_dice_count' => $this->count_dice($gmd->index_dice),
+					'ppic_note'        => ($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
+					'master_id'        => $gmd->master_id,
+					'target_prod_btg'  => $target_prod_btg,
+					'die_type'         => $gmd->die_type_name,
+					'weight_standard'  => $gmd->weight_standard,
+					'target_section'   => $gmd->weight_standard * $target_prod_btg * $gmd->Length,
+					'total_target'     => array_sum($sum),
+					'shift_start'      => date('H:i:s', strtotime($gmd->ShiftStart)),
+					'shift_end'        => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
+					'null'             => '-',
+					'apt'              => '',//$gmd->actual_pressure_time,
+					'action'           => '',//
 						//"<a class='btn btn-default' id='edit-transaksi-".$gmd->master_detail_id."' data-toggle='modal' data-target='#defaultModal' href='".site_url('admin/transaction/edit/'.$gmd->master_detail_id)."' onclick='window.TRANSACTION.handleEditModal(\"".$gmd->master_detail_id."\")'>Edit</a>".
 						//"<a class='btn btn-danger' id='delete-transaksi-".$gmd->master_detail_id."' href='javascript:;' onclick='window.TRANSACTION.handleDelete(\"".$gmd->master_detail_id."\")'>Hapus</a>"
 				);
@@ -124,6 +126,41 @@ class Transaction extends CI_Controller
 		);
 
 		$this->output->set_output(json_encode($response));
+	}
+
+	private function convert_dice($dice)
+	{
+		$dice_txt = ($dice == null) ? '' : $dice;
+		
+		$txt = '';
+		$expl = explode(",", $dice_txt);
+
+		if(count($expl) > 0)
+		{
+			foreach($expl as $rexpl)
+			{
+				if($rexpl != '' || $rexpl != null)
+				{
+					$txt .= $rexpl.', ';
+				}
+			}
+		}
+		else
+		{
+			$txt = $dice_txt;
+		}
+
+		return rtrim($txt, ', ');
+
+	}
+
+	private function count_dice($dice)
+	{
+		$arr = array();
+		$expl = preg_split('@,@', substr($dice, 1, 1000000000000000000000), NULL, PREG_SPLIT_NO_EMPTY);
+		//$expl = explode(",", substr($dice, 1, 1000000000000000000000));
+
+		return count($expl);
 	}
 
 	/**
@@ -152,6 +189,16 @@ class Transaction extends CI_Controller
 		} 
 		else
 		{
+			$data_for_update_header = array(
+				'date_start'  => $date_start,
+				'date_finish' => $date_finish,
+			);
+
+			$this->session->set_userdata('date_start', $date_start);
+			$this->session->set_userdata('date_finish', $date_finish);
+
+			$update_header = $this->header_model->update($get_header->header_id, $data_for_update_header);
+
 			$url = site_url('admin/transaction/detail/'.$get_header->header_id);
 
 			$response = array(
@@ -187,9 +234,19 @@ class Transaction extends CI_Controller
 			'machine_id' => $machine_id
 		);
 
+		$this->session->set_userdata('date_start', $date_start);
+		$this->session->set_userdata('date_finish', $date_finish);
+
 		$get_header = $this->header_model->get_data_by($searching);
 		if($get_header)
 		{
+			$data_for_update_header = array(
+				'date_start'  => $date_start,
+				'date_finish' => $date_finish,
+			);
+
+			$update_header = $this->header_model->update($get_header->header_id, $data_for_update_header);
+
 			$url = site_url('admin/transaction/detail/'.$get_header->header_id);
 
 			$response = array(
@@ -228,6 +285,34 @@ class Transaction extends CI_Controller
 		}
 	
 		return $this->output->set_output(json_encode($response));
+	}
+
+	public function get_tanggal_header($header_id)
+	{
+		$row = array();
+		$header_data = $this->header_model->get_data_by_id($header_id);
+
+		$data = false;
+
+		if($header_data)
+		{
+			$machine_id = $header_data->machine_id;
+
+			$data = create_date_range($header_data->date_start,$header_data->date_finish);
+		}
+
+		if($data)
+		{
+			foreach($data as $r)
+			{
+				$row[] = array(
+					'value' => date('d-m-Y', strtotime($r)),
+					'text'  => date('d-m-Y', strtotime($r)),
+				);
+			}
+		}
+
+		return $this->output->set_output(json_encode($row));
 	}
 
 	/**
@@ -310,6 +395,39 @@ class Transaction extends CI_Controller
 		$val = $post['value'];
 
 		switch ($type) {
+
+			case 'index_dice':
+
+				$data = array(
+					$type => $val
+				);
+
+				$update = $this->section_model->update($id, $data);
+				if($update) 
+				{
+					$dice = '';
+					$get_detail = $this->detail_model->get_data_by_id($id);
+					if($get_detail)
+					{
+						$dice = $get_detail->index_dice;
+					}
+					$response = array(
+						'dice'       => ($this->convert_dice($dice) != '') ? $this->convert_dice($dice) : 'Silahkan pilih',
+						'dice_count' => $this->count_dice($dice)
+					);
+				}
+				else
+				{
+					$response = array(
+						'dice'       => 'no updated',
+						'dice_count' => '0',
+					);
+				}
+
+				return $this->output->set_output(json_encode($response));
+
+			break;
+
 			case 'section_id':
 				
 				$expl = explode('|', $val);
@@ -362,6 +480,26 @@ class Transaction extends CI_Controller
 
 				break;
 			
+			case 'tanggal':
+
+				$data = array(
+					$type => date('Y-m-d', strtotime($val))
+				);
+
+				$update = $this->section_model->update($id, $data);
+				if($update) 
+				{
+					$response = 'yes updated';
+				}
+				else
+				{
+					$response = 'no updated';
+				}
+
+				return $this->output->set_output(json_encode($response));
+
+			break;
+
 			default:
 				
 				$data = array(
