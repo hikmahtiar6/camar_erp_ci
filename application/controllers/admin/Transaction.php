@@ -261,13 +261,22 @@ class Transaction extends CI_Controller
 			if($saving)
 			{
 
+				$tgl = '';
+				$get_head = $this->header_model->get_data_by_id($this->section_model->get_last_insert_id());
+				if($get_head)
+				{
+					$tgl = $get_head->date_start;
+				}
+
+
 				$data_for_insert_detail = array(
 					'header_id'  => $this->section_model->get_last_insert_id(),
+					'tanggal'    => $tgl
 				);
 
 				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());
 
-				//$saving_detail = $this->section_model->save('detail', $data_for_insert_detail);
+				$saving_detail = $this->detail_model->save($data_for_insert_detail);
 
 				$response = array(
 					'message' => 'Transaksi berhasil disimpan',
