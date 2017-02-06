@@ -193,4 +193,26 @@ function add_zero($numbering)
 	return str_pad($numbering, 2, '0', STR_PAD_LEFT);
 }
 
+/**
+ * Date Y-m-d
+ * @param  $date
+ * @return Text
+ */
+function indonesian_date($date){
+	$bln_indo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+ 
+	$tahun = substr($date, 0, 4);
+	$bulan = substr($date, 5, 2);
+	$tgl   = substr($date, 8, 2);
+ 
+	$result = $tgl . " " . $bln_indo[(int)$bulan-1] . " ". $tahun;		
+	return($result);
+}
+
+function indonesia_day($date)
+{
+	$array_hari = array(1=>"Senin","Selasa","Rabu","Kamis","Jumat", "Sabtu","Minggu");
+	return $array_hari[date('N', strtotime($date))];
+}
+
 ?>

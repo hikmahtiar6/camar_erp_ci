@@ -16,9 +16,29 @@
 	     	body { 
 		        writing-mode: horizontal-tb;
 		    }
+
+		    .font16 {
+		    	font-size: 16px;
+		    }
+
+		    .font14 {
+		    	font-size: 14px;
+		    }
+
+		    .font12 {
+		    	font-size: 12px;
+		    }
+
+		    .font10 {
+		    	font-size: 10px;
+		    }
+
 	    }
 	    .bg-gray {
 	    	background: #DDD;
+	    }
+	    .bold {
+	    	font-weight: bold;
 	    }
 	</style>
 
@@ -36,19 +56,19 @@
 				<table style="width: 100%">
 					<tr>
 						<td valign="bottom">
-							<h2>
+							<h2 class="font16 bold">
 								{{ machine_description }}
 							</h2>
 						</td>
 
-						<td valign="bottom">
-							<h2>
+						<td valign="bottom" align="center">
+							<h2 class="font16 bold">
 								SPK-1 <u>&nbsp;&nbsp;&nbsp;SPK Extrusion&nbsp;&nbsp;&nbsp;</u>
 							</h2>
 						</td>
 
-						<td valign="bottom">
-							<h2>
+						<td valign="bottom" align="right">
+							<h2 class="font16 bold">
 								{{ machine }}
 							</h2>
 						</td>
@@ -94,7 +114,7 @@
 
 				<table class="table table-bordered table-striped">
 					<thead>
-						<tr class="bg-gray">
+						<tr class="bg-gray font10 bold">
 							<th style="vertical-align: middle;">Sh</th>
 							<th style="vertical-align: middle;">Lot</th>
 							<th style="vertical-align: middle;">Section Id</th>
@@ -118,6 +138,11 @@
 							<th style="vertical-align: middle;">Total</th>
 
 						</tr>
+						<tr>
+							<td class="bg-gray font10 bold" colspan="21" align="center">
+								{{ tanggal }}
+							</td>
+						</tr>
 					</thead>
 
 					<tbody>
@@ -137,7 +162,7 @@
 						{% endif %}
 						{% set total = total + row_data.target_prod %}						
 
-						<tr>
+						<tr class="font10">
 							<td>
 									SH{{ row_data.shift }}
 								{% if sh != ''%}
@@ -169,13 +194,13 @@
 						</tr>
 						{% endfor %}
 						{% else %}
-						<tr>
+						<tr class="font10">
 							<td colspan="65"> Data tidak tersedia.</td>
 						</tr>
 						{% endif %}
 					</tbody>
 					<tfoot>
-						<tr>
+						<tr class="font10 bold">
 							<th class="bg-gray" colspan="20">Grand Total</th>
 							<th class="bg-gray" colspan="20"> {{ total }} Blt</th>
 						</tr>
