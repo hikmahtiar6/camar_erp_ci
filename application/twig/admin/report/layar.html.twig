@@ -10,7 +10,7 @@
     <style type="text/css">
 	    @media print{
 	     	@page {
-	     		size: landscape;
+	     		size: A4 landscape;
 	     	}
 
 	     	body { 
@@ -31,6 +31,18 @@
 
 		    .font10 {
 		    	font-size: 10px;
+		    }
+
+		    .font8 {
+		    	font-size: 8px;
+		    }
+
+		    .font6 {
+		    	font-size: 6px;
+		    }
+
+		    .width300 {
+		    	width: 300px !important;
 		    }
 
 	    }
@@ -117,8 +129,8 @@
 						<tr class="bg-gray font10 bold">
 							<th style="vertical-align: middle;">Sh</th>
 							<th style="vertical-align: middle;">Lot</th>
-							<th style="vertical-align: middle;">Section Id</th>
-							<th style="vertical-align: middle;">Section Name</th>
+							<th style="vertical-align: middle; width: 200px;">Section Id</th>
+							<th style="vertical-align: middle; width: 400px;">Section Name</th>
 							<th style="vertical-align: middle;">Finishing</th>
 							<th style="vertical-align: middle;">Tbl</th>
 							<th style="vertical-align: middle;">Tol</th>
@@ -132,14 +144,13 @@
 							<th style="vertical-align: middle;">H Jadi</th>
 							<th style="vertical-align: middle;">BltMax</th>
 							<th style="vertical-align: middle;">BltVen</th>
-							<th style="vertical-align: middle;">SecName</th>
 							<th style="vertical-align: middle;">FrBlt</th>
 							<th style="vertical-align: middle;">FrPot</th>
 							<th style="vertical-align: middle;">Total</th>
 
 						</tr>
 						<tr>
-							<td class="bg-gray font10 bold" colspan="21" align="center">
+							<td class="bg-gray font10 bold" colspan="20" align="center">
 								{{ tanggal }}
 							</td>
 						</tr>
@@ -162,7 +173,7 @@
 						{% endif %}
 						{% set total = total + row_data.target_prod %}						
 
-						<tr class="font10">
+						<tr class="font8">
 							<td>
 									SH{{ row_data.shift }}
 								{% if sh != ''%}
@@ -173,12 +184,12 @@
 							</td>
 							<td>{{ add_zero(no + 1) }}.</td>
 							<td>{{ row_data.section_id }}</td>
-							<td>{{ row_data.SectionDescription }}</td>
+							<td class="font8" style="width: 300px;">{{ row_data.SectionDescription }}</td>
 							<td>{{ row_data.finishing_name }}</td>
-							<td>{{ row_data.ThicknessLowerLimit }}</td>
-							<td>{{ row_data.ThicknessUpperLimit }}</td>
+							<td>{{ row_data.ThicknessLowerLimit|number_format(3, '.', ',') }}</td>
+							<td>{{ row_data.ThicknessUpperLimit|number_format(3, '.', ',') }}</td>
 							<td>{{ row_data.HoleCount }}</td>
-							<td>{{ row_data.WeightStandard }}</td>
+							<td>{{ row_data.WeightStandard|number_format(3, '.', ',') }}</td>
 							<td>{{ row_data.ppic_note }}</td>
 							<td>{{ row_data.BolsterTypeId }}</td>
 							<td>{{ row_data.InitialPullingLength }}m</td>
@@ -187,7 +198,6 @@
 							<td>{{ row_data.F2_EstFG }} BTG</td>
 							<td>{{ row_data.F2_EstBilletLengthMax }}m</td>
 							<td>{{ '' }}</td>
-							<td>{{ row_data.SectionDescription }}</td>
 							<td>{{ row_data.F2_FreqBillet }} Blt</td>
 							<td>{{ row_data.F2_FreqCut }}xPot</td>
 							<td>{{ row_data.target_prod }} Blt</td>
@@ -200,9 +210,9 @@
 						{% endif %}
 					</tbody>
 					<tfoot>
-						<tr class="font10 bold">
-							<th class="bg-gray" colspan="20">Grand Total</th>
-							<th class="bg-gray" colspan="20"> {{ total }} Blt</th>
+						<tr class="font8 bold">
+							<th class="bg-gray" colspan="19">Grand Total</th>
+							<th class="bg-gray"> {{ total }} Blt</th>
 						</tr>
 					</tfoot>
 			</table>
