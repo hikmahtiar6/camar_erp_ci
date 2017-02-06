@@ -61,8 +61,11 @@ class Transaction extends CI_Controller
 	 */
 	public function data($header_id = '')
 	{
-		$data = array(); 
-		$get_md = $this->section_model->get_data_detail($this->session->userdata('date_start'), $this->session->userdata('date_finish'), $shift = '', $machine_id = '', $section_id = '',$header_id);
+		$data = array();
+
+		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
+		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
+		$get_md = $this->section_model->get_data_detail($dt_start, $dt_finish, $shift = '', $machine_id = '', $section_id = '',$header_id);
 
 		$sum = array();
 
@@ -157,7 +160,7 @@ class Transaction extends CI_Controller
 	private function count_dice($dice)
 	{
 		$arr = array();
-		$expl = preg_split('@,@', substr($dice, 1, 1000000000000000000000), NULL, PREG_SPLIT_NO_EMPTY);
+		$expl = preg_split('/,/', substr($dice, 1, 1000000000000000000000), NULL, PREG_SPLIT_NO_EMPTY);
 		//$expl = explode(",", substr($dice, 1, 1000000000000000000000));
 
 		return count($expl);
@@ -190,8 +193,8 @@ class Transaction extends CI_Controller
 		else
 		{
 			$data_for_update_header = array(
-				'date_start'  => $date_start,
-				'date_finish' => $date_finish,
+				'date_start'  => date('Y-m-d', strtotime($date_start)),
+				'date_finish' => date('Y-m-d', strtotime($date_finish)),
 			);
 
 			$this->session->set_userdata('date_start', $date_start);
@@ -241,8 +244,8 @@ class Transaction extends CI_Controller
 		if($get_header)
 		{
 			$data_for_update_header = array(
-				'date_start'  => $date_start,
-				'date_finish' => $date_finish,
+				'date_start'  => date('Y-m-d', strtotime($date_start)),
+				'date_finish' => date('Y-m-d', strtotime($date_finish)),
 			);
 
 			$update_header = $this->header_model->update($get_header->header_id, $data_for_update_header);
@@ -476,6 +479,7 @@ class Transaction extends CI_Controller
 						'billet_id'       => $billet,
 						'weight_standard' => $weight_standard,
 						'die_type_name'   => $die_type_name,
+						'detail_section'  => $val
 					);
 				}
 				else
@@ -585,7 +589,7 @@ class Transaction extends CI_Controller
 		$tgl = '';
 		if($get_header)
 		{
-			$tgl = $get_header->date_start;
+			$tgl = date('Y-m-d', strtotime($get_header->date_start));
 		}
 
 		$data_insert_detail = array(

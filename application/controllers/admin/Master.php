@@ -55,7 +55,7 @@ class Master extends CI_Controller {
 		return $this->output->set_output(json_encode($row));
 	}
 
-	public function get_data_section($header_id)
+	public function get_data_section($header_id, $type = '')
 	{
 		$row = array();
 		$header_data = $this->header_model->get_data_by_id($header_id);
@@ -73,9 +73,14 @@ class Master extends CI_Controller {
 		{
 			foreach($data as $r)
 			{
+				$text = $r->section_id;
+				if($type != '')
+				{
+					$text = $r->section_name;
+				}
 				$row[] = array(
 					'value' => $r->section_id.'|'.$r->master_id,
-					'text'  => $r->section_name,
+					'text'  => $text,
 				);
 			}
 		}

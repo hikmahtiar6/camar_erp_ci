@@ -72,24 +72,28 @@ window.REPORT = (function($) {
 		handleDatepicker: function() {
 			$('.report-date-finish').bootstrapMaterialDatePicker({ 
 				weekStart : 0,
-				time: false 
+				time: false,
+				format: 'DD-MM-YYYY' 
 			});
 
 			$('.report-date-start').bootstrapMaterialDatePicker({ 
 				weekStart : 0,
-				time: false  
+				time: false,
+				format: 'DD-MM-YYYY'  
 			});
 
 			$('.report-date-start').bootstrapMaterialDatePicker({ 
 				weekStart : 0,
-				time: false   
+				time: false,
+				format: 'DD-MM-YYYY'   
 			}).on('change', function(e, date) {
 				$('.report-date-finish').bootstrapMaterialDatePicker('setMinDate', date);
 			});
 
 			$('.report-date-finish').bootstrapMaterialDatePicker({ 
 				weekStart : 0,
-				time: false   
+				time: false,
+				format: 'DD-MM-YYYY'   
 			}).on('change', function(e, date) {
 				$('.report-date-start').bootstrapMaterialDatePicker('setMaxDate', date);
 			});

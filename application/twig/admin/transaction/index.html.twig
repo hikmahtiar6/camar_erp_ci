@@ -8,12 +8,21 @@
 	
 	<div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	        <div class="card">
+	        <div class="card card-transaksi">
 	            <div class="header">
-	                <h2>
+	                <h2 style="float: left">
 	                    Data SPK
 	                </h2>
+	                <button class="btn btn-default fullscreen-transaksi" style="float: right">
+	            		Lihat Fullscreen
+	            	</button>
+	            	<button class="btn btn-default fullscreen-transaksi-exit" style="float: right; display:none;">
+	            		Exit Fullscreen
+	            	</button>
+		            <div class="clearfix">&nbsp;</div>
 	            </div>
+
+
 	            <div class="body" style="overflow: auto; padding: 5px">
 
 		            <div class="col-md-12">
@@ -26,6 +35,8 @@
 		            	<button class="btn btn-danger hapus-transaksi">
 		            		Hapus
 		            	</button>
+
+		            	
 		            	<br>
 
 		            	<input class="header-id" type="hidden" value="{{ header_id }}">
@@ -113,6 +124,7 @@
 		window.TRANSACTION.handleModal();
 		window.TRANSACTION.handleDelete();
 		window.TRANSACTION.handleAddRow();
+		window.TRANSACTION.handleFullscreen();
 	</script>
 
 {% endblock %}

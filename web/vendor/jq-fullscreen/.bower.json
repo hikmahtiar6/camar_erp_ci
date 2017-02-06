@@ -1,0 +1,39 @@
+{
+  "name": "jq-fullscreen",
+  "version": "0.6.0",
+  "homepage": "https://github.com/private-face/jquery.fullscreen",
+  "authors": [
+    "Vladimir Zhuravlev <private.face@gmail.com>"
+  ],
+  "description": "jQuery plugin for showing any DOM element on a page in fullscreen mode",
+  "keywords": [
+    "jquery-plugin",
+    "fullscreen",
+    "ui",
+    "firefox",
+    "webkit",
+    "chrome",
+    "safari",
+    "opera",
+    "IE"
+  ],
+  "main": "release/jquery.fullscreen.min.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.6.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.6.0",
+    "commit": "ceb6068ccdbf18b91ec48bffd2df1548dc81a716"
+  },
+  "_source": "https://github.com/private-face/jquery.fullscreen.git",
+  "_target": "^0.6.0",
+  "_originalSource": "jquery-fullscreen-plugin",
+  "_direct": true
+}

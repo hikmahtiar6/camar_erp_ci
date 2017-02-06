@@ -29,16 +29,18 @@ window.TRANSACTION = (function($) {
     var renderSection = function(d,t,f,m){
     	var txt = d;
     	if(d == '' || d == null || d == ' ') {
-    		var txt = '-';
+    		//var txt = '-';
+    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
     	}
-        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" >'+txt+'</label>';
+        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+txt+'</label>';
         return btn;
     }
 
     var renderSectionName = function(d,t,f,m){
     	var txt = d;
     	if(d == '' || d == null || d == ' ') {
-    		var txt = '<font class="editable-empty">Silahkan pilih</font>';
+    		var txt = '-';
+    		//var txt = '<font class="editable-empty">Silahkan pilih</font>';
     	}
         var btn = '<label class="transaction-sectionname" id="sectionname'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+txt+'</label>';
         return btn;
@@ -188,11 +190,11 @@ window.TRANSACTION = (function($) {
 				onblur: 'submit'
 			});
 
-			$('.transaction-sectionname').click(function() {
+			$('.transaction-sectionid').click(function() {
 
 				var _inputThis = this;
 
-				$(this).editable({
+				var edt = $(this).editable({
 					type: 'select',
 					sourceCache: false,
 					emptytext: 'Silahkan pilih',
@@ -211,7 +213,12 @@ window.TRANSACTION = (function($) {
 							},
 							success: function(response) {
 								if(response.status == 'success') {
+									$('#sectionname'+ $(_inputThis).attr('data-id')).attr('data-value', response.detail_section);
+									$('#sectionid'+ $(_inputThis).attr('data-id')).attr('data-value', response.detail_section);
+
+									//$('.transaction-sectionname').setValue(response.detail_section);
 									$('#sectionid'+ $(_inputThis).attr('data-id')).html(response.section_id);
+									$('#sectionname'+ $(_inputThis).attr('data-id')).html(response.section_name);
 									$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
 									$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
 									$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
@@ -231,6 +238,52 @@ window.TRANSACTION = (function($) {
 				$(this).addClass('hasclass');
 
 			});
+
+			/*$('.transaction-sectionname').click(function() {
+
+				var _inputThis = this;
+
+				$(this).editable({
+					type: 'select',
+					sourceCache: false,
+					emptytext: 'Silahkan pilih',
+					mode: 'popup',
+					source: window.APP.siteUrl + 'admin/master/get_data_section/'+$(this).attr('data-header')+'/name',
+					success: function(response, newValue) {
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/transaction/update_inline',
+							type: 'post',
+							dataType: 'json',
+							data: {
+								id: $(this).attr('data-id'),
+								type: 'section_id',
+								value: newValue
+							},
+							success: function(response) {
+								if(response.status == 'success') {
+									$('#sectionid'+ $(_inputThis).attr('data-id')).attr('data-value', response.detail_section);									
+									$('#sectionid'+ $(_inputThis).attr('data-id')).html(response.section_id);
+									$('#sectionname'+ $(_inputThis).attr('data-id')).html(response.section_name);
+									$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
+									$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
+									$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
+									$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).removeAttr('data-sectionid');
+									$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).attr('data-sectionid', response.section_id);
+								}
+							}
+						});
+					},
+					onblur: 'submit'
+				});
+
+				if($(this).hasClass('hasclass') == false){
+					$(this).editable('toggle');
+				}
+
+				$(this).addClass('hasclass');
+
+			});*/
 
 			$('.transaction-machine').click(function() {
 				$(document).find('.content-modal-transaksi').load(window.APP.siteUrl + 'admin/transaction/edit/'+ $(this).attr('data-id'));
@@ -780,6 +833,46 @@ window.TRANSACTION = (function($) {
 
 					}
 				});
+			});
+		},
+
+		handleFullscreen: function() {
+			// check native support
+			if($.fullscreen.isNativelySupported()) {
+			} else {
+				alert('tidak support plugin fullscreen');
+			}
+
+			// open in fullscreen
+			$('.fullscreen-transaksi').click(function() {
+				$('.card-transaksi').fullscreen();
+				$(this).hide();
+				$('.fullscreen-transaksi-exit').show();
+
+				return false;
+			});
+
+			//exit fullscreen
+			$('.fullscreen-transaksi-exit').click(function() {
+				$.fullscreen.exit();
+				$(this).hide();
+				$('.fullscreen-transaksi').show();
+
+				return false;
+			});
+
+			$(document).bind('fscreenchange', function(e, state, elem) {
+				// if we currently in fullscreen mode
+				if ($.fullscreen.isFullScreen()) {
+					$('.fullscreen-transaksi').hide();
+					$('.fullscreen-transaksi-exit').show();
+
+				} else {
+					$('.fullscreen-transaksi').show();
+					$('.fullscreen-transaksi-exit').hide();
+				}
+
+				$('#state').text($.fullscreen.isFullScreen() ? '' : 'not');
 			});
 		}
 	}
