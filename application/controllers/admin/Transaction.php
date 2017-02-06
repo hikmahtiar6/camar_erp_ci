@@ -581,9 +581,16 @@ class Transaction extends CI_Controller
 	public function add_row_by_header()
 	{
 		$header_id = $this->input->post('header_id');
+		$get_header = $this->header_model->get_data_by_id($header_id);
+		$tgl = '';
+		if($get_header)
+		{
+			$tgl = $get_header->date_start;
+		}
 
 		$data_insert_detail = array(
-			'header_id' => $header_id
+			'header_id' => $header_id,
+			'tanggal'   => $tgl
 		);
 
 		$saving = $this->detail_model->save($data_insert_detail);
