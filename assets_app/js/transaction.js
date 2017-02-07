@@ -895,6 +895,233 @@ window.TRANSACTION = (function($) {
 				$('.report-date-start').val(splt[0]);
 				$('.report-date-finish').val(splt[1]);
 			});
+		},
+
+		handlejqGrid: function() {
+			$.jgrid.defaults.responsive = true;     
+			$.jgrid.defaults.width = $('.navbar').width() - 150;     
+		    $.jgrid.defaults.styleUI = 'Bootstrap';
+
+			var grid = $('.list-spk');
+			grid.jqGrid({
+				url: APP.siteUrl + 'admin/transaction/json/' + $('.header-id').val(), //URL Tujuan Yg Mengenerate data Json nya
+				datatype: "json", //Datatype yg di gunakan
+				height: "auto", //Mengset Tinggi table jadi Auto menyesuaikan dengan isi table
+				mtype: "POST",
+				colNames: [
+					'',
+					'Tanggal',
+					'Shift',
+					'Section Id',
+					'Section Name',
+					'Mesin',
+					'Billet Id',
+					'Len (m)',
+					'Finishing',
+					'Target Prod (Billet)',
+					'Index Dice',
+					'Index Dice Qty',
+					'PPIC Note',
+					'Target Prod (BTG)',
+					'Berat Std (kg/m)',
+					'Target Section (kg)'
+				],
+				colModel: [
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden:false,
+						editable:false,
+					},
+					{
+						name:'tanggal', 
+						key:true, 
+						index:'tanggal', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					{
+						name:'id', 
+						key:true, 
+						index:'master_detail_id', 
+						hidden: false,
+						editable:false,
+					},
+					/*{
+						name:'lastName',
+						index:'lastName',
+						editable:true,
+						editrules:
+						{
+							required:true
+						}
+					},
+					{
+						name:'firstName',
+						index:'firstName',
+						editable:true,
+						edittype:"text",
+						editrules:
+						{
+							required:true
+						}
+					},
+					{
+						name:'extension',
+						index:'extension',
+						editable:true,
+						editrules:
+						{
+							required:true
+						}
+					},
+					{
+						name:'email',
+						index:'email',
+						editable:true,
+						editrules:
+						{
+							required:true
+						}
+					},*/
+				],
+				onSelectRow: editRow,
+				rownumbers:true,
+				rowNum: 10,
+				rowList: [10,20,30],
+				pager: '#pager2',
+				sortname: 'master_detail_id',
+				viewrecords: true,
+				sortorder: "desc",
+				editurl: APP.siteUrl + 'admin/transaction/crud', //URL Proses CRUD Nya
+				multiselect: false,
+				caption: "Data SPK", //Caption List
+			});
+
+			grid.jqGrid('navGrid','#pager2',
+			{
+				view:false,
+				edit:false,
+				add:false,
+				del:true
+			},{},{},{},
+			{
+				closeOnEscape:true,
+				closeAfterSearch:false,
+				multipleSearch:false, 
+				multipleGroup:true, 
+				showQuery:false,
+				drag:true,
+				showOnLoad:false,
+				sopt:['cn'],
+				resize:false,
+				caption:'Cari Record', 
+				Find:'Cari', 
+				Reset:'Batalkan Pencarian'
+			});
+
+			var lastSelection;
+
+			function editRow(id) {
+		        if (id && id !== lastSelection) {
+		            var grid = $(".list-spk");
+		            grid.jqGrid('restoreRow',lastSelection);
+		            grid.jqGrid('editRow',id, {keys:true, focusField: 4});
+		            lastSelection = id;
+		        }
+		    }
 		}
 	}
 

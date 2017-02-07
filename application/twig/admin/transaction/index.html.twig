@@ -1,7 +1,14 @@
 {% extends 'admin/layout.html.twig' %}
 
+
+{% block stylesheet %}
+	{{ parent() }}
+
+    <link href="{{ base_url('web/vendor/jqGrid/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet">
+
+{% endblock %}
+
 {% block content_title %}
-	
 {% endblock %}
 
 {% block content %}
@@ -27,7 +34,7 @@
 
 	            <div class="body" style="overflow: auto; padding: 5px">
 
-		            <div class="col-md-12">
+		            <div class="col-md-12 body-width">
 
 		            	<br>
 		            	<button class="btn btn-primary tambah-transaksi" data-header="{{ header_id }}">
@@ -43,8 +50,14 @@
 
 		            	<input class="header-id" type="hidden" value="{{ header_id }}">
 		            	<input class="machine-id" type="hidden" value="{{ machine_id }}">
+
+		            	<br>
+		            	<br>
+
+		            	<table class="list-spk" id="list2" cellpadding="0" cellspacing="0" style="width: 100%"></table>
+						<div class="opr-spk" id="pager2" style="text-align:center;"></div>
 		                
-		                <table class="table table-bordered table-striped table-transaksi">
+		                <!--<table class="table table-bordered table-striped table-transaksi">
 		                	<thead>
 		                		<tr>
 									<th style="vertical-align: middle;">
@@ -65,10 +78,10 @@
 									<th style="vertical-align: middle;">
 										Target Prod <br>
 										(Billet)
-									</th>
+									</th>-->
 									<!--<th style="vertical-align: middle;">Day</th>
 									<th style="vertical-align: middle;">No. Lot</th>-->
-									<th style="vertical-align: middle;">Index Dice</th>
+									<!--<th style="vertical-align: middle;">Index Dice</th>
 									<th style="vertical-align: middle;">Index Dice Qty</th>
 									<th style="vertical-align: middle;">PPIC Note</th>
 									<th style="vertical-align: middle;">
@@ -82,25 +95,25 @@
 									<th style="vertical-align: middle;">
 										Target Section <br>
 										(kg)
-									</th>
+									</th>-->
 									<!--
 									<th style="vertical-align: middle;">
 										Total Target <br>
 										(kg)
 									</th>
-									-->
 									<th style="vertical-align: middle;">Die Type</th>
+									-->
 									<!--
 									<th style="vertical-align: middle;">Pressure Time/Billet</th>
 									<th style="vertical-align: middle;">EstStart</th>
 									<th style="vertical-align: middle;">EstEnd</th>
 									<th style="vertical-align: middle;">EstDiesPrep</th>
-									-->
+									--><!--
 		                		</tr>
 		                	</thead>
 		                	<tbody>
 		                	</tbody>
-		                </table>
+		                </table>-->
 		            </div>
 
 	            </div>
@@ -121,13 +134,28 @@
 {% block javascript %}
 	{{ parent() }}
 
+	<script type="text/javascript" src="{{ base_url('web/vendor/jqGrid/js/i18n/grid.locale-en.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('web/vendor/jqGrid/js/jquery.jqGrid.min.js') }}"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+		
+			
+		});
+
+		
+	</script>
+
 	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
 	<script type="text/javascript">
-		window.TRANSACTION.handleDatatable();
-		window.TRANSACTION.handleModal();
+		//window.TRANSACTION.handleDatatable();
+		//window.TRANSACTION.handleModal();
+		
+		window.TRANSACTION.handlejqGrid();
 		window.TRANSACTION.handleDelete();
 		window.TRANSACTION.handleAddRow();
-		window.TRANSACTION.handleFullscreen();
+		//window.TRANSACTION.handleFullscreen();
 	</script>
 
 {% endblock %}

@@ -622,5 +622,170 @@ class Transaction extends CI_Controller
 		return $this->output->set_output(json_encode($response));
 	}
 
+	/**
+	 * json jqgrid
+	 */
+	public function json($header_id) 
+	{
+		$page  = ($this->input->post('page')) ? $this->input->post('page') : 1;
+		$limit = ($this->input->post('rows')) ? $this->input->post('rows') : 10 ;
+		$sidx  = ($this->input->post('sidx')) ? $this->input->post('sidx') : 'master_detail_id';
+		$sord  = ($this->input->post('sord')) ? $this->input->post('sord') : 'master_detail_id';
+		$search_get  = $this->input->post('_search');
+
+		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
+		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
+		$shift = $this->session->userdata('shift');
+		 
+		if(!$sidx) $sidx=1;
+
+		$get_md = $this->section_model->get_data_detail($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id);
+
+		$machine = '';
+		$header_data = $this->header_model->get_data_by_id($header_id);
+		if($header_data)
+		{
+			$machine = $header_data->machine_id;
+		}
+		 
+		# Untuk Single Searchingnya #
+		/*$where = ""; //if there is no search request sent by jqgrid, $where should be empty
+			$searchField = isset($_GET['searchField']) ? $_GET['searchField'] : false;
+		$searchString = isset($_GET['searchString']) ? $_GET['searchString'] : false;
+		if ($search_get == 'true') 
+		{
+			$where = array($searchField => $searchString);
+		}*/
+		# End #
+		 
+		//$count = $this->section_model->count_master_advance($where);
+		
+		$count = count($get_md);
+
+		$total_pages = 0;
+		if($count > 0) 
+		{
+			$total_pages = ceil($count/$limit);
+		}
+
+
+		if ($page > $total_pages) $page=$total_pages;
+			$start = $limit*$page - $limit;
+		if($start <0) $start = 0;
+		 
+		$data1 = $get_md;
+		
+		$response = new stdClass();
+
+		$response->page = $page;
+		$response->total = $total_pages;
+		$response->records = $count;
+
+
+
+		$i=0;
+		foreach($data1 as $gmd)
+		{
+			$get_master_query =  $this->query_model->get_master_advance($machine, $gmd->section_id)->row();
+
+			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
+			$response->rows[$i]['id']   = $gmd->master_detail_id;
+			$response->rows[$i]['cell'] = array(
+				$gmd->master_detail_id, 
+				$tgl,
+				$gmd->shift,
+				$gmd->section_id,
+				$gmd->SectionDescription,
+				$gmd->machine_id,
+				($get_master_query) ? $get_master_query->BilletTypeId : '-',
+				$gmd->Length,
+				$gmd->finishing_name
+			);
+			$i++;
+		}
+		
+		//return $this->output->set_output(json_encode($response));
+
+		//$data = array();
+
+		
+		
+
+		/*$machine = '';
+		$header_data = $this->header_model->get_data_by_id($header_id);
+		if($header_data)
+		{
+			$machine = $header_data->machine_id;
+		}
+
+
+		$sum = array();
+
+		if($get_md)
+		{
+			$no = 1;
+			foreach($get_md as $gmd)
+			{
+				$get_master_query =  $this->query_model->get_master_advance($machine, $gmd->section_id)->row();
+				$target_prod_btg = $gmd->target_prod;
+
+				$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+				$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+
+
+				if($f2_estfg != NULL)
+				{
+					$target_prod_btg = $f2_estfg * $gmd->target_prod; 
+				}
+
+				array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
+				
+				$data[] = array(
+					'no'               => $no,
+					'id'               => $gmd->master_detail_id,
+					'machine_id'	   => $gmd->machine_id,
+					'header_id'	       => $gmd->header_id,
+					'tanggal1'         => ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal)),
+					'tanggal2'         => ($gmd->tanggal == null) ? '<label class="editable-empty">Silahkan diisi</label>' : date('d-m-Y', strtotime($gmd->tanggal)),
+					'shift'            => $gmd->shift,
+					'shift_name'       => $gmd->ShiftDescription,
+					'section_id'       => $gmd->section_id,
+					'section_name'     => $gmd->SectionDescription,
+					'mesin'            => $gmd->machine_type,
+					'billet'           => ($get_master_query) ? $get_master_query->BilletTypeId : '-',
+					'len'              => $gmd->LengthId,
+					'len_name'         => $gmd->Length,
+					'finishing'        => $gmd->finishing,
+					'finishing_name'   => $gmd->finishing_name,
+					'target_prod'      => ($gmd->target_prod == null) ? '' : $gmd->target_prod,
+					'index_dice_value' => ($gmd->index_dice == null) ? '' : $gmd->index_dice,
+					'index_dice'       => $this->convert_dice($gmd->index_dice),
+					'index_dice_count' => $this->count_dice($gmd->index_dice),
+					'ppic_note'        => ($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
+					'master_id'        => $gmd->master_id,
+					'target_prod_btg'  => $target_prod_btg,
+					'die_type'         => ($get_master_query) ? $get_master_query->DieTypeName : '-',
+					'weight_standard'  => $weight_standard,
+					'target_section'   => $weight_standard * $target_prod_btg * $gmd->Length,
+					'total_target'     => array_sum($sum),
+					'shift_start'      => date('H:i:s', strtotime($gmd->ShiftStart)),
+					//'shift_end'        => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
+					'null'             => '-',
+					'apt'              => '',
+					'action'           => '',
+				);
+
+				$no++;
+			}
+		}
+
+		$response = array(
+			'data' => $data,
+			'recordsTotal' => count($data)
+		);*/
+
+		$this->output->set_output(json_encode($response));
+	}
+
 }
 ?>

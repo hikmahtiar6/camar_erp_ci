@@ -115,6 +115,11 @@ class Section_model extends CI_Model {
 		return $get->result();
 	}
 
+	public function count_data_detail($date_start = '', $date_finish = '', $shift = 0, $machine_id = '', $section_id = '', $header_id = '')
+	{
+		return count($this->get_data_detail($date_start, $date_finish, $shift, $machine_id, $section_id, $header_id));
+	}
+
 	/**
 	 * get detail data
 	 */

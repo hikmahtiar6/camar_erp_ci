@@ -34,6 +34,11 @@ class Query_model extends CI_Model
 		return $query;
 	}
 
+	public function count_master_advance($machine_id = '', $section_id = '')
+	{
+		return $this->get_master_advance($machine_id, $section_id)->num_rows();
+	}
+
 	public function get_report_advance($machine_id = '', $tanggal = '', $shift = '')
 	{
 		$sql = "
