@@ -131,15 +131,36 @@ function week_in_year() {
 	
 	$dt = [];
 	$year           = date('Y');
-	$firstDayOfYear = mktime(0, 0, 0, 1, 1, $year);
+	$yearEnd           = date('Y');
+
+	$month          = date('m');
+	$startMonth = $month - 1;
+	$endMonth = $month + 1;
+	if($startMonth == 0) {
+		$startMonth = 12;
+		$year = $year - 1;
+	}
+
+	if($endMonth == 13) {
+		$endMonth = 1;
+		$yearEnd = $yearEnd + 1;
+	}
+
+	$firstDayOfYear = mktime(0, 0, 0, $startMonth, 1, $year);
 	$nextMonday     = strtotime('monday', $firstDayOfYear);
 	$nextSunday     = strtotime('sunday', $nextMonday);
 	
 	while (date('Y', $nextMonday) == $year) {
-		$dt[] =  array(
-			'date_start'  => date('d/m/Y', $nextMonday),
-			'date_finish' => date('d/m/Y', $nextSunday)
-		);
+
+		$date_start  = date('d/m/Y', $nextMonday);
+		$date_finish = date('d/m/Y', $nextSunday);
+
+		if($nextSunday <= strtotime($yearEnd.'-'.$endMonth.'-31')) {
+			$dt[] =  array(
+				'date_start'  => $date_start,
+				'date_finish' => $date_finish
+			);	
+		}
 	
 		$nextMonday = strtotime('+1 week', $nextMonday);
 		$nextSunday = strtotime('+1 week', $nextSunday);
