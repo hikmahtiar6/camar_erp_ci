@@ -174,8 +174,8 @@ class Transaction extends CI_Controller
 		$post = $this->input->post();
 
 		$machine_id  = $post['mesin'];
-		$date_start =  $post['date_start'];
-		$date_finish =  $post['date_finish'];
+		$date_start =  str_replace('/', '-', $post['date_start']);
+		$date_finish =  str_replace('/', '-', $post['date_finish']);
 
 		$searching = array(
 			'machine_id' => $machine_id
@@ -224,8 +224,8 @@ class Transaction extends CI_Controller
 
 		$id = $post['id'];
 		$machine_id  = $post['mesin'];
-		$date_start =  $post['date_start'];
-		$date_finish =  $post['date_finish'];
+		$date_start =  str_replace('/', '-', $post['date_start']);
+		$date_finish =  str_replace('/', '-', $post['date_finish']);
 
 		$data_for_insert_header = array(
 			'machine_id'  => $machine_id,

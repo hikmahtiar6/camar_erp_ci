@@ -43,6 +43,26 @@
 				                    </div>
 				                </div>
 
+				                <label for="email_address">Week</label>
+				                <div class="form-group">
+				                    <div class="form-line">
+				                    	
+					                    <select class="form-control week-options" required="required">
+					                        <option value="">-- Silahkan Pilih --</option>
+					                        {% if week_in_year() %}
+
+					                        	{% for key, week_row in week_in_year() %}
+
+					                        		<option value="{{ week_row['date_start'] ~ '-' ~ week_row['date_finish'] }}">
+					                        			{{ (key+1) ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
+					                        		</option>
+					                        	{% endfor %}
+
+					                        {% endif %}
+					                    </select>
+				                    </div>
+				                </div>
+
 				                <label>Tanggal</label>
 				                <div class="form-group">
 
@@ -98,6 +118,7 @@
 	<script type="text/javascript" src="{{ base_url('assets_app/js/report.js') }}"></script>
 	<script type="text/javascript">
 		window.TRANSACTION.handleSave();
+		window.TRANSACTION.handleWeek();
 		window.REPORT.handleDatepicker();
 	</script>
 {% endblock %}

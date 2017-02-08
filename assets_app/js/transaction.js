@@ -874,6 +874,14 @@ window.TRANSACTION = (function($) {
 
 				$('#state').text($.fullscreen.isFullScreen() ? '' : 'not');
 			});
+		},
+		handleWeek: function() {
+			$('.week-options').change(function() {
+				var splt = this.value.split('-');
+				$('.report-date-start').val(splt[0]);
+				$('.report-date-finish').val(splt[1]);
+			});
 		}
 	}
+
 })(jQuery);

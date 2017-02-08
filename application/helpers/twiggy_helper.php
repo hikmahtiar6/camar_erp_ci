@@ -127,4 +127,26 @@ function date_to_time($date)
 	return strtotime($date);
 }
 
+function week_in_year() {
+	
+	$dt = [];
+	$year           = date('Y');
+	$firstDayOfYear = mktime(0, 0, 0, 1, 1, $year);
+	$nextMonday     = strtotime('monday', $firstDayOfYear);
+	$nextSunday     = strtotime('sunday', $nextMonday);
+	
+	while (date('Y', $nextMonday) == $year) {
+		$dt[] =  array(
+			'date_start'  => date('d/m/Y', $nextMonday),
+			'date_finish' => date('d/m/Y', $nextSunday)
+		);
+	
+		$nextMonday = strtotime('+1 week', $nextMonday);
+		$nextSunday = strtotime('+1 week', $nextSunday);
+		
+	}
+	
+	return $dt;	
+}
+
 ?>
