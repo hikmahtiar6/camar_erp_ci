@@ -88,10 +88,16 @@ class Master extends CI_Controller {
 		return $this->output->set_output(json_encode($row));
 	}
 
-	public function get_data_len()
+	public function get_data_len($detail_id)
 	{
 		$row = array();
 		$data = $this->len_model->get_data();
+
+		$get_detail = $this->detail_model->get_data_by_id($detail_id);
+		if($get_detail)
+		{
+			$data = $this->master_model->get_len_by_section($get_detail->section_id, 'group')->result();
+		}
 
 		if($data)
 		{

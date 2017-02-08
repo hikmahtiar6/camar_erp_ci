@@ -125,6 +125,11 @@ function get_date_finish_header($header_id, $show, $other)
 	if($data->date_finish_header != NULL)
 	{
 		$result = $data->date_finish_header;
+
+		if(strtotime($data->date_finish_header) <= strtotime($other))
+		{
+			$result = $other;
+		}
 	}
 
 	if($show != '')

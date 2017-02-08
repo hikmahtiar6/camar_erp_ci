@@ -83,16 +83,23 @@ class Master_model extends CI_Model {
 	/**
 	 * get master by section
 	 */
-	public function get_master_by_section($section_id)
+	public function get_len_by_section($section_id, $group = '')
 	{
 		$sql = $this->db;
 
-		$sql->select('*');
+		$sql->select('len as Length, len_id as LengthId');
 		$sql->from(static::TABLE_NEWMASTER);
 		$sql->where('section_id', $section_id);
+
+		if($group != '')
+		{
+			$sql->group_by('len');
+			$sql->group_by('len_id');
+		}
+
 		$get = $sql->get();
 
-		return $get->row();
+		return $get;
 	}
 
 	/**

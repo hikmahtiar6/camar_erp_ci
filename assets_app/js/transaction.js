@@ -56,7 +56,7 @@ window.TRANSACTION = (function($) {
     	if(d == '' || d == null || d == ' ') {
     		var txt = '<font class="editable-empty">Silahkan pilih</font>';
     	}
-        var btn = '<label class="transaction-len" data-id="'+f['id']+'" data-value="'+d+'">'+txt+'</label>';
+        var btn = '<label class="transaction-len" data-id="'+f['id']+'" data-value="'+d+'" data-header="'+f['header_id']+'">'+txt+'</label>';
         return btn;
     }
 
@@ -289,27 +289,36 @@ window.TRANSACTION = (function($) {
 				$(document).find('.content-modal-transaksi').load(window.APP.siteUrl + 'admin/transaction/edit/'+ $(this).attr('data-id'));
 			});
 
-			$('.transaction-len').editable({
-				type: 'select',
-				sourceCache: false,
-				mode: 'popup',
-				source: window.APP.siteUrl + 'admin/master/get_data_len',
-				success: function(response, newValue) {
+			$('.transaction-len').click(function() {
+				var _thisInput = this;
+				$(_thisInput).editable({
+					type: 'select',
+					sourceCache: false,
+					mode: 'popup',
+					source: window.APP.siteUrl + 'admin/master/get_data_len/'+$(_thisInput).attr('data-id'),
+					success: function(response, newValue) {
 
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/transaction/update_inline',
-						type: 'post',
-						data: {
-							id: $(this).attr('data-id'),
-							type: 'len',
-							value: newValue
-						},
-						success: function() {
-							console.log($(this));
-						}
-					});
-				},
-				onblur: 'submit'
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/transaction/update_inline',
+							type: 'post',
+							data: {
+								id: $(_thisInput).attr('data-id'),
+								type: 'len',
+								value: newValue
+							},
+							success: function() {
+								console.log($(_thisInput));
+							}
+						});
+					},
+					onblur: 'submit'
+				});
+
+				if($(_thisInput).hasClass('hasclass') == false){
+					$(_thisInput).editable('toggle');
+				}
+
+				$(_thisInput).addClass('hasclass');
 			});
 
 			$('.transaction-finishing').editable({

@@ -48,6 +48,8 @@ class Dashboard extends CI_Controller
 				    'die_type_name'         => $row->DieTypeName,
 				    'actual_pressure_time'  => NULL,
 				    'machine_id'            => $row->MachineId,
+				    'len_id'                => $row->LengthId,
+				    'len'                   => $row->Length,
 				);
 			}
 			$save = $this->master_model->insert_master($data);

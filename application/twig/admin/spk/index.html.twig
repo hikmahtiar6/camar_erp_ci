@@ -23,73 +23,12 @@
 
 		            <div class="col-md-12">
 
-		            	<form class="col-md-6" action="{{ site_url('admin/spk/index') }}" method="post">
-		            		<div class="form-group">
-		            			<label>Machine</label>
-				                    	
-			                    <select class="form-control week-options" name="machine">
-			                        <option value="">-- Silahkan Pilih --</option>
-			                        {% if machine_data %}
+        				<button class="btn btn-primary" data-toggle="modal" data-target="#defaultModal">
+        					Filter
+        				</button>
 
-			                        	{% for machine_row in machine_data %}
-
-			                        		<option value="{{ machine_row.MachineId }}" {% if same(machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
-			                        			{{ machine_row.MachineId }}
-			                        		</option>
-			                        	{% endfor %}
-
-			                        {% endif %}
-			                    </select>	
-
-		            		</div>
-
-		            		<div class="form-group">
-
-		            			<label>Week</label>
-				                    	
-			                    <select class="form-control week-options" name="week">
-			                        <option value="">-- Silahkan Pilih --</option>
-			                        {% if week_in_year() %}
-
-			                        	{% for key, week_row in week_in_year() %}
-			                        		{% set week_val = week_row['date_start'] ~ '-' ~ week_row['date_finish'] %}
-			                        		<option value="{{ week_val }}" {% if same(week, week_val) %} selected="selected" {% endif %}>
-			                        			{{ add_zero(key+1) ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
-			                        		</option>
-			                        	{% endfor %}
-
-			                        {% endif %}
-			                    </select>
-
-			                    <input class="report-date-start" name="date_start" type="hidden" value="{{ date_start }}">
-			                    <input class="report-date-finish" name="date_finish" type="hidden" value="{{ date_finish }}">
-			                </div>
-
-		                    <div class="form-group">
-
-		            			<label>Shift</label>
-				                    	
-			                    <select class="form-control week-options" name="shift">
-			                        <option value="0">-- Silahkan Pilih --</option>
-			                        {% if shift_data %}
-
-			                        	{% for shift_row in shift_data %}
-
-			                        		<option value="{{ shift_row.ShiftNo }}" {% if same(shift, shift_row.ShiftNo) %} selected="selected" {% endif %}>
-			                        			{{ shift_row.ShiftDescription }}
-			                        		</option>
-			                        	{% endfor %}
-
-			                        {% endif %}
-			                    </select>
-
-		            		</div>
-
-
-		            		<div class="form-group">
-		            			<input class="btn btn-primary" value="Filter" type="submit">
-		            		</div>
-		            	</form>
+        				<br>
+        				<br>
 
 		                <table class="table table-bordered table-striped table-spk">
 		                	<thead>
@@ -131,6 +70,95 @@
 	        </div>
 	    </div>
 	 </div>
+
+	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content content-modal-spk">
+	        <div class="modal-header">
+	        </div>
+        	<div class="modal-body">
+
+        		<div class="row clearfix">
+
+        		<div class="col-md-12">
+
+	        	<form action="{{ site_url('admin/spk/index') }}" method="post">
+	        		<div class="form-group">
+	        			<label>Machine</label>
+		                    	
+	                    <select class="form-control" name="machine">
+	                        <option value="">-- Silahkan Pilih --</option>
+	                        {% if machine_data %}
+
+	                        	{% for machine_row in machine_data %}
+
+	                        		<option value="{{ machine_row.MachineId }}" {% if same(machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
+	                        			{{ machine_row.MachineId }}
+	                        		</option>
+	                        	{% endfor %}
+
+	                        {% endif %}
+	                    </select>	
+
+	        		</div>
+
+	        		<div class="form-group">
+
+	        			<label>Week</label>
+		                    	
+	                    <select class="form-control week-options" name="week">
+	                        <option value="">-- Silahkan Pilih --</option>
+	                        {% if week_in_year() %}
+
+	                        	{% for key, week_row in week_in_year() %}
+	                        		{% set week_val = week_row['date_start'] ~ '-' ~ week_row['date_finish'] %}
+	                        		<option value="{{ week_val }}" {% if same(week, week_val) %} selected="selected" {% endif %}>
+	                        			{{ add_zero(key+1) ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
+	                        		</option>
+	                        	{% endfor %}
+
+	                        {% endif %}
+	                    </select>
+
+	                    <input class="report-date-start" name="date_start" type="text" value="{{ date_start }}">
+	                    <input class="report-date-finish" name="date_finish" type="text" value="{{ date_finish }}">
+	                </div>
+
+	                <div class="form-group">
+
+	        			<label>Shift</label>
+		                    	
+	                    <select class="form-control" name="shift">
+	                        <option value="0">-- Silahkan Pilih --</option>
+	                        {% if shift_data %}
+
+	                        	{% for shift_row in shift_data %}
+
+	                        		<option value="{{ shift_row.ShiftNo }}" {% if same(shift, shift_row.ShiftNo) %} selected="selected" {% endif %}>
+	                        			{{ shift_row.ShiftDescription }}
+	                        		</option>
+	                        	{% endfor %}
+
+	                        {% endif %}
+	                    </select>
+
+	        		</div>
+
+
+	        		<div class="form-group">
+	        			<input class="btn btn-primary" value="Submit" type="submit">
+	        		</div>
+	        	</form>
+
+	        	</div>
+	        	</div>
+
+	        </div>
+	        </div>
+
+
+        </div>
+    </div>
    
 
 {% endblock %}

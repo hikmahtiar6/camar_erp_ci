@@ -230,8 +230,8 @@ class Transaction extends CI_Controller
 
 		$data_for_insert_header = array(
 			'machine_id'  => $machine_id,
-			'date_start'  => $date_start,
-			'date_finish' => $date_finish,
+			'date_start'  => date('Y-m-d', strtotime($date_start)),
+			'date_finish' => date('Y-m-d', strtotime($date_finish)),
 		);
 
 		$searching = array(
@@ -240,7 +240,7 @@ class Transaction extends CI_Controller
 
 		$this->session->set_userdata('date_start', $date_start);
 		$this->session->set_userdata('date_finish', $date_finish);
-		$this->session->set_userdata('shift', '');
+		$this->session->set_userdata('shift', '0');
 
 		$get_header = $this->header_model->get_data_by($searching);
 		if($get_header)
@@ -386,16 +386,6 @@ class Transaction extends CI_Controller
 		}
 
 		$this->output->set_output(json_encode($response));
-	}
-
-	/**
-	 * get new master by section id
-	 */
-	public function get_new_master()
-	{
-		$section_id = $this->input->post('section_id');
-		$get_data = $this->master_model->get_master_by_section($section_id);
-		$this->output->set_output(json_encode($get_data));
 	}
 
 	/**
