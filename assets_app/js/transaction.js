@@ -831,7 +831,7 @@ window.TRANSACTION = (function($) {
 					},
 					success: function(response) {
 						
-						swal(response.status + '!', response.message, response.status);
+						//swal(response.status + '!', response.message, response.status);
 
 						if(response.status == 'success') {
 							setTimeout(function() {
