@@ -5,10 +5,23 @@
 class Header_model extends CI_Model {
 
 	const TABLE = 'HeaderSpk';
+	const TABLE_MACHINE = 'Factory.Machines';
 
 	public function __construct()
 	{
 		parent::__construct();
+	}
+
+	public function get_data()
+	{
+		$sql = $this->db;
+
+		$sql->select('a.*, b.MachineTypeId as machine_type_id');
+		$sql->from(static::TABLE. ' a');
+		$sql->join(static::TABLE_MACHINE. ' b', 'a.machine_id = b.MachineId', 'inner');
+
+		$get = $sql->get();
+		return $get->result();
 	}
 
 	public function get_data_by_id($id)

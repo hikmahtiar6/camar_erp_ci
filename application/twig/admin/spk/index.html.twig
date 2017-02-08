@@ -1,0 +1,74 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	
+{% endblock %}
+
+{% block content %}
+	
+	<div class="row clearfix">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	        <div class="card card-spk" style="width: 80%; margin: 0 auto !important;">
+	            <div class="header">
+	                <h2>
+	                    List Data SPK
+	                </h2>
+	            </div>
+
+
+	            <div class="body" style="overflow: auto; padding: 5px">
+
+		            <div class="col-md-12">
+		                
+		                <table class="table table-bordered table-striped table-spk">
+		                	<thead>
+		                		<tr>
+		                			<th style="vertical-align: middle;">No.</th>
+									<th style="vertical-align: middle;">MachineTypeId</th>
+									<th style="vertical-align: middle;">MachineId</th>
+									<th style="vertical-align: middle;">Mulai Tanggal</th>
+									<th style="vertical-align: middle;">Sampai Tanggal</th>
+									<th style="vertical-align: middle;"></th>
+		                	</thead>
+		                	<tbody>
+		                		{% if header_data %}
+		                		{% for key, header_row in header_data %}
+		                		{% set dtstart =  get_date_start_header(header_row.header_id, header_row.date_start) %}
+		                		{% set dtfinish =  get_date_finish_header(header_row.header_id, header_row.date_finish) %}
+		                		<tr>
+			                		<td>{{ key + 1 }}</td>
+			                		<td>{{ header_row.machine_type_id }}</td>
+			                		<td>{{ header_row.machine_id }}</td>
+			                		<td>{{ dtstart }}</td>
+			                		<td>{{ dtfinish }}</td>
+			                		<td>
+			                			<a class="btn btn-info" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish)) }}">Lihat Detail</a>
+			                		</td>
+		                		</tr>
+		                		{% endfor %}
+		                		{% endif %}
+		                	</tbody>
+		                </table>
+		            </div>
+
+	            </div>
+	        </div>
+	    </div>
+	 </div>
+   
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
+	<script type="text/javascript">
+		/*window.TRANSACTION.handleDatatable();
+		window.TRANSACTION.handleModal();
+		window.TRANSACTION.handleDelete();
+		window.TRANSACTION.handleAddRow();
+		window.TRANSACTION.handleFullscreen();*/
+	</script>
+
+{% endblock %}

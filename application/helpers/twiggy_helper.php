@@ -92,4 +92,39 @@ function count_dice($dice)
 	return count($expl);
 }
 
+function get_date_start_header($header_id, $other)
+{
+	$ci =& get_instance();
+
+	$ci->load->model('master/detail_model');
+
+	$data = $ci->detail_model->get_date_start($header_id);
+	if($data->date_start_header != NULL)
+	{
+		return date('d-m-Y', strtotime($data->date_start_header));
+	}
+
+	return date('d-m-Y', strtotime($other));
+}
+
+function get_date_finish_header($header_id, $other)
+{
+	$ci =& get_instance();
+
+	$ci->load->model('master/detail_model');
+
+	$data = $ci->detail_model->get_date_finish($header_id);
+	if($data->date_finish_header != NULL)
+	{
+		return date('d-m-Y', strtotime($data->date_finish_header));
+	}
+
+	return date('d-m-Y', strtotime($other));
+}
+
+function date_to_time($date)
+{
+	return strtotime($date);
+}
+
 ?>
