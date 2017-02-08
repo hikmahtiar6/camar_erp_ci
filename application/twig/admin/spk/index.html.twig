@@ -16,10 +16,81 @@
 	            </div>
 
 
-	            <div class="body" style="overflow: auto; padding: 5px">
+	            <div class="body" style="padding: 20px">
+
+	            	<div class="row clearfix">
+
 
 		            <div class="col-md-12">
-		                
+
+		            	<form class="col-md-6" action="{{ site_url('admin/spk/index') }}" method="post">
+		            		<div class="form-group">
+		            			<label>Machine</label>
+				                    	
+			                    <select class="form-control week-options" name="machine">
+			                        <option value="">-- Silahkan Pilih --</option>
+			                        {% if machine_data %}
+
+			                        	{% for machine_row in machine_data %}
+
+			                        		<option value="{{ machine_row.MachineId }}" {% if same(machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
+			                        			{{ machine_row.MachineId }}
+			                        		</option>
+			                        	{% endfor %}
+
+			                        {% endif %}
+			                    </select>	
+
+		            		</div>
+
+		            		<div class="form-group">
+
+		            			<label>Week</label>
+				                    	
+			                    <select class="form-control week-options" name="week">
+			                        <option value="">-- Silahkan Pilih --</option>
+			                        {% if week_in_year() %}
+
+			                        	{% for key, week_row in week_in_year() %}
+			                        		{% set week_val = week_row['date_start'] ~ '-' ~ week_row['date_finish'] %}
+			                        		<option value="{{ week_val }}" {% if same(week, week_val) %} selected="selected" {% endif %}>
+			                        			{{ add_zero(key+1) ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
+			                        		</option>
+			                        	{% endfor %}
+
+			                        {% endif %}
+			                    </select>
+
+			                    <input class="report-date-start" name="date_start" type="hidden" value="{{ date_start }}">
+			                    <input class="report-date-finish" name="date_finish" type="hidden" value="{{ date_finish }}">
+			                </div>
+
+		                    <div class="form-group">
+
+		            			<label>Shift</label>
+				                    	
+			                    <select class="form-control week-options" name="shift">
+			                        <option value="0">-- Silahkan Pilih --</option>
+			                        {% if shift_data %}
+
+			                        	{% for shift_row in shift_data %}
+
+			                        		<option value="{{ shift_row.ShiftNo }}" {% if same(shift, shift_row.ShiftNo) %} selected="selected" {% endif %}>
+			                        			{{ shift_row.ShiftDescription }}
+			                        		</option>
+			                        	{% endfor %}
+
+			                        {% endif %}
+			                    </select>
+
+		            		</div>
+
+
+		            		<div class="form-group">
+		            			<input class="btn btn-primary" value="Filter" type="submit">
+		            		</div>
+		            	</form>
+
 		                <table class="table table-bordered table-striped table-spk">
 		                	<thead>
 		                		<tr>
@@ -33,8 +104,8 @@
 		                	<tbody>
 		                		{% if header_data %}
 		                		{% for key, header_row in header_data %}
-		                		{% set dtstart =  get_date_start_header(header_row.header_id, header_row.date_start) %}
-		                		{% set dtfinish =  get_date_finish_header(header_row.header_id, header_row.date_finish) %}
+		                		{% set dtstart =  get_date_start_header(header_row.header_id, date_start, header_row.date_start) %}
+		                		{% set dtfinish =  get_date_finish_header(header_row.header_id, date_finish, header_row.date_finish) %}
 		                		<tr>
 			                		<td>{{ key + 1 }}</td>
 			                		<td>{{ header_row.machine_type_id }}</td>
@@ -42,13 +113,18 @@
 			                		<td>{{ dtstart }}</td>
 			                		<td>{{ dtfinish }}</td>
 			                		<td>
-			                			<a class="btn btn-info" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish)) }}">Lihat Detail</a>
+			                			<a class="btn btn-info" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish) ~ '/' ~ shift) }}">Lihat Detail</a>
 			                		</td>
 		                		</tr>
 		                		{% endfor %}
+		                		{% else %}
+		                		<tr>
+			                		<td colspan="6">Data tidak tersedia</td>
+			                	</tr>
 		                		{% endif %}
 		                	</tbody>
 		                </table>
+		            </div>
 		            </div>
 
 	            </div>
@@ -64,7 +140,8 @@
 
 	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
 	<script type="text/javascript">
-		/*window.TRANSACTION.handleDatatable();
+		window.TRANSACTION.handleWeek();
+		/*
 		window.TRANSACTION.handleModal();
 		window.TRANSACTION.handleDelete();
 		window.TRANSACTION.handleAddRow();

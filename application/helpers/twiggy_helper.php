@@ -92,34 +92,47 @@ function count_dice($dice)
 	return count($expl);
 }
 
-function get_date_start_header($header_id, $other)
+function get_date_start_header($header_id, $show, $other)
 {
 	$ci =& get_instance();
-
 	$ci->load->model('master/detail_model');
+
+	$result = $other;
 
 	$data = $ci->detail_model->get_date_start($header_id);
 	if($data->date_start_header != NULL)
 	{
-		return date('d-m-Y', strtotime($data->date_start_header));
+		$result = $data->date_start_header; 
 	}
 
-	return date('d-m-Y', strtotime($other));
+	if($show != '')
+	{
+		$result = str_replace("/", "-", $show); 
+	}
+
+	return date('d-m-Y', strtotime($result));
 }
 
-function get_date_finish_header($header_id, $other)
+function get_date_finish_header($header_id, $show, $other)
 {
 	$ci =& get_instance();
-
 	$ci->load->model('master/detail_model');
+
+	$result = $other;
+
 
 	$data = $ci->detail_model->get_date_finish($header_id);
 	if($data->date_finish_header != NULL)
 	{
-		return date('d-m-Y', strtotime($data->date_finish_header));
+		$result = $data->date_finish_header;
 	}
 
-	return date('d-m-Y', strtotime($other));
+	if($show != '')
+	{
+		$result = str_replace("/", "-", $show); 
+	}
+
+	return date('d-m-Y', strtotime($result));
 }
 
 function date_to_time($date)
@@ -168,6 +181,11 @@ function week_in_year() {
 	}
 	
 	return $dt;	
+}
+
+function add_zero($numbering)
+{
+	return str_pad($numbering, 2, '0', STR_PAD_LEFT);
 }
 
 ?>

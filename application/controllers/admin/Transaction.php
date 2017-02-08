@@ -65,7 +65,8 @@ class Transaction extends CI_Controller
 
 		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
 		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
-		$get_md = $this->section_model->get_data_detail($dt_start, $dt_finish, $shift = '', $machine_id = '', $section_id = '',$header_id);
+		$shift = $this->session->userdata('shift');
+		$get_md = $this->section_model->get_data_detail($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id);
 
 		$sum = array();
 
@@ -239,6 +240,7 @@ class Transaction extends CI_Controller
 
 		$this->session->set_userdata('date_start', $date_start);
 		$this->session->set_userdata('date_finish', $date_finish);
+		$this->session->set_userdata('shift', '');
 
 		$get_header = $this->header_model->get_data_by($searching);
 		if($get_header)

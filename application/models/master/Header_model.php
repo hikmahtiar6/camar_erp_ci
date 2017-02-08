@@ -48,6 +48,24 @@ class Header_model extends CI_Model {
 		return $get->row();
 	}
 
+	public function advance_search($machine_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('a.*, b.MachineTypeId as machine_type_id');
+		$sql->from(static::TABLE. ' a');
+		$sql->join(static::TABLE_MACHINE. ' b', 'a.machine_id = b.MachineId', 'inner');
+
+		if($machine_id != '')
+		{
+			$sql->where('machine_id', $machine_id);
+		}
+
+
+		$get = $sql->get();
+		return $get->result();
+	}
+
 	public function delete($id)
 	{
 		$this->db->where('header_id', $id);

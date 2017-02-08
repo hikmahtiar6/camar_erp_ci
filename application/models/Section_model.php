@@ -66,7 +66,7 @@ class Section_model extends CI_Model {
 	/**
 	 * get data section
 	 */
-	public function get_data_detail($date_start = '', $date_finish = '', $shift = '', $machine_id = '', $section_id = '', $header_id = '')
+	public function get_data_detail($date_start = '', $date_finish = '', $shift = 0, $machine_id = '', $section_id = '', $header_id = '')
 	{
 		$sql = $this->db;
 
@@ -90,7 +90,7 @@ class Section_model extends CI_Model {
 			$sql->where('a.tanggal <=', "$date_finish");
 		}
 
-		if($shift != '')
+		if($shift != 0)
 		{
 			$sql->where('a.shift', $shift);
 		}
