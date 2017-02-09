@@ -199,7 +199,7 @@ window.TRANSACTION = (function($) {
 					sourceCache: false,
 					emptytext: 'Silahkan pilih',
 					mode: 'popup',
-					source: window.APP.siteUrl + 'admin/master/get_data_section/'+$(this).attr('data-header'),
+					source: window.APP.siteUrl + 'admin/master/get_data_section/'+$(this).attr('data-header')+'/name',
 					success: function(response, newValue) {
 
 						$.ajax({
