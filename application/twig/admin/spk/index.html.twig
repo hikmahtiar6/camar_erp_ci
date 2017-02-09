@@ -38,8 +38,8 @@
 		                	<thead>
 		                		<tr>
 		                			<th style="vertical-align: middle;">No.</th>
-									<th style="vertical-align: middle;">MachineTypeId</th>
 									<th style="vertical-align: middle;">MachineId</th>
+									<th style="vertical-align: middle;">MachineTypeId</th>
 									<th style="vertical-align: middle;">Mulai Tanggal</th>
 									<th style="vertical-align: middle;">Sampai Tanggal</th>
 									<th style="vertical-align: middle;"></th>
@@ -51,8 +51,8 @@
 		                		{% set dtfinish =  get_date_finish_header(header_row.header_id, date_finish, header_row.date_finish) %}
 		                		<tr>
 			                		<td>{{ key + 1 }}</td>
-			                		<td>{{ header_row.machine_type_id }}</td>
 			                		<td>{{ header_row.machine_id }}</td>
+			                		<td>{{ header_row.machine_type_id }}</td>
 			                		<td>{{ dtstart }}</td>
 			                		<td>{{ dtfinish }}</td>
 			                		<td>

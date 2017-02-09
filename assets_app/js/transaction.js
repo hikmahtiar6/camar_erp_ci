@@ -633,6 +633,7 @@ window.TRANSACTION = (function($) {
 					url: window.APP.siteUrl + 'admin/transaction/data/'+$('.header-id').val(),
 					dataType: 'json',
 				},
+				paging: false,
 				columns: [
 					{
 						data: 'no',
