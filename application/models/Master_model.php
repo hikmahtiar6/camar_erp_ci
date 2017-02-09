@@ -21,6 +21,30 @@ class Master_model extends CI_Model {
 		parent::__construct();
 	}
 
+	/**
+	 query
+
+	 SELECT DISTINCT d.sectionid,d.sectiondescription
+FROM Extrusion.ExtrusionGuideFinal2() d
+LEFT JOIN Inventory.Sections s ON s.SectionId=d.SectionId
+LEFT JOIN Inventory.MasterDieTypes mdt ON mdt.DieTypeId=s.DieTypeId
+WHERE MACHINEID='SN0690.02' and d.sectionid='1826'
+
+SELECT DISTINCT d.SectionId, d.LengthId, d.LEngth
+FROM Extrusion.ExtrusionGuideFinal2() d
+LEFT JOIN Inventory.Sections s ON s.SectionId=d.SectionId
+LEFT JOIN Inventory.MasterDieTypes mdt ON mdt.DieTypeId=s.DieTypeId
+WHERE MACHINEID='SN0690.02' and d.sectionid='1826'
+
+SELECT *
+FROM Purchasing.DieReceivingDetail d
+WHERE d.SectionId='1826'
+AND d.MachineTypeId='0690T'
+
+
+
+	 */
+
 	public function get_data_by_id($id)
 	{
 		$sql = $this->db;
