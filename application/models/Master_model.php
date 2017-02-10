@@ -44,6 +44,21 @@ AND d.MachineTypeId='0690T'
 
 
 	 */
+	
+	public function get_section_by_machine($machine_id)
+	{
+		$sql = "
+		SELECT DISTINCT d.sectionid,d.sectiondescription
+		FROM Extrusion.ExtrusionGuideFinal2() d
+		LEFT JOIN Inventory.Sections s ON s.SectionId=d.SectionId
+		LEFT JOIN Inventory.MasterDieTypes mdt ON mdt.DieTypeId=s.DieTypeId
+		WHERE MACHINEID = '".$machine_id."'
+		";
+
+		$query = $this->db->query($sql);
+
+		return $query;
+	}
 
 	public function get_data_by_id($id)
 	{

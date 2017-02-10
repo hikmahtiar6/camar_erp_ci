@@ -14,6 +14,7 @@ class Master extends CI_Controller {
 		$this->load->model('master/finishing_model');
 		$this->load->model('master/len_model');
 		$this->load->model('master/indexdice_model');
+		$this->load->model('master/query_model');
 	}
 
 	public function get_data_shift()
@@ -67,19 +68,19 @@ class Master extends CI_Controller {
 			$machine_id = $header_data->machine_id;
 		}
 
-		$data = $this->master_model->get_data_by_machine_id($machine_id);
+		$data = $this->query_model->get_master_advance($machine_id)->result();
 
 		if($data)
 		{
 			foreach($data as $r)
 			{
-				$text = $r->section_id;
+				$text = $r->SectionId;
 				if($type != '')
 				{
-					$text = $r->section_name;
+					$text = $r->SectionDescription;
 				}
 				$row[] = array(
-					'value' => $r->section_id.'|'.$r->master_id,
+					'value' => $r->SectionId,
 					'text'  => $text,
 				);
 			}

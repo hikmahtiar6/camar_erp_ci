@@ -70,14 +70,13 @@ class Section_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('a.*, b.*, c.SectionDescription, d.MachineTypeId as machine_type, e.ShiftDescription, e.ShiftStart, g.finishing_name, h.billet_id, h.weight_standard, h.actual_pressure_time, h.die_type_name, h.f2_estfg, i.*');
+		$sql->select('a.*, b.*, c.SectionDescription, d.MachineTypeId as machine_type, e.ShiftDescription, e.ShiftStart, g.finishing_name, i.*');
 		$sql->from(static::TABLE.' a');
 		$sql->join(static::TABLE_HEAD.' b', 'a.header_id = b.header_id', 'inner');
 		$sql->join(static::TABLE_BARANG.' c', 'a.section_id = c.SectionId', 'left');
 		$sql->join(static::TABLE_MACHINE.' d', 'b.machine_id = d.MachineId', 'inner');
 		$sql->join(static::TABLE_SHIFT.' e', 'a.shift = e.ShiftNo', 'left');
 		$sql->join(static::TABLE_FINISHING.' g', 'a.finishing = g.finishing_id', 'left');
-		$sql->join(static::TABLE_NEWMASTER.' h', 'a.master_id = h.master_id', 'left');
 		$sql->join(static::TABLE_LEN.' i', 'a.len = i.LengthId', 'left');
 
 		if($date_start != '')
@@ -110,7 +109,7 @@ class Section_model extends CI_Model {
 			$sql->where('a.header_id', $header_id);
 		}
 
-		$sql->order_by('a.tanggal', 'DESC');
+		$sql->order_by('a.master_detail_id', 'DESC');
 		$get = $sql->get();
 
 		return $get->result();

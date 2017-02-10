@@ -20,6 +20,7 @@ class Transaction extends CI_Controller
 		$this->load->model('master/detail_model');
 		$this->load->model('master/header_model');
 		$this->load->model('master/shift_model');
+		$this->load->model('master/query_model');
 	}
 
 	/**
@@ -52,7 +53,16 @@ class Transaction extends CI_Controller
 
 	public function detail($header_id)
 	{
+		$machine = '';
+
+		$get_header = $this->header_model->get_data_by_id($header_id);
+		if($get_header)
+		{
+			$machine = $get_header->machine_id;
+		}
+
 		$this->twiggy->set('header_id', $header_id);
+		$this->twiggy->set('machine_id', $machine);
 		$this->twiggy->template('admin/transaction/index')->display();
 	}
 
@@ -68,6 +78,14 @@ class Transaction extends CI_Controller
 		$shift = $this->session->userdata('shift');
 		$get_md = $this->section_model->get_data_detail($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id);
 
+		$machine = '';
+		$header_data = $this->header_model->get_data_by_id($header_id);
+		if($header_data)
+		{
+			$machine = $header_data->machine_id;
+		}
+
+
 		$sum = array();
 
 		if($get_md)
@@ -75,27 +93,33 @@ class Transaction extends CI_Controller
 			$no = 1;
 			foreach($get_md as $gmd)
 			{
+				$get_master_query =  $this->query_model->get_master_advance($machine, $gmd->section_id)->row();
 				$target_prod_btg = $gmd->target_prod;
-				if($gmd->f2_estfg != NULL)
+
+				$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+				$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+
+
+				if($f2_estfg != NULL)
 				{
-					$target_prod_btg = $gmd->f2_estfg * $gmd->target_prod; 
+					$target_prod_btg = $f2_estfg * $gmd->target_prod; 
 				}
 
-				array_push($sum, $gmd->weight_standard * $target_prod_btg * $gmd->Length);
+				array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
 				
 				$data[] = array(
 					'no'               => $no,
 					'id'               => $gmd->master_detail_id,
 					'machine_id'	   => $gmd->machine_id,
 					'header_id'	       => $gmd->header_id,
-					'tanggal1'         => ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal)),//date('D, j/M/y', strtotime($gmd->tanggal)),
-					'tanggal2'         => ($gmd->tanggal == null) ? '<label class="editable-empty">Silahkan diisi</label>' : date('d-m-Y', strtotime($gmd->tanggal)),//date('D, j/M/y', strtotime($gmd->tanggal)),
+					'tanggal1'         => ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal)),
+					'tanggal2'         => ($gmd->tanggal == null) ? '<label class="editable-empty">Silahkan diisi</label>' : date('d-m-Y', strtotime($gmd->tanggal)),
 					'shift'            => $gmd->shift,
 					'shift_name'       => $gmd->ShiftDescription,
 					'section_id'       => $gmd->section_id,
 					'section_name'     => $gmd->SectionDescription,
 					'mesin'            => $gmd->machine_type,
-					'billet'           => $gmd->billet_id,
+					'billet'           => ($get_master_query) ? $get_master_query->BilletTypeId : '-',
 					'len'              => $gmd->LengthId,
 					'len_name'         => $gmd->Length,
 					'finishing'        => $gmd->finishing,
@@ -107,17 +131,15 @@ class Transaction extends CI_Controller
 					'ppic_note'        => ($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
 					'master_id'        => $gmd->master_id,
 					'target_prod_btg'  => $target_prod_btg,
-					'die_type'         => $gmd->die_type_name,
-					'weight_standard'  => $gmd->weight_standard,
-					'target_section'   => $gmd->weight_standard * $target_prod_btg * $gmd->Length,
+					'die_type'         => ($get_master_query) ? $get_master_query->DieTypeName : '-',
+					'weight_standard'  => $weight_standard,
+					'target_section'   => $weight_standard * $target_prod_btg * $gmd->Length,
 					'total_target'     => array_sum($sum),
 					'shift_start'      => date('H:i:s', strtotime($gmd->ShiftStart)),
-					'shift_end'        => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
+					//'shift_end'        => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
 					'null'             => '-',
-					'apt'              => '',//$gmd->actual_pressure_time,
-					'action'           => '',//
-						//"<a class='btn btn-default' id='edit-transaksi-".$gmd->master_detail_id."' data-toggle='modal' data-target='#defaultModal' href='".site_url('admin/transaction/edit/'.$gmd->master_detail_id)."' onclick='window.TRANSACTION.handleEditModal(\"".$gmd->master_detail_id."\")'>Edit</a>".
-						//"<a class='btn btn-danger' id='delete-transaksi-".$gmd->master_detail_id."' href='javascript:;' onclick='window.TRANSACTION.handleDelete(\"".$gmd->master_detail_id."\")'>Hapus</a>"
+					'apt'              => '',
+					'action'           => '',
 				);
 
 				$no++;
@@ -397,6 +419,7 @@ class Transaction extends CI_Controller
 		$id = $post['id'];
 		$type = $post['type'];
 		$val = $post['value'];
+		$machine = (isset($post['machine'])) ? $post['machine'] : '';
 
 		switch ($type) {
 
@@ -434,11 +457,8 @@ class Transaction extends CI_Controller
 
 			case 'section_id':
 				
-				$expl = explode('|', $val);
-
 				$data = array(
-					$type => $expl[0],
-					'master_id' => $expl[1]
+					$type => $val
 				);
 
 				$update = $this->section_model->update($id, $data);
@@ -450,24 +470,19 @@ class Transaction extends CI_Controller
 					$weight_standard = '';
 					$die_type_name = '';
 
-					$get_section = $this->section_model->get_data_by_id($expl[0]);
-					if($get_section)
-					{
-						$section_name = $get_section->SectionDescription;
-					}
-
-					$get_master = $this->master_model->get_data_by_id($expl[1]);
+					$get_master = $this->query_model->get_master_advance($machine, $val)->row();
 					if($get_master)
 					{
-						$f2_estfg = $get_master->f2_estfg;
-						$weight_standard = $get_master->weight_standard;
-						$billet = $get_master->billet_id; 
-						$die_type_name = $get_master->die_type_name; 
+						$section_name = $get_master->SectionDescription;
+						$f2_estfg = $get_master->F2_EstFG;
+						$weight_standard = $get_master->WeightStandard;
+						$billet = $get_master->BilletTypeId; 
+						$die_type_name = $get_master->DieTypeName; 
 					}
 					$response = array(
 						'status'          => 'success',
 						'section_name'    => $section_name,
-						'section_id'      => $expl[0],
+						'section_id'      => $val,
 						'billet_id'       => $billet,
 						'weight_standard' => $weight_standard,
 						'die_type_name'   => $die_type_name,

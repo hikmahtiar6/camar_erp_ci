@@ -32,7 +32,7 @@ window.TRANSACTION = (function($) {
     		//var txt = '-';
     		var txt = '<font class="editable-empty">Silahkan pilih</font>';
     	}
-        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'|'+f['master_id']+'" data-machine="'+f['machine_id']+'">'+txt+'</label>';
+        var btn = '<label class="transaction-sectionid" id="sectionid'+f['id']+'" data-header="'+f['header_id']+'" data-id="'+f['id']+'" data-value="'+f['section_id']+'" data-machine="'+f['machine_id']+'">'+txt+'</label>';
         return btn;
     }
 
@@ -209,21 +209,24 @@ window.TRANSACTION = (function($) {
 							data: {
 								id: $(this).attr('data-id'),
 								type: 'section_id',
-								value: newValue
+								value: newValue,
+								machine: $('.machine-id').val()
 							},
 							success: function(response) {
 								if(response.status == 'success') {
-									$('#sectionname'+ $(_inputThis).attr('data-id')).attr('data-value', response.detail_section);
-									$('#sectionid'+ $(_inputThis).attr('data-id')).attr('data-value', response.detail_section);
+									//$('#sectionname'+ $(_inputThis).attr('data-id')).attr('data-value', response.detail_section);
+									//$('#sectionid'+ $(_inputThis).attr('data-id')).attr('data-value', response.section_id);
 
 									//$('.transaction-sectionname').setValue(response.detail_section);
-									$('#sectionid'+ $(_inputThis).attr('data-id')).html(response.section_id);
-									$('#sectionname'+ $(_inputThis).attr('data-id')).html(response.section_name);
-									$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
-									$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
-									$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
-									$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).removeAttr('data-sectionid');
-									$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).attr('data-sectionid', response.section_id);
+									setTimeout(function() {
+										$('#sectionid'+ $(_inputThis).attr('data-id')).html(response.section_id);
+										$('#sectionname'+ $(_inputThis).attr('data-id')).html(response.section_name);
+										$('#transaction-weightstandard'+ $(_inputThis).attr('data-id')).html(response.weight_standard);
+										$('#transaction-billet'+ $(_inputThis).attr('data-id')).html(response.billet_id);
+										$('#transaction-dietype'+ $(_inputThis).attr('data-id')).html(response.die_type_name);
+										$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).removeAttr('data-sectionid');
+										$('#transaction-indexdice'+ $(_inputThis).attr('data-id')).attr('data-sectionid', response.section_id);
+									}, 500);
 								}
 							}
 						});
@@ -465,6 +468,9 @@ window.TRANSACTION = (function($) {
 										} else {
 											$(_inputThis).addClass('editable-empty');
 										}
+
+										$(_inputThis).editable('remove');
+										$(_inputThis).editable('destroy');
 									}
 								});
 							},
@@ -477,8 +483,6 @@ window.TRANSACTION = (function($) {
 						}
 
 						$(_inputThis).addClass('hasclass');
-
-
 
 
 					}
