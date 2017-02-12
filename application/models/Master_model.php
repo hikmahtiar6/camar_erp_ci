@@ -10,7 +10,6 @@ class Master_model extends CI_Model {
 	const TABLE_MACHINE = 'Factory.Machines';
 	const TABLE_BILLET = 'Inventory.MasterBilletTypes';
 	const TABLE_FINISHING = 'Finishing';
-	const TABLE_NEWMASTER = 'NewMaster';
 	const TABLE_SECTION = 'Inventory.Sections';
 
 	/**
@@ -60,31 +59,6 @@ AND d.MachineTypeId='0690T'
 		return $query;
 	}
 
-	public function get_data_by_id($id)
-	{
-		$sql = $this->db;
-
-		$sql->select('*');
-		$sql->from(static::TABLE_NEWMASTER);
-		$sql->where('master_id', $id);
-
-		$get = $sql->get();
-		return $get->row();
-	}
-
-	public function get_data_by_machine_id($machine_id)
-	{
-		$sql = $this->db;
-
-		$sql->select('a.*, b.SectionDescription as section_name');
-		$sql->from(static::TABLE_NEWMASTER.' a');
-		$sql->join(static::TABLE_SECTION.' b', 'a.section_id = b.SectionId', 'inner');
-		$sql->where('a.machine_id', $machine_id);
-
-		$get = $sql->get();
-		return $get->result();
-	}
-
 	/**
 	 * sinkronisasi data view ke newmaster
 	 */
@@ -101,68 +75,6 @@ AND d.MachineTypeId='0690T'
 		$get1 = $this->db->query($sql);
 
 		return $get1->result();
-	}
-
-	/**
-	 * truncate new master
-	 */
-	public function truncate_master()
-	{
-		return $this->db->truncate(static::TABLE_NEWMASTER);
-	}
-
-	/**
-	 * insert data to new master
-	 */
-	public function insert_master($data)
-	{
-		return $this->db->insert_batch(static::TABLE_NEWMASTER, $data);
-	}
-
-	/**
-	 * get master by section
-	 */
-	public function get_len_by_section($section_id, $group = '')
-	{
-		$sql = $this->db;
-
-		$sql->select('len as Length, len_id as LengthId');
-		$sql->from(static::TABLE_NEWMASTER);
-		$sql->where('section_id', $section_id);
-
-		if($group != '')
-		{
-			$sql->group_by('len');
-			$sql->group_by('len_id');
-		}
-
-		$get = $sql->get();
-
-		return $get;
-	}
-
-	/**
-	 * get master by section
-	 */
-	public function get_master_by($section_id = '', $machine_id = '')
-	{
-		$sql = $this->db;
-
-		$sql->select('*');
-		$sql->from(static::TABLE_NEWMASTER);
-		
-		if($section_id != '')
-		{
-			$sql->where('section_id', $section_id);
-		}
-
-		if($section_id != '')
-		{
-			$sql->where('section_id', $section_id);
-		}
-		$get = $sql->get();
-
-		return $get->row();
 	}
 
 	/**

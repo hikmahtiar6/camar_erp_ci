@@ -93,21 +93,38 @@ class Master extends CI_Controller {
 	{
 		$row = array();
 		$data = $this->len_model->get_data();
+		$machine_id = '';
 
 		$get_detail = $this->detail_model->get_data_by_id($detail_id);
 		if($get_detail)
 		{
-			$data = $this->master_model->get_len_by_section($get_detail->section_id, 'group')->result();
+			$get_header = $this->header_model->get_data_by_id($get_detail->header_id);
+			if($get_header)
+			{
+				$machine_id = $get_header->machine_id;
+			}
+			$data = $this->query_model->get_master_advance($machine_id, $get_detail->section_id)->result();
 		}
 
 		if($data)
 		{
 			foreach($data as $r)
 			{
-				$row[] = array(
-					'value' => $r->LengthId,
-					'text'  => $r->Length,
+				if($r->LengthId != NULL)
+				{
+					$row[] = array(
+						'value' => $r->LengthId,
+						'text'  => $r->Length,
+					);
+				}
+				else
+				{
+					$row[] = array(
+					'value' => 'L600',
+					'text'  => 6,
 				);
+				}
+				
 			}
 		}
 

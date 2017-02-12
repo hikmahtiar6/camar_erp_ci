@@ -38,3 +38,24 @@
 	 </div>
 
 {% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+	<script type="text/javascript">
+		setTimeout(function() {
+
+			var $body = $('body');
+	        var $openCloseBar = $('.navbar .navbar-header .bars');
+	        var width = $body.width();
+
+	        if (width < 1100) {
+	            $body.addClass('ls-closed');
+	            $openCloseBar.fadeIn();
+	        }
+	        else {
+	            $body.removeClass('ls-closed');
+	            $openCloseBar.fadeOut();
+	        }
+		}, 500);
+	</script>
+{% endblock %}

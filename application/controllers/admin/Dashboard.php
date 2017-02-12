@@ -27,47 +27,5 @@ class Dashboard extends CI_Controller
 		redirect('login');
 	}
 
-	/**
-	 * sinkronisasi
-	 */
-	public function sinkronisasi()
-	{
-		$view = $this->master_model->get_data_view();
-		if($view)
-		{
-			$data = array();
-			$this->master_model->truncate_master();
-			foreach($view as $row)
-			{
-				$data[] = array(
-					'section_id'            => $row->SectionId, 
-				    'f2_estfg'              => $row->F2_EstFG,
-				    'machine_type_id'       => $row->MachineTypeId,
-				    'billet_id'             => $row->BilletTypeId,
-				    'weight_standard'       => $row->WeightStandard,
-				    'die_type_name'         => $row->DieTypeName,
-				    'actual_pressure_time'  => NULL,
-				    'machine_id'            => $row->MachineId,
-				    'len_id'                => $row->LengthId,
-				    'len'                   => $row->Length,
-				);
-			}
-			$save = $this->master_model->insert_master($data);
-
-			if($save)
-			{
-				echo 'sinkronisasi berhasil';
-			}
-			else
-			{
-				echo 'sinkronisasi gagal';
-			}
-		}
-		else
-		{
-			echo 'no';
-		}
-	}
-
 }
 ?>
