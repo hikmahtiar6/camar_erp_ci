@@ -34,4 +34,60 @@ class Query_model extends CI_Model
 		return $query;
 	}
 
+	public function get_report_advance($machine_id = '', $tanggal = '', $shift = '')
+	{
+		$sql = "
+		SELECT d.*,
+			h.machine_id as machine_id2,
+			f.finishing_name,
+			g.SectionDescription,
+			g.ThicknessStandard,
+			g.ThicknessLowerLimit,
+			g.ThicknessUpperLimit,
+			g.HoleCount,
+			g.WeightStandard,
+			g.BolsterTypeId,
+			g.InitialPullingLength,
+			g.BadEndLength,
+			g.F2_PullingLength,
+			g.F2_EstFG,
+			g.F2_EstBilletLengthMax,
+			g.F2_FreqBillet,
+			g.F2_FreqCut	
+			
+		FROM dbo.SpkDetail d
+		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
+		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+		LEFT JOIN 
+			(SELECT *,
+				RowNo=ROW_NUMBER() OVER (PARTITION BY SectionId, MachineId, LengthId ORDER BY SectionId)
+			 FROM Extrusion.ExtrusionGuideFinal2())
+				 g ON g.SectionId=d.section_id
+				AND g.MachineId=h.machine_id
+				AND g.[LengthId]=d.Len
+				AND g.RowNo=1 ";
+
+		if($machine_id != '')
+		{
+			$sql .= "AND h.machine_id ='".$machine_id."' ";
+		}
+
+		if($tanggal != '')
+		{
+			$sql .= "AND d.tanggal ='".$tanggal."' ";
+		}
+
+		if($shift != '')
+		{
+			$sql .= "AND d.shift ='".$shift."' ";
+		}
+
+		$sql = str_replace("g.RowNo=1 AND", "g.RowNo=1 WHERE", $sql);
+		
+		$sql .= $sql." ORDER BY d.shift ASC";
+
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
 }

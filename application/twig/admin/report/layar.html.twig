@@ -8,10 +8,18 @@
     <link href="{{ base_url('web/vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
     <style type="text/css">
-	     @media print{@page {size: landscape}}
-	     .bg-gray {
-	     	background: #DDD;
-	     }
+	    @media print{
+	     	@page {
+	     		size: landscape;
+	     	}
+
+	     	body { 
+		        writing-mode: horizontal-tb;
+		    }
+	    }
+	    .bg-gray {
+	    	background: #DDD;
+	    }
 	</style>
 
 	<body>
@@ -20,9 +28,7 @@
 		</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-info button-action">
 				<button class="btn btn-primary report-print">Print</button>
-				<a href="{{ site_url('admin/dashboard') }}" class="btn btn-danger">Kembali</a>
-				<a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#defaultModal">Filter</a>
-				<a href="{{ site_url('admin/report') }}" class="btn btn-info">UnFilter</a>
+				<a href="javascript:;" class="btn btn-danger report-close">Tutup</a>
 			</div>
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
@@ -31,7 +37,7 @@
 					<tr>
 						<td valign="bottom">
 							<h2>
-								Mesin 1150T
+								{{ machine_description }}
 							</h2>
 						</td>
 
@@ -43,7 +49,7 @@
 
 						<td valign="bottom">
 							<h2>
-								Machine ID
+								{{ machine }}
 							</h2>
 						</td>
 					</tr>
@@ -88,9 +94,6 @@
 
 				<table class="table table-bordered table-striped">
 					<thead>
-						<tr>
-							<th class="bg-gray" colspan="21">Sum Of Target Prod (Billet)</th>
-						</tr>
 						<tr class="bg-gray">
 							<th style="vertical-align: middle;">Sh</th>
 							<th style="vertical-align: middle;">Lot</th>
@@ -118,6 +121,7 @@
 					</thead>
 
 					<tbody>
+						{% set total = 0 %}
 						{% if search_data %}
 						{% for no, row_data in search_data %}
 
@@ -129,79 +133,30 @@
 						{% if row_data.f2_estfg != '' %}
 							{% set target_btg = row_data.f2_estfg * row_data.target_prod %}
 						{% endif %}
+						{% set total = total + row_data.target_prod %}						
 
 						<tr>
-							<td>{{ no + 1 }}.</td>
-							<td>{{ row_data.tanggal|date('D, j/M/y') }}</td>
-							<td>{{ row_data.shift }}</td>
+							<td>SH{{ row_data.shift }}</td>
+							<td>{{ add_zero(no + 1) }}.</td>
 							<td>{{ row_data.section_id }}</td>
 							<td>{{ row_data.SectionDescription }}</td>
-							<td>{{ row_data.machine_type }}</td>
-							<td>{{ row_data.billet_id }}</td>
-							<td>{{ row_data.Length }}</td>
 							<td>{{ row_data.finishing_name }}</td>
-							<td>{{ row_data.target_prod }}</td>
-							<td>{{ convert_dice(row_data.index_dice) }}</td>
-							<td>{{ count_dice(row_data.index_dice) }}</td>
+							<td>{{ row_data.ThicknessLowerLimit }}</td>
+							<td>{{ row_data.ThicknessUpperLimit }}</td>
+							<td>{{ row_data.HoleCount }}</td>
+							<td>{{ row_data.WeightStandard }}</td>
 							<td>{{ row_data.ppic_note }}</td>
-							<td>{{ target_btg }}</td>
-							<td>{{ row_data.weight_standard }}</td>
-							<td>{{ row_data.weight_standard * target_btg * row_data.Length }}</td>
-							<!--
-							<td>{{ arr_sum(total_btg_arr) }}</td>
-							-->
-							<td>{{ row_data.die_type_name }}</td>
-							<!--
-							<td>{{ row_data.actual_pressure_time }}</td>
-							<td>{{ row_data.ShiftStart|date('H:i:s') }}</td>
-							<td>{{ get_shift_end(row_data.ShiftStart, row_data.actual_pressure_time, row_data.target_prod) }}</td>
-							<td>-</td>
-							-->
-							<!--
-							<td>{{ row_data.hari_ke }}</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							-->
+							<td>{{ row_data.BolsterTypeId }}</td>
+							<td>{{ row_data.InitialPullingLength }}m</td>
+							<td>{{ row_data.BadEndLength }}m</td>
+							<td>{{ row_data.F2_PullingLength }}m</td>
+							<td>{{ row_data.F2_EstFG }} BTG</td>
+							<td>{{ row_data.F2_EstBilletLengthMax }}m</td>
+							<td>{{ '' }}</td>
+							<td>{{ row_data.SectionDescription }}</td>
+							<td>{{ row_data.F2_FreqBillet }} Blt</td>
+							<td>{{ row_data.F2_FreqCut }}xPot</td>
+							<td>{{ row_data.target_prod }} Blt</td>
 						</tr>
 						{% endfor %}
 						{% else %}
@@ -213,86 +168,12 @@
 					<tfoot>
 						<tr>
 							<th class="bg-gray" colspan="20">Grand Total</th>
-							<th class="bg-gray" colspan="20">Jumlah Blt</th>
+							<th class="bg-gray" colspan="20"> {{ total }} Blt</th>
 						</tr>
 					</tfoot>
 			</table>
 
 		</div>
-
-
-		<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
-	    <div class="modal-dialog modal-md">
-	        <div class="modal-content content-modal-spk">
-		        <div class="modal-header">
-		        </div>
-	        	<div class="modal-body">
-
-	        		<div class="row clearfix">
-
-	        		<div class="col-md-12">
-
-		        	<form action="{{ site_url('admin/report/index') }}" method="post">
-		        		<div class="form-group">
-		        			<label>Machine</label>
-			                    	
-		                    <select class="form-control" name="machine">
-		                        <option value="">-- Silahkan Pilih --</option>
-		                        {% if machine_data %}
-
-		                        	{% for machine_row in machine_data %}
-
-		                        		<option value="{{ machine_row.MachineId }}" {% if same(machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
-		                        			{{ machine_row.MachineId }}
-		                        		</option>
-		                        	{% endfor %}
-
-		                        {% endif %}
-		                    </select>	
-
-		        		</div>
-
-		        		<div class="form-group">
-
-		        			<label>Tanggal</label>
-		        			<input class="form-control report-date-start" name="tanggal" value="{{ date_now }}">
-		                </div>
-
-		                <div class="form-group">
-
-		        			<label>Shift</label>
-			                    	
-		                    <select class="form-control" name="shift">
-		                        <option value="0">-- Silahkan Pilih --</option>
-		                        {% if shift_data %}
-
-		                        	{% for shift_row in shift_data %}
-
-		                        		<option value="{{ shift_row.ShiftNo }}" {% if same(shift, shift_row.ShiftNo) %} selected="selected" {% endif %}>
-		                        			{{ shift_row.ShiftDescription }}
-		                        		</option>
-		                        	{% endfor %}
-
-		                        {% endif %}
-		                    </select>
-
-		        		</div>
-
-
-		        		<div class="form-group">
-		        			<input class="btn btn-primary" value="Submit" type="submit">
-		        		</div>
-		        	</form>
-
-		        	</div>
-		        	</div>
-
-		        </div>
-		        </div>
-
-
-	    </div>
-	    </div>
 
 		
 

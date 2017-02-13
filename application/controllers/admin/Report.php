@@ -19,6 +19,7 @@ class Report extends CI_Controller
 		$this->load->model('master/machine_model');
 		$this->load->model('master_model');
 		$this->load->model('master/shift_model');
+		$this->load->model('master/query_model');
 
 	}
 
@@ -41,7 +42,7 @@ class Report extends CI_Controller
 		$this->twiggy->set('machines', $machine);
 		$this->twiggy->set('shifts', $shift);
 		$this->twiggy->set('sections', $section);
-		$this->twiggy->template('admin/report/layar')->display();
+		$this->twiggy->template('admin/report/index')->display();
 	}
 
 	/**
@@ -50,19 +51,28 @@ class Report extends CI_Controller
 	public function search()
 	{
 		$post = $this->input->post();
+		$tanggal = (isset($post['tanggal'])) ? $post['tanggal'] : '' ;
+		$machine = (isset($post['machine'])) ? $post['machine'] : '' ;
+		$shift = (isset($post['shift'])) ? $post['shift'] : '' ;
 
-		if($post['action'] == 'layar')
+		$machineDescription = '';
+		$get_machine = $this->machine_model->get_data_by_id($machine);
+		if($get_machine)
 		{
-			$search_data = $this->section_model->get_data_detail($post['date_start'], $post['date_finish'], $post['shift'], $post['mesin'], $post['section']);
+			$machineDescription = $get_machine->Description;
+		}
 
-			$this->twiggy->set('search_data', $search_data);
-			$this->twiggy->set('post', $post);
-			$this->twiggy->template('admin/report/layar')->display();
-		}
-		else
-		{
-			echo "Fitur masih dalam tahap pengembangan";
-		}
+		$tgl = str_replace("/", "-", $tanggal);
+
+		$tgl =  date('Y-m-d', strtotime($tgl));
+
+		$search_data = $this->query_model->get_report_advance($machine, $tgl, $shift)->result();
+
+		$this->twiggy->set('search_data', $search_data);
+		$this->twiggy->set('post', $post);
+		$this->twiggy->set('machine', $machine);
+		$this->twiggy->set('machine_description', $machineDescription);
+		$this->twiggy->template('admin/report/layar')->display();
 	}
 }
 ?>
