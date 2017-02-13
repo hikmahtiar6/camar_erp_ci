@@ -122,8 +122,10 @@
 
 					<tbody>
 						{% set total = 0 %}
+						{% set sh = '' %}
 						{% if search_data %}
 						{% for no, row_data in search_data %}
+
 
 						{% set total_btg = row_data.WeightStandard * row_data.target_prod * row_data.Length %}
 						{% set total_btg_arr = [] %}
@@ -136,7 +138,14 @@
 						{% set total = total + row_data.target_prod %}						
 
 						<tr>
-							<td>SH{{ row_data.shift }}</td>
+							<td>
+								{% if sh != ''%}
+									
+								{% else %}
+									SH{{ row_data.shift }}
+									{% set sh = sh ~ row_data.shift %}
+								{% endif %}
+							</td>
 							<td>{{ add_zero(no + 1) }}.</td>
 							<td>{{ row_data.section_id }}</td>
 							<td>{{ row_data.SectionDescription }}</td>
