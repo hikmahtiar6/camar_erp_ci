@@ -139,11 +139,11 @@
 
 						<tr>
 							<td>
+									SH{{ row_data.shift }}
 								{% if sh != ''%}
 									
 								{% else %}
-									SH{{ row_data.shift }}
-									{% set sh = sh ~ row_data.shift %}
+									{# set sh = sh ~ row_data.shift #}
 								{% endif %}
 							</td>
 							<td>{{ add_zero(no + 1) }}.</td>

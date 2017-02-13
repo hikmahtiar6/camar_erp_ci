@@ -84,7 +84,7 @@ class Query_model extends CI_Model
 
 		$sql = str_replace("g.RowNo=1 AND", "g.RowNo=1 WHERE", $sql);
 		
-		$sql .= $sql." ORDER BY d.shift ASC";
+		$sql .= $sql." ORDER BY d.shift DESC";
 
 		$query = $this->db->query($sql);
 		return $query;
