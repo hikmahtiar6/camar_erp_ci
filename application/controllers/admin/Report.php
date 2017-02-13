@@ -17,6 +17,7 @@ class Report extends CI_Controller
 		// load model section
 		$this->load->model('section_model');
 		$this->load->model('master/machine_model');
+		$this->load->model('master_model');
 		$this->load->model('master/shift_model');
 
 	}
@@ -30,10 +31,17 @@ class Report extends CI_Controller
 		$shift = $this->shift_model->get_data();
 		$section = $this->section_model->get_data();
 
+		$machine_data = $this->master_model->get_data_machine();
+		$shift_data = $this->shift_model->get_data();
+
+		$this->twiggy->set('shift_data', $shift_data);
+		$this->twiggy->set('machine_data', $machine_data);
+		$this->twiggy->set('date_now', date('d/m/Y'));
+
 		$this->twiggy->set('machines', $machine);
 		$this->twiggy->set('shifts', $shift);
 		$this->twiggy->set('sections', $section);
-		$this->twiggy->template('admin/report/index')->display();
+		$this->twiggy->template('admin/report/layar')->display();
 	}
 
 	/**

@@ -3,9 +3,15 @@
 	<head>
 		<title>View Reporting</title>
 	</head>
+	<link href="{{ base_url('assets_app/fonts/roboto-v15/font.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ base_url('assets_app/fonts/material-icons/font.css') }}" rel="stylesheet" type="text/css"> 
     <link href="{{ base_url('web/vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
     <style type="text/css">
 	     @media print{@page {size: landscape}}
+	     .bg-gray {
+	     	background: #DDD;
+	     }
 	</style>
 
 	<body>
@@ -14,41 +20,38 @@
 		</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-info button-action">
 				<button class="btn btn-primary report-print">Print</button>
-				<button class="btn btn-danger report-close">Tutup</button>
+				<a href="{{ site_url('admin/dashboard') }}" class="btn btn-danger">Kembali</a>
+				<a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#defaultModal">Filter</a>
+				<a href="{{ site_url('admin/report') }}" class="btn btn-info">UnFilter</a>
 			</div>
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
 
-				<!--<table style="width: 80%">
+				<table style="width: 100%">
 					<tr>
 						<td valign="bottom">
 							<h2>
-								Time Sheet
+								Mesin 1150T
 							</h2>
 						</td>
 
 						<td valign="bottom">
 							<h2>
-								{{ post.mesin }}
+								SPK-1 <u>&nbsp;&nbsp;&nbsp;SPK Extrusion&nbsp;&nbsp;&nbsp;</u>
 							</h2>
 						</td>
 
 						<td valign="bottom">
 							<h2>
-								Week 47
+								Machine ID
 							</h2>
-						</td>
-
-						<td valign="bottom">
-							<h4>
-								Recovery Total: ###
-							</h4>
 						</td>
 					</tr>
 				</table>
 
 				<br>
 
+				<!--
 				<table border="0" style="width: 100%">
 					<tr>
 						<th width="200">Std Jam Kerja:</th>
@@ -75,8 +78,8 @@
 						<th>Jam non-efektif:</th>
 						<th>948 mnt(131.7%)</th>
 					</tr>
-				</table>-->
-
+				</table>
+				-->
 								
 				
 
@@ -86,93 +89,30 @@
 				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>
-							<th style="vertical-align: middle;">No.</th>
-							<th style="vertical-align: middle;">Tanggal</th>
-							<th style="vertical-align: middle;">Shift</th>
+							<th class="bg-gray" colspan="21">Sum Of Target Prod (Billet)</th>
+						</tr>
+						<tr class="bg-gray">
+							<th style="vertical-align: middle;">Sh</th>
+							<th style="vertical-align: middle;">Lot</th>
 							<th style="vertical-align: middle;">Section Id</th>
 							<th style="vertical-align: middle;">Section Name</th>
-							<th style="vertical-align: middle;">Mesin</th>
-							<th style="vertical-align: middle;">Billet Id</th>
-							<th style="vertical-align: middle;">Len (m)</th>
 							<th style="vertical-align: middle;">Finishing</th>
-							<th style="vertical-align: middle;">
-								Target Prod <br>
-								(Billet)
-							</th>
-							<!--<th style="vertical-align: middle;">Day</th>
-							<th style="vertical-align: middle;">No. Lot</th>-->
-							<th style="vertical-align: middle;">Index Dice</th>
-							<th style="vertical-align: middle;">Index Dice Qty</th>
-							<th style="vertical-align: middle;">PPIC Note</th>
-							<th style="vertical-align: middle;">
-								Target Prod <br>
-								(BTG)
-							</th>
-							<th style="vertical-align: middle;">
-								Berat Std <br>
-								(kg/m) 
-							</th>
-							<th style="vertical-align: middle;">
-								Target Section <br>
-								(kg)
-							</th>
-							<!--
-							<th style="vertical-align: middle;">
-								Total Target <br>
-								(kg)
-							</th>
-							-->
-							<th style="vertical-align: middle;">Die Type</th>
-							<!--
-							<th style="vertical-align: middle;">Pressure Time/Billet</th>
-							<th style="vertical-align: middle;">EstStart</th>
-							<th style="vertical-align: middle;">EstEnd</th>
-							<th style="vertical-align: middle;">EstDiesPrep</th>
-
-							<th style="vertical-align: middle;">Berat Aktual/m</th>
-							<th style="vertical-align: middle;">Pemakaian Billet <br> (kg)</th>
-							<th style="vertical-align: middle;">Pakai Billet <br>(m)</th>
-							<th style="vertical-align: middle;">Start</th>
-							<th style="vertical-align: middle;">Finish</th>
-							<th style="vertical-align: middle;">Hasil Prod <br> (BTG)</th>
-							<th style="vertical-align: middle;">Hasil Prod <br> (KG)</th>
-							<th style="vertical-align: middle;">Ram speed</th>
-							<th style="vertical-align: middle;">Pressure</th>
-							<th style="vertical-align: middle;">Recovery</th>
-							<th style="vertical-align: middle;">Keterangan</th>
-							<th style="vertical-align: middle;">Dead Cycle</th>
-							<th style="vertical-align: middle;">Diez Cycle <br> (x)</th>
-							<th style="vertical-align: middle;">Diez Cycle</th>
-							<th style="vertical-align: middle;">Down Time</th>
-							<th style="vertical-align: middle;">Total Pemak <br> Billet Hari Ini</th>
-							<th style="vertical-align: middle;">Hasil Prod <br> Hari Ini</th>
-							<th style="vertical-align: middle;">Recovery <br> 2</th>
-							<th style="vertical-align: middle;">Achieve</th>
-							<th style="vertical-align: middle;">Aktual Billet <br> (BTG)</th>
-							<th style="vertical-align: middle;">Oprt</th>
-							<th style="vertical-align: middle;">Berat Scrap</th>
-							<th style="vertical-align: middle;">Berat End-Butt</th>
-							<th style="vertical-align: middle;">Loss</th>
-							<th style="vertical-align: middle;">Loss %</th>
-							<th style="vertical-align: middle;">x</th>
-							<th style="vertical-align: middle;">Show?</th>
-							<th style="vertical-align: middle;">Section Name</th>
-							<th style="vertical-align: middle;">Code</th>
-							<th style="vertical-align: middle;">Manuf Thick</th>
+							<th style="vertical-align: middle;">Tbl</th>
 							<th style="vertical-align: middle;">Tol</th>
 							<th style="vertical-align: middle;">Hole</th>
+							<th style="vertical-align: middle;">Berat Std</th>
+							<th style="vertical-align: middle;">PPIC Note</th>
 							<th style="vertical-align: middle;">Bolster</th>
-							<th style="vertical-align: middle;">Puller Awal</th>
+							<th style="vertical-align: middle;">Pull Awal</th>
 							<th style="vertical-align: middle;">BS Blkg</th>
-							<th style="vertical-align: middle;">PTarik</th>
-							<th style="vertical-align: middle;">HJadi</th>
+							<th style="vertical-align: middle;">P Tarik</th>
+							<th style="vertical-align: middle;">H Jadi</th>
 							<th style="vertical-align: middle;">BltMax</th>
 							<th style="vertical-align: middle;">BltVen</th>
-							<th style="vertical-align: middle;">FrekBlt</th>
-							<th style="vertical-align: middle;">FrekPot</th>
 							<th style="vertical-align: middle;">SecName</th>
-							<th style="vertical-align: middle;">FJadiBTG</th>
-							-->
+							<th style="vertical-align: middle;">FrBlt</th>
+							<th style="vertical-align: middle;">FrPot</th>
+							<th style="vertical-align: middle;">Total</th>
 
 						</tr>
 					</thead>
@@ -270,9 +210,89 @@
 						</tr>
 						{% endif %}
 					</tbody>
+					<tfoot>
+						<tr>
+							<th class="bg-gray" colspan="20">Grand Total</th>
+							<th class="bg-gray" colspan="20">Jumlah Blt</th>
+						</tr>
+					</tfoot>
 			</table>
 
 		</div>
+
+
+		<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+	    <div class="modal-dialog modal-md">
+	        <div class="modal-content content-modal-spk">
+		        <div class="modal-header">
+		        </div>
+	        	<div class="modal-body">
+
+	        		<div class="row clearfix">
+
+	        		<div class="col-md-12">
+
+		        	<form action="{{ site_url('admin/report/index') }}" method="post">
+		        		<div class="form-group">
+		        			<label>Machine</label>
+			                    	
+		                    <select class="form-control" name="machine">
+		                        <option value="">-- Silahkan Pilih --</option>
+		                        {% if machine_data %}
+
+		                        	{% for machine_row in machine_data %}
+
+		                        		<option value="{{ machine_row.MachineId }}" {% if same(machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
+		                        			{{ machine_row.MachineId }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>	
+
+		        		</div>
+
+		        		<div class="form-group">
+
+		        			<label>Tanggal</label>
+		        			<input class="form-control report-date-start" name="tanggal" value="{{ date_now }}">
+		                </div>
+
+		                <div class="form-group">
+
+		        			<label>Shift</label>
+			                    	
+		                    <select class="form-control" name="shift">
+		                        <option value="0">-- Silahkan Pilih --</option>
+		                        {% if shift_data %}
+
+		                        	{% for shift_row in shift_data %}
+
+		                        		<option value="{{ shift_row.ShiftNo }}" {% if same(shift, shift_row.ShiftNo) %} selected="selected" {% endif %}>
+		                        			{{ shift_row.ShiftDescription }}
+		                        		</option>
+		                        	{% endfor %}
+
+		                        {% endif %}
+		                    </select>
+
+		        		</div>
+
+
+		        		<div class="form-group">
+		        			<input class="btn btn-primary" value="Submit" type="submit">
+		        		</div>
+		        	</form>
+
+		        	</div>
+		        	</div>
+
+		        </div>
+		        </div>
+
+
+	    </div>
+	    </div>
 
 		
 
@@ -280,6 +300,9 @@
 
     <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ base_url('web/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ base_url('web/vendor/plugins-admin/momentjs/moment.js') }}"></script>
+    <script src="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+    <script src="{{ base_url('assets_app/js/report.js') }}"></script>
 
     <script type="text/javascript">
 	    $(document).ready(function() {
@@ -317,6 +340,8 @@
 
 		window.onbeforeprint = beforePrint;
 		window.onafterprint = afterPrint;
+
+		window.REPORT.handleDatepicker();
 
 	</script>
 

@@ -4,7 +4,7 @@
  */
 class Section_model extends CI_Model {
 	
-	const TABLE = 'MasterDetail';
+	const TABLE = 'SpkDetail';
 	const TABLE_BARANG = 'Inventory.Sections';
 	const TABLE_MACHINE = 'Factory.Machines';
 	const TABLE_LEN = 'Inventory.MasterDimensionLength';
@@ -12,7 +12,7 @@ class Section_model extends CI_Model {
 	const TABLE_DIMENSION = 'Inventory.SectionsDimension';
 	const TABLE_FINISHING = 'Finishing';
 	const TABLE_NEWMASTER = 'NewMaster';
-	const TABLE_HEAD = 'HeaderSpk';
+	const TABLE_HEAD = 'SpkHeader';
 
 	public function __construct()
 	{

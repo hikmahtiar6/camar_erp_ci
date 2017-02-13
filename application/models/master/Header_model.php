@@ -4,7 +4,7 @@
  */
 class Header_model extends CI_Model {
 
-	const TABLE = 'HeaderSpk';
+	const TABLE = 'SpkHeader';
 	const TABLE_MACHINE = 'Factory.Machines';
 
 	public function __construct()

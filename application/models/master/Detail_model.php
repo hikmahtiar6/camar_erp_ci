@@ -4,7 +4,7 @@
  */
 class Detail_model extends CI_Model {
 
-	const TABLE = 'MasterDetail';
+	const TABLE = 'SpkDetail';
 
 	public function __construct()
 	{

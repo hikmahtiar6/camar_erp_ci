@@ -32,7 +32,6 @@ class Spk extends CI_Controller
 
 		$machine_data = $this->master_model->get_data_machine();
 		$shift_data = $this->shift_model->get_data();
-
 		$header_data = $this->header_model->advance_search($machine_id);
 
 		$this->twiggy->set('machine_id', $machine_id);
