@@ -14,6 +14,7 @@ class Master extends CI_Controller {
 		$this->load->model('master/finishing_model');
 		$this->load->model('master/len_model');
 		$this->load->model('master/indexdice_model');
+		$this->load->model('master/machine_model');
 		$this->load->model('master/query_model');
 	}
 
@@ -103,7 +104,7 @@ class Master extends CI_Controller {
 			{
 				$machine_id = $get_header->machine_id;
 			}
-			$data = $this->query_model->get_master_advance($machine_id, $get_detail->section_id)->result();
+			$data = $this->len_model->get_data($machine_id, $get_detail->section_id)->result();
 		}
 
 		if($data)
@@ -120,27 +121,33 @@ class Master extends CI_Controller {
 		return $this->output->set_output(json_encode($row));
 	}
 
-	public function get_data_index_dice($id, $machine_type_id)
+	public function get_data_index_dice($id, $machine_id)
 	{
 		$section_id = '';
+		$machine_type_id = '';
+
 		$get_section_in_detail = $this->detail_model->get_data_by_id($id);
 		if($get_section_in_detail)
 		{
 			$section_id = $get_section_in_detail->section_id;
 		}
 
+		$get_machine = $this->machine_model->get_data_by_id($machine_id);
+		if($get_machine)
+		{
+			$machine_type_id = $get_machine->MachineTypeId;
+		}
+
 		$row = array();
 
-		if($section_id == 'null' || $section_id == '')
+		if($section_id == '')
 		{
-			$r = 'b';
 			$get_dice = $this->indexdice_model->get_data();
 		}
 		else
 		{
-			$r = 'a';
 			$get_data = array(
-				'SectionId'     => str_replace('%20', ' ', $section_id),
+				'SectionId'     => $section_id,
 				'MachineTypeId' => $machine_type_id
 			);
 			$get_dice = $this->indexdice_model->get_data_by($get_data)->result();

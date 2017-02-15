@@ -992,8 +992,11 @@ window.TRANSACTION = (function($) {
 						editoptions: {
 							dataInit: function(el) {
 								var el = el;
+								var grid = $('.list-spk');
+								var rowId = $(el).parent().parent().attr('id');
+								var celMachine = grid.jqGrid ('getCell', rowId, 'machine_id');
 
-								$(el).attr('id', 'section_id'+$(el).parent().parent().attr('id'));
+								$(el).attr('id', 'section_id'+rowId);
 
 								$.ajax({
 									url: window.APP.siteUrl + 'admin/master/get_data_section/' + $('.header-id').val()+ '/name',
@@ -1021,6 +1024,7 @@ window.TRANSACTION = (function($) {
 										var grid = $('.list-spk');
 
 										var rowId = $(this).parent().parent().attr('id');
+										var _this = this;	
 
 										//grid.jqGrid();
 										var celValue = grid.jqGrid ('getCell', rowId, 'machine_id');
@@ -1036,6 +1040,44 @@ window.TRANSACTION = (function($) {
 												machine: celValue
 											},
 											success: function(response) {
+
+
+												var idxDice = $('#indexdice'+rowId);
+												var len = $('#len'+rowId);
+
+												$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celValue, function(data) {
+
+											        var output = "";
+
+											        $.each(data, function(key, val) {
+											        	if(val.value == idxDice.parent().attr('title')) {
+															selected = 'selected="selected"';
+														} else {
+															selected = '';
+														}
+											            output += '<option value="' + val.value + '" '+selected+'>' + val.text + '</option>';
+											        });
+											        idxDice.html(output);
+											    });
+
+											    $.ajax({
+													url: window.APP.siteUrl + 'admin/master/get_data_len/'+rowId,
+													dataType: 'json',
+													success: function(res) {
+														var opt =  '';
+														var i = 0;
+														for(i in res) {
+															if(res[i]['value'] == len.parent().attr('title')) {
+																selected = 'selected="selected"';
+															} else {
+																selected = '';
+															}
+															opt += '<option value="'+res[i]['value']+'" '+selected+'>'+res[i]['text']+'</option>';
+														}
+														len.html(opt);
+													}
+												});
+
 											}
 										});
 
@@ -1079,9 +1121,12 @@ window.TRANSACTION = (function($) {
 						editoptions: {
 							dataInit: function(el) {
 								var el = el;
+								var rowId = $(el).parent().parent().attr('id');
+
+								$(el).attr('id', 'len'+rowId);
 
 								$.ajax({
-									url: window.APP.siteUrl + 'admin/master/get_data_len/'+$(el).parent().parent().attr('id'),
+									url: window.APP.siteUrl + 'admin/master/get_data_len/'+rowId,
 									dataType: 'json',
 									success: function(res) {
 										var opt =  '';
@@ -1160,12 +1205,11 @@ window.TRANSACTION = (function($) {
 						    	var rowId = $(el).parent().parent().attr('id');
 								var celMachine = grid.jqGrid ('getCell', rowId, 'machine_id');
 
-						    	//$(el).attr('multiple', 'multiple');
-						    	setTimeout(function() {
-									var e = document.getElementById("section_id" + rowId);
-									var celSectionId = e.options[e.selectedIndex].value;
+								$(el).attr('id', 'indexdice'+rowId);
 
-						    		$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+celSectionId+'/'+celMachine, function(data) {
+						    	//$(el).attr('multiple', 'multiple');
+
+						    		$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celMachine, function(data) {
 
 								        var output = "";
 
@@ -1184,35 +1228,8 @@ window.TRANSACTION = (function($) {
 								    	});
 								    	*/
 								    });
-						    	}, 700);
 						    	
-						    	/*{
-								    tags: [],
-								    ajax: {
-								        url: window.APP.siteUrl + 'admin/master/get_data_index_dice/037/SN0690.02',
-								        dataType: 'json',
-								        type: 'post',
-								        data: function (term) {
-								            return {
-								                term: term
-								            };
-								        },
-								        results: function (data) {
-								            return {
-								                results: $.map(data, function (item) {
-								                    return {
-								                        text: item.text,
-								                        slug: item.text,
-								                        id: item.value
-								                    }
-								                })
-								            };
-								        }
-								    },
-						            dropdownCssClass: "ui-widget ui-jqdialog",
-						            width: "100%"
-						        });
-						        */
+						    	
 						    }
 						}
 					},

@@ -11,15 +11,28 @@ class Len_model extends CI_Model {
 		parent::__construct();
 	}
 
-	public function get_data()
+
+
+	public function get_data($machine_id = '', $section_id = '')
 	{
-		$sql = $this->db;
+		$sql = "
+		SELECT DISTINCT d.LengthId, d.Length, d.sectionid
+		FROM Extrusion.ExtrusionGuideFinal2() d ";
 
-		$sql->select('*');
-		$sql->from(static::TABLE);
+		if($machine_id != '')
+		{
+			$sql .= "AND MACHINEID='".$machine_id."' ";
+		}
 
-		$get = $sql->get();
-		return $get->result();
+		if($section_id != '')
+		{
+			$sql .= "AND d.sectionid='".$section_id."' ";
+		}
+
+		$sql = str_replace("d AND", "d WHERE", $sql);
+
+		$query = $this->db->query($sql);
+		return $query;
 	}
 
 	public function get_data_by_id($id)
