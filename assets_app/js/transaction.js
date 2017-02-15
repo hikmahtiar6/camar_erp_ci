@@ -992,6 +992,9 @@ window.TRANSACTION = (function($) {
 						editoptions: {
 							dataInit: function(el) {
 								var el = el;
+
+								$(el).attr('id', 'section_id'+$(el).parent().parent().attr('id'));
+
 								$.ajax({
 									url: window.APP.siteUrl + 'admin/master/get_data_section/' + $('.header-id').val()+ '/name',
 									dataType: 'json',
@@ -1141,8 +1144,77 @@ window.TRANSACTION = (function($) {
 						name:'index_dice', 
 						index:'index_dice', 
 						hidden: false,
-						editable:false,
-						width: 200
+						editable: true,
+						width: 300,
+						multiple: true,
+						edittype: "select", 
+						editoptions: {
+						    //dataUrl: window.APP.siteUrl + 'admin/master/get_data_index_dice/037/SN0690.02',
+						    //defaultValue: "DHL",
+						    selectFilled: function (options) {
+						        
+						    },
+						    dataInit: function(el) {
+						    	var el = el;
+						    	var grid = $('.list-spk');
+						    	var rowId = $(el).parent().parent().attr('id');
+								var celMachine = grid.jqGrid ('getCell', rowId, 'machine_id');
+
+						    	//$(el).attr('multiple', 'multiple');
+						    	setTimeout(function() {
+									var e = document.getElementById("section_id" + rowId);
+									var celSectionId = e.options[e.selectedIndex].value;
+
+						    		$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+celSectionId+'/'+celMachine, function(data) {
+
+								        var output = "";
+
+								        $.each(data, function(key, val) {
+								        	if(val.value == $(el).parent().attr('title')) {
+												selected = 'selected="selected"';
+											} else {
+												selected = '';
+											}
+								            output += '<option value="' + val.value + '" '+selected+'>' + val.text + '</option>';
+								        });
+								        $(el).html(output);
+
+								        /*$(el).select2({
+								            width: "100%",
+								    	});
+								    	*/
+								    });
+						    	}, 700);
+						    	
+						    	/*{
+								    tags: [],
+								    ajax: {
+								        url: window.APP.siteUrl + 'admin/master/get_data_index_dice/037/SN0690.02',
+								        dataType: 'json',
+								        type: 'post',
+								        data: function (term) {
+								            return {
+								                term: term
+								            };
+								        },
+								        results: function (data) {
+								            return {
+								                results: $.map(data, function (item) {
+								                    return {
+								                        text: item.text,
+								                        slug: item.text,
+								                        id: item.value
+								                    }
+								                })
+								            };
+								        }
+								    },
+						            dropdownCssClass: "ui-widget ui-jqdialog",
+						            width: "100%"
+						        });
+						        */
+						    }
+						}
 					},
 					{
 						label: 'Index Dice Qty',
@@ -1269,6 +1341,13 @@ window.TRANSACTION = (function($) {
 			});
 
 			var lastSelection;
+
+			function getCellValue(rowId, cellId) {
+				//var grid = $(".list-spk");
+			    var cell = $('#' + rowId + '_' + cellId);        
+			    var val = cell.val();
+			    return val;
+			}
 
 			function editRow(id) {
 		        var grid = $(".list-spk");

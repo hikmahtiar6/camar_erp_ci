@@ -33,6 +33,7 @@
     "bootstrap-datetimepicker": "^0.0.11",
     "select2": "^4.0.3",
     "jq-fullscreen": "jquery-fullscreen-plugin#^0.6.0",
-    "jqGrid": "jqgrid#^5.2.0"
+    "jqGrid": "jqgrid#^5.2.0",
+    "chosen": "^1.6.2"
   }
 }
