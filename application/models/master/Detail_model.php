@@ -58,6 +58,12 @@ class Detail_model extends CI_Model {
 		return $this->db->insert(static::TABLE, $data);
 	}
 
+	public function update($id, $data)
+	{
+		$this->db->where('master_detail_id', $id);
+		return $this->db->update(static::TABLE, $data);
+	}
+
 	public function delete($id)
 	{
 		$this->db->where('master_detail_id', $id);

@@ -632,6 +632,7 @@ class Transaction extends CI_Controller
 		$sidx  = ($this->input->post('sidx')) ? $this->input->post('sidx') : 'master_detail_id';
 		$sord  = ($this->input->post('sord')) ? $this->input->post('sord') : 'master_detail_id';
 		$search_get  = $this->input->post('_search');
+		$sum = array();
 
 		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
 		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
@@ -688,6 +689,18 @@ class Transaction extends CI_Controller
 		{
 			$get_master_query =  $this->query_model->get_master_advance($machine, $gmd->section_id)->row();
 
+			$target_prod_btg = $gmd->target_prod;
+			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+
+
+			if($f2_estfg != NULL)
+			{
+				$target_prod_btg = $f2_estfg * $gmd->target_prod; 
+			}
+
+			array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
+
 			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
 			$response->rows[$i]['id']   = $gmd->master_detail_id;
 			$response->rows[$i]['cell'] = array(
@@ -699,7 +712,15 @@ class Transaction extends CI_Controller
 				$gmd->machine_id,
 				($get_master_query) ? $get_master_query->BilletTypeId : '-',
 				$gmd->Length,
-				$gmd->finishing_name
+				$gmd->finishing_name,
+				($gmd->target_prod == null) ? '' : $gmd->target_prod,
+				$this->convert_dice($gmd->index_dice),
+				$this->count_dice($gmd->index_dice),
+				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
+				$target_prod_btg,
+				$weight_standard,
+				$weight_standard * $target_prod_btg * $gmd->Length,
+				($get_master_query) ? $get_master_query->DieTypeName : '-'
 			);
 			$i++;
 		}
@@ -785,6 +806,37 @@ class Transaction extends CI_Controller
 		);*/
 
 		$this->output->set_output(json_encode($response));
+	}
+
+	public function crud()
+	{
+		$oper = $this->input->post('oper');
+		$id = $this->input->post('id');
+		$tanggal = $this->input->post('tanggal');
+		$shift = $this->input->post('shift');
+		$section_id = $this->input->post('section_id');
+		$len = $this->input->post('len');
+		$ppic_note = $this->input->post('ppic_note');
+		$finishing = $this->input->post('finishing');
+		 
+		switch ($oper) {
+			case 'add':
+			break;
+			case 'edit':
+				$datanya=array(
+					'tanggal'    => date('Y-m-d', strtotime($tanggal)),
+					'shift'      => $shift,
+					'section_id' => $section_id,
+					'len'        => $len,
+					'ppic_note'  => $ppic_note,
+					'finishing'  => $finishing,
+				);
+				$this->detail_model->update($id, $datanya);
+			break;
+			case 'del':
+				$this->detail_model->delete($id);
+			break;
+		}	
 	}
 
 }

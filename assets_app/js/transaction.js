@@ -898,8 +898,8 @@ window.TRANSACTION = (function($) {
 		},
 
 		handlejqGrid: function() {
-			$.jgrid.defaults.responsive = true;     
-			$.jgrid.defaults.width = $('.navbar').width() - 150;     
+			//$.jgrid.defaults.responsive = true;     
+			//$.jgrid.defaults.width = $('.navbar').width() - 150;     
 		    $.jgrid.defaults.styleUI = 'Bootstrap';
 
 			var grid = $('.list-spk');
@@ -908,136 +908,256 @@ window.TRANSACTION = (function($) {
 				datatype: "json", //Datatype yg di gunakan
 				height: "auto", //Mengset Tinggi table jadi Auto menyesuaikan dengan isi table
 				mtype: "POST",
-				colNames: [
-					'',
-					'Tanggal',
-					'Shift',
-					'Section Id',
-					'Section Name',
-					'Mesin',
-					'Billet Id',
-					'Len (m)',
-					'Finishing',
-					'Target Prod (Billet)',
-					'Index Dice',
-					'Index Dice Qty',
-					'PPIC Note',
-					'Target Prod (BTG)',
-					'Berat Std (kg/m)',
-					'Target Section (kg)'
-				],
+				cmTemplate: {sortable:false},
 				colModel: [
 					{
+						label: '  <br>',
 						name:'id', 
-						key:true, 
+						key: true,
 						index:'master_detail_id', 
-						hidden:false,
+						hidden:true,
 						editable:false,
+						width: 50
 					},
 					{
+						label: 'Tanggal <br><br>',
 						name:'tanggal', 
-						key:true, 
 						index:'tanggal', 
 						hidden: false,
-						editable:false,
+						editable:true,
+						width: 120,
+						edittype: "select",
+						editoptions: {
+							dataInit: function(el) {
+								var el = el;
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/transaction/get_tanggal_header/'+$('.header-id').val(),
+									dataType: 'json',
+									success: function(res) {
+										var opt =  '';
+										var i = 0;
+										for(i in res) {
+											if(res[i]['value'] == $(el).parent().attr('title')) {
+												selected = 'selected="selected"';
+											} else {
+												selected = '';
+											}
+											opt += '<option '+selected+'>'+res[i]['value']+'</option>';
+										}
+										$(el).html(opt);
+									}
+								});
+							}
+						}
 					},
 					{
-						name:'id', 
-						key:true, 
+						label: 'Shift <br><br>',
+						name:'shift', 
+						index:'shift', 
+						hidden: false,
+						editable:true,
+						width: 70,
+						edittype: "select",
+						editoptions: {
+							dataInit: function(el) {
+								var el = el;
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/master/get_data_shift',
+									dataType: 'json',
+									success: function(res) {
+										var opt =  '';
+										var i = 0;
+										for(i in res) {
+											if(res[i]['value'] == $(el).parent().attr('title')) {
+												selected = 'selected="selected"';
+											} else {
+												selected = '';
+											}
+											opt += '<option value="'+res[i]['value']+'" '+selected+'>'+res[i]['text']+'</option>';
+										}
+										$(el).html(opt);
+									}
+								});
+							}
+						}
+					},
+					{
+						label: 'Section Id <br><br>',
+						name:'section_id', 
+						index:'section_id', 
+						hidden: false,
+						editable:true,
+						width: 150,
+						edittype: "select",
+						editoptions: {
+							dataInit: function(el) {
+								var el = el;
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/master/get_data_section/' + $('.header-id').val()+ '/name',
+									dataType: 'json',
+									success: function(res) {
+										var opt =  '';
+										var i = 0;
+										for(i in res) {
+											if(res[i]['value'] == $(el).parent().attr('title')) {
+												selected = 'selected="selected"';
+											} else {
+												selected = '';
+											}
+											opt += '<option value="'+res[i]['value']+'" '+selected+'>'+res[i]['text']+'</option>';
+										}
+										$(el).html(opt);
+									}
+								});
+							}
+						}
+					},
+					{
+						label: 'Section Name <br><br>',
+						name:'section_name', 
+						index:'section_name', 
+						hidden: false,
+						editable:false,
+						width: 200
+					},
+					{
+						label: 'Mesin Id <br><br>',
+						name:'machine_id', 
+						index:'machine_id', 
+						hidden: false,
+						editable:false,
+						width: 120
+					},
+					{
+						label: 'Billet Id <br><br>', 
+						name:'billet_id', 
+						index:'billet_id', 
+						hidden: false,
+						editable:false,
+						width: 120
+					},
+					{
+						label: 'Len (m) <br><br>',
+						name:'len', 
 						index:'master_detail_id', 
+						hidden: false,
+						editable:true,
+						width: 90,
+						edittype: "select",
+						editoptions: {
+							dataInit: function(el) {
+								var el = el;
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/master/get_data_len/'+$('.header-id').val(),
+									dataType: 'json',
+									success: function(res) {
+										var opt =  '';
+										var i = 0;
+										for(i in res) {
+											if(res[i]['value'] == $(el).parent().attr('title')) {
+												selected = 'selected="selected"';
+											} else {
+												selected = '';
+											}
+											opt += '<option value="'+res[i]['value']+'" '+selected+'>'+res[i]['text']+'</option>';
+										}
+										$(el).html(opt);
+									}
+								});
+							}
+						}
+					},
+					{
+						label: 'Finishing <br><br>',
+						name:'finishing', 
+						index:'finishing', 
+						hidden: false,
+						editable:true,
+						width: 90,
+						edittype: "select",
+						editoptions: {
+							dataInit: function(el) {
+								var el = el;
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/master/get_data_finishing',
+									dataType: 'json',
+									success: function(res) {
+										var opt =  '';
+										var i = 0;
+										for(i in res) {
+											if(res[i]['value'] == $(el).parent().attr('title')) {
+												selected = 'selected="selected"';
+											} else {
+												selected = '';
+											}
+											opt += '<option value="'+res[i]['value']+'" '+selected+'>'+res[i]['text']+'</option>';
+										}
+										$(el).html(opt);
+									}
+								});
+							}
+						}
+					},
+					{
+						label: 'Target Prod <br> (Bilet)',
+						name:'target_prod', 
+						index:'target_prod', 
+						hidden: false,
+						editable:false,
+						width: 90
+					},
+					{
+						label: 'Index Dice <br><br>',
+						name:'index_dice', 
+						index:'index_dice', 
+						hidden: false,
+						editable:false,
+						width: 200
+					},
+					{
+						label: 'Index Dice Qty',
+						name:'index_dice_qty', 
+						index:'index_dice_qty', 
+						hidden: false,
+						editable:false,
+						width: 90
+					},
+					{
+						label: 'PPIC Note <br><br>',
+						name:'ppic_note', 
+						index:'ppic_note', 
+						hidden: false,
+						editable:true,
+						width: 100
+					},
+					{
+						label: 'Target Prod <br> (Btg)',
+						name:'target_prod_btg', 
+						index:'target_prod_btg', 
 						hidden: false,
 						editable:false,
 					},
 					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
+						label: 'Berat Std <br><br>',
+						name:'weight_standard', 
+						index:'weight_standard', 
 						hidden: false,
 						editable:false,
 					},
 					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
+						label: 'Target Section <br><br>',
+						name:'target_section', 
+						index:'target_section', 
 						hidden: false,
 						editable:false,
 					},
 					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
+						label: 'Die Type <br><br>',
+						name:'die_type_name', 
+						index:'die_type_name', 
 						hidden: false,
 						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
-					},
-					{
-						name:'id', 
-						key:true, 
-						index:'master_detail_id', 
-						hidden: false,
-						editable:false,
+						width: 150
 					},
 					/*{
 						name:'lastName',
@@ -1080,13 +1200,18 @@ window.TRANSACTION = (function($) {
 				onSelectRow: editRow,
 				rownumbers:true,
 				rowNum: 10,
-				rowList: [10,20,30],
+				//rowList: [10,20,30],
 				pager: '#pager2',
 				sortname: 'master_detail_id',
 				viewrecords: true,
 				sortorder: "desc",
 				editurl: APP.siteUrl + 'admin/transaction/crud', //URL Proses CRUD Nya
 				multiselect: false,
+				afterSubmit : function(response, postdata)
+				{
+					alert(postdata);
+					//return [success,message,new_id]
+				},
 				caption: "Data SPK", //Caption List
 			});
 
@@ -1095,7 +1220,8 @@ window.TRANSACTION = (function($) {
 				view:false,
 				edit:false,
 				add:false,
-				del:true
+				del:true,
+				search: false,
 			},{},{},{},
 			{
 				closeOnEscape:true,
@@ -1118,10 +1244,33 @@ window.TRANSACTION = (function($) {
 		        if (id && id !== lastSelection) {
 		            var grid = $(".list-spk");
 		            grid.jqGrid('restoreRow',lastSelection);
-		            grid.jqGrid('editRow',id, {keys:true, focusField: 4});
+		            /*grid.editRow(id, 
+		            	{ 
+		            		afterSubmit: function(response, postdata) {
+		            			alert('got here');
+		            		},
+		            		keys:true, 
+		            		focusField: 2
+		            	}
+		            );*/
+		            grid.jqGrid('editRow',id, {
+		            	keys:true, 
+		            	focusField: 2,
+		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
+					        //alert(rowid + " is saved");
+					        grid.trigger("reloadGrid");
+					        /*grid.setRowData(rowid, { 
+					        	section_name:  
+					        });*/
+
+					    }
+		            });
 		            lastSelection = id;
+
 		        }
 		    }
+
+		    
 		}
 	}
 
