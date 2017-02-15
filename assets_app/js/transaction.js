@@ -1009,7 +1009,36 @@ window.TRANSACTION = (function($) {
 										$(el).html(opt);
 									}
 								});
-							}
+							},
+							dataEvents: [
+								{ 
+									type: 'change', 
+									fn: function(e) {
+
+										var grid = $('.list-spk');
+
+										var rowId = $(this).parent().parent().attr('id');
+
+										//grid.jqGrid();
+										var celValue = grid.jqGrid ('getCell', rowId, 'machine_id');
+
+										$.ajax({
+											url: window.APP.siteUrl + 'admin/transaction/update_inline',
+											type: 'post',
+											dataType: 'json',
+											data: {
+												id: rowId,
+												type: 'section_id',
+												value: this.value,
+												machine: celValue
+											},
+											success: function(response) {
+											}
+										});
+
+									} 
+								},
+							]
 						}
 					},
 					{
@@ -1047,8 +1076,9 @@ window.TRANSACTION = (function($) {
 						editoptions: {
 							dataInit: function(el) {
 								var el = el;
+
 								$.ajax({
-									url: window.APP.siteUrl + 'admin/master/get_data_len/'+$('.header-id').val(),
+									url: window.APP.siteUrl + 'admin/master/get_data_len/'+$(el).parent().parent().attr('id'),
 									dataType: 'json',
 									success: function(res) {
 										var opt =  '';
@@ -1103,7 +1133,7 @@ window.TRANSACTION = (function($) {
 						name:'target_prod', 
 						index:'target_prod', 
 						hidden: false,
-						editable:false,
+						editable:true,
 						width: 90
 					},
 					{
@@ -1241,23 +1271,44 @@ window.TRANSACTION = (function($) {
 			var lastSelection;
 
 			function editRow(id) {
-		        if (id && id !== lastSelection) {
-		            var grid = $(".list-spk");
-		            grid.jqGrid('restoreRow',lastSelection);
-		            /*grid.editRow(id, 
-		            	{ 
-		            		afterSubmit: function(response, postdata) {
-		            			alert('got here');
-		            		},
-		            		keys:true, 
-		            		focusField: 2
-		            	}
-		            );*/
-		            grid.jqGrid('editRow',id, {
+		        var grid = $(".list-spk");
+
+		       	var count = grid.jqGrid('getGridParam', 'records');
+		       	if(count > 1) {
+		       		if (id != lastSelection) {
+			            grid.jqGrid('restoreRow',lastSelection);
+			            grid.jqGrid('editRow',id, {
+			            	keys:true, 
+			            	focusField: 2,
+			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
+						        grid.trigger("reloadGrid");
+						        /*grid.setRowData(rowid, { 
+						        	section_name:  
+						        });*/
+
+						    }
+			            });
+			            lastSelection = id;
+
+			        } else {
+			        	grid.jqGrid('editRow',id, {
+			            	keys:true, 
+			            	focusField: 2,
+			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
+						        grid.trigger("reloadGrid");
+						        /*grid.setRowData(rowid, { 
+						        	section_name:  
+						        });*/
+
+						    }
+			            });
+			            lastSelection = id;
+			        }
+		       	} else {
+		       		grid.jqGrid('editRow',id, {
 		            	keys:true, 
 		            	focusField: 2,
 		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
-					        //alert(rowid + " is saved");
 					        grid.trigger("reloadGrid");
 					        /*grid.setRowData(rowid, { 
 					        	section_name:  
@@ -1266,8 +1317,10 @@ window.TRANSACTION = (function($) {
 					    }
 		            });
 		            lastSelection = id;
+		       	}
 
-		        }
+		        
+
 		    }
 
 		    

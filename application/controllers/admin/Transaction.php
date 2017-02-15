@@ -818,6 +818,7 @@ class Transaction extends CI_Controller
 		$len = $this->input->post('len');
 		$ppic_note = $this->input->post('ppic_note');
 		$finishing = $this->input->post('finishing');
+		$target_prod = $this->input->post('target_prod');
 		 
 		switch ($oper) {
 			case 'add':
@@ -830,6 +831,7 @@ class Transaction extends CI_Controller
 					'len'        => $len,
 					'ppic_note'  => $ppic_note,
 					'finishing'  => $finishing,
+					'target_prod'=> $target_prod,
 				);
 				$this->detail_model->update($id, $datanya);
 			break;

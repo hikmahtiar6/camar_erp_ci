@@ -110,21 +110,10 @@ class Master extends CI_Controller {
 		{
 			foreach($data as $r)
 			{
-				if($r->LengthId != NULL)
-				{
-					$row[] = array(
-						'value' => $r->LengthId,
-						'text'  => $r->Length,
-					);
-				}
-				else
-				{
-					$row[] = array(
-					'value' => 'L600',
-					'text'  => 6,
-				);
-				}
-				
+				$row[] = array(
+					'value' => $r->LengthId,
+					'text'  => $r->Length,
+				);		
 			}
 		}
 
