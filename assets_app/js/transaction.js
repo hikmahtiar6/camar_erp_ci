@@ -840,8 +840,10 @@ window.TRANSACTION = (function($) {
 
 						if(response.status == 'success') {
 							setTimeout(function() {
-								window.location.reload();							
-							}, 1000);
+								var grid = $('.list-spk');
+								grid.trigger("reloadGrid");
+								//window.location.reload();							
+							}, 300);
 						}
 
 

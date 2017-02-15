@@ -640,7 +640,7 @@ class Transaction extends CI_Controller
 		 
 		if(!$sidx) $sidx=1;
 
-		$get_md = $this->section_model->get_data_detail($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id);
+		$get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, '', '');
 
 		$machine = '';
 		$header_data = $this->header_model->get_data_by_id($header_id);
@@ -672,17 +672,15 @@ class Transaction extends CI_Controller
 
 		if ($page > $total_pages) $page=$total_pages;
 			$start = $limit*$page - $limit;
-		if($start <0) $start = 0;
+		if($start <0) $start = 0;		
 		 
-		$data1 = $get_md;
+		$data1 = $get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, $limit + $start, $start);
 		
 		$response = new stdClass();
 
 		$response->page = $page;
 		$response->total = $total_pages;
 		$response->records = $count;
-
-
 
 		$i=0;
 		foreach($data1 as $gmd)
@@ -709,7 +707,7 @@ class Transaction extends CI_Controller
 				$gmd->shift,
 				$gmd->section_id,
 				$gmd->SectionDescription,
-				$gmd->machine_id,
+				$gmd->machine_id_header,
 				($get_master_query) ? $get_master_query->BilletTypeId : '-',
 				$gmd->Length,
 				$gmd->finishing_name,
