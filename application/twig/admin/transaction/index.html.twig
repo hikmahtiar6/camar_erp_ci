@@ -5,8 +5,7 @@
 	{{ parent() }}
 
     <link href="{{ base_url('web/vendor/jqGrid/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ base_url('web/vendor/chosen/chosen.css') }}" rel="stylesheet">
-    <!--<link href="{{ base_url('assets_app/css/chosen.bootstrap.css') }}" rel="stylesheet">-->
+    <link href="{{ base_url('web/vendor/multiple-select/multiple-select.css') }}" rel="stylesheet">
     <style type="text/css">
 		.ui-jqgrid tr.jqgrow td{
 	        white-space: normal !important;
@@ -44,6 +43,17 @@
 		li.select2-selection__choice {
 			color: #000 !important;
 		}
+
+		.ms-drop {
+			position: relative !important;
+			z-index: 999999999999 !important;
+		}
+
+		.jqgrow  td {
+			position: relative !important;
+			z-index: 1 !important;
+		}
+
     </style>
 
 {% endblock %}
@@ -177,7 +187,7 @@
 
 	<script type="text/javascript" src="{{ base_url('web/vendor/jqGrid/js/i18n/grid.locale-en.js') }}"></script>
 	<script type="text/javascript" src="{{ base_url('web/vendor/jqGrid/js/jquery.jqGrid.min.js') }}"></script>
-	<script type="text/javascript" src="{{ base_url('web/vendor/chosen/chosen.jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('web/vendor/multiple-select/multiple-select.js') }}"></script>
 
 
 	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>

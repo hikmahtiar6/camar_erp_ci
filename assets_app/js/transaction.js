@@ -1203,7 +1203,7 @@ window.TRANSACTION = (function($) {
 						hidden: false,
 						editable: true,
 						width: 300,
-						multiple: true,
+						multipleselect: true,
 						edittype: "select", 
 						editoptions: {
 						    //dataUrl: window.APP.siteUrl + 'admin/master/get_data_index_dice/037/SN0690.02',
@@ -1219,7 +1219,7 @@ window.TRANSACTION = (function($) {
 
 								$(el).attr('id', 'indexdice'+rowId);
 
-						    	//$(el).attr('multiple', 'multiple');
+						    		$(el).attr('multiple', 'multiple');
 
 						    		$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celMachine, function(data) {
 
@@ -1234,6 +1234,8 @@ window.TRANSACTION = (function($) {
 								            output += '<option value="' + val.value + '" '+selected+'>' + val.text + '</option>';
 								        });
 								        $(el).html(output);
+
+								        //$(el).multipleSelect();
 
 								        /*$(el).select2({
 								            width: "100%",
@@ -1265,12 +1267,25 @@ window.TRANSACTION = (function($) {
 								var el = el;
 								var grid = $('.list-spk');
 								var rowId = $(el).parent().parent().attr('id');
-								$(el).keypress(function(e) {
+								$(el).on('keypress', function(e) {
 									// if entering keyboard
-									if(e.charCode == 13) {
+									if(e.keyCode == 13) {
 										grid.jqGrid('saveRow', rowId, {
 											successfunc: function(response) {
+
+												swal({
+											        title: "Anda Yakin ?",
+											        text: "Akan menambah data ?",
+											        type: "warning",
+											        showCancelButton: true,
+											        confirmButtonColor: "#DD6B55",
+											        confirmButtonText: "Ya",
+											        closeOnConfirm: true
+											    }, function () {
+											    	$('.tambah-transaksi').click();
+											    });
 												grid.trigger('reloadGrid');
+
 												return true;
 											}
 										});
@@ -1356,11 +1371,6 @@ window.TRANSACTION = (function($) {
 				sortorder: "desc",
 				editurl: APP.siteUrl + 'admin/transaction/crud', //URL Proses CRUD Nya
 				multiselect: false,
-				afterSubmit : function(response, postdata)
-				{
-					alert(postdata);
-					//return [success,message,new_id]
-				},
 				caption: "Data SPK", //Caption List
 			});
 
