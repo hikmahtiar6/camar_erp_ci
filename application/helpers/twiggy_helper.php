@@ -86,7 +86,7 @@ function convert_dice($dice)
 function count_dice($dice)
 {
 	$arr = array();
-	$expl = preg_split('@,@', substr($dice, 1, 1000000000000000000000), NULL, PREG_SPLIT_NO_EMPTY);
+	$expl = preg_split('/,/', $dice, NULL, PREG_SPLIT_NO_EMPTY);
 	//$expl = explode(",", substr($dice, 1, 1000000000000000000000));
 
 	return count($expl);

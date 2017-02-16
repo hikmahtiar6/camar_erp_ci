@@ -1224,9 +1224,10 @@ window.TRANSACTION = (function($) {
 						    		$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celMachine, function(data) {
 
 								        var output = "";
+								        var defaultValue = $(el).parent().attr('title');
 
 								        $.each(data, function(key, val) {
-								        	if(val.value == $(el).parent().attr('title')) {
+								        	if( defaultValue.indexOf(val.value) > -1) {
 												selected = 'selected="selected"';
 											} else {
 												selected = '';
@@ -1267,10 +1268,16 @@ window.TRANSACTION = (function($) {
 								var el = el;
 								var grid = $('.list-spk');
 								var rowId = $(el).parent().parent().attr('id');
+
+
 								$(el).on('keypress', function(e) {
+									var idxDice = $('#indexdice'+rowId).val();
 									// if entering keyboard
 									if(e.keyCode == 13) {
 										grid.jqGrid('saveRow', rowId, {
+											extraparam: {
+												idxdice: idxDice
+											},
 											successfunc: function(response) {
 
 												swal({

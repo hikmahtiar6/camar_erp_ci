@@ -183,7 +183,7 @@ class Transaction extends CI_Controller
 	private function count_dice($dice)
 	{
 		$arr = array();
-		$expl = preg_split('/,/', substr($dice, 1, 1000000000000000000000), NULL, PREG_SPLIT_NO_EMPTY);
+		$expl = preg_split('/,/', $dice, NULL, PREG_SPLIT_NO_EMPTY);
 		//$expl = explode(",", substr($dice, 1, 1000000000000000000000));
 
 		return count($expl);
@@ -818,6 +818,7 @@ class Transaction extends CI_Controller
 		$finishing = $this->input->post('finishing');
 		$target_prod = $this->input->post('target_prod');
 		$index_dice = $this->input->post('index_dice');
+		$idxdice = $this->input->post('idxdice');
 		 
 		switch ($oper) {
 			case 'add':
@@ -831,7 +832,7 @@ class Transaction extends CI_Controller
 					'ppic_note'  => $ppic_note,
 					'finishing'  => $finishing,
 					'target_prod'=> $target_prod,
-					'index_dice' => $index_dice,
+					'index_dice' => $this->set_idxdice($idxdice),
 				);
 				$this->detail_model->update($id, $datanya);
 			break;
@@ -839,6 +840,17 @@ class Transaction extends CI_Controller
 				$this->detail_model->delete($id);
 			break;
 		}	
+	}
+
+	private function set_idxdice($array)
+	{
+		$str = '';
+		foreach($array as $row)
+		{
+			$str .= $row.', ';
+		}
+
+		return rtrim($str, ', ');
 	}
 
 }
