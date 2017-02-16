@@ -917,6 +917,7 @@ window.TRANSACTION = (function($) {
 						label: "Edit Actions <br> <br>",
 						index:'master_detail_id', 
                         name: "id",
+                        hidden: true,
                         width: 100,
                         formatter: "actions",
                         formatoptions: {
@@ -1258,7 +1259,25 @@ window.TRANSACTION = (function($) {
 						index:'ppic_note', 
 						hidden: false,
 						editable:true,
-						width: 100
+						width: 100,
+						editoptions: {
+							dataInit: function(el) {
+								var el = el;
+								var grid = $('.list-spk');
+								var rowId = $(el).parent().parent().attr('id');
+								$(el).keypress(function(e) {
+									// if entering keyboard
+									if(e.charCode == 13) {
+										grid.jqGrid('saveRow', rowId, {
+											successfunc: function(response) {
+												grid.trigger('reloadGrid');
+												return true;
+											}
+										});
+									}
+								});
+							}
+						}
 					},
 					{
 						label: 'Target Prod <br> (Btg)',
@@ -1327,7 +1346,7 @@ window.TRANSACTION = (function($) {
 						}
 					},*/
 				],
-				//onSelectRow: editRow,
+				onSelectRow: editRow,
 				rownumbers:true,
 				rowNum: 10,
 				//rowList: [10,20,30],
@@ -1385,7 +1404,7 @@ window.TRANSACTION = (function($) {
 		       		if (id != lastSelection) {
 			            grid.jqGrid('restoreRow',lastSelection);
 			            grid.jqGrid('editRow',id, {
-			            	keys:true, 
+			            	keys:false, 
 			            	focusField: 2,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
@@ -1399,7 +1418,7 @@ window.TRANSACTION = (function($) {
 
 			        } else {
 			        	grid.jqGrid('editRow',id, {
-			            	keys:true, 
+			            	keys:false, 
 			            	focusField: 2,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
@@ -1413,7 +1432,7 @@ window.TRANSACTION = (function($) {
 			        }
 		       	} else {
 		       		grid.jqGrid('editRow',id, {
-		            	keys:true, 
+		            	keys:false, 
 		            	focusField: 2,
 		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 					        grid.trigger("reloadGrid");
