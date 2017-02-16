@@ -912,15 +912,20 @@ window.TRANSACTION = (function($) {
 				mtype: "POST",
 				cmTemplate: {sortable:false},
 				colModel: [
+					
 					{
-						label: '  <br>',
-						name:'id', 
-						key: true,
+						label: "Edit Actions <br> <br>",
 						index:'master_detail_id', 
-						hidden:true,
-						editable:false,
-						width: 50
-					},
+                        name: "id",
+                        width: 100,
+                        formatter: "actions",
+                        formatoptions: {
+                            keys: false,
+                            editOptions: {},
+                            addOptions: {},
+                            delOptions: {}
+                        }       
+                    },
 					{
 						label: 'Tanggal <br><br>',
 						name:'tanggal', 
@@ -1030,6 +1035,10 @@ window.TRANSACTION = (function($) {
 
 										//grid.jqGrid();
 										var celValue = grid.jqGrid ('getCell', rowId, 'machine_id');
+
+										grid.setRowData(rowId, { 
+								        	section_name: $('#section_id'+rowId+' option:selected').text()
+								        });
 
 										$.ajax({
 											url: window.APP.siteUrl + 'admin/transaction/update_inline',
@@ -1318,7 +1327,7 @@ window.TRANSACTION = (function($) {
 						}
 					},*/
 				],
-				onSelectRow: editRow,
+				//onSelectRow: editRow,
 				rownumbers:true,
 				rowNum: 10,
 				//rowList: [10,20,30],
