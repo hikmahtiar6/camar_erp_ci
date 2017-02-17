@@ -990,7 +990,7 @@ window.TRANSACTION = (function($) {
 						}
 					},
 					{
-						label: 'Section Id <br><br>',
+						label: 'Section Name <br><br>',
 						name:'section_id', 
 						index:'section_id', 
 						hidden: false,
@@ -1038,7 +1038,7 @@ window.TRANSACTION = (function($) {
 										var celValue = grid.jqGrid ('getCell', rowId, 'machine_id');
 
 										grid.setRowData(rowId, { 
-								        	section_name: $('#section_id'+rowId+' option:selected').text()
+								        	section_name: $('#section_id'+rowId+' option:selected').val()
 								        });
 
 										$.ajax({
@@ -1056,6 +1056,19 @@ window.TRANSACTION = (function($) {
 
 												var idxDice = $('#indexdice'+rowId);
 												var len = $('#len'+rowId);
+
+
+												$.getJSON(window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId, function(data) {
+
+											        var output = "";
+
+											        grid.setRowData(rowId, { 
+											        	weight_standard: data.weight_standard,
+											        	target_prod_btg: data.target_prod_btg,
+											        });
+
+											    });
+
 
 												$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celValue, function(data) {
 
@@ -1099,7 +1112,7 @@ window.TRANSACTION = (function($) {
 						}
 					},
 					{
-						label: 'Section Name <br><br>',
+						label: 'Section Id <br><br>',
 						name:'section_name', 
 						index:'section_name', 
 						hidden: false,
@@ -1194,7 +1207,26 @@ window.TRANSACTION = (function($) {
 						index:'target_prod', 
 						hidden: false,
 						editable:true,
-						width: 90
+						width: 90,
+						editoptions: {
+							dataInit: function(el) {
+								$(el).keyup(function() {
+									var grid = $('.list-spk');
+
+									var rowId = $(this).parent().parent().attr('id');
+									$.getJSON(window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(), function(data) {
+
+								        var output = "";
+
+								        grid.setRowData(rowId, { 
+								        	weight_standard: data.weight_standard,
+								        	target_prod_btg: data.target_prod_btg,
+								        });
+
+								    });
+								});
+							}
+						}
 					},
 					{
 						label: 'Index Dice <br><br>',
@@ -1292,6 +1324,8 @@ window.TRANSACTION = (function($) {
 											    	$('.tambah-transaksi').click();
 											    });
 												grid.trigger('reloadGrid');
+
+												$('.body').animate({scrollLeft: -200},150);
 
 												return true;
 											}

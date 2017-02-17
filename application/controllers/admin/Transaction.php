@@ -675,6 +675,8 @@ class Transaction extends CI_Controller
 		if($start <0) $start = 0;		
 		 
 		$data1 = $get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, $limit + $start, $start);
+
+		//echo ($limit + $start).'-'.$start;
 		
 		$response = new stdClass();
 
@@ -705,8 +707,8 @@ class Transaction extends CI_Controller
 				$gmd->master_detail_id, 
 				$tgl,
 				$gmd->shift,
-				$gmd->section_id,
 				$gmd->SectionDescription,
+				$gmd->section_id,
 				$gmd->machine_id_header,
 				($get_master_query) ? $get_master_query->BilletTypeId : '-',
 				$gmd->Length,
@@ -851,6 +853,52 @@ class Transaction extends CI_Controller
 		}
 
 		return rtrim($str, ', ');
+	}
+
+	public function get_rumus($master_detail_id, $target_prod_key = '')
+	{
+		$target_prod = '';
+		$machine = '';
+		$target_prod_btg = '';
+		$weight_standard = '';
+
+		$get_detail = $this->detail_model->get_data_by_id($master_detail_id);
+		if($get_detail)
+		{
+
+			$header_data = $this->header_model->get_data_by_id($get_detail->header_id);
+			if($header_data)
+			{
+				$machine = $header_data->machine_id;
+			}
+
+			$get_master_query =  $this->query_model->get_master_advance($machine, $get_detail->section_id)->row();
+
+			$target_prod = $get_detail->target_prod;
+			$target_prod_btg = $get_detail->target_prod;
+			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+
+			if(is_numeric($target_prod_key))
+			{
+				$target_prod = $target_prod_key;
+			}
+
+
+			if($f2_estfg != NULL)
+			{
+				$target_prod_btg = $f2_estfg * $target_prod; 
+			}
+
+			//array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
+		}
+
+		$response = array(
+			'target_prod_btg' => $target_prod_btg,
+			'weight_standard' => $weight_standard
+		);
+
+		return $this->output->set_output(json_encode($response));
 	}
 
 }

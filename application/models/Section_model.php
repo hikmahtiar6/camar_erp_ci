@@ -147,38 +147,41 @@ class Section_model extends CI_Model {
 				LEFT JOIN
 					".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
 				LEFT JOIN
-					".static::TABLE_LEN." i ON a.len = i.LengthId
-			 ) AS t ";
+					".static::TABLE_LEN." i ON a.len = i.LengthId ";
 
 		if($date_start != '')
 		{
-			$sql .= "AND tanggal >= '$date_start' ";
+			$sql .= "AND a.tanggal >= '$date_start' ";
 		}
 
 		if($date_finish != '')
 		{
-			$sql .= "AND tanggal <= '$date_finish' ";
+			$sql .= "AND a.tanggal <= '$date_finish' ";
 		}
 
 		if($shift != 0)
 		{
-			$sql .= "AND shift = '$shift' ";
+			$sql .= "AND a.shift = '$shift' ";
 		}
 
 		if($machine_id != '')
 		{
-			$sql .= "AND machine_id_header = '$machine_id' ";
+			$sql .= "AND b.machine_id = '$machine_id' ";
 		}
 
 		if($section_id != '')
 		{
-			$sql .= "AND section_id = '$section_id' ";
+			$sql .= "AND a.section_id = '$section_id' ";
 		}
 
 		if($header_id != '')
 		{
-			$sql .= "AND header_id = '$header_id' ";
+			$sql .= "AND b.header_id = '$header_id' ";
 		}
+
+		$sql .= " ) AS t ";
+
+		$sql = str_replace("i.LengthId AND", "i.LengthId WHERE", $sql);
 
 		if($limit != '')
 		{
