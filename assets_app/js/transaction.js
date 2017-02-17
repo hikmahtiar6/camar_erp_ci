@@ -1238,10 +1238,10 @@ window.TRANSACTION = (function($) {
 
 								        //$(el).multipleSelect();
 
-								        /*$(el).select2({
+								        $(el).select2({
 								            width: "100%",
 								    	});
-								    	*/
+								    	
 								    });
 						    	
 						    	
