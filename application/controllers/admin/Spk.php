@@ -14,6 +14,7 @@ class Spk extends CI_Controller
 		// check session
 		$this->auth->_is_authentication();
 		$this->load->model('master_model');
+		$this->load->model('section_model');
 		$this->load->model('master/header_model');
 		$this->load->model('master/detail_model');
 		$this->load->model('master/shift_model');
@@ -33,6 +34,11 @@ class Spk extends CI_Controller
 		$machine_data = $this->master_model->get_data_machine();
 		$shift_data = $this->shift_model->get_data();
 		$header_data = $this->header_model->advance_search($machine_id);
+
+		$new_date_start = date('Y-m-d', strtotime(str_replace("/", "-", $date_start)));
+		$new_date_finish = date('Y-m-d', strtotime(str_replace("/", "-", $date_finish)));
+
+		//$section_data = $this->section_model->get_data_detail_new($new_date_start, $new_date_finish, $shift = 0, $machine_id = '', $section_id = '', $header_id = '', $limit = '', $start = '');
 
 		$this->twiggy->set('machine_id', $machine_id);
 		$this->twiggy->set('shift', $shift);

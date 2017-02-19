@@ -109,7 +109,7 @@ class Section_model extends CI_Model {
 			$sql->where('a.header_id', $header_id);
 		}
 
-		$sql->order_by('a.master_detail_id', 'DESC');
+		$sql->order_by('a.tanggal', 'ASC');
 		$get = $sql->get();
 
 		return $get->result();
@@ -192,6 +192,8 @@ class Section_model extends CI_Model {
 		{
 			$sql .= "AND RowNum > '".$start."' ";
 		}
+
+		$sql .= " ORDER BY tanggal ASC ";
 
 		$sql = str_replace("t AND", "t WHERE", $sql);
 
