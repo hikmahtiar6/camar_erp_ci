@@ -896,6 +896,10 @@ window.TRANSACTION = (function($) {
 				var splt = this.value.split('-');
 				$('.report-date-start').val(splt[0]);
 				$('.report-date-finish').val(splt[1]);
+
+				var selectedText = $('.week-options option:selected').text();
+				var splt2 = selectedText.split('-');
+				$('.week-number').val(splt2[0]);
 			});
 		},
 

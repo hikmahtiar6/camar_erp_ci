@@ -40,6 +40,7 @@
 		                			<th style="vertical-align: middle;">No.</th>
 									<th style="vertical-align: middle;">MachineId</th>
 									<th style="vertical-align: middle;">MachineTypeId</th>
+									<th style="vertical-align: middle;">Week</th>
 									<th style="vertical-align: middle;">Mulai Tanggal</th>
 									<th style="vertical-align: middle;">Sampai Tanggal</th>
 									<th style="vertical-align: middle;"></th>
@@ -53,8 +54,9 @@
 			                		<td>{{ key + 1 }}</td>
 			                		<td>{{ header_row.machine_id }}</td>
 			                		<td>{{ header_row.machine_type_id }}</td>
-			                		<td>{{ dtstart }}</td>
-			                		<td>{{ dtfinish }}</td>
+			                		<td>{{ header_row.week }}</td>
+			                		<td>{{ header_row.date_start }}</td>
+			                		<td>{{ header_row.date_finish }}</td>
 			                		<td>
 			                			<a class="btn btn-info" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish) ~ '/' ~ shift) }}">Lihat Detail</a>
 			                		</td>
@@ -126,6 +128,7 @@
 
 	                    <input class="report-date-start" name="date_start" type="hidden" value="{{ date_start }}">
 	                    <input class="report-date-finish" name="date_finish" type="hidden" value="{{ date_finish }}">
+	                    <input class="week-number form-control" type="hidden" name="week_number">
 	                </div>
 
 	                <div class="form-group">

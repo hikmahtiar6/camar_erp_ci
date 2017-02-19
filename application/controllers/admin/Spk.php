@@ -29,16 +29,11 @@ class Spk extends CI_Controller
 		$shift = ($this->input->post('shift')) ? $this->input->post('shift') : '0';
 		$date_start = ($this->input->post('date_start')) ? $this->input->post('date_start') : '';
 		$date_finish = ($this->input->post('date_finish')) ? $this->input->post('date_finish') : '';
-		$week = ($this->input->post('week')) ? $this->input->post('week') : '';
+		$week = ($this->input->post('week_number')) ? ltrim($this->input->post('week_number')) : '';
 
 		$machine_data = $this->master_model->get_data_machine();
 		$shift_data = $this->shift_model->get_data();
-		$header_data = $this->header_model->advance_search($machine_id);
-
-		$new_date_start = date('Y-m-d', strtotime(str_replace("/", "-", $date_start)));
-		$new_date_finish = date('Y-m-d', strtotime(str_replace("/", "-", $date_finish)));
-
-		//$section_data = $this->section_model->get_data_detail_new($new_date_start, $new_date_finish, $shift = 0, $machine_id = '', $section_id = '', $header_id = '', $limit = '', $start = '');
+		$header_data = $this->header_model->advance_search($machine_id, $week);
 
 		$this->twiggy->set('machine_id', $machine_id);
 		$this->twiggy->set('shift', $shift);
@@ -61,13 +56,13 @@ class Spk extends CI_Controller
 		$this->session->set_userdata('date_finish', $date_finish);
 		$this->session->set_userdata('shift', $shift);
 
-		$data_update = array(
+		/*$data_update = array(
 			'date_start'  => $date_start,
 			'date_finish' => $date_finish,
 		);
 
 		$update_header = $this->header_model->update($header_id, $data_update);
-
+		*/
 		redirect('admin/transaction/detail/'.$header_id);
 	}
 }

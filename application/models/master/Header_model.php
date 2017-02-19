@@ -48,7 +48,7 @@ class Header_model extends CI_Model {
 		return $get->row();
 	}
 
-	public function advance_search($machine_id)
+	public function advance_search($machine_id, $week_number)
 	{
 		$sql = $this->db;
 
@@ -59,6 +59,11 @@ class Header_model extends CI_Model {
 		if($machine_id != '')
 		{
 			$sql->where('machine_id', $machine_id);
+		}
+
+		if($week_number != '')
+		{
+			$sql->where('week', $week_number);
 		}
 
 

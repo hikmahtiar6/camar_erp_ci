@@ -99,12 +99,19 @@ class Master extends CI_Controller {
 		$get_detail = $this->detail_model->get_data_by_id($detail_id);
 		if($get_detail)
 		{
+
+			$section_id = $get_detail->section_id;
+			if($section_id == NULL)
+			{
+				$section_id = '035';
+			}
+
 			$get_header = $this->header_model->get_data_by_id($get_detail->header_id);
 			if($get_header)
 			{
 				$machine_id = $get_header->machine_id;
 			}
-			$data = $this->len_model->get_data($machine_id, $get_detail->section_id)->result();
+			$data = $this->len_model->get_data($machine_id, $section_id)->result();
 		}
 
 		if($data)
