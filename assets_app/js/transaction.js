@@ -1485,6 +1485,16 @@ window.TRANSACTION = (function($) {
 		       	var count = grid.jqGrid('getGridParam', 'records');
 		       	if(count > 1) {
 		       		if (id != lastSelection) {
+
+						var idxDice = $('#indexdice'+lastSelection).val();
+						
+						grid.jqGrid('saveRow', lastSelection, {
+							extraparam: {
+								idxdice: idxDice
+							},
+						});
+						
+
 			            grid.jqGrid('restoreRow',lastSelection);
 			            grid.jqGrid('editRow',id, {
 			            	keys:false, 
