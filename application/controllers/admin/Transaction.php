@@ -693,13 +693,12 @@ class Transaction extends CI_Controller
 			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
 			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
 
-
 			if($f2_estfg != NULL)
 			{
 				$target_prod_btg = $f2_estfg * $gmd->target_prod; 
 			}
-
-			array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
+			$len = $gmd->Length;
+			$target_section = $weight_standard * $target_prod_btg * $len;
 
 			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
 			$response->rows[$i]['id']   = $gmd->master_detail_id;
@@ -711,7 +710,7 @@ class Transaction extends CI_Controller
 				$gmd->section_id,
 				$gmd->machine_id_header,
 				($get_master_query) ? $get_master_query->BilletTypeId : '-',
-				$gmd->Length,
+				$len,
 				$gmd->finishing_name,
 				($gmd->target_prod == null) ? '' : $gmd->target_prod,
 				$this->convert_dice($gmd->index_dice),
@@ -719,7 +718,7 @@ class Transaction extends CI_Controller
 				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
 				$target_prod_btg,
 				$weight_standard,
-				$weight_standard * $target_prod_btg * $gmd->Length,
+				$target_section,
 				($get_master_query) ? $get_master_query->DieTypeName : '-'
 			);
 			$i++;
@@ -861,6 +860,8 @@ class Transaction extends CI_Controller
 		$machine = '';
 		$target_prod_btg = '';
 		$weight_standard = '';
+		$die_type_name = '';
+		$len_post = ($this->input->post('len')) ? $this->input->post('len') : '';
 
 		$get_detail = $this->detail_model->get_data_by_id($master_detail_id);
 		if($get_detail)
@@ -874,28 +875,38 @@ class Transaction extends CI_Controller
 
 			$get_master_query =  $this->query_model->get_master_advance($machine, $get_detail->section_id)->row();
 
-			$target_prod = $get_detail->target_prod;
+			$die_type_name = ($get_master_query) ? $get_master_query->DieTypeName : ''; 
+
+			//$target_prod = $get_detail->target_prod;
 			$target_prod_btg = $get_detail->target_prod;
 			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
 			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+			$len = $get_detail->Length;
+
+			if($len_post != '')
+			{
+				$len = $len_post;
+			}
 
 			if(is_numeric($target_prod_key))
 			{
 				$target_prod = $target_prod_key;
 			}
 
-
 			if($f2_estfg != NULL)
 			{
 				$target_prod_btg = $f2_estfg * $target_prod; 
 			}
+			$target_section = $weight_standard * $target_prod_btg * $len;
 
 			//array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
 		}
 
 		$response = array(
 			'target_prod_btg' => $target_prod_btg,
-			'weight_standard' => $weight_standard
+			'weight_standard' => $weight_standard,
+			'target_section'  => $target_section,
+			'die_type_name'   => $die_type_name
 		);
 
 		return $this->output->set_output(json_encode($response));

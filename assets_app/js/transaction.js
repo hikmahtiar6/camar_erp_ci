@@ -1058,16 +1058,22 @@ window.TRANSACTION = (function($) {
 												var len = $('#len'+rowId);
 
 
-												$.getJSON(window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId, function(data) {
-
-											        var output = "";
-
-											        grid.setRowData(rowId, { 
-											        	weight_standard: data.weight_standard,
-											        	target_prod_btg: data.target_prod_btg,
-											        });
-
-											    });
+												$.ajax({
+													url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId,
+													type: 'POST',
+													dataType: 'json',
+													data: {
+														len: $('#len'+rowId+' option:selected').text()
+													},
+													success: function(data) {
+														grid.setRowData(rowId, { 
+												        	weight_standard: data.weight_standard,
+												        	target_prod_btg: data.target_prod_btg,
+												        	target_section: data.target_section,
+												        	die_type_name: data.die_type_name,
+												        });
+													}
+												});
 
 
 												$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celValue, function(data) {
@@ -1167,6 +1173,25 @@ window.TRANSACTION = (function($) {
 										$(el).html(opt);
 									}
 								});
+
+								$(el).change(function() {
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId,
+										type: 'POST',
+										dataType: 'json',
+										data: {
+											len: $('#len'+rowId+' option:selected').text()
+										},
+										success: function(data) {
+											grid.setRowData(rowId, { 
+									        	weight_standard: data.weight_standard,
+									        	target_prod_btg: data.target_prod_btg,
+									        	target_section: data.target_section,
+									        	die_type_name: data.die_type_name,
+									        });
+										}
+									});
+								});
 							}
 						}
 					},
@@ -1214,16 +1239,23 @@ window.TRANSACTION = (function($) {
 									var grid = $('.list-spk');
 
 									var rowId = $(this).parent().parent().attr('id');
-									$.getJSON(window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(), function(data) {
 
-								        var output = "";
-
-								        grid.setRowData(rowId, { 
-								        	weight_standard: data.weight_standard,
-								        	target_prod_btg: data.target_prod_btg,
-								        });
-
-								    });
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(),
+										type: 'POST',
+										dataType: 'json',
+										data: {
+											len: $('#len'+rowId+' option:selected').text()
+										},
+										success: function(data) {
+											grid.setRowData(rowId, { 
+									        	weight_standard: data.weight_standard,
+									        	target_prod_btg: data.target_prod_btg,
+									        	target_section: data.target_section,
+									        	die_type_name: data.die_type_name,
+									        });
+										}
+									});
 								});
 							}
 						}

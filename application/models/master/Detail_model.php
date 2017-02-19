@@ -5,6 +5,7 @@
 class Detail_model extends CI_Model {
 
 	const TABLE = 'SpkDetail';
+	const TABLE_LEN = 'Inventory.MasterDimensionLength';
 
 	public function __construct()
 	{
@@ -15,8 +16,9 @@ class Detail_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('*');
-		$sql->from(static::TABLE);
+		$sql->select('a.*, b.Length');
+		$sql->from(static::TABLE. ' a');
+		$sql->join(static::TABLE_LEN. ' b', 'a.len = b.LengthId', 'left');
 		$sql->where('master_detail_id', $id);
 
 		$get = $sql->get();

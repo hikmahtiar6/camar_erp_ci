@@ -16,7 +16,7 @@ class Len_model extends CI_Model {
 	public function get_data($machine_id = '', $section_id = '')
 	{
 		$sql = "
-		SELECT DISTINCT d.LengthId, d.Length, d.sectionid
+		SELECT DISTINCT d.LengthId, d.Length
 		FROM Extrusion.ExtrusionGuideFinal2() d ";
 
 		if($machine_id != '')
