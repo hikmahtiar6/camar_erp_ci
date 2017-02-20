@@ -827,6 +827,17 @@ window.TRANSACTION = (function($) {
 
 		handleAddRow: function() {
 			$('.tambah-transaksi').click(function() {
+
+				var grid = $('.list-spk');
+
+				var rowKey = grid.jqGrid('getGridParam',"selrow");
+				var idxDice = $('#indexdice'+rowKey).val();
+				grid.jqGrid('saveRow', rowKey, {
+					extraparam: {
+						idxdice: idxDice
+					},
+				});
+
 				$.ajax({
 					url: window.APP.siteUrl + 'admin/transaction/add_row_by_header',
 					type: 'post',
