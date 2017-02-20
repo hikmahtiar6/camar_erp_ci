@@ -298,10 +298,10 @@ class Transaction extends CI_Controller
 					$tgl = $get_head->date_start;
 				}
 
-
 				$data_for_insert_detail = array(
 					'header_id'  => $this->section_model->get_last_insert_id(),
-					'tanggal'    => $tgl
+					'tanggal'    => $tgl,
+					'section_id' => '035'
 				);
 
 				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());
@@ -609,17 +609,24 @@ class Transaction extends CI_Controller
 
 		$data_insert_detail = array(
 			'header_id' => $header_id,
-			'tanggal'   => $tgl
+			'tanggal'   => $tgl,
+			'section_id'=> '035'
 		);
 
 		$get_last_data_detail = $this->detail_model->advance_search($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '', $header_id, $limit = '', $start = '', $order = 'master_detail_id', $type_order = 'DESC')->row();
 
 		if($get_last_data_detail)
 		{
+			$sec_id = $get_last_data_detail->section_id;
+			if($sec_id != NULL)
+			{
+				$sec_id = '035';
+			}
+
 			$data_insert_detail = array(
 				'header_id'   => $header_id,
 				'tanggal'     => $tgl,
-				'section_id'  => $get_last_data_detail->section_id,
+				'section_id'  => $sec_id,
 				'shift'       => $get_last_data_detail->shift,
 				'len'         => $get_last_data_detail->len,
 				'finishing'   => $get_last_data_detail->finishing,
@@ -716,13 +723,14 @@ class Transaction extends CI_Controller
 			$target_prod_btg = $gmd->target_prod;
 			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
 			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+			$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
 
 			if($f2_estfg != NULL)
 			{
-				$target_prod_btg = $f2_estfg * $gmd->target_prod; 
+				$target_prod_btg = $f2_estfg * $gmd->target_prod * $hole_count; 
 			}
 			$len = $gmd->Length;
-			$target_section = $weight_standard * $target_prod_btg * $len;
+			$target_section = $weight_standard * $target_prod_btg * $len * $hole_count;
 
 			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
 			$response->rows[$i]['id']   = $gmd->master_detail_id;
@@ -906,6 +914,7 @@ class Transaction extends CI_Controller
 			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
 			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
 			$len = $get_detail->Length;
+			$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
 
 			if($len_post != '')
 			{
@@ -919,9 +928,9 @@ class Transaction extends CI_Controller
 
 			if($f2_estfg != NULL)
 			{
-				$target_prod_btg = $f2_estfg * $target_prod; 
+				$target_prod_btg = $f2_estfg * $target_prod * $hole_count; 
 			}
-			$target_section = $weight_standard * $target_prod_btg * $len;
+			$target_section = $weight_standard * $target_prod_btg * $len * $hole_count;
 
 			//array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
 		}

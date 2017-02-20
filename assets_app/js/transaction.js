@@ -1397,7 +1397,7 @@ window.TRANSACTION = (function($) {
 						editable:false,
 					},
 					{
-						label: 'Target Section <br><br>',
+						label: 'Target Section Kg<br><br>',
 						name:'target_section', 
 						index:'target_section', 
 						hidden: false,
