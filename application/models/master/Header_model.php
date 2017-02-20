@@ -66,6 +66,7 @@ class Header_model extends CI_Model {
 			$sql->where('week', $week_number);
 		}
 
+		$sql->order_by('week', 'ASC');
 
 		$get = $sql->get();
 		return $get->result();

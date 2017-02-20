@@ -597,6 +597,11 @@ class Transaction extends CI_Controller
 		$header_id = $this->input->post('header_id');
 		$get_header = $this->header_model->get_data_by_id($header_id);
 		$tgl = '';
+
+		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
+		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
+		$shift = $this->session->userdata('shift');
+
 		if($get_header)
 		{
 			$tgl = date('Y-m-d', strtotime($get_header->date_start));
@@ -606,6 +611,22 @@ class Transaction extends CI_Controller
 			'header_id' => $header_id,
 			'tanggal'   => $tgl
 		);
+
+		$get_last_data_detail = $this->detail_model->advance_search($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '', $header_id, $limit = '', $start = '', $order = 'master_detail_id', $type_order = 'DESC')->row();
+
+		if($get_last_data_detail)
+		{
+			$data_insert_detail = array(
+				'header_id'   => $header_id,
+				'tanggal'     => $tgl,
+				'section_id'  => $get_last_data_detail->section_id,
+				'shift'       => $get_last_data_detail->shift,
+				'len'         => $get_last_data_detail->len,
+				'finishing'   => $get_last_data_detail->finishing,
+				'target_prod' => $get_last_data_detail->target_prod
+			);
+		}
+
 
 		$saving = $this->detail_model->save($data_insert_detail);
 		if($saving)
