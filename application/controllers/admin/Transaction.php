@@ -291,6 +291,14 @@ class Transaction extends CI_Controller
 			if($saving)
 			{
 
+				$sec_id = '';
+
+				$get_section = $this->query_model->get_master_advance($machine_id, '')->row();
+				if($get_section)
+				{
+					$sec_id = $get_section->SectionId;
+				}
+
 				$tgl = '';
 				$get_head = $this->header_model->get_data_by_id($this->section_model->get_last_insert_id());
 				if($get_head)
@@ -301,7 +309,7 @@ class Transaction extends CI_Controller
 				$data_for_insert_detail = array(
 					'header_id'  => $this->section_model->get_last_insert_id(),
 					'tanggal'    => $tgl,
-					'section_id' => '035'
+					'section_id' => $sec_id
 				);
 
 				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());
