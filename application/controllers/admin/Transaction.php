@@ -752,13 +752,13 @@ class Transaction extends CI_Controller
 				($get_master_query) ? $get_master_query->BilletTypeId : '-',
 				$len,
 				$gmd->finishing_name,
-				($gmd->target_prod == null) ? '' : $gmd->target_prod,
+				($gmd->target_prod == null) ? '' : number_format($gmd->target_prod),
 				$this->convert_dice($gmd->index_dice),
 				$this->count_dice($gmd->index_dice),
 				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
-				$target_prod_btg,
-				$weight_standard,
-				$target_section,
+				number_format($target_prod_btg),
+				(float) round($weight_standard, 3),
+				number_format($target_section),
 				($get_master_query) ? $get_master_query->DieTypeName : '-'
 			);
 			$i++;
@@ -944,9 +944,9 @@ class Transaction extends CI_Controller
 		}
 
 		$response = array(
-			'target_prod_btg' => $target_prod_btg,
-			'weight_standard' => $weight_standard,
-			'target_section'  => $target_section,
+			'target_prod_btg' => number_format($target_prod_btg),
+			'weight_standard' => (float) round($weight_standard, 3),
+			'target_section'  => number_format($target_section),
 			'die_type_name'   => $die_type_name
 		);
 

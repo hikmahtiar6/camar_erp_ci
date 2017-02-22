@@ -1250,6 +1250,13 @@ window.TRANSACTION = (function($) {
 						width: 90,
 						editoptions: {
 							dataInit: function(el) {
+
+								var str = $(el).val();
+
+								$(el).val(str.replace(',', ''));
+
+
+
 								$(el).keyup(function() {
 									var grid = $('.list-spk');
 
