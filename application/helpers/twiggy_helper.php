@@ -215,4 +215,12 @@ function indonesia_day($date)
 	return $array_hari[date('N', strtotime($date))];
 }
 
+function get_record_detail_by_header($header_id, $shift = 0)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/detail_model');
+
+	return $ci->detail_model->count_record_by_header_shift($header_id, $shift);
+}
+
 ?>

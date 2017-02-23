@@ -738,7 +738,7 @@ class Transaction extends CI_Controller
 				$target_prod_btg = $f2_estfg * $gmd->target_prod * $hole_count; 
 			}
 			$len = $gmd->Length;
-			$target_section = $weight_standard * $target_prod_btg * $len * $hole_count;
+			$target_section = $weight_standard * $target_prod_btg * $len;
 
 			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
 			$response->rows[$i]['id']   = $gmd->master_detail_id;
@@ -938,7 +938,7 @@ class Transaction extends CI_Controller
 			{
 				$target_prod_btg = $f2_estfg * $target_prod * $hole_count; 
 			}
-			$target_section = $weight_standard * $target_prod_btg * $len * $hole_count;
+			$target_section = $weight_standard * $target_prod_btg * $len;
 
 			//array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
 		}

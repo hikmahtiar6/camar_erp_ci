@@ -113,6 +113,28 @@ class Detail_model extends CI_Model {
 		return $query;
 	}
 
+	public function count_record_by_header_shift($header_id, $shift = 0)
+	{
+		$sql = $this->db;
+
+		$sql->select('COUNT(*) as jml');
+		$sql->from(static::TABLE);
+		$sql->where('header_id', $header_id);
+
+		if($shift > 0)
+		{
+			$sql->where('shift', $shift);		
+		}
+
+		$get = $sql->get();
+		$row = $get->row();
+		if($row)
+		{
+			return $row->jml;
+		}
+		return '0';
+	}
+
 
 	public function get_date_start($header_id)
 	{
