@@ -135,6 +135,46 @@ class Detail_model extends CI_Model {
 		return '0';
 	}
 
+	public function get_data_for_grid_dinamic($header_id = '', $shift = 0, $group = true)
+	{
+		$sql = $this->db;
+
+		if($group)
+		{
+			$sql->select('a.shift, a.header_id, d.MachineId');
+		}
+		else
+		{
+			$sql->select('a.*, b.Length, d.MachineId');
+		}
+
+		$sql->from(static::TABLE. ' a');
+		$sql->join(static::TABLE_LEN. ' b', 'a.len = b.LengthId', 'left');
+		$sql->join(static::TABLE_HEAD. ' c', 'a.header_id = c.header_id', 'inner');
+		$sql->join(static::TABLE_MACHINE. ' d', 'c.machine_id = d.MachineId', 'inner');
+
+		if($header_id != '')
+		{
+			$sql->where('c.header_id', $header_id);
+		}
+
+		if($shift > 0)
+		{
+			$sql->where('a.shift', $shift);
+		}
+
+		if($group)
+		{
+			$sql->group_by('a.shift');
+			$sql->group_by('a.header_id');
+			$sql->group_by('d.MachineId');	
+		}
+
+
+		$get = $sql->get();
+		return $get->result();
+	}
+
 
 	public function get_date_start($header_id)
 	{

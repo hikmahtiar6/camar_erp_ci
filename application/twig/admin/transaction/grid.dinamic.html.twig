@@ -1,0 +1,18 @@
+<thead>
+	<tr>
+		<th style="vertical-align: middle;">No. Mesin</th>
+		<th style="vertical-align: middle;">Shift</th>
+		<th style="vertical-align: middle;">Target Produksi</th>
+	</tr>
+</thead>
+<tbody>
+	{% if grid_data %}
+	{% for grid_row in grid_data %}
+	<tr>
+		<td>{{ grid_row.MachineId }}</td>		
+		<td>{{ grid_row.shift }}</td>		
+		<td>{{ sum_target_section(grid_row.header_id, grid_row.MachineId, grid_row.shift) }}</td>		
+	</tr>
+	{% endfor %}
+	{% endif %}
+</tbody>

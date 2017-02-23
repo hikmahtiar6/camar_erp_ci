@@ -853,6 +853,7 @@ window.TRANSACTION = (function($) {
 							setTimeout(function() {
 								var grid = $('.list-spk');
 								grid.trigger("reloadGrid");
+								window.TRANSACTION.handleGridUpDinamic();
 								//window.location.reload();							
 							}, 300);
 						}
@@ -1018,6 +1019,7 @@ window.TRANSACTION = (function($) {
 								var grid = $('.list-spk');
 								var rowId = $(el).parent().parent().attr('id');
 								var celMachine = grid.jqGrid ('getCell', rowId, 'machine_id');
+								var celSecId = grid.jqGrid ('getCell', rowId, 'section_name');
 
 								$(el).attr('id', 'section_id'+rowId);
 
@@ -1028,7 +1030,7 @@ window.TRANSACTION = (function($) {
 										var opt =  '';
 										var i = 0;
 										for(i in res) {
-											if(res[i]['value'] == $(el).parent().attr('title')) {
+											if(res[i]['value'] == celSecId) {
 												selected = 'selected="selected"';
 											} else {
 												selected = '';
@@ -1074,7 +1076,7 @@ window.TRANSACTION = (function($) {
 
 
 												$.ajax({
-													url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId,
+													url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$('#target_prod'+rowId).val(),
 													type: 'POST',
 													dataType: 'json',
 													data: {
@@ -1087,9 +1089,10 @@ window.TRANSACTION = (function($) {
 												        	target_section: data.target_section,
 												        	die_type_name: data.die_type_name,
 												        });
+
+												        window.TRANSACTION.handleGridUpDinamic();
 													}
 												});
-
 
 												$.getJSON(window.APP.siteUrl + 'admin/master/get_data_index_dice/'+rowId+'/'+celValue, function(data) {
 
@@ -1252,6 +1255,9 @@ window.TRANSACTION = (function($) {
 							dataInit: function(el) {
 
 								var str = $(el).val();
+								var rowId = $(el).parent().parent().attr('id');
+
+								$(el).attr('id', 'target_prod'+rowId);
 
 								$(el).val(str.replace(',', ''));
 
@@ -1260,7 +1266,19 @@ window.TRANSACTION = (function($) {
 								$(el).keyup(function() {
 									var grid = $('.list-spk');
 
-									var rowId = $(this).parent().parent().attr('id');
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/transaction/update_inline',
+										type: 'post',
+										dataType: 'json',
+										data: {
+											id: rowId,
+											type: 'target_prod',
+											value: $(this).val(),
+										},
+										success: function(response) {
+											window.TRANSACTION.handleGridUpDinamic();
+										}
+									});
 
 									$.ajax({
 										url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(),
@@ -1378,6 +1396,8 @@ window.TRANSACTION = (function($) {
 											    	$('.tambah-transaksi').click();
 											    });
 												grid.trigger('reloadGrid');
+
+					        					window.TRANSACTION.handleGridUpDinamic();
 
 												$('.body').animate({scrollLeft: -200},150);
 
@@ -1523,6 +1543,8 @@ window.TRANSACTION = (function($) {
 			            	focusField: 2,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
+					        	window.TRANSACTION.handleGridUpDinamic();
+
 						        /*grid.setRowData(rowid, { 
 						        	section_name:  
 						        });*/
@@ -1537,6 +1559,8 @@ window.TRANSACTION = (function($) {
 			            	focusField: 2,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
+					        	window.TRANSACTION.handleGridUpDinamic();
+
 						        /*grid.setRowData(rowid, { 
 						        	section_name:  
 						        });*/
@@ -1551,6 +1575,7 @@ window.TRANSACTION = (function($) {
 		            	focusField: 2,
 		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 					        grid.trigger("reloadGrid");
+					        window.TRANSACTION.handleGridUpDinamic();
 					        /*grid.setRowData(rowid, { 
 					        	section_name:  
 					        });*/
@@ -1565,6 +1590,21 @@ window.TRANSACTION = (function($) {
 		    }
 
 		    
+		},
+
+		handleGridUpDinamic: function() {
+			var table = $('.grid-dinamic');
+			var headerId = $('.header-id').val();
+			var machineId = $('.machine-id').val();
+
+			$.ajax({
+				url: APP.siteUrl + 'admin/transaction/grid_dinamic/'+headerId,
+				type: 'GET',
+				dataType: 'html',
+				success: function(response) {
+					table.html(response);
+				}
+			});
 		}
 	}
 

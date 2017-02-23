@@ -730,7 +730,7 @@ class Transaction extends CI_Controller
 
 			$target_prod_btg = $gmd->target_prod;
 			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
-			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+			$weight_standard = ($get_master_query) ? (float) round($get_master_query->WeightStandard, 3) : '';
 			$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
 
 			if($f2_estfg != NULL)
@@ -752,13 +752,13 @@ class Transaction extends CI_Controller
 				($get_master_query) ? $get_master_query->BilletTypeId : '-',
 				$len,
 				$gmd->finishing_name,
-				($gmd->target_prod == null) ? '' : number_format($gmd->target_prod),
+				($gmd->target_prod == null) ? '' : $gmd->target_prod,
 				$this->convert_dice($gmd->index_dice),
 				$this->count_dice($gmd->index_dice),
 				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
-				number_format($target_prod_btg),
-				(float) round($weight_standard, 3),
-				number_format($target_section),
+				$target_prod_btg,
+				$weight_standard,
+				$target_section,
 				($get_master_query) ? $get_master_query->DieTypeName : '-'
 			);
 			$i++;
@@ -920,7 +920,7 @@ class Transaction extends CI_Controller
 			//$target_prod = $get_detail->target_prod;
 			$target_prod_btg = $get_detail->target_prod;
 			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
-			$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
+			$weight_standard = ($get_master_query) ? (float) round($get_master_query->WeightStandard, 3) : '';
 			$len = $get_detail->Length;
 			$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
 
@@ -944,13 +944,21 @@ class Transaction extends CI_Controller
 		}
 
 		$response = array(
-			'target_prod_btg' => number_format($target_prod_btg),
-			'weight_standard' => (float) round($weight_standard, 3),
-			'target_section'  => number_format($target_section),
+			'target_prod_btg' => $target_prod_btg,
+			'weight_standard' => $weight_standard,
+			'target_section'  => $target_section,
 			'die_type_name'   => $die_type_name
 		);
 
 		return $this->output->set_output(json_encode($response));
+	}
+
+	public function grid_dinamic($header_id = '')
+	{
+		$grid_data = $this->detail_model->get_data_for_grid_dinamic($header_id);
+
+		$this->twiggy->set('grid_data', $grid_data);
+		$this->twiggy->template('admin/transaction/grid.dinamic')->display();
 	}
 
 }

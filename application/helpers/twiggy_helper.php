@@ -223,4 +223,39 @@ function get_record_detail_by_header($header_id, $shift = 0)
 	return $ci->detail_model->count_record_by_header_shift($header_id, $shift);
 }
 
+function sum_target_section($header_id, $machine, $shift)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/detail_model');
+
+	$target_prod_btg = '';
+	$weight_standard = '';
+	$len = '';
+
+	$sum = array();
+
+	$data = $ci->detail_model->get_data_for_grid_dinamic($header_id, $shift, false);
+	if($data)
+	{
+		foreach($data as $row)
+		{
+			$get_master_query =  $ci->query_model->get_master_advance($machine, $row->section_id)->row();
+
+			$target_prod = $row->target_prod;
+			$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+			$weight_standard = ($get_master_query) ? (float) round($get_master_query->WeightStandard, 3) : '';
+			$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
+			$len = $row->Length;
+			$target_prod_btg = $f2_estfg * $target_prod * $hole_count;
+			$target_section = $weight_standard * $target_prod_btg * $len;
+
+			array_push($sum, $target_section);
+		}
+		
+		return array_sum($sum); 
+	}
+
+	return '0';
+}
+
 ?>
