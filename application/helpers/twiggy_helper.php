@@ -98,8 +98,8 @@ function convert_dice2($dice)
 			{
 				if(strpos($rexpl, '.') !== false) {
 				  // explodable
-					$expl2 = explode(".", $rexpl);
-					$txt .= $expl2[0].'.'.$expl2[1].', ';
+					$expl2 = end((explode(".", $rexpl)));
+					$txt .= substr($expl2, 2, 10).', ';
 				} else {
 				  // not explodable
 					$txt .= $rexpl.', ';
