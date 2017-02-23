@@ -626,10 +626,12 @@ class Transaction extends CI_Controller
 		if($get_last_data_detail)
 		{
 			$sec_id = $get_last_data_detail->section_id;
-			if($sec_id != NULL)
+			if($sec_id == NULL)
 			{
 				$sec_id = '035';
 			}
+
+			$tgl = $get_last_data_detail->tanggal;
 
 			$data_insert_detail = array(
 				'header_id'   => $header_id,

@@ -1,7 +1,7 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block content_title %}
-	
+    <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css"> 
 {% endblock %}
 
 {% block content %}
@@ -56,8 +56,8 @@
 			                		<td>{{ header_row.machine_id }}</td>
 			                		<td>{{ header_row.machine_type_id }}</td>
 			                		<td>{{ header_row.week }}</td>
-			                		<td>{{ header_row.date_start }}</td>
-			                		<td>{{ header_row.date_finish }}</td>
+			                		<td>{{ header_row.date_start|date('d-m-Y') }}</td>
+			                		<td>{{ header_row.date_finish|date('d-m-Y') }}</td>
 			                		<td>{{ get_record_detail_by_header(header_row.header_id, shift) }}</td>
 			                		<td>
 			                			<a class="btn btn-info" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish) ~ '/' ~ shift) }}">Lihat Detail</a>
