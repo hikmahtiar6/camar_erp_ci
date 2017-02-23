@@ -10,7 +10,7 @@
     <style type="text/css">
 	    @media print{
 	     	@page {
-	     		size: A4 landscape;
+	     		size: legal landscape;
 	     	}
 
 	     	body { 
@@ -126,7 +126,7 @@
 
 				<table class="table table-bordered table-striped">
 					<thead>
-						<tr class="bg-gray font10 bold">
+						<tr class="bg-gray font12 bold">
 							<th style="vertical-align: middle;">Sh</th>
 							<th style="vertical-align: middle;">Lot</th>
 							<th style="vertical-align: middle; width: 200px;">Section Id</th>
@@ -150,7 +150,7 @@
 
 						</tr>
 						<tr>
-							<td class="bg-gray font10 bold" colspan="20" align="center">
+							<td class="bg-gray font12 bold" colspan="20" align="center">
 								{{ tanggal }}
 							</td>
 						</tr>
@@ -173,7 +173,7 @@
 						{% endif %}
 						{% set total = total + row_data.target_prod %}						
 
-						<tr class="font8">
+						<tr class="font12">
 							<td>
 									SH{{ row_data.shift }}
 								{% if sh != ''%}
@@ -184,7 +184,7 @@
 							</td>
 							<td>{{ add_zero(no + 1) }}.</td>
 							<td>{{ row_data.section_id }}</td>
-							<td class="font8" style="width: 300px;">{{ row_data.SectionDescription }}</td>
+							<td class="font12" style="width: 300px;">{{ row_data.SectionDescription }}</td>
 							<td>{{ row_data.finishing_name }}</td>
 							<td>{{ row_data.ThicknessLowerLimit|number_format(3, '.', ',') }}</td>
 							<td>{{ row_data.ThicknessUpperLimit|number_format(3, '.', ',') }}</td>
@@ -204,13 +204,13 @@
 						</tr>
 						{% endfor %}
 						{% else %}
-						<tr class="font10">
+						<tr class="font12">
 							<td colspan="65"> Data tidak tersedia.</td>
 						</tr>
 						{% endif %}
 					</tbody>
 					<tfoot>
-						<tr class="font8 bold">
+						<tr class="font12 bold">
 							<th class="bg-gray" colspan="19">Grand Total</th>
 							<th class="bg-gray"> {{ total }} Blt</th>
 						</tr>
