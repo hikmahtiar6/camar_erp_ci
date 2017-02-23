@@ -83,6 +83,38 @@ function convert_dice($dice)
 	return rtrim($txt, ', ');
 }
 
+function convert_dice2($dice)
+{
+	$dice_txt = ($dice == null) ? '' : $dice;
+	
+	$txt = '';
+	$expl = explode(",", $dice_txt);
+
+	if(count($expl) > 0)
+	{
+		foreach($expl as $rexpl)
+		{
+			if($rexpl != '' || $rexpl != null)
+			{
+				if(strpos($rexpl, '.') !== false) {
+				  // explodable
+					$expl2 = explode(".", $rexpl);
+					$txt .= $expl2[0].'.'.$expl2[1].', ';
+				} else {
+				  // not explodable
+					$txt .= $rexpl.', ';
+				}
+			}
+		}
+	}
+	else
+	{
+		$txt = $dice_txt;
+	}
+
+	return rtrim($txt, ', ');
+}
+
 function count_dice($dice)
 {
 	$arr = array();
@@ -256,6 +288,10 @@ function sum_target_section($header_id, $machine, $shift)
 	}
 
 	return '0';
+}
+
+function number_float($val) {
+	return (float) number_format($val, 3, ',', '.');
 }
 
 ?>

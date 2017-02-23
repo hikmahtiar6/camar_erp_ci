@@ -758,7 +758,7 @@ class Transaction extends CI_Controller
 				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
 				$target_prod_btg,
 				$weight_standard,
-				$target_section,
+				number_float($target_section),
 				($get_master_query) ? $get_master_query->DieTypeName : '-'
 			);
 			$i++;

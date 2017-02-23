@@ -137,6 +137,7 @@
 							<th style="vertical-align: middle;">Hole</th>
 							<th style="vertical-align: middle;">Berat Std</th>
 							<th style="vertical-align: middle;">PPIC Note</th>
+							<th style="vertical-align: middle;">Index Dice</th>
 							<th style="vertical-align: middle;">Bolster</th>
 							<th style="vertical-align: middle;">Pull Awal</th>
 							<th style="vertical-align: middle;">BS Blkg</th>
@@ -150,7 +151,7 @@
 
 						</tr>
 						<tr>
-							<td class="bg-gray font12 bold" colspan="20" align="center">
+							<td class="bg-gray font12 bold" colspan="21" align="center">
 								{{ tanggal }}
 							</td>
 						</tr>
@@ -191,6 +192,7 @@
 							<td>{{ row_data.HoleCount }}</td>
 							<td>{{ row_data.WeightStandard|number_format(3, '.', ',') }}</td>
 							<td>{{ row_data.ppic_note }}</td>
+							<td class="font12" style="width: 300px;">{{ convert_dice2(row_data.index_dice) }}</td>
 							<td>{{ row_data.BolsterTypeId }}</td>
 							<td>{{ row_data.InitialPullingLength }}m</td>
 							<td>{{ row_data.BadEndLength }}m</td>
@@ -211,7 +213,7 @@
 					</tbody>
 					<tfoot>
 						<tr class="font12 bold">
-							<th class="bg-gray" colspan="19">Grand Total</th>
+							<th class="bg-gray" colspan="20">Grand Total</th>
 							<th class="bg-gray"> {{ total }} Blt</th>
 						</tr>
 					</tfoot>
