@@ -758,7 +758,7 @@ class Transaction extends CI_Controller
 				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
 				$target_prod_btg,
 				$weight_standard,
-				number_float($target_section),
+				$target_section,
 				($get_master_query) ? $get_master_query->DieTypeName : '-'
 			);
 			$i++;
@@ -953,11 +953,18 @@ class Transaction extends CI_Controller
 		return $this->output->set_output(json_encode($response));
 	}
 
-	public function grid_dinamic($header_id = '')
+	public function grid_dinamic($header_id = '', $machine_id = '', $shift = 0, $tgl = '')
 	{
-		$grid_data = $this->detail_model->get_data_for_grid_dinamic($header_id);
+		if($header_id == 'no')
+		{
+			$header_id = '';
+		}
+
+		$grid_data = $this->detail_model->get_data_for_grid_dinamic($header_id, $shift, true, $machine_id, $tgl);
 
 		$this->twiggy->set('grid_data', $grid_data);
+		$this->twiggy->set('header', $header_id);
+		$this->twiggy->set('tgl', $tgl);
 		$this->twiggy->template('admin/transaction/grid.dinamic')->display();
 	}
 

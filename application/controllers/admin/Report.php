@@ -53,7 +53,7 @@ class Report extends CI_Controller
 		$post = $this->input->post();
 		$tanggal = (isset($post['tanggal'])) ? $post['tanggal'] : '' ;
 		$machine = (isset($post['machine'])) ? $post['machine'] : '' ;
-		$shift = (isset($post['shift'])) ? $post['shift'] : '' ;
+		$shift = (isset($post['shift'])) ? $post['shift'] : '0' ;
 
 		$machineDescription = '';
 		$get_machine = $this->machine_model->get_data_by_id($machine);
@@ -65,16 +65,18 @@ class Report extends CI_Controller
 		$tgl = str_replace("/", "-", $tanggal);
 		$tgl =  date('Y-m-d', strtotime($tgl));
 
+
 		$idn_time = indonesia_day($tgl).', ' .indonesian_date($tgl);
 
 		$search_data = $this->query_model->get_report_advance($machine, $tgl, $shift)->result();
 
-
 		$this->twiggy->set('search_data', $search_data);
 		$this->twiggy->set('post', $post);
 		$this->twiggy->set('machine', $machine);
+		$this->twiggy->set('shift', $shift);
 		$this->twiggy->set('machine_description', $machineDescription);
 		$this->twiggy->set('tanggal', $idn_time);
+		$this->twiggy->set('tgl', $tgl);
 		$this->twiggy->template('admin/report/layar')->display();
 	}
 }

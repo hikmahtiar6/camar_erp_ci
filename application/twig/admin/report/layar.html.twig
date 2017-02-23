@@ -87,6 +87,10 @@
 					</tr>
 				</table>
 
+				<input class="machine-data" type="hidden" value="{{ machine }}">
+				<input class="shift-data" type="hidden" value="{{ shift }}">
+				<input class="tgl-data" type="hidden" value="{{ tgl }}">
+
 				<br>
 
 				<!--
@@ -120,7 +124,8 @@
 				-->
 								
 				
-
+				<table class="table table-bordered grid-dinamic" style="width: 50%">
+		            	</table>
 
 				<br>
 
@@ -225,6 +230,13 @@
 
 	</body>
 
+	<script type="text/javascript">
+        window.APP = {
+            siteUrl: "{{ site_url() }}/",
+            baseUrl: "{{ base_url() }}/"
+        }
+    </script>
+
     <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ base_url('web/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ base_url('web/vendor/plugins-admin/momentjs/moment.js') }}"></script>
@@ -269,6 +281,24 @@
 		window.onafterprint = afterPrint;
 
 		window.REPORT.handleDatepicker();
+
+		function handleGridUpDinamic() {
+			var table = $('.grid-dinamic');
+			var machineData = $('.machine-data').val();
+			var shiftData = $('.shift-data').val();
+			var tglData = $('.tgl-data').val();
+
+			$.ajax({
+				url: APP.siteUrl + 'admin/transaction/grid_dinamic/no/'+machineData+'/'+shiftData+'/'+tglData,
+				type: 'GET',
+				dataType: 'html',
+				success: function(response) {
+					table.html(response);
+				}
+			});
+		}
+
+		handleGridUpDinamic();
 
 	</script>
 

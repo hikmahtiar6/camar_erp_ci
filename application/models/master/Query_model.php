@@ -39,7 +39,7 @@ class Query_model extends CI_Model
 		return $this->get_master_advance($machine_id, $section_id)->num_rows();
 	}
 
-	public function get_report_advance($machine_id = '', $tanggal = '', $shift = '')
+	public function get_report_advance($machine_id = '', $tanggal = '', $shift = 0)
 	{
 		$sql = "
 		SELECT d.*,
@@ -83,7 +83,7 @@ class Query_model extends CI_Model
 			$sql .= "AND d.tanggal ='".$tanggal."' ";
 		}
 
-		if($shift != '')
+		if($shift > 0)
 		{
 			$sql .= "AND d.shift ='".$shift."' ";
 		}

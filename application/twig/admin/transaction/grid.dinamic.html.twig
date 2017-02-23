@@ -11,8 +11,12 @@
 	<tr>
 		<td>{{ grid_row.MachineId }}</td>		
 		<td>{{ grid_row.shift }}</td>		
-		<td>{{ sum_target_section(grid_row.header_id, grid_row.MachineId, grid_row.shift) }}</td>		
+		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.shift, tgl) }}</td>		
 	</tr>
 	{% endfor %}
+	{% else %}
+	<tr>
+		<td colspan="3">Data tidak tersedia</td>
+	</tr>
 	{% endif %}
 </tbody>

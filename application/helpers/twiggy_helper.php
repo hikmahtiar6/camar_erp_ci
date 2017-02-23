@@ -255,7 +255,7 @@ function get_record_detail_by_header($header_id, $shift = 0)
 	return $ci->detail_model->count_record_by_header_shift($header_id, $shift);
 }
 
-function sum_target_section($header_id, $machine, $shift)
+function sum_target_section($header_id, $machine, $shift, $tgl)
 {
 	$ci =& get_instance();
 	$ci->load->model('master/detail_model');
@@ -266,7 +266,7 @@ function sum_target_section($header_id, $machine, $shift)
 
 	$sum = array();
 
-	$data = $ci->detail_model->get_data_for_grid_dinamic($header_id, $shift, false);
+	$data = $ci->detail_model->get_data_for_grid_dinamic($header_id, $shift, false, $machine, $tgl);
 	if($data)
 	{
 		foreach($data as $row)
