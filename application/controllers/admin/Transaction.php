@@ -309,7 +309,8 @@ class Transaction extends CI_Controller
 				$data_for_insert_detail = array(
 					'header_id'  => $this->section_model->get_last_insert_id(),
 					'tanggal'    => $tgl,
-					'section_id' => $sec_id
+					'section_id' => $sec_id,
+					'shift'      => 1
 				);
 
 				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());
@@ -618,7 +619,8 @@ class Transaction extends CI_Controller
 		$data_insert_detail = array(
 			'header_id' => $header_id,
 			'tanggal'   => $tgl,
-			'section_id'=> '035'
+			'section_id'=> '035',
+			'shift'     => 1
 		);
 
 		$get_last_data_detail = $this->detail_model->advance_search($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '', $header_id, $limit = '', $start = '', $order = 'master_detail_id', $type_order = 'DESC')->row();
