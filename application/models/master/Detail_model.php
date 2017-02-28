@@ -21,10 +21,11 @@ class Detail_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('a.*, b.Length');
+		$sql->select('a.*, b.Length, c.SectionDescription');
 		$sql->from(static::TABLE. ' a');
 		$sql->join(static::TABLE_LEN. ' b', 'a.len = b.LengthId', 'left');
-		$sql->where('master_detail_id', $id);
+		$sql->join(static::TABLE_BARANG. ' c', 'a.section_id = c.SectionId', 'left');
+		$sql->where('a.master_detail_id', $id);
 
 		$get = $sql->get();
 		return $get->row();

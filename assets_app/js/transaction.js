@@ -943,6 +943,12 @@ window.TRANSACTION = (function($) {
                             delOptions: {}
                         }       
                     },
+                    {
+						label: "<br>",
+                        name: "to_lot",
+                        hidden: false,
+                        width: 80,  
+                    },
 					{
 						label: 'Tanggal <br><br>',
 						name:'tanggal', 
@@ -1605,6 +1611,11 @@ window.TRANSACTION = (function($) {
 					table.html(response);
 				}
 			});
+		},
+
+		handleModalLot: function(masterDetailId) {
+            $(document).find('.content-modal-transaksi').load(APP.siteUrl + 'admin/lot/get_detail/' + masterDetailId);
+
 		}
 	}
 

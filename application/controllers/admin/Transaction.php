@@ -747,7 +747,8 @@ class Transaction extends CI_Controller
 			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
 			$response->rows[$i]['id']   = $gmd->master_detail_id;
 			$response->rows[$i]['cell'] = array(
-				$gmd->master_detail_id, 
+				$gmd->master_detail_id,
+				'<a href="javascript:;" data-toggle="modal" data-target="#defaultModal" onclick="window.TRANSACTION.handleModalLot('.$gmd->master_detail_id.')">Isi Lot</a>', 
 				$tgl,
 				$gmd->shift,
 				$gmd->SectionDescription,
@@ -767,86 +768,6 @@ class Transaction extends CI_Controller
 			);
 			$i++;
 		}
-		
-		//return $this->output->set_output(json_encode($response));
-
-		//$data = array();
-
-		
-		
-
-		/*$machine = '';
-		$header_data = $this->header_model->get_data_by_id($header_id);
-		if($header_data)
-		{
-			$machine = $header_data->machine_id;
-		}
-
-
-		$sum = array();
-
-		if($get_md)
-		{
-			$no = 1;
-			foreach($get_md as $gmd)
-			{
-				$get_master_query =  $this->query_model->get_master_advance($machine, $gmd->section_id)->row();
-				$target_prod_btg = $gmd->target_prod;
-
-				$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
-				$weight_standard = ($get_master_query) ? $get_master_query->WeightStandard : '';
-
-
-				if($f2_estfg != NULL)
-				{
-					$target_prod_btg = $f2_estfg * $gmd->target_prod; 
-				}
-
-				array_push($sum, $weight_standard * $target_prod_btg * $gmd->Length);
-				
-				$data[] = array(
-					'no'               => $no,
-					'id'               => $gmd->master_detail_id,
-					'machine_id'	   => $gmd->machine_id,
-					'header_id'	       => $gmd->header_id,
-					'tanggal1'         => ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal)),
-					'tanggal2'         => ($gmd->tanggal == null) ? '<label class="editable-empty">Silahkan diisi</label>' : date('d-m-Y', strtotime($gmd->tanggal)),
-					'shift'            => $gmd->shift,
-					'shift_name'       => $gmd->ShiftDescription,
-					'section_id'       => $gmd->section_id,
-					'section_name'     => $gmd->SectionDescription,
-					'mesin'            => $gmd->machine_type,
-					'billet'           => ($get_master_query) ? $get_master_query->BilletTypeId : '-',
-					'len'              => $gmd->LengthId,
-					'len_name'         => $gmd->Length,
-					'finishing'        => $gmd->finishing,
-					'finishing_name'   => $gmd->finishing_name,
-					'target_prod'      => ($gmd->target_prod == null) ? '' : $gmd->target_prod,
-					'index_dice_value' => ($gmd->index_dice == null) ? '' : $gmd->index_dice,
-					'index_dice'       => $this->convert_dice($gmd->index_dice),
-					'index_dice_count' => $this->count_dice($gmd->index_dice),
-					'ppic_note'        => ($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
-					'master_id'        => $gmd->master_id,
-					'target_prod_btg'  => $target_prod_btg,
-					'die_type'         => ($get_master_query) ? $get_master_query->DieTypeName : '-',
-					'weight_standard'  => $weight_standard,
-					'target_section'   => $weight_standard * $target_prod_btg * $gmd->Length,
-					'total_target'     => array_sum($sum),
-					'shift_start'      => date('H:i:s', strtotime($gmd->ShiftStart)),
-					//'shift_end'        => date('H:i:s', strtotime($gmd->ShiftStart) + time($gmd->actual_pressure_time * $gmd->target_prod)),
-					'null'             => '-',
-					'apt'              => '',
-					'action'           => '',
-				);
-
-				$no++;
-			}
-		}
-
-		$response = array(
-			'data' => $data,
-			'recordsTotal' => count($data)
-		);*/
 
 		$this->output->set_output(json_encode($response));
 	}
