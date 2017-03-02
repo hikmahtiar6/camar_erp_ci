@@ -24,15 +24,6 @@ window.LOT = (function($) {
 				mtype: "POST",
 				cmTemplate: {sortable:false},
 				colModel: [
-					
-					{
-						label: "Dies Index <br> Used",
-						index:"", 
-                        name: "dies_used",
-                        hidden: false,
-                        width: 100,
-                        editable: true       
-                    },
                     {
 						label: "Berat <br> Std",
 						index:"", 
@@ -76,7 +67,7 @@ window.LOT = (function($) {
                         name: "jumlah_billet",
                         hidden: false,
                         width: 70,       
-                        editable: true       
+                        editable: false       
                     },
                     {
 						label: "Billet <br> VendorId",
@@ -103,16 +94,18 @@ window.LOT = (function($) {
                     {
 						label: "Rak#",
 						index:"", 
-                        name: "",
+                        name: "rak_btg",
                         hidden: false,
-                        width: 70,       
+                        width: 70,
+                        editable: true       
                     },
                     {
 						label: "Jml di <br> Rak",
 						index:"", 
-                        name: "",
+                        name: "jumlah_di_rak_btg",
                         hidden: false,
                         width: 70,       
+                        editable: true       
                     },
                     {
 						label: "Hasil <br> Prod",
@@ -134,62 +127,6 @@ window.LOT = (function($) {
                         name: "",
                         hidden: false,
                         width: 70,       
-                    },
-                    {
-						label: "Mulai <br> Pukul",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Selesai <br> Pukul",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Total <br> Menit",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Downtime",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Dead <br> Cycle",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Ram <br> Speed",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Pressure <br> (bar)",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 70,       
-                    },
-                    {
-						label: "Keterangan <br> Extrusion",
-						index:"", 
-                        name: "",
-                        hidden: false,
-                        width: 150,       
                     },
                 ],
                 onSelectRow: editRow,
@@ -253,7 +190,7 @@ window.LOT = (function($) {
 			            grid.jqGrid('restoreRow',lastSelection);
 			            grid.jqGrid('editRow',id, {
 			            	keys:false, 
-			            	focusField: 1,
+			            	focusField: 2,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
 					        	//window.TRANSACTION.handleGridUpDinamic();
@@ -269,7 +206,7 @@ window.LOT = (function($) {
 			        } else {
 			        	grid.jqGrid('editRow',id, {
 			            	keys:false, 
-			            	focusField: 1,
+			            	focusField: 2,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
 					        	//window.TRANSACTION.handleGridUpDinamic();
@@ -285,7 +222,7 @@ window.LOT = (function($) {
 		       	} else {
 		       		grid.jqGrid('editRow',id, {
 		            	keys:false, 
-		            	focusField: 1,
+		            	focusField: 2,
 		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 					        grid.trigger("reloadGrid");
 					        //window.TRANSACTION.handleGridUpDinamic();
@@ -343,6 +280,10 @@ window.LOT = (function($) {
 				if(e.keyCode == 13) {
 					formHeaderLot.submit();
 				}
+			});
+
+			$('.close-modal').click(function() {
+				formHeaderLot.submit();
 			});
 		},
 

@@ -4,58 +4,48 @@
 	    <h4 class="modal-title pull-left" id="defaultModalLabel">
 	    	Form Transaksi Lot
 	    </h4>
-		<button class="pull-right btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
 
 	</div>
 	<div class="modal-body">
-
-		<input class="master-detail-id" type="hidden" value="{{ master_detail_id }}">
-	
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>Tanggal</th>
-					<th>Shift</th>
-					<th>Section Name</th>
-					<th>Section Id</th>
-					<th>Target Prod (Billet)</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% if get_detail %}
-				<tr>
-					<td>{{ get_detail.tanggal|date("d-m-Y") }}</td>
-					<td>{{ get_detail.shift }}</td>
-					<td>{{ get_detail.SectionDescription }}</td>
-					<td>{{ get_detail.section_id }}</td>
-					<td>{{ get_detail.target_prod }}</td>
-				</tr>
-				{% endif %}
-			</tbody>
-		</table>
 
 		<form class="form-header-lot" method="post" action="{{ site_url('admin/lot/save_header') }}">
 
 		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
 		<table class="table table-bordered">
 			<tr>
-				<td>
+				<th>
 					Mesin
-				</td>
-				<td colspan="7">
+				</th>
+				<th colspan="7">
 					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<td>Oprt-1</td>
 				<td>
-					<input class="form-control tag-editor" name="opr1" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr1 }} {% endif %}">
+					<select class="form-control" name="opr1">
+						<option value="">- Pilih -</option>
+						{% if get_operator %}
+							{% for row_opr in get_operator %}
+								<option value="{{ row_opr.operator_id }}" {% if same(get_detail_header.opr1, row_opr.operator_id ) %} selected="selected" {% endif %}>{{ row_opr.name }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
 				</td>
 				<td style="padding-left: 50px;">
 					Oprt-2
 				</td>
 				<td>
-					<input class="form-control tag-editor" name="opr2" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr2 }} {% endif %}">
+					<select class="form-control" name="opr2">
+						<option value="">- Pilih -</option>
+						{% if get_operator %}
+							{% for row_opr in get_operator %}
+								<option value="{{ row_opr.operator_id }}" {% if same(get_detail_header.opr2, row_opr.operator_id ) %} selected="selected" {% endif %}>{{ row_opr.name }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+					<!--<input class="form-control tag-editor" name="opr2" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr2 }} {% endif %}">-->
 				</td>
 				<td style="padding-left: 50px;">
 					Scrap
@@ -84,7 +74,61 @@
 			</tr>
 		</table>
 
+	
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Tanggal</th>
+					<th>Shift</th>
+					<th>Section Name</th>
+					<th>Section Id</th>
+					<th>Dies Index Used</th>
+					<th>Target Prod (Billet)</th>
+					<th>Mulai Pukul</th>
+					<th>Selesai Pukul</th>
+					<th>Downtime</th>
+					<th>DeadCycle</th>
+					<th>Ram Speed</th>
+					<th>Pressure (bar)</th>
+					<th>Keterangan Extrusion</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if get_detail %}
+				<tr>
+					<td>{{ get_detail.tanggal|date("d-m-Y") }}</td>
+					<td>{{ get_detail.shift }}</td>
+					<td>{{ get_detail.SectionDescription }}</td>
+					<td>{{ get_detail.section_id }}</td>
+					<td>{{ convert_dice(get_detail.index_dice) }}</td>
+					<td>{{ get_detail.target_prod }}</td>
+					<td><input class="form-control" name="time_start" type="text" value="{% if get_detail_header %} {{ get_detail_header.time_start }} {% endif %}"></td>
+					<td><input class="form-control" name="time_finish" type="text" value="{% if get_detail_header %} {{ get_detail_header.time_finish }} {% endif %}"></td>
+					<td><input class="form-control" name="downtime" type="text" value="{% if get_detail_header %} {{ get_detail_header.downtime }} {% endif %}"></td>
+					<td><input class="form-control" name="deadcycle" type="text" value="{% if get_detail_header %} {{ get_detail_header.deadcycle }} {% endif %}"></td>
+					<td><input class="form-control" name="ram_speed" type="text" value="{% if get_detail_header %} {{ get_detail_header.ram_speed }} {% endif %}"></td>
+					<td><input class="form-control" name="pressure_bar" type="text" value="{% if get_detail_header %} {{ get_detail_header.pressure_bar }} {% endif %}"></td>
+					<td><textarea class="form-control" name="keterangan">{% if get_detail_header %} {{ get_detail_header.keterangan }} {% endif %}</textarea></td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
 		</form>
+
+		<table class="table table-bordered" style="width: 50%">
+			<tr>
+				<td>Pull.Awal</td>
+				<td>Bs.Blkg</td>
+				<td>Pull.Awal Actual</td>
+				<td>Bs.Blkg.Actual</td>
+			</tr>
+			<tr>
+				<td>{% if get_master_query %} {{ get_master_query.InitialPullingLength }} {% endif %}</td>
+				<td>{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}</td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
 
 		<br>
 

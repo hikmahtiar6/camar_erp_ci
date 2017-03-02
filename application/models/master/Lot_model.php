@@ -6,6 +6,13 @@ class Lot_model extends CI_Model {
 
 	const TABLE = 'SpkLot';
 	const TABLE_HEAD_LOT = 'SpkHeaderLot';
+	const TABLE_DETAIL = 'SpkDetail';
+	const TABLE_LEN = 'Inventory.MasterDimensionLength';
+	const TABLE_HEAD = 'SpkHeader';
+	const TABLE_BARANG = 'Inventory.Sections';
+	const TABLE_MACHINE = 'Factory.Machines';
+	const TABLE_SHIFT = 'Factory.Shifts';
+	const TABLE_FINISHING = 'Finishing';
 
 	public function __construct()
 	{
@@ -33,6 +40,144 @@ class Lot_model extends CI_Model {
 
 		$get = $sql->get();
 		return $get;
+	}
+
+	public function suming($sum = 'a.berat_ak', $shift = 0, $master_detail_id = '', $machine_id = '', $section_id = '')
+	{
+		$sql = "
+			SELECT * 
+			FROM
+			 (
+			 	SELECT SUM($sum) as jml
+
+				FROM
+					".static::TABLE." a
+				LEFT JOIN 
+					".static::TABLE_DETAIL." b ON a.master_detail_id = b.master_detail_id
+				INNER JOIN 
+					".static::TABLE_HEAD." c ON b.header_id = c.header_id ";
+
+		if($machine_id != '')
+		{
+			$sql .= "AND c.machine_id = '$machine_id' ";
+		}
+
+		if($section_id != '')
+		{
+			$sql .= "AND b.section_id = '$section_id' ";
+		}
+
+		if($master_detail_id != '')
+		{
+			$sql .= "AND b.master_detail_id = '$master_detail_id' ";
+		}
+
+		$sql .= " ) AS t ";
+
+		$sql = str_replace("c.header_id AND", "c.header_id WHERE", $sql);
+
+		$sql = str_replace("t AND", "t WHERE", $sql);
+
+		$query = $this->db->query($sql);
+		return $query;
+	}	
+
+	public function counting($count = 'a.berat_ak', $shift = 0, $master_detail_id = '', $machine_id = '', $section_id = '')
+	{
+		$sql = "
+			SELECT * 
+			FROM
+			 (
+			 	SELECT COUNT($count) as jml
+
+				FROM
+					".static::TABLE." a
+				LEFT JOIN 
+					".static::TABLE_DETAIL." b ON a.master_detail_id = b.master_detail_id
+				INNER JOIN 
+					".static::TABLE_HEAD." c ON b.header_id = c.header_id ";
+
+		if($machine_id != '')
+		{
+			$sql .= "AND c.machine_id = '$machine_id' ";
+		}
+
+		if($section_id != '')
+		{
+			$sql .= "AND b.section_id = '$section_id' ";
+		}
+
+		if($master_detail_id != '')
+		{
+			$sql .= "AND b.master_detail_id = '$master_detail_id' ";
+		}
+
+		$sql .= " ) AS t ";
+
+		$sql = str_replace("c.header_id AND", "c.header_id WHERE", $sql);
+
+		$sql = str_replace("t AND", "t WHERE", $sql);
+
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function advance_search($shift = 0, $master_detail_id = '', $machine_id = '', $section_id = '', $limit = '', $start = '', $order = 'tanggal', $type_order = 'ASC')
+	{
+
+		
+		$sql = "
+			SELECT * 
+			FROM
+			 (
+			 	SELECT 
+					a.*, 
+					b.section_id AS SectionId,
+					c.machine_id AS MachineId,
+					ROW_NUMBER() OVER(ORDER BY a.lot_id DESC) as RowNum
+				FROM
+					".static::TABLE." a
+				LEFT JOIN 
+					".static::TABLE_DETAIL." b ON a.master_detail_id = b.master_detail_id
+				INNER JOIN 
+					".static::TABLE_HEAD." c ON b.header_id = c.header_id ";
+
+		if($machine_id != '')
+		{
+			$sql .= "AND c.machine_id = '$machine_id' ";
+		}
+
+		if($section_id != '')
+		{
+			$sql .= "AND b.section_id = '$section_id' ";
+		}
+
+		if($master_detail_id != '')
+		{
+			$sql .= "AND b.master_detail_id = '$master_detail_id' ";
+		}
+
+		$sql .= " ) AS t ";
+
+		$sql = str_replace("c.header_id AND", "c.header_id WHERE", $sql);
+
+		if($limit != '')
+		{
+			$sql .= "AND RowNum <= '$limit' ";
+		}
+
+		if($start != '')
+		{
+			$sql .= "AND RowNum > '".$start."' ";
+		}
+
+		$sql .= " ORDER BY $order $type_order ";
+
+
+		$sql = str_replace("t AND", "t WHERE", $sql);
+
+		$query = $this->db->query($sql);
+		return $query;
 	}
 
 	public function get_data_header_by_master_detail_id($master_detail_id)

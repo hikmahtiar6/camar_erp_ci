@@ -1546,7 +1546,7 @@ window.TRANSACTION = (function($) {
 			            grid.jqGrid('restoreRow',lastSelection);
 			            grid.jqGrid('editRow',id, {
 			            	keys:false, 
-			            	focusField: 2,
+			            	focusField: 3,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
 					        	window.TRANSACTION.handleGridUpDinamic();
@@ -1562,7 +1562,7 @@ window.TRANSACTION = (function($) {
 			        } else {
 			        	grid.jqGrid('editRow',id, {
 			            	keys:false, 
-			            	focusField: 2,
+			            	focusField: 3,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
 					        	window.TRANSACTION.handleGridUpDinamic();
@@ -1578,7 +1578,7 @@ window.TRANSACTION = (function($) {
 		       	} else {
 		       		grid.jqGrid('editRow',id, {
 		            	keys:false, 
-		            	focusField: 2,
+		            	focusField: 3,
 		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 					        grid.trigger("reloadGrid");
 					        window.TRANSACTION.handleGridUpDinamic();
