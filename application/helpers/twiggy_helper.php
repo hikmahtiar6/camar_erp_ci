@@ -294,4 +294,14 @@ function number_float($val) {
 	return (float) number_format($val, 3, ',', '.');
 }
 
+function check_array($array)
+{
+	if(is_array($array))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 ?>

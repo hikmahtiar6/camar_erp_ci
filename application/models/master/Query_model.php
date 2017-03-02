@@ -13,7 +13,7 @@ class Query_model extends CI_Model
 	public function get_master_advance($machine_id = '', $section_id = '')
 	{
 		$sql = "
-		SELECT DISTINCT d.*, mdt.DieTypeName
+		SELECT DISTINCT d.*, mdt.DieTypeName , s.SectionDescription
 		FROM Extrusion.ExtrusionGuideFinal2() d
 		LEFT JOIN Inventory.Sections s ON s.SectionId=d.SectionId
 		LEFT JOIN Inventory.MasterDieTypes mdt ON mdt.DieTypeId=s.DieTypeId ";

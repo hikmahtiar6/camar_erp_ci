@@ -78,6 +78,7 @@ class Report extends CI_Controller
 		$tanggal = (isset($post['tanggal'])) ? $post['tanggal'] : '' ;
 		$machine = (isset($post['machine'])) ? $post['machine'] : '' ;
 		$shift = (isset($post['shift'])) ? $post['shift'] : '0' ;
+		$submit = (isset($post['submit'])) ? $post['submit'] : 'Submit' ;
 
 		$machineDescription = '';
 		$get_machine = $this->machine_model->get_data_by_id($machine);
@@ -101,7 +102,37 @@ class Report extends CI_Controller
 		$this->twiggy->set('machine_description', $machineDescription);
 		$this->twiggy->set('tanggal', $idn_time);
 		$this->twiggy->set('tgl', $tgl);
-		$this->twiggy->template('admin/report/layar')->display();
+
+		switch ($submit) {
+			case 'Submit':
+				# code...
+				$this->twiggy->template('admin/report/layar')->display();
+				break;
+
+			case 'SPK2':
+				# code...
+				if($shift == 0)
+				{
+					$shift = array('SHIFT 1', 'SHIFT 2');
+				}
+
+				$get_master = $this->query_model->get_master_advance($machine, '')->result();
+				$this->twiggy->set('master_data', $get_master);
+				$this->twiggy->set('shift2', $shift);
+				$this->twiggy->template('admin/report/spk2')->display();
+				break;
+
+			case 'SPK3':
+				# code...
+				$this->twiggy->template('admin/report/spk3')->display();
+				break;
+			
+			default:
+				# code...
+				$this->twiggy->template('admin/report/layar')->display();
+				break;
+		}
+
 	}
 
 	/**

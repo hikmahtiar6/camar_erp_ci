@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>View Reporting</title>
+	</head>
+	<link href="{{ base_url('assets_app/fonts/roboto-v15/font.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ base_url('assets_app/fonts/material-icons/font.css') }}" rel="stylesheet" type="text/css"> 
+    <link href="{{ base_url('web/vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
+    <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css"> 
+    <style type="text/css">
+	    
+	</style>
+
+	<body>
+
+		<div class="row">
+		</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-info button-action">
+				<button class="btn btn-primary report-print">Print</button>
+				<a href="javascript:;" class="btn btn-danger report-close">Tutup</a>
+			</div>
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+
+				<table style="width: 100%">
+					<tr>
+						<td valign="bottom">
+							<h2 class="font16 bold">
+								{{ machine_description }}
+							</h2>
+						</td>
+
+						<td valign="bottom" align="center">
+							<h2 class="font16 bold">
+								SPK-2 <u>&nbsp;&nbsp;&nbsp;SPK Extrusion&nbsp;&nbsp;&nbsp;</u>
+							</h2>
+						</td>
+
+						<td valign="bottom" align="right">
+							<h2 class="font16 bold">
+								{{ machine }}
+							</h2>
+						</td>
+					</tr>
+				</table>
+
+				<input class="machine-data" type="hidden" value="{{ machine }}">
+				<input class="shift-data" type="hidden" value="{{ shift }}">
+				<input class="tgl-data" type="hidden" value="{{ tgl }}">
+
+				<br>
+
+				<!--
+				<table border="0" style="width: 100%">
+					<tr>
+						<th width="200">Std Jam Kerja:</th>
+						<th width="150">720 mnt</th>
+						<th width="300" style="text-align: right;">Total pemakaian billet (kg):</th>
+						<th width="100" style="padding-left: 15px;">51,363 kg</th>
+						<th width="150" style="text-align: right;">Berat scrap:</th>
+						<th width="100" style="padding-left: 10px;">5,517 kg</th>
+						<th width="100" style="text-align: right;">Loss (kg):</th>
+						<th width="100" style="padding-left: 15px;">552 kg</th>
+					</tr>
+					<tr>
+						<th>Jam Produktif:</th>
+						<th>(228) mnt</th>
+						<th style="text-align: right;">Total hasil produksi (kg):</th>
+						<th style="padding-left: 15px;">42,774 kg</th>
+						<th style="text-align: right;">Berat end-butt:</th>
+						<th style="padding-left: 15px;">2,520 kg</th>
+						<th style="text-align: right;">Loss (%):</th>
+						<th style="padding-left: 15px;">1.08%</th>
+
+					</tr>
+					<tr>
+						<th>Jam non-efektif:</th>
+						<th>948 mnt(131.7%)</th>
+					</tr>
+				</table>
+				-->
+				
+				<br>
+
+				<table class="table table-bordered">
+					<thead>
+						<tr class="font12 bold">
+							<th style="vertical-align: middle;">Tg</th>
+							<th style="vertical-align: middle;">Sh</th>
+							<th style="vertical-align: middle;">Lt</th>
+							<th style="vertical-align: middle;">Nama</th>
+							<th style="vertical-align: middle;">#</th>
+							<th style="vertical-align: middle;">Pull Awal <br> (m)</th>
+							<th style="vertical-align: middle;">BS Blkg <br> (m)</th>
+							<th style="vertical-align: middle;">P Billet <br> (cm)</th>
+							<th style="vertical-align: middle;">Jml Billet <br> (BH)</th>
+							<th style="vertical-align: middle;">Mulai Pk</th>
+							<th style="vertical-align: middle;">Selesai Pk</th>
+							<th style="vertical-align: middle;">Downtime</th>
+							<th style="vertical-align: middle;">Ram Speed <br> (mm/s)</th>
+							<th style="vertical-align: middle;">Pressure <br> (bar)</th>
+							<th style="vertical-align: middle;">Keterangan Extrusion</th>
+							<th style="vertical-align: middle;">End-Butt <br> (kg)</th>
+							<th style="vertical-align: middle;">Scrap <br> (kg)</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td colspan="5">
+								{{ tanggal }}
+							</td>
+							<td colspan="12">
+							</td>
+						</tr>
+						{% if check_array(shift2) %}
+							{% for r_shift2 in shift2 %}
+							<tr>
+								<td></td>
+								<td colspan="4">
+									{{ r_shift2 }}
+								</td>
+								<td colspan="12">
+								</td>
+							</tr>
+
+								{% if master_data %}
+									{% for key, master_row in master_data %}
+
+										<tr>
+											<td colspan="2"></td>
+											<td> {{ add_zero(key+1)  }}</td>
+											<td colspan="14">
+												{{ master_row.SectionDescription }}
+											</td>
+										</tr>
+
+										{% for i in range(1, 10) %}
+											<tr>
+												<td colspan="4"></td>
+												<td> {{ add_zero(i) }}</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+											</tr>
+										{% endfor %}
+
+									{% endfor %}
+								{% endif %}
+
+							{% endfor %}
+
+						{% else %}
+							<tr>
+								<td></td>
+								<td colspan="4">
+									SHIFT {{ shift }}
+								</td>
+								<td colspan="12">
+								</td>
+							</tr>
+
+							{% if master_data %}
+								{% for key, master_row in master_data %}
+
+									<tr>
+										<td colspan="2"></td>
+										<td> {{ add_zero(key+1)  }}</td>
+										<td colspan="14">
+											{{ master_row.SectionDescription }}
+										</td>
+									</tr>
+
+									{% for i in range(1, 10) %}
+										<tr>
+											<td colspan="4"></td>
+											<td> {{ add_zero(i) }}</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									{% endfor %}
+
+								{% endfor %}
+							{% endif %}
+
+						{% endif %}
+					</tbody>
+			</table>
+
+		</div>
+
+		
+
+	</body>
+
+	<script type="text/javascript">
+        window.APP = {
+            siteUrl: "{{ site_url() }}/",
+            baseUrl: "{{ base_url() }}/"
+        }
+    </script>
+
+    <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ base_url('web/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ base_url('web/vendor/plugins-admin/momentjs/moment.js') }}"></script>
+    <script src="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+    <script src="{{ base_url('assets_app/js/report.js') }}"></script>
+
+    <script type="text/javascript">
+	    $(document).ready(function() {
+			$('.report-print').click(function() {
+				window.print();
+				return false;
+			});
+			$('.report-close').click(function() {
+				window.close();
+				return false;
+			});
+	    });
+
+	    /**
+		 * function detect windows print
+		 */
+
+		var beforePrint = function() {
+			$('.button-action').hide();
+		};
+		var afterPrint = function() {
+			$('.button-action').show();
+		};
+
+		if (window.matchMedia) {
+			var mediaQueryList = window.matchMedia('print');
+			mediaQueryList.addListener(function(mql) {
+			    if (mql.matches) {
+			        beforePrint();
+			    } else {
+			        afterPrint();
+			    }
+			});
+		}
+
+		window.onbeforeprint = beforePrint;
+		window.onafterprint = afterPrint;
+
+		window.REPORT.handleDatepicker();
+
+		function handleGridUpDinamic() {
+			var table = $('.grid-dinamic');
+			var machineData = $('.machine-data').val();
+			var shiftData = $('.shift-data').val();
+			var tglData = $('.tgl-data').val();
+
+			$.ajax({
+				url: APP.siteUrl + 'admin/transaction/grid_dinamic/no/'+machineData+'/'+shiftData+'/'+tglData,
+				type: 'GET',
+				dataType: 'html',
+				success: function(response) {
+					table.html(response);
+				}
+			});
+		}
+
+		handleGridUpDinamic();
+
+	</script>
+
+
+
+</html>
