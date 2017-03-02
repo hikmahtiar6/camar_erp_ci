@@ -35,6 +35,7 @@
     "jq-fullscreen": "jquery-fullscreen-plugin#^0.6.0",
     "jqGrid": "jqgrid#^5.2.0",
     "chosen": "^1.6.2",
-    "multiple-select": "^1.2.1"
+    "multiple-select": "^1.2.1",
+    "jquery-tag-editor": "^1.0.20"
   }
 }

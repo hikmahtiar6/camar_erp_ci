@@ -1,8 +1,11 @@
-<form method="POST">
+<link href="{{ base_url('web/vendor/jquery-tag-editor/jquery.tag-editor.css') }}" rel="stylesheet">
+
 	<div class="modal-header">
-	    <h4 class="modal-title" id="defaultModalLabel">
+	    <h4 class="modal-title pull-left" id="defaultModalLabel">
 	    	Form Transaksi Lot
 	    </h4>
+		<button class="pull-right btn btn-link waves-effect" type="button" data-dismiss="modal">CLOSE</button>
+
 	</div>
 	<div class="modal-body">
 
@@ -31,6 +34,58 @@
 			</tbody>
 		</table>
 
+		<form class="form-header-lot" method="post" action="{{ site_url('admin/lot/save_header') }}">
+
+		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
+		<table class="table table-bordered">
+			<tr>
+				<td>
+					Mesin
+				</td>
+				<td colspan="7">
+					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>Oprt-1</td>
+				<td>
+					<input class="form-control tag-editor" name="opr1" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr1 }} {% endif %}">
+				</td>
+				<td style="padding-left: 50px;">
+					Oprt-2
+				</td>
+				<td>
+					<input class="form-control tag-editor" name="opr2" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr2 }} {% endif %}">
+				</td>
+				<td style="padding-left: 50px;">
+					Scrap
+				</td>
+				<td>
+					<div class="col-md-8">
+                        <input class="form-control input-number" name="scrap" type="text" value="{% if get_detail_header %} {{ get_detail_header.scrap }} {% endif %}">
+					</div>
+					<div class="col-md-4" style="margin-top: 5px; margin-left: -25px;">
+						kg
+					</div>
+				</td>
+				<td style="padding-left: 50px;">
+					Pot End-Butt
+				</td>
+				<td>
+					<div class="row clearfix">
+						<div class="col-md-8">
+                            <input class="form-control input-number" name="potendbutt" type="text" value="{% if get_detail_header %} {{ get_detail_header.pot_end_butt }} {% endif %}">
+						</div>
+						<div class="col-md-4" style="margin-top: 5px; margin-left: -25px;">
+							kg
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		</form>
+
 		<br>
 
 		<div style="overflow: auto">
@@ -52,10 +107,15 @@
 		</div>
 
 	</div>
-</form>
 
+
+<script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.caret.min.js') }}"></script>
+<script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.tag-editor.min.js') }}"></script>
 <script type="text/javascript" src="{{ base_url('assets_app/js/lot.js') }}"></script>
 <script type="text/javascript">
 	window.LOT.handleJqgrid('.list-lot', '#pager-lot');
 	window.LOT.handleAddRow('.add-lot');
+	window.LOT.handleTagEditor();
+	window.LOT.handleSaveHeaderLot();	
+	window.LOT.handleNumberInput();
 </script>

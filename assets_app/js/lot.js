@@ -2,7 +2,8 @@ window.LOT = (function($) {
 	return {
 
 		jqGrid: null, 
-		masterDetailId: null, 
+		masterDetailId: null,
+		formHeaderLot: null, 
 
 		handleJqgrid: function(elJqgrid, elJqgridPager) {
 		    
@@ -318,6 +319,55 @@ window.LOT = (function($) {
 					}
 				});
 			});
-		}
+		},
+
+		handleTagEditor: function() {
+			$('.tag-editor').tagEditor();
+
+			$('.tag-editor').css({
+        		"border": "1px solid #CCC",
+				"width": "150px",
+        		"border-radius": "3px"
+        	});
+		},
+
+		handleSaveHeaderLot: function() {
+
+			var _this = this;
+
+			var formHeaderLot = $('.form-header-lot');
+			_this.formHeaderLot = formHeaderLot;
+			formHeaderLot.ajaxForm();
+
+			$('#potendbutt').keypress(function(e) {
+				if(e.keyCode == 13) {
+					formHeaderLot.submit();
+				}
+			});
+		},
+
+		handleNumberInput: function() {
+			var _this = this;
+
+
+			$('.input-number').keypress(function(e) {
+
+		        if(e.charCode > 57) {
+		            return false;
+		        }
+
+		        if(e.charCode < 48) {
+		            if(e.charCode == 0) {
+
+		            	if(e.keyCode == 13) {
+							_this.formHeaderLot.submit();
+						}
+
+		            }else {
+		                return false;
+		            }
+		        }
+		    });
+		},
 	}
 })(jQuery);
