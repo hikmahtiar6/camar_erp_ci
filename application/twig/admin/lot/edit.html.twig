@@ -4,6 +4,42 @@
 	    <h4 class="modal-title pull-left" id="defaultModalLabel">
 	    	Form Transaksi Lot
 	    </h4>
+
+	    <table class="table table-bordered pull-left" style="width: 70%; margin-left: 25px;">
+			<tr>
+				<td>
+					<label>Mesin</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
+				</td>
+				<td>
+					<label>Tanggal</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.tanggal|date("d-m-Y") }} {% endif %}
+				</td>
+				<td>
+					<label>Shift</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.shift }} {% endif %}
+				</td>
+				<td>
+					<label>Section Name</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.SectionDescription }} {% endif %}
+				</td>
+				<td>
+					<label>Target Prod (Billet)</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.target_prod }} {% endif %}
+				</td>				
+			</tr>
+		</table>
+
 		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
 
 	</div>
@@ -14,15 +50,7 @@
 		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
 		<table class="table table-bordered">
 			<tr>
-				<th>
-					Mesin
-				</th>
-				<th colspan="7">
-					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
-				</th>
-			</tr>
-			<tr>
-				<td>Oprt-1</td>
+				<td><label>Oprt-1</td></label>
 				<td>
 					<select class="form-control" name="opr1">
 						<option value="">- Pilih -</option>
@@ -34,7 +62,7 @@
 					</select>
 				</td>
 				<td style="padding-left: 50px;">
-					Oprt-2
+					<label>Oprt-2</label>
 				</td>
 				<td>
 					<select class="form-control" name="opr2">
@@ -48,7 +76,7 @@
 					<!--<input class="form-control tag-editor" name="opr2" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr2 }} {% endif %}">-->
 				</td>
 				<td style="padding-left: 50px;">
-					Scrap
+					<label>Scrap</label>
 				</td>
 				<td>
 					<div class="col-md-8">
@@ -59,7 +87,7 @@
 					</div>
 				</td>
 				<td style="padding-left: 50px;">
-					Pot End-Butt
+					<label>Pot End-Butt</label>
 				</td>
 				<td>
 					<div class="row clearfix">
@@ -78,12 +106,7 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>Tanggal</th>
-					<th>Shift</th>
-					<th>Section Name</th>
-					<th>Section Id</th>
 					<th>Dies Index Used</th>
-					<th>Target Prod (Billet)</th>
 					<th>Mulai Pukul</th>
 					<th>Selesai Pukul</th>
 					<th>Downtime</th>
@@ -96,12 +119,7 @@
 			<tbody>
 				{% if get_detail %}
 				<tr>
-					<td>{{ get_detail.tanggal|date("d-m-Y") }}</td>
-					<td>{{ get_detail.shift }}</td>
-					<td>{{ get_detail.SectionDescription }}</td>
-					<td>{{ get_detail.section_id }}</td>
 					<td>{{ convert_dice(get_detail.index_dice) }}</td>
-					<td>{{ get_detail.target_prod }}</td>
 					<td><input class="form-control" name="time_start" type="text" value="{% if get_detail_header %} {{ get_detail_header.time_start }} {% endif %}"></td>
 					<td><input class="form-control" name="time_finish" type="text" value="{% if get_detail_header %} {{ get_detail_header.time_finish }} {% endif %}"></td>
 					<td><input class="form-control" name="downtime" type="text" value="{% if get_detail_header %} {{ get_detail_header.downtime }} {% endif %}"></td>
