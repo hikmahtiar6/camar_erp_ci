@@ -126,7 +126,7 @@ window.LOT = (function($) {
 						index:"", 
                         name: "",
                         hidden: false,
-                        width: 70,       
+                        width: 100,       
                     },
                 ],
                 onSelectRow: editRow,

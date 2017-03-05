@@ -48,10 +48,12 @@
 		<form class="form-header-lot" method="post" action="{{ site_url('admin/lot/save_header') }}">
 
 		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
-		<table class="table table-bordered">
+
+
+		<table class="table table-bordered" style="width: 50%">
 			<tr>
-				<td><label>Oprt-1</td></label>
-				<td>
+				<td><label>Operator 1</td></label>
+				<td style="width: 100px;">
 					<select class="form-control" name="opr1">
 						<option value="">- Pilih -</option>
 						{% if get_operator %}
@@ -61,9 +63,15 @@
 						{% endif %}
 					</select>
 				</td>
-				<td style="padding-left: 50px;">
-					<label>Oprt-2</label>
+				<td>
+					<label>Dies Index Used</label>
 				</td>
+				<td style="width: 100px;">
+					{% if get_detail %} {{ convert_dice(get_detail.index_dice) }} {% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td><label>Operator 2</td></label>
 				<td>
 					<select class="form-control" name="opr2">
 						<option value="">- Pilih -</option>
@@ -73,80 +81,102 @@
 							{% endfor %}
 						{% endif %}
 					</select>
-					<!--<input class="form-control tag-editor" name="opr2" type="text" value="{% if get_detail_header %} {{ get_detail_header.opr2 }} {% endif %}">-->
-				</td>
-				<td style="padding-left: 50px;">
-					<label>Scrap</label>
 				</td>
 				<td>
-					<div class="col-md-8">
-                        <input class="form-control input-number" name="scrap" type="text" value="{% if get_detail_header %} {{ get_detail_header.scrap }} {% endif %}">
-					</div>
-					<div class="col-md-4" style="margin-top: 5px; margin-left: -25px;">
-						kg
-					</div>
+					<label>Mulai Pukul</label>
 				</td>
-				<td style="padding-left: 50px;">
-					<label>Pot End-Butt</label>
+				<td>
+					<input class="form-control" name="time_start" type="text" value="{% if get_detail_header %}{{ get_detail_header.time_start }}{% endif %}">
 				</td>
+			</tr>
+			<tr>
+				<td><label>Scrap</td></label>
 				<td>
 					<div class="row clearfix">
 						<div class="col-md-8">
-                            <input class="form-control input-number" name="potendbutt" type="text" value="{% if get_detail_header %} {{ get_detail_header.pot_end_butt }} {% endif %}">
+	                        <input class="form-control" name="scrap" type="text" value="{% if get_detail_header %}{{ get_detail_header.scrap }}{% endif %}">
 						</div>
 						<div class="col-md-4" style="margin-top: 5px; margin-left: -25px;">
 							kg
 						</div>
 					</div>
 				</td>
+				<td>
+					<label>Selesai Pukul</label>
+				</td>
+				<td>
+					<input class="form-control" name="time_finish" type="text" value="{% if get_detail_header %}{{ get_detail_header.time_finish }}{% endif %}">
+				</td>
 			</tr>
-		</table>
-
-	
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>Dies Index Used</th>
-					<th>Mulai Pukul</th>
-					<th>Selesai Pukul</th>
-					<th>Downtime</th>
-					<th>DeadCycle</th>
-					<th>Ram Speed</th>
-					<th>Pressure (bar)</th>
-					<th>Keterangan Extrusion</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% if get_detail %}
-				<tr>
-					<td>{{ convert_dice(get_detail.index_dice) }}</td>
-					<td><input class="form-control" name="time_start" type="text" value="{% if get_detail_header %} {{ get_detail_header.time_start }} {% endif %}"></td>
-					<td><input class="form-control" name="time_finish" type="text" value="{% if get_detail_header %} {{ get_detail_header.time_finish }} {% endif %}"></td>
-					<td><input class="form-control" name="downtime" type="text" value="{% if get_detail_header %} {{ get_detail_header.downtime }} {% endif %}"></td>
-					<td><input class="form-control" name="deadcycle" type="text" value="{% if get_detail_header %} {{ get_detail_header.deadcycle }} {% endif %}"></td>
-					<td><input class="form-control" name="ram_speed" type="text" value="{% if get_detail_header %} {{ get_detail_header.ram_speed }} {% endif %}"></td>
-					<td><input class="form-control" name="pressure_bar" type="text" value="{% if get_detail_header %} {{ get_detail_header.pressure_bar }} {% endif %}"></td>
-					<td><textarea class="form-control" name="keterangan">{% if get_detail_header %} {{ get_detail_header.keterangan }} {% endif %}</textarea></td>
-				</tr>
-				{% endif %}
-			</tbody>
+			<tr>
+				<td><label>Pot End Butt</td></label>
+				<td>
+					<div class="row clearfix">
+						<div class="col-md-8">
+                            <input class="form-control" name="potendbutt" type="text" value="{% if get_detail_header %}{{ get_detail_header.pot_end_butt }}{% endif %}">
+						</div>
+						<div class="col-md-4" style="margin-top: 5px; margin-left: -25px;">
+							kg
+						</div>
+					</div>
+				</td>
+				<td>
+					<label>Downtime</label>
+				</td>
+				<td>
+					<input class="form-control" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}">
+				</td>
+			</tr>
+			<tr>
+				<td><label>Pull Awal</td></label>
+				<td>
+					{% if get_master_query %} {{ get_master_query.InitialPullingLength }} {% endif %}
+				</td>
+				<td>
+					<label>DeadCycle</label>
+				</td>
+				<td>
+					<input class="form-control" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}">
+				</td>
+			</tr>
+			<tr>
+				<td><label>Pull Awal Actual</td></label>
+				<td>
+					
+				</td>
+				<td>
+					<label>Ram Speed</label>
+				</td>
+				<td>
+					<input class="form-control" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}">
+				</td>
+			</tr>
+			<tr>
+				<td><label>Bs. Blkg</td></label>
+				<td>
+					{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}
+				</td>
+				<td>
+					<label>Pressure Bar</label>
+				</td>
+				<td>
+					<input class="form-control" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}">
+				</td>
+			</tr>
+			<tr>
+				<td><label>Bs. Blkg Actual</td></label>
+				<td>
+					
+				</td>
+				<td>
+					<label>Keterangan Ext</label>
+				</td>
+				<td>
+					<textarea class="form-control" name="keterangan">{% if get_detail_header %}{{ get_detail_header.keterangan }}{% endif %}</textarea>
+				</td>
+			</tr>
 		</table>
 		</form>
-
-		<table class="table table-bordered" style="width: 50%">
-			<tr>
-				<td>Pull.Awal</td>
-				<td>Bs.Blkg</td>
-				<td>Pull.Awal Actual</td>
-				<td>Bs.Blkg.Actual</td>
-			</tr>
-			<tr>
-				<td>{% if get_master_query %} {{ get_master_query.InitialPullingLength }} {% endif %}</td>
-				<td>{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}</td>
-				<td></td>
-				<td></td>
-			</tr>
-		</table>
 
 		<br>
 
