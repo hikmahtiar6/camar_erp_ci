@@ -29,14 +29,14 @@ window.LOT = (function($) {
 						index:"", 
                         name: "",
                         hidden: false,
-                        width: 70,       
+                        width: 100,       
                     },
                     {
 						label: "Berat <br> Akt/50",
 						index:"", 
                         name: "berat_ak",
                         hidden: false,
-                        width: 70,       
+                        width: 75,       
                         editable: true       
                     },
                     {
