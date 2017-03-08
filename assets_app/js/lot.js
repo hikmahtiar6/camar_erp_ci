@@ -139,7 +139,7 @@ window.LOT = (function($) {
 				sortorder: "desc",
 				editurl: APP.siteUrl + 'admin/lot/crud', //URL Proses CRUD Nya
 				multiselect: false,
-				caption: "Data SPK Lot",
+				caption: '<button class="btn btn-primary add-lot" type="button">' + 'Tambah' + '</button> &nbsp;&nbsp; Data SPK Lot',
             });
 
 			grid.jqGrid('navGrid', elJqgridPager,

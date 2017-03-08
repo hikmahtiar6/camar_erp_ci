@@ -1,44 +1,16 @@
-<link href="{{ base_url('web/vendor/jquery-tag-editor/jquery.tag-editor.css') }}" rel="stylesheet">
+	<link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css">
+
+	<style type="text/css">
+		.tbl-cstm tr td{
+			border: 1px solid #CCC;
+			padding: 5px;
+		}
+	</style> 
 
 	<div class="modal-header">
 	    <h4 class="modal-title pull-left" id="defaultModalLabel">
 	    	Form Transaksi Lot
 	    </h4>
-
-	    <table class="table table-bordered pull-left" style="width: 70%; margin-left: 25px;">
-			<tr>
-				<td>
-					<label>Mesin</label>
-				</td>
-				<td>
-					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
-				</td>
-				<td>
-					<label>Tanggal</label>
-				</td>
-				<td>
-					{% if get_detail %} {{ get_detail.tanggal|date("d-m-Y") }} {% endif %}
-				</td>
-				<td>
-					<label>Shift</label>
-				</td>
-				<td>
-					{% if get_detail %} {{ get_detail.shift }} {% endif %}
-				</td>
-				<td>
-					<label>Section Name</label>
-				</td>
-				<td>
-					{% if get_detail %} {{ get_detail.SectionDescription }} {% endif %}
-				</td>
-				<td>
-					<label>Target Prod (Billet)</label>
-				</td>
-				<td>
-					{% if get_detail %} {{ get_detail.target_prod }} {% endif %}
-				</td>				
-			</tr>
-		</table>
 
 		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
 
@@ -50,11 +22,17 @@
 		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
 
 
-		<table class="table table-bordered" style="width: 50%">
+		<table class="tbl-cstm" style="width: 75%;">
 			<tr>
+				<td style="width: 150px;">
+					<label>Mesin</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
+				</td>
 				<td><label>Operator 1</td></label>
-				<td style="width: 100px;">
-					<select class="form-control" name="opr1">
+				<td style="width: 150px;">
+					<select class="form-control " name="opr1">
 						<option value="">- Pilih -</option>
 						{% if get_operator %}
 							{% for row_opr in get_operator %}
@@ -66,11 +44,17 @@
 				<td>
 					<label>Dies Index Used</label>
 				</td>
-				<td style="width: 100px;">
+				<td style="width: 150px;">
 					{% if get_detail %} {{ convert_dice(get_detail.index_dice) }} {% endif %}
 				</td>
 			</tr>
 			<tr>
+				<td>
+					<label>Tanggal</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.tanggal|date("d-m-Y") }} {% endif %}
+				</td>
 				<td><label>Operator 2</td></label>
 				<td>
 					<select class="form-control" name="opr2">
@@ -90,6 +74,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+					<label>Shift</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.shift }} {% endif %}
+				</td>
 				<td><label>Scrap</td></label>
 				<td>
 					<div class="row clearfix">
@@ -109,6 +99,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+					<label>Section Name</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.SectionDescription }} {% endif %}
+				</td>
 				<td><label>Pot End Butt</td></label>
 				<td>
 					<div class="row clearfix">
@@ -128,6 +124,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+					<label>Target Prod (Billet)</label>
+				</td>
+				<td>
+					{% if get_detail %} {{ get_detail.target_prod }} {% endif %}
+				</td>
 				<td><label>Pull Awal</td></label>
 				<td>
 					{% if get_master_query %} {{ get_master_query.InitialPullingLength }} {% endif %}
@@ -140,6 +142,10 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+				</td>
+				<td>
+				</td>
 				<td><label>Pull Awal Actual</td></label>
 				<td>
 					
@@ -152,6 +158,10 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+				</td>
+				<td>
+				</td>
 				<td><label>Bs. Blkg</td></label>
 				<td>
 					{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}
@@ -164,6 +174,10 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+				</td>
+				<td>
+				</td>
 				<td><label>Bs. Blkg Actual</td></label>
 				<td>
 					
@@ -178,15 +192,7 @@
 		</table>
 		</form>
 
-		<br>
-
 		<div style="overflow: auto">
-
-			<button class="btn btn-primary add-lot" type="button">
-				Tambah
-			</button>
-
-			<br>
 			<br>
 
 			<table class="list-lot table table-hovered" id="list-lot" cellpadding="0" cellspacing="0" style="width: 100%">
