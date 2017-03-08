@@ -110,14 +110,16 @@
 							<tr>
 								<td></td>
 								<td colspan="4">
-									{{ r_shift2 }}
+									SHIFT {{ r_shift2 }}
 								</td>
 								<td colspan="3">
 								</td>
 							</tr>
 
-								{% if master_data %}
-									{% for key, master_row in master_data %}
+								{% set check_detail = get_detail_advance(machine, tgl, r_shift2, 1) %}
+
+								{% if check_detail %}
+									{% for key, master_row in check_detail %}
 
 										<tr>
 											<td colspan="2"></td>
@@ -152,8 +154,10 @@
 								</td>
 							</tr>
 
-							{% if master_data %}
-								{% for key, master_row in master_data %}
+							{% set check_detail = get_detail_advance(machine, tgl, shift, 1) %}
+
+							{% if check_detail %}
+								{% for key, master_row in check_detail %}
 
 									<tr>
 										<td colspan="2"></td>

@@ -113,11 +113,10 @@ class Report extends CI_Controller
 				# code...
 				if($shift == 0)
 				{
-					$shift = array('SHIFT 1', 'SHIFT 2');
+					$shift = array('1', '2');
 				}
 
-				$get_master = $this->query_model->get_master_advance($machine, '')->result();
-				$this->twiggy->set('master_data', $get_master);
+				
 				$this->twiggy->set('shift2', $shift);
 				$this->twiggy->template('admin/report/spk2')->display();
 				break;
@@ -126,11 +125,10 @@ class Report extends CI_Controller
 				# code...
 				if($shift == 0)
 				{
-					$shift = array('SHIFT 1', 'SHIFT 2');
+					$shift = array('1', '2');
 				}
 
-				$get_master = $this->query_model->get_master_advance($machine, '')->result();
-				$this->twiggy->set('master_data', $get_master);
+				
 				$this->twiggy->set('shift2', $shift);
 				$this->twiggy->template('admin/report/spk3')->display();
 				break;

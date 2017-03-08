@@ -39,40 +39,61 @@ class Query_model extends CI_Model
 		return $this->get_master_advance($machine_id, $section_id)->num_rows();
 	}
 
-	public function get_report_advance($machine_id = '', $tanggal = '', $shift = 0)
+	public function get_report_advance($machine_id = '', $tanggal = '', $shift = 0, $district = false)
 	{
-		$sql = "
-		SELECT d.*,
-			h.machine_id as machine_id2,
-			f.finishing_name,
-			s.SectionDescription,
-			g.ThicknessStandard,
-			g.ThicknessLowerLimit,
-			g.ThicknessUpperLimit,
-			g.HoleCount,
-			g.WeightStandard,
-			g.BolsterTypeId,
-			g.InitialPullingLength,
-			g.BadEndLength,
-			g.F2_PullingLength,
-			g.F2_EstFG,
-			g.F2_EstBilletLengthMax,
-			g.F2_FreqBillet,
-			g.F2_FreqCut	
-			
-		FROM dbo.SpkDetail d
-		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
-		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
-		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
-		LEFT JOIN 
-			(SELECT *,
-				RowNo=ROW_NUMBER() OVER (PARTITION BY SectionId, MachineId, LengthId ORDER BY SectionId)
-			 FROM Extrusion.ExtrusionGuideFinal2())
-				 g ON g.SectionId=d.section_id
-				AND g.MachineId=h.machine_id
-				AND g.[LengthId]=d.Len
-				AND g.RowNo=1 ";
-
+		if($district)
+		{
+			$sql = "
+			SELECT  DISTINCT s.SectionDescription, d.shift	
+				
+			FROM dbo.SpkDetail d
+			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
+			LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+			LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
+			LEFT JOIN 
+				(SELECT *,
+					RowNo=ROW_NUMBER() OVER (PARTITION BY SectionId, MachineId, LengthId ORDER BY SectionId)
+				 FROM Extrusion.ExtrusionGuideFinal2())
+					 g ON g.SectionId=d.section_id
+					AND g.MachineId=h.machine_id
+					AND g.[LengthId]=d.Len
+					AND g.RowNo=1 ";
+		} 
+		else 
+		{
+			$sql = "
+			SELECT d.*,
+				h.machine_id as machine_id2,
+				f.finishing_name,
+				s.SectionDescription,
+				g.ThicknessStandard,
+				g.ThicknessLowerLimit,
+				g.ThicknessUpperLimit,
+				g.HoleCount,
+				g.WeightStandard,
+				g.BolsterTypeId,
+				g.InitialPullingLength,
+				g.BadEndLength,
+				g.F2_PullingLength,
+				g.F2_EstFG,
+				g.F2_EstBilletLengthMax,
+				g.F2_FreqBillet,
+				g.F2_FreqCut	
+				
+			FROM dbo.SpkDetail d
+			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
+			LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+			LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
+			LEFT JOIN 
+				(SELECT *,
+					RowNo=ROW_NUMBER() OVER (PARTITION BY SectionId, MachineId, LengthId ORDER BY SectionId)
+				 FROM Extrusion.ExtrusionGuideFinal2())
+					 g ON g.SectionId=d.section_id
+					AND g.MachineId=h.machine_id
+					AND g.[LengthId]=d.Len
+					AND g.RowNo=1 ";
+		}
+		
 		if($machine_id != '')
 		{
 			$sql .= "AND h.machine_id ='".$machine_id."' ";
