@@ -117,10 +117,10 @@
 					</div>
 				</td>
 				<td>
-					<label>Downtime</label>
+					<label>Selisih Pukul</label>
 				</td>
 				<td>
-					<input class="form-control" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}">
+					
 				</td>
 			</tr>
 			<tr>
@@ -135,6 +135,22 @@
 					{% if get_master_query %} {{ get_master_query.InitialPullingLength }} {% endif %}
 				</td>
 				<td>
+					<label>Downtime</label>
+				</td>
+				<td>
+					<input class="form-control" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td><label>Pull Awal Actual</td></label>
+				<td>
+					<input class="form-control" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}">
+				</td>
+				<td>
 					<label>DeadCycle</label>
 				</td>
 				<td>
@@ -146,9 +162,9 @@
 				</td>
 				<td>
 				</td>
-				<td><label>Pull Awal Actual</td></label>
+				<td><label>Bs. Blkg</td></label>
 				<td>
-					
+					{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}
 				</td>
 				<td>
 					<label>Ram Speed</label>
@@ -162,9 +178,9 @@
 				</td>
 				<td>
 				</td>
-				<td><label>Bs. Blkg</td></label>
+				<td><label>Bs. Blkg Actual</td></label>
 				<td>
-					{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}
+					<input class="form-control" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}">
 				</td>
 				<td>
 					<label>Pressure Bar</label>
@@ -174,14 +190,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
-				</td>
-				<td>
-				</td>
-				<td><label>Bs. Blkg Actual</td></label>
-				<td>
-					
-				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 				<td>
 					<label>Keterangan Ext</label>
 				</td>

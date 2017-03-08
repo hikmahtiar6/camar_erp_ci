@@ -106,7 +106,7 @@ class Lot extends CI_Controller {
 				($gmd->jumlah_di_rak_btg > 0) ? $gmd->jumlah_di_rak_btg : '',
 				$get_sum_jml_btg->jml,
 				$len * $get_sum_jml_btg->jml * $rata2_berat_ak,
-				$get_sum_jml_btg->jml,
+				$len * $get_sum_jml_btg->jml * $rata2_berat_ak,
 			);
 			$i++;
 		}
@@ -214,6 +214,8 @@ class Lot extends CI_Controller {
 		$ram_speed = $this->input->post('ram_speed');
 		$pressure_bar = $this->input->post('pressure_bar');
 		$keterangan = $this->input->post('keterangan');
+		$blkg_actual = $this->input->post('blkg_actual');
+		$pull_awal_actual = $this->input->post('pull_awal_actual');
 
 		$data = array(
 			'master_detail_id' => $master_detail_id,
@@ -228,6 +230,8 @@ class Lot extends CI_Controller {
 			'ram_speed'        => $ram_speed,
 			'pressure_bar'     => $pressure_bar,
 			'keterangan'       => $keterangan,
+			'blkg_actual'      => $blkg_actual,
+			'pull_awal_actual' => $pull_awal_actual,
 		);
 
 		$get_header_lot = $this->lot_model->get_data_header_by_master_detail_id($master_detail_id);

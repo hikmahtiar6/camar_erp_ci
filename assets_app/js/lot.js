@@ -85,7 +85,7 @@ window.LOT = (function($) {
                         width: 70,       
                     },
                     {
-						label: "Total <br> Billet",
+						label: "Total <br> Billet kg",
 						index:"", 
                         name: "",
                         hidden: false,
@@ -100,7 +100,7 @@ window.LOT = (function($) {
                         editable: true       
                     },
                     {
-						label: "Jml di <br> Rak",
+						label: "Jml btg di <br> Rak",
 						index:"", 
                         name: "jumlah_di_rak_btg",
                         hidden: false,
@@ -247,6 +247,17 @@ window.LOT = (function($) {
 			var _this = this;
 
 			$(elBtn).click(function() {
+
+				var grid = $('.list-lot');
+
+				var rowKey = grid.jqGrid('getGridParam',"selrow");
+				//var idxDice = $('#indexdice'+rowKey).val();
+				grid.jqGrid('saveRow', rowKey, {
+					/*extraparam: {
+						idxdice: idxDice
+					},*/
+				});
+
 				$.ajax({
 					url: APP.siteUrl + 'admin/lot/add_row_data/' + _this.masterDetailId,
 					dataType: 'json',
