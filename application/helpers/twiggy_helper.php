@@ -312,4 +312,27 @@ function check_array($array)
 	return false;
 }
 
+function selisih_waktu($waktu_akhir, $waktu_awal)
+{
+	$awal  = new DateTime($waktu_awal);
+	$akhir = new DateTime($waktu_akhir);
+
+	$diff  = $awal->diff($akhir);
+	
+	$res = '';
+
+	if($diff->h > 0)
+	{
+		$res .= $diff->h.' jam';
+	}
+
+	if($diff->i > 0)
+	{
+		$res .= $diff->i .' menit';
+	}
+
+	return $res;
+
+}
+
 ?>

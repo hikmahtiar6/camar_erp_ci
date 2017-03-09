@@ -233,6 +233,11 @@ class Lot extends CI_Controller {
 			'blkg_actual'      => $blkg_actual,
 			'pull_awal_actual' => $pull_awal_actual,
 		);
+		$index_dice = $this->input->post('index_dice');
+		if($index_dice)
+		{
+			$this->detail_model->update($master_detail_id, array('index_dice' => $this->set_idxdice($index_dice)));
+		}
 
 		$get_header_lot = $this->lot_model->get_data_header_by_master_detail_id($master_detail_id);
 		if($get_header_lot)
@@ -243,6 +248,17 @@ class Lot extends CI_Controller {
 		{
 			$this->lot_model->save_header($data);
 		}
+	}
+
+	private function set_idxdice($array)
+	{
+		$str = '';
+		foreach($array as $row)
+		{
+			$str .= $row.', ';
+		}
+
+		return rtrim($str, ', ');
 	}
 
 }

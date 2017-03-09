@@ -27,11 +27,15 @@
 				<td style="width: 150px;">
 					<label>Mesin</label>
 				</td>
-				<td>
-					{% if get_detail %} {{ get_detail.MachineId }} {% endif %}
+				<td style="width: 250px;">
+					{% set machine = '' %}
+					{% if get_detail %} 
+						{% set machine = get_detail.MachineId %}
+					{% endif %}
+						{{ machine }} 
 				</td>
 				<td><label>Operator 1</td></label>
-				<td style="width: 150px;">
+				<td style="width: 250px;">
 					<select class="form-control " name="opr1">
 						<option value="">- Pilih -</option>
 						{% if get_operator %}
@@ -41,17 +45,22 @@
 						{% endif %}
 					</select>
 				</td>
-				<td>
+				<td style="width: 150px;">
 					<label>Dies Index Used</label>
 				</td>
-				<td style="width: 150px;">
-					{% if get_detail %} {{ convert_dice(get_detail.index_dice) }} {% endif %}
+				<td style="width: 250px;">
+					<select class="index-dice" name="index_dice[]" multiple="">	
+					</select>
+					{% set index_used = '' %}
+					{% if get_detail %} 
+						{% set index_used = convert_dice(get_detail.index_dice) %}
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<label>Tanggal</label>
-				</td>
+				</td> 
 				<td>
 					{% if get_detail %} {{ get_detail.tanggal|date("d-m-Y") }} {% endif %}
 				</td>
@@ -70,7 +79,11 @@
 					<label>Mulai Pukul</label>
 				</td>
 				<td>
-					<input class="form-control" name="time_start" type="text" value="{% if get_detail_header %}{{ get_detail_header.time_start }}{% endif %}">
+					{% set mulai = "" %}
+					{% if get_detail_header %}
+						{% set mulai = get_detail_header.time_start %}
+					{% endif %}
+					<input class="form-control" name="time_start" type="text" value="{{ mulai }}">
 				</td>
 			</tr>
 			<tr>
@@ -95,7 +108,11 @@
 					<label>Selesai Pukul</label>
 				</td>
 				<td>
-					<input class="form-control" name="time_finish" type="text" value="{% if get_detail_header %}{{ get_detail_header.time_finish }}{% endif %}">
+					{% set selesai = "" %}
+					{% if get_detail_header %}
+						{% set selesai = get_detail_header.time_finish %}
+					{% endif %}
+					<input class="form-control" name="time_finish" type="text" value="{{ selesai }}">
 				</td>
 			</tr>
 			<tr>
@@ -121,6 +138,7 @@
 				</td>
 				<td>
 					
+					{{ selisih_waktu(get_detail.tanggal ~ ' '~ selesai ~ ':00', get_detail.tanggal ~ ' '~ mulai ~ ':00') }}
 				</td>
 			</tr>
 			<tr>
@@ -228,4 +246,33 @@
 	window.LOT.handleTagEditor();
 	window.LOT.handleSaveHeaderLot();	
 	window.LOT.handleNumberInput();
+
+	var el = '.index-dice';
+
+	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
+
+	$.getJSON(url  , function(data) {
+
+	    var output = "";
+	    var defaultValue = "{{ index_used }}";
+
+	    $.each(data, function(key, val) {
+	    	if( defaultValue.indexOf(val.value) > -1) {
+				selected = 'selected="selected"';
+			} else {
+				selected = '';
+			}
+	        output += '<option value="' + val.value + '" '+selected+'>' + val.text + '</option>';
+	    });
+	    $(el).html(output);
+
+	    //$(el).multipleSelect();
+
+	    $(el).select2({
+	        width: "100%",
+		});
+		
+	});
+
+
 </script>

@@ -285,7 +285,12 @@ window.LOT = (function($) {
 
 			var formHeaderLot = $('.form-header-lot');
 			_this.formHeaderLot = formHeaderLot;
-			formHeaderLot.ajaxForm();
+			formHeaderLot.ajaxForm({
+				success: function() {
+					var grid = $('.list-spk');
+					grid.trigger("reloadGrid");
+				}
+			});
 
 			$('#potendbutt').keypress(function(e) {
 				if(e.keyCode == 13) {
