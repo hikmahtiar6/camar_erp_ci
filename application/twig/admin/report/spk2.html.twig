@@ -128,7 +128,7 @@
 								</td>
 							</tr>
 
-								{% set check_detail = get_detail_advance(machine, tgl, r_shift2, 1) %}
+								{% set check_detail = get_detail_advance(machine, tgl, r_shift2, 0) %}
 
 								{% if check_detail %}
 									{% for key, master_row in check_detail %}
@@ -175,7 +175,7 @@
 								</td>
 							</tr>
 
-							{% set check_detail = get_detail_advance(machine, tgl, shift, 1) %}
+							{% set check_detail = get_detail_advance(machine, tgl, shift, 0) %}
 
 
 							{% if check_detail %}

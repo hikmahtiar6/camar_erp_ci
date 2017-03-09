@@ -927,6 +927,10 @@ window.TRANSACTION = (function($) {
 				height: "auto", //Mengset Tinggi table jadi Auto menyesuaikan dengan isi table
 				mtype: "POST",
 				cmTemplate: {sortable:false},
+				pgbuttons : false,
+				viewrecords : false,
+				pgtext : "",
+				pginput : false,
 				colModel: [
 					
 					{
@@ -1484,7 +1488,7 @@ window.TRANSACTION = (function($) {
 				],
 				onSelectRow: editRow,
 				rownumbers:true,
-				rowNum: 10,
+				rowNum: 1000000000000000,
 				//rowList: [10,20,30],
 				pager: '#pager2',
 				sortname: 'master_detail_id',
