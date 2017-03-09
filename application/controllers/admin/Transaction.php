@@ -671,7 +671,7 @@ class Transaction extends CI_Controller
 	public function json($header_id) 
 	{
 		$page  = ($this->input->post('page')) ? $this->input->post('page') : 1;
-		$limit = ($this->input->post('rows')) ? $this->input->post('rows') : 10000000000000 ;
+		$limit = ($this->input->post('rows')) ? $this->input->post('rows') : 10000000 ;
 		$sidx  = ($this->input->post('sidx')) ? $this->input->post('sidx') : 'master_detail_id';
 		$sord  = ($this->input->post('sord')) ? $this->input->post('sord') : 'master_detail_id';
 		$search_get  = $this->input->post('_search');

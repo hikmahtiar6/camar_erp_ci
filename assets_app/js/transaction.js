@@ -1488,7 +1488,7 @@ window.TRANSACTION = (function($) {
 				],
 				onSelectRow: editRow,
 				rownumbers:true,
-				rowNum: 1000000000000000,
+				rowNum: 10000000,
 				//rowList: [10,20,30],
 				pager: '#pager2',
 				sortname: 'master_detail_id',
