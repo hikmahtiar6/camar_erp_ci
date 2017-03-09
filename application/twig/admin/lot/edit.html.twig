@@ -82,8 +82,10 @@
 					{% set mulai = "00:00" %}
 					{% set mulai_str = "" %}
 					{% if get_detail_header %}
-						{% set mulai = get_detail_header.time_start %}
 						{% set mulai_str = get_detail_header.time_start %}
+						{% if mulai_str != "" %}
+							{% set mulai = get_detail_header.time_start %}
+						{% endif %}
 					{% endif %}
 					<input class="form-control" name="time_start" type="text" value="{{ mulai_str }}">
 				</td>
@@ -114,7 +116,9 @@
 					{% set selesai_str = "" %}
 					{% if get_detail_header %}
 						{% set selesai_str = get_detail_header.time_finish %}
-						{% set selesai = get_detail_header.time_finish %}
+						{% if selesai_str != "" %}
+							{% set selesai = get_detail_header.time_finish %}
+						{% endif %}
 					{% endif %}
 					<input class="form-control" name="time_finish" type="text" value="{{ selesai_str }}">
 				</td>
