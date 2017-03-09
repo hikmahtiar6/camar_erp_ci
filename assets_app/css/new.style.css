@@ -3,8 +3,9 @@
  		size: legal landscape;
  	}
 
- 	body { 
-        writing-mode: horizontal-tb;
+    body
+    {
+        margin: 0;
     }
 
     .font16 {

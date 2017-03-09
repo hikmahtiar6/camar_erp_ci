@@ -26,9 +26,11 @@ class Indexdice_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('*');
+		$sql->select('DiesId');
 		$sql->from(static::TABLE);
 		$sql->where($array);
+
+		$sql->group_by('DiesId');
 
 		$get = $sql->get();
 		return $get;
