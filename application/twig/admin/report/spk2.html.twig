@@ -9,7 +9,10 @@
     <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
     <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css"> 
     <style type="text/css">
-	    
+	    .table-print tr td, .table-print tr th {
+			border: 1px solid #CCC;
+			padding: 5px;
+		}
 	</style>
 
 	<body>
@@ -83,7 +86,7 @@
 				
 				<br>
 
-				<table class="table table-bordered">
+				<table class="table-print" style="width: 100%;">
 					<thead>
 						<tr class="font12 bold">
 							<th style="vertical-align: middle;">Tg</th>

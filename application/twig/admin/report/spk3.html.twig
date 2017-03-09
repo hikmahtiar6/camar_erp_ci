@@ -9,7 +9,29 @@
     <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
     <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css"> 
     <style type="text/css">
-	    
+	    @page {
+	 		size: a4 portrait;
+	 	}
+
+	 	body { 
+	        writing-mode: none;
+	    }
+
+	    .table-print, .table-header {
+			width: 50%;
+		}
+
+		.table-print tr td, .table-print tr th {
+			border: 1px solid #CCC;
+			padding: 5px;
+		}
+
+		@media print{
+			.table-print, .table-header {
+				width: 100%;
+			}
+		}
+
 	</style>
 
 	<body>
@@ -23,7 +45,7 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
 
-				<table style="width: 50%">
+				<table class="table-header">
 					<tr>
 						<td valign="bottom">
 							<h2 class="font16 bold">
@@ -83,7 +105,7 @@
 				
 				<br>
 
-				<table class="table table-bordered" style="width: 50%">
+				<table class="table-print">
 					<thead>
 						<tr class="font12 bold">
 							<th style="vertical-align: middle;">Tg</th>
@@ -93,7 +115,7 @@
 							<th style="vertical-align: middle;">#</th>
 							<th style="vertical-align: middle;">Brt Akt/50cm</th>
 							<th style="vertical-align: middle;">Rak#</th>
-							<th style="vertical-align: middle;">Jml BTG di Rak</th>
+							<th style="vertical-align: middle; width: 100px">Jml BTG di Rak</th>
 						</tr>
 					</thead>
 
