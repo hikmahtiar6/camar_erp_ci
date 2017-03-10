@@ -33,6 +33,18 @@ class OperatorLot_model extends CI_Model {
 		$get = $sql->get();
 		return $get->row();
 	}
+
+	public function get_data_by($array)
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE);
+		$sql->where($array);
+
+		$get = $sql->get();
+		return $get->result();
+	}
 }
 
 ?>

@@ -68,8 +68,8 @@
 				<td>
 					<select class="form-control" name="opr2">
 						<option value="">- Pilih -</option>
-						{% if get_operator %}
-							{% for row_opr in get_operator %}
+						{% if get_operator2 %}
+							{% for row_opr in get_operator2 %}
 								<option value="{{ row_opr.operator_id }}" {% if same(get_detail_header.opr2, row_opr.operator_id ) %} selected="selected" {% endif %}>{{ row_opr.name }}</option>
 							{% endfor %}
 						{% endif %}

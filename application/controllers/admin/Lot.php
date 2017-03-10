@@ -98,7 +98,7 @@ class Lot extends CI_Controller {
 				$rata2_berat_ak,
 				'#'.($i+1),
 				$gmd->p_billet_aktual,
-				($gmd->p_billet_aktual * 2) / 100,
+				$gmd->jumlah_billet,
 				$gmd->billet_vendor_id,
 				$berat_billet,
 				'',
@@ -118,7 +118,8 @@ class Lot extends CI_Controller {
 	{
 		$get_detail = $this->detail_model->get_data_by_id($master_detail_id);
 		$get_detail_header = $this->lot_model->get_data_header_by_master_detail_id($master_detail_id);
-		$get_operator = $this->operatorLot_model->get_data();
+		$get_operator = $this->operatorLot_model->get_data_by(array('grup' => 'operator'));
+		$get_operator2 = $this->operatorLot_model->get_data_by(array('grup' => 'wakil'));
 
 		$machine_id = '';
 		$section_id = '';
@@ -130,6 +131,7 @@ class Lot extends CI_Controller {
 		$get_master_query =  $this->query_model->get_master_advance($machine_id, $section_id)->row();
 
 		$this->twiggy->set('get_operator', $get_operator);
+		$this->twiggy->set('get_operator2', $get_operator2);
 		$this->twiggy->set('get_detail', $get_detail);
 		$this->twiggy->set('get_master_query', $get_master_query);
 		$this->twiggy->set('get_detail_header', $get_detail_header);

@@ -67,7 +67,7 @@ window.LOT = (function($) {
                         name: "jumlah_billet",
                         hidden: false,
                         width: 70,       
-                        editable: false       
+                        editable: true       
                     },
                     {
 						label: "Billet <br> VendorId",
