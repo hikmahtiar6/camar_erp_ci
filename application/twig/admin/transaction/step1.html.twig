@@ -57,7 +57,7 @@
 					                        	{% for key, week_row in week_in_year() %}
 
 					                        		<option value="{{ week_row['date_start'] ~ '-' ~ week_row['date_finish'] }}">
-					                        			{{ add_zero(key+1) ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
+					                        			{{ add_zero(week_row['no']) ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
 					                        		</option>
 					                        	{% endfor %}
 

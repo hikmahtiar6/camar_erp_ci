@@ -155,7 +155,7 @@ class Master extends CI_Controller {
 		{
 			$get_data = array(
 				'SectionId'     => $section_id,
-				'MachineTypeId' => $machine_type_id
+				//'MachineTypeId' => $machine_type_id
 			);
 			$get_dice = $this->indexdice_model->get_data_by($get_data)->result();
 		}

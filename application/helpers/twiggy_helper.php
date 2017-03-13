@@ -179,41 +179,48 @@ function date_to_time($date)
 
 function week_in_year() {
 	
+	$ci =& get_instance();
+
 	$dt = [];
-	$year           = date('Y');
-	$yearEnd           = date('Y');
+	$year = date('Y');
+	$yearEnd = date('Y');
 
-	$month          = date('m');
-	$startMonth = $month - 1;
-	$endMonth = $month + 1;
-	if($startMonth == 0) {
-		$startMonth = 12;
-		$year = $year - 1;
-	}
-
-	if($endMonth == 13) {
-		$endMonth = 1;
-		$yearEnd = $yearEnd + 1;
-	}
+	$month = date('m');
+	$startMonth = 1;
 
 	$firstDayOfYear = mktime(0, 0, 0, $startMonth, 1, $year);
 	$nextMonday     = strtotime('monday', $firstDayOfYear);
 	$nextSunday     = strtotime('sunday', $nextMonday);
+
+	$no = 1;
 	
 	while (date('Y', $nextMonday) == $year) {
 
 		$date_start  = date('d/m/Y', $nextMonday);
 		$date_finish = date('d/m/Y', $nextSunday);
 
-		if($nextSunday <= strtotime($yearEnd.'-'.$endMonth.'-31')) {
+		$awal = $month - 1;
+		$end = $month + 1;
+
+		if($awal == 0)
+		{
+			$awal = 1;
+			$yearEnd - 1;
+		}
+
+
 			$dt[] =  array(
+				'no'          => $no,
 				'date_start'  => $date_start,
 				'date_finish' => $date_finish
 			);	
+		if($nextSunday <= strtotime($yearEnd.'-'.$endMonth.'-31')) {
 		}
 	
 		$nextMonday = strtotime('+1 week', $nextMonday);
 		$nextSunday = strtotime('+1 week', $nextSunday);
+
+		$no++;
 		
 	}
 	
