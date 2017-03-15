@@ -339,7 +339,11 @@ function selisih_waktu($waktu_akhir, $waktu_awal)
 	}
 
 	return $res;
+}
 
+function trims($str)
+{
+	return trim($str);
 }
 
 ?>

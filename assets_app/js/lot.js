@@ -140,6 +140,18 @@ window.LOT = (function($) {
 				editurl: APP.siteUrl + 'admin/lot/crud', //URL Proses CRUD Nya
 				multiselect: false,
 				caption: '<button class="btn btn-primary add-lot" type="button">' + 'Tambah' + '</button> &nbsp;&nbsp; Data SPK Lot',
+				loadComplete: function() {
+					
+					var total = 0;
+					$('.berat-billet').each(function() {
+						//alert($(this).html());
+						//
+						total = total + parseFloat($(this).html());
+
+					});
+					
+					$('.total-billet').html(total);
+				}
             });
 
 			grid.jqGrid('navGrid', elJqgridPager,
