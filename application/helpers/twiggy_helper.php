@@ -265,9 +265,17 @@ function get_record_detail_by_header($header_id, $shift = 0)
 function get_detail_advance($machine_id = '', $tanggal = '', $shift = 0, $distinct = false)
 {	
 	$ci =& get_instance();
-	$ci->load->model('master/detail_model');
+	$ci->load->model('master/query_model');
 
 	return $ci->query_model->get_report_advance($machine_id, $tanggal, $shift, $distinct)->result();
+}
+
+function get_detail_advance_lot($machine_id = '', $tanggal = '', $shift = 0)
+{	
+	$ci =& get_instance();
+	$ci->load->model('master/query_model');
+
+	return $ci->query_model->get_report_advance_lot($machine_id, $tanggal, $shift)->result();
 }
 
 function sum_target_section($header_id, $machine, $shift, $tgl)
@@ -330,7 +338,7 @@ function selisih_waktu($waktu_akhir, $waktu_awal)
 
 	if($diff->h > 0)
 	{
-		$res .= $diff->h.' jam';
+		$res .= $diff->h.' jam ';
 	}
 
 	if($diff->i > 0)

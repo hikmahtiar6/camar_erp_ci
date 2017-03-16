@@ -117,20 +117,21 @@ class Query_model extends CI_Model
 		return $query;
 	}
 
-	public function get_report_advance_lot($machine_id = '', $tanggal = '', $shift = 0, $district = false)
+	public function get_report_advance_lot($machine_id = '', $tanggal = '', $shift = 0)
 	{
-		
 		$sql = "
 		SELECT d.*,
 			h.machine_id as machine_id2,
 			f.finishing_name,
-			s.SectionDescription
+			s.SectionDescription,
+			hl.pot_end_butt
 			
 		FROM dbo.SpkDetail d
 		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
 		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
-		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId 
-		LEFT JOIN dbo.";
+		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
+		LEFT JOIN dbo.SpkHeaderLot hl ON d.master_detail_id = hl.master_detail_id
+		LEFT JOIN dbo.SpkLot l ON d.master_detail_id = l.master_detail_id ";
 		
 		
 		if($machine_id != '')
@@ -148,7 +149,7 @@ class Query_model extends CI_Model
 			$sql .= "AND d.shift ='".$shift."' ";
 		}
 
-		$sql = str_replace("g.RowNo=1 AND", "g.RowNo=1 WHERE", $sql);
+		$sql = str_replace("l.master_detail_id AND", "l.master_detail_id WHERE", $sql);
 		
 		$sql .= $sql." ORDER BY d.shift DESC";
 

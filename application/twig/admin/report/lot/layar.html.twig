@@ -118,7 +118,6 @@
 							<th style="vertical-align: middle;">Akt Billet (Kg)</th>
 							<th style="vertical-align: middle;">Hsl Prod (BTG)</th>
 							<th style="vertical-align: middle;">Hsl Prod (Kg)</th>
-							<th style="vertical-align: middle;">Hsl Prod (Kg)</th>
 							<th style="vertical-align: middle;">End Butt (Kg)</th>
 							<th style="vertical-align: middle;">Scrap (Kg)</th>
 							<th style="vertical-align: middle;">Loss (Kg)</th>
@@ -130,7 +129,7 @@
 							<td colspan="5" align="center">
 								{{ tanggal }}
 							</td>
-							<td colspan="9">
+							<td colspan="8">
 							</td>
 						</tr>
 						{% if check_array(shift2) %}
@@ -140,9 +139,40 @@
 									<td colspan="4">
 										Shift {{ r_shift2 }}
 									</td>
-									<td colspan="9">
+									<td colspan="8">
 									</td>
 								</tr>
+
+								{% set check_detail = get_detail_advance_lot(machine, tgl, r_shift2) %}
+
+								{% if check_detail %}
+									{% for key, master_row in check_detail %}
+
+										<tr>
+											<td colspan="2"></td>
+											<td> {{ add_zero(key+1)  }}</td>
+											<td>
+												{{ master_row.section_id }}
+											</td>
+											<td>
+												{{ master_row.SectionDescription }}
+											</td>
+											<td>
+												{{ master_row.target_prod }}
+											</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td>{{ master_row.pot_end_butt }}</td>
+											<td></td>
+											<td></td>
+										</tr>
+
+									{% endfor %}
+								{% endif %}
+
+
 							{% endfor %}
 						{% else %}
 							<tr>
@@ -150,15 +180,44 @@
 								<td colspan="4">
 									Shift {{ shift }}
 								</td>
-								<td colspan="9">
+								<td colspan="8">
 								</td>
 							</tr>
+
+							{% set check_detail = get_detail_advance_lot(machine, tgl, shift) %}
+
+								{% if check_detail %}
+									{% for key, master_row in check_detail %}
+
+										<tr>
+											<td colspan="2"></td>
+											<td> {{ add_zero(key+1)  }}</td>
+											<td>
+												{{ master_row.section_id }}
+											</td>
+											<td>
+												{{ master_row.SectionDescription }}
+											</td>
+											<td>
+												{{ master_row.target_prod }}
+											</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td>{{ master_row.pot_end_butt }}</td>
+											<td></td>
+											<td></td>
+										</tr>
+
+									{% endfor %}
+								{% endif %}
+
 						{% endif %}
 					</tbody>
 					<tfoot>
 						<tr>
 							<td colspan="5">Grand Total</td>
-							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
