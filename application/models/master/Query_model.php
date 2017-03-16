@@ -117,4 +117,43 @@ class Query_model extends CI_Model
 		return $query;
 	}
 
+	public function get_report_advance_lot($machine_id = '', $tanggal = '', $shift = 0, $district = false)
+	{
+		
+		$sql = "
+		SELECT d.*,
+			h.machine_id as machine_id2,
+			f.finishing_name,
+			s.SectionDescription
+			
+		FROM dbo.SpkDetail d
+		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
+		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId 
+		LEFT JOIN dbo.";
+		
+		
+		if($machine_id != '')
+		{
+			$sql .= "AND h.machine_id ='".$machine_id."' ";
+		}
+
+		if($tanggal != '')
+		{
+			$sql .= "AND d.tanggal ='".$tanggal."' ";
+		}
+
+		if($shift > 0)
+		{
+			$sql .= "AND d.shift ='".$shift."' ";
+		}
+
+		$sql = str_replace("g.RowNo=1 AND", "g.RowNo=1 WHERE", $sql);
+		
+		$sql .= $sql." ORDER BY d.shift DESC";
+
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
 }
