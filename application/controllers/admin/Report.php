@@ -173,6 +173,12 @@ class Report extends CI_Controller
 		$this->twiggy->set('machine_description', $machineDescription);
 		$this->twiggy->set('tanggal', $idn_time);
 		$this->twiggy->set('tgl', $tgl);
+		if($shift == 0)
+		{
+			$shift = array('1', '2');
+		}
+		
+		$this->twiggy->set('shift2', $shift);
 		$this->twiggy->template('admin/report/lot/layar')->display();
 	}
 }

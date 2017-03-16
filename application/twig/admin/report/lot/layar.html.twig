@@ -9,7 +9,28 @@
     <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
     <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css"> 
     <style type="text/css">
-	    
+	    @page {
+	 		size: a4 portrait;
+	 	}
+
+	 	body { 
+	        writing-mode: none;
+	    }
+
+	    .table-print, .table-header {
+			width: 70%;
+		}
+
+		.table-print tr td, .table-print tr th {
+			border: 1px solid #CCC;
+			padding: 5px;
+		}
+
+		@media print{
+			.table-print, .table-header {
+				width: 100%;
+			}
+		}
 	</style>
 
 	<body>
@@ -23,7 +44,7 @@
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
 
-				<table style="width: 100%">
+				<table class="table-header">
 					<tr>
 						<td valign="bottom">
 							<h2 class="font16 bold">
@@ -33,7 +54,7 @@
 
 						<td valign="bottom" align="center">
 							<h2 class="font16 bold">
-								SPK-1 <u>&nbsp;&nbsp;&nbsp;SPK Extrusion&nbsp;&nbsp;&nbsp;</u>
+								Recovery ...%</u>
 							</h2>
 						</td>
 
@@ -84,100 +105,71 @@
 
 				<br>
 
-				<table class="table table-bordered table-striped">
+				<table class="table-print font10">
 					<thead>
-						<tr class="bg-gray font12 bold">
-							<th style="vertical-align: middle;">Sh</th>
-							<th style="vertical-align: middle;">Lot</th>
-							<th style="vertical-align: middle; width: 200px;">Section Id</th>
-							<th style="vertical-align: middle; width: 400px;">Section Name</th>
-							<th style="vertical-align: middle;">Finishing</th>
-							<th style="vertical-align: middle;">Tbl</th>
-							<th style="vertical-align: middle;">Tol</th>
-							<th style="vertical-align: middle;">Hole</th>
-							<th style="vertical-align: middle;">Berat Std</th>
-							<th style="vertical-align: middle;">PPIC Note</th>
-							<th style="vertical-align: middle;">Index Dice</th>
-							<th style="vertical-align: middle;">Bolster</th>
-							<th style="vertical-align: middle;">Pull Awal</th>
-							<th style="vertical-align: middle;">BS Blkg</th>
-							<th style="vertical-align: middle; width: 100px"">P Tarik</th>
-							<th style="vertical-align: middle; width: 100px">H Jadi</th>
-							<th style="vertical-align: middle;">BltMax</th>
-							<th style="vertical-align: middle;">BltVen</th>
-							<th style="vertical-align: middle;">FrBlt</th>
-							<th style="vertical-align: middle;">FrPot</th>
-							<th style="vertical-align: middle;">Total</th>
-
-						</tr>
-						<tr>
-							<td class="bg-gray font12 bold" colspan="21" align="center">
-								{{ tanggal }}
-							</td>
+						<tr class="font11 bold">
+							<th style="vertical-align: middle;">Tg</th>
+							<th style="vertical-align: middle;">Shift</th>
+							<th style="vertical-align: middle;">Lot#</th>
+							<th style="vertical-align: middle;">Section Id</th>
+							<th style="vertical-align: middle;">Section Name</th>
+							<th style="vertical-align: middle;">Tgt Prod (BTG)</th>
+							<th style="vertical-align: middle;">Tgt Prod (Kg)</th>
+							<th style="vertical-align: middle;">Akt Billet (Kg)</th>
+							<th style="vertical-align: middle;">Hsl Prod (BTG)</th>
+							<th style="vertical-align: middle;">Hsl Prod (Kg)</th>
+							<th style="vertical-align: middle;">Hsl Prod (Kg)</th>
+							<th style="vertical-align: middle;">End Butt (Kg)</th>
+							<th style="vertical-align: middle;">Scrap (Kg)</th>
+							<th style="vertical-align: middle;">Loss (Kg)</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						{% set total = 0 %}
-						{% set sh = '' %}
-						{% if search_data %}
-						{% for no, row_data in search_data %}
-
-
-						{% set total_btg = row_data.WeightStandard * row_data.target_prod * row_data.Length %}
-						{% set total_btg_arr = [] %}
-						{% set total_btg_arr = total_btg_arr|merge([total_btg]) %}
-
-						{% set target_btg = row_data.target_prod %}
-						{% if row_data.f2_estfg != '' %}
-							{% set target_btg = row_data.f2_estfg * row_data.target_prod %}
-						{% endif %}
-						{% set total = total + row_data.target_prod %}						
-
-						<tr class="font12">
-							<td>
-									SH{{ row_data.shift }}
-								{% if sh != ''%}
-									
-								{% else %}
-									{# set sh = sh ~ row_data.shift #}
-								{% endif %}
+						<tr>
+							<td colspan="5" align="center">
+								{{ tanggal }}
 							</td>
-							<td>{{ add_zero(no + 1) }}.</td>
-							<td>{{ row_data.section_id }}</td>
-							<td class="font12" style="width: 300px;">{{ row_data.SectionDescription }}</td>
-							<td>{{ row_data.finishing_name }}</td>
-							<td>{{ row_data.ThicknessLowerLimit|number_format(3, '.', ',') }}</td>
-							<td>{{ row_data.ThicknessUpperLimit|number_format(3, '.', ',') }}</td>
-							<td>{{ row_data.HoleCount }}</td>
-							<td>{{ row_data.WeightStandard|number_format(3, '.', ',') }}</td>
-							<td>{{ row_data.ppic_note }}</td>
-							<td class="font12" style="width: 300px;">{{ convert_dice2(row_data.index_dice) }}</td>
-							<td>{{ row_data.BolsterTypeId }}</td>
-							<td>{{ row_data.InitialPullingLength }}m</td>
-							<td>{{ row_data.BadEndLength }}m</td>
-							<td>{{ row_data.F2_PullingLength }}m</td>
-							<td>{{ row_data.F2_EstFG }} BTG</td>
-							<td>{{ row_data.F2_EstBilletLengthMax }}m</td>
-							<td>{{ '' }}</td>
-							<td>{{ row_data.F2_FreqBillet }} Blt</td>
-							<td>{{ row_data.F2_FreqCut }}xPot</td>
-							<td>{{ row_data.target_prod }} Blt</td>
+							<td colspan="9">
+							</td>
 						</tr>
-						{% endfor %}
+						{% if check_array(shift2) %}
+							{% for r_shift2 in shift2 %}
+								<tr>
+									<td></td>
+									<td colspan="4">
+										Shift {{ r_shift2 }}
+									</td>
+									<td colspan="9">
+									</td>
+								</tr>
+							{% endfor %}
 						{% else %}
-						<tr class="font12">
-							<td colspan="65"> Data tidak tersedia.</td>
-						</tr>
+							<tr>
+								<td></td>
+								<td colspan="4">
+									Shift {{ shift }}
+								</td>
+								<td colspan="9">
+								</td>
+							</tr>
 						{% endif %}
 					</tbody>
 					<tfoot>
-						<tr class="font12 bold">
-							<th class="bg-gray" colspan="20">Grand Total</th>
-							<th class="bg-gray"> {{ total }} Blt</th>
+						<tr>
+							<td colspan="5">Grand Total</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
 						</tr>
 					</tfoot>
-			</table>
+				</table>
 
 		</div>
 
