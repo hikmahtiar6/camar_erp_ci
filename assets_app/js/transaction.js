@@ -1254,62 +1254,7 @@ window.TRANSACTION = (function($) {
 							}
 						}
 					},
-					{
-						label: 'Target Prod <br> (Bilet)',
-						name:'target_prod', 
-						index:'target_prod', 
-						hidden: false,
-						editable:true,
-						width: 90,
-						editoptions: {
-							dataInit: function(el) {
-
-								var str = $(el).val();
-								var rowId = $(el).parent().parent().attr('id');
-
-								$(el).attr('id', 'target_prod'+rowId);
-
-								$(el).val(str.replace(',', ''));
-
-
-
-								$(el).keyup(function() {
-									var grid = $('.list-spk');
-
-									$.ajax({
-										url: window.APP.siteUrl + 'admin/transaction/update_inline',
-										type: 'post',
-										dataType: 'json',
-										data: {
-											id: rowId,
-											type: 'target_prod',
-											value: $(this).val(),
-										},
-										success: function(response) {
-											window.TRANSACTION.handleGridUpDinamic();
-										}
-									});
-
-									$.ajax({
-										url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(),
-										type: 'POST',
-										dataType: 'json',
-										data: {
-											len: $('#len'+rowId+' option:selected').text()
-										},
-										success: function(data) {
-											grid.setRowData(rowId, { 
-									        	weight_standard: data.weight_standard,
-									        	target_prod_btg: data.target_prod_btg,
-									        	target_section: data.target_section,
-									        	die_type_name: data.die_type_name,
-									        });
-										}
-									});
-								});
-							}
-						}
-					},
+					
 					{
 						label: 'Index Dice <br><br>',
 						name:'index_dice', 
@@ -1369,6 +1314,62 @@ window.TRANSACTION = (function($) {
 						hidden: false,
 						editable:false,
 						width: 90
+					},
+					{
+						label: 'Target Prod <br> (Bilet)',
+						name:'target_prod', 
+						index:'target_prod', 
+						hidden: false,
+						editable:true,
+						width: 90,
+						editoptions: {
+							dataInit: function(el) {
+
+								var str = $(el).val();
+								var rowId = $(el).parent().parent().attr('id');
+
+								$(el).attr('id', 'target_prod'+rowId);
+
+								$(el).val(str.replace(',', ''));
+
+
+
+								$(el).keyup(function() {
+									var grid = $('.list-spk');
+
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/transaction/update_inline',
+										type: 'post',
+										dataType: 'json',
+										data: {
+											id: rowId,
+											type: 'target_prod',
+											value: $(this).val(),
+										},
+										success: function(response) {
+											window.TRANSACTION.handleGridUpDinamic();
+										}
+									});
+
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(),
+										type: 'POST',
+										dataType: 'json',
+										data: {
+											len: $('#len'+rowId+' option:selected').text()
+										},
+										success: function(data) {
+											grid.setRowData(rowId, { 
+									        	weight_standard: data.weight_standard,
+									        	target_prod_btg: data.target_prod_btg,
+									        	target_section: data.target_section,
+									        	die_type_name: data.die_type_name,
+									        });
+										}
+									});
+								});
+							}
+						}
 					},
 					{
 						label: 'PPIC Note <br><br>',
