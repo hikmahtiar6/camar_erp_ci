@@ -89,7 +89,7 @@ class Lot extends CI_Controller {
 			$get_counting_ak = $this->lot_model->counting('a.berat_ak', $shift = 0, $master_detail_id, $machine_id, $section_id)->row();
 
 			$rata2_berat_ak = ($get_sum_ak->jml != NULL) ? (float) round($get_sum_ak->jml / $get_counting_ak->jml * 2 / 1000, 3) : '';
-			$berat_billet = ($get_sum_ak->jml != NULL) ? (float) round((($gmd->p_billet_aktual * 2) / 100) * $billet_weight, 3) : '';
+			$berat_billet = ($get_sum_ak->jml != NULL) ? (float) round($gmd->p_billet_aktual * $gmd->jumlah_billet * $billet_weight, 3) : '';
 
 			$response->rows[$i]['id']   = $gmd->lot_id;
 			$response->rows[$i]['cell'] = array(
