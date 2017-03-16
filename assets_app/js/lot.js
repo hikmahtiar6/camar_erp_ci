@@ -150,7 +150,7 @@ window.LOT = (function($) {
 
 					});
 					
-					$('.total-billet').html(total);
+					$('.total-billet').html(Math.round(total * 100) / 100);
 				}
             });
 
