@@ -160,7 +160,9 @@
 											<td>
 												{{ master_row.target_prod }}
 											</td>
-											<td></td>
+											<td>
+												{{ sum_target_section('', machine, master_row.shift, tgl) }}
+											</td>
 											<td>{{ get_total_billet_kg(master_row.master_detail_id, machine, master_row.section_id, master_row.p_billet_aktual, master_row.jumlah_billet) }}</td>
 											<td>{{ get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) }}</td>
 											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
