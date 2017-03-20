@@ -1256,7 +1256,7 @@ window.TRANSACTION = (function($) {
 					},
 					
 					{
-						label: 'Index Dice <br><br>',
+						label: 'Index Die <br><br>',
 						name:'index_dice', 
 						index:'index_dice', 
 						hidden: false,
@@ -1308,7 +1308,7 @@ window.TRANSACTION = (function($) {
 						}
 					},
 					{
-						label: 'Index Dice Qty',
+						label: 'Index Die Qty',
 						name:'index_dice_qty', 
 						index:'index_dice_qty', 
 						hidden: false,
