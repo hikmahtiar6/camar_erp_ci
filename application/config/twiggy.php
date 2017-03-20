@@ -192,7 +192,7 @@ $config['twiggy']['default_template'] = 'index';
 
 $config['twiggy']['register_functions'] = array
 (
-    'site_url', 'base_url', 'uri_string', 'anchor', 'url_title', 'get_user', 'dump', 'same', 'arr_push', 'arr_sum', 'get_shift_end', 'convert_dice', 'count_dice', 'get_date_start_header', 'get_date_finish_header', 'date_to_time', 'week_in_year', 'add_zero', 'get_record_detail_by_header', 'sum_target_section', 'convert_dice2', 'check_array', 'get_detail_advance', 'selisih_waktu', 'trims', 'get_detail_advance_lot'
+    'site_url', 'base_url', 'uri_string', 'anchor', 'url_title', 'get_user', 'dump', 'same', 'arr_push', 'arr_sum', 'get_shift_end', 'convert_dice', 'count_dice', 'get_date_start_header', 'get_date_finish_header', 'date_to_time', 'week_in_year', 'add_zero', 'get_record_detail_by_header', 'sum_target_section', 'convert_dice2', 'check_array', 'get_detail_advance', 'selisih_waktu', 'trims', 'get_detail_advance_lot', 'get_hasil_prod_btg', 'get_berat_hasil', 'get_total_billet_kg'
 );
 
 

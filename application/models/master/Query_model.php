@@ -124,7 +124,9 @@ class Query_model extends CI_Model
 			h.machine_id as machine_id2,
 			f.finishing_name,
 			s.SectionDescription,
-			hl.pot_end_butt
+			hl.pot_end_butt,
+			l.p_billet_aktual,
+			l.jumlah_billet
 			
 		FROM dbo.SpkDetail d
 		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id

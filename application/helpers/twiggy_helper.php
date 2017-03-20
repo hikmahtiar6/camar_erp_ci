@@ -354,4 +354,51 @@ function trims($str)
 	return trim($str);
 }
 
+function get_hasil_prod_btg($master_detail_id, $machine_id, $section_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+
+	$get_sum_jml_btg = $ci->lot_model->suming('a.jumlah_di_rak_btg', 0, $master_detail_id, $machine_id, $section_id)->row();
+
+	if($get_sum_jml_btg)
+	{
+		return $get_sum_jml_btg->jml;
+	}
+
+	return 0;
+}
+
+function get_berat_hasil($master_detail_id, $machine_id, $section_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/query_model');
+	$ci->load->model('master/lot_model');
+
+
+	$get_master_query =  $ci->query_model->get_master_advance($machine_id, $section_id)->row();
+	$len = ($get_master_query) ? (float) round($get_master_query->Length, 3) : '';
+	$get_counting_ak = $ci->lot_model->counting('a.berat_ak', 0, $master_detail_id, $machine_id, $section_id)->row();
+	$get_sum_ak = $ci->lot_model->suming('a.berat_ak', 0, $master_detail_id, $machine_id, $section_id)->row();
+	$get_sum_jml_btg = $ci->lot_model->suming('a.jumlah_di_rak_btg', 0, $master_detail_id, $machine_id, $section_id)->row();
+	$rata2_berat_ak = ($get_sum_ak->jml != NULL) ? (float) round($get_sum_ak->jml / $get_counting_ak->jml * 2 / 1000, 3) : '';	
+
+	return $len * $get_sum_jml_btg->jml * $rata2_berat_ak;
+}
+
+function get_total_billet_kg($master_detail_id, $machine_id, $section_id, $p_billet_aktual, $jumlah_billet)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/query_model');
+	$ci->load->model('master/lot_model');
+
+	$get_master_query =  $ci->query_model->get_master_advance($machine_id, $section_id)->row();
+	$get_sum_ak = $ci->lot_model->suming('a.berat_ak', 0, $master_detail_id, $machine_id, $section_id)->row();
+	$billet_weight = ($get_master_query) ? (float) round($get_master_query->BilletWeight, 3) : '';
+
+	$berat_billet = ($get_sum_ak->jml != NULL) ? (float) round($p_billet_aktual * $jumlah_billet * $billet_weight, 2) : '';
+
+	return $berat_billet;
+}
+
 ?>
