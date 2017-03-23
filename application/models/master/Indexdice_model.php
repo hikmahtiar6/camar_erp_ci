@@ -35,6 +35,20 @@ class Indexdice_model extends CI_Model {
 		$get = $sql->get();
 		return $get;
 	}
+
+	public function get_data2()
+	{
+		$sql = $this->db;
+
+		$sql->select('DiesId');
+		$sql->from(static::TABLE);
+		//$sql->where($array);
+
+		$sql->group_by('DiesId');
+
+		$get = $sql->get();
+		return $get;
+	}
 }
 
 ?>
