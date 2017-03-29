@@ -401,4 +401,29 @@ function get_total_billet_kg($master_detail_id, $machine_id, $section_id, $p_bil
 	return $berat_billet;
 }
 
+function get_target_prod_btg($machine_id, $section_id, $target_prod, $len)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/query_model');
+	$ci->load->model('master/lot_model');
+
+	$get_master_query =  $ci->query_model->get_master_advance($machine_id, $section_id)->row();
+
+	$target_prod_btg = $target_prod;
+	$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+	$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
+	$weight_standard = ($get_master_query) ? (float) round($get_master_query->WeightStandard, 3) : '';
+
+	if($f2_estfg != NULL)
+	{
+		$target_prod_btg = $f2_estfg * $target_prod * $hole_count; 
+	}
+	$target_section = $weight_standard * $target_prod_btg * $len;
+
+	return array(
+		'target_prod_btg'   => $target_prod_btg,
+		'target_section_kg' => $target_section
+	);
+}
+
 ?>

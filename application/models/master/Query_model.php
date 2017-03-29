@@ -126,14 +126,16 @@ class Query_model extends CI_Model
 			s.SectionDescription,
 			hl.pot_end_butt,
 			l.p_billet_aktual,
-			l.jumlah_billet
+			l.jumlah_billet,
+			lent.Length
 			
 		FROM dbo.SpkDetail d
 		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
+		INNER JOIN Inventory.MasterDimensionLength lent ON d.len = lent.LengthId
 		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
 		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
 		LEFT JOIN dbo.SpkHeaderLot hl ON d.master_detail_id = hl.master_detail_id
-		LEFT JOIN dbo.SpkLot l ON d.master_detail_id = l.master_detail_id ";
+		INNER JOIN dbo.SpkLot l ON d.master_detail_id = l.master_detail_id ";
 		
 		
 		if($machine_id != '')
