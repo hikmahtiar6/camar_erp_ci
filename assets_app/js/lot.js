@@ -161,6 +161,15 @@ window.LOT = (function($) {
 				add:false,
 				del:true,
 				search: false,
+				beforeRefresh: function () {
+			        var rowKey = grid.jqGrid('getGridParam',"selrow");
+					//var idxDice = $('#indexdice'+rowKey).val();
+					grid.jqGrid('saveRow', rowKey, {
+						/*extraparam: {
+							idxdice: idxDice
+						},*/
+					});
+			    }
 			},{},{},{},
 			{
 				closeOnEscape:true,
@@ -312,6 +321,16 @@ window.LOT = (function($) {
 
 			$('.close-modal').click(function() {
 				formHeaderLot.submit();
+
+				var grid = $('.list-lot');
+
+				var rowKey = grid.jqGrid('getGridParam',"selrow");
+				//var idxDice = $('#indexdice'+rowKey).val();
+				grid.jqGrid('saveRow', rowKey, {
+					/*extraparam: {
+						idxdice: idxDice
+					},*/
+				});
 			});
 		},
 
