@@ -1,3 +1,8 @@
+/**
+ * Javascript Lot
+ *
+ * @author Hikmahtiar <hikmahtiar.cool@gmail.com>
+ */
 window.LOT = (function($) {
 	return {
 
@@ -357,5 +362,20 @@ window.LOT = (function($) {
 		        }
 		    });
 		},
+
+		handleMulaiPukul: function(elBtn, elInput, elIdxDies) {
+			$(elBtn).click(function() {
+				var date = new Date();
+				var time = date.getHours() + ':' + date.getMinutes();
+
+				$(elInput).val(time);
+
+				$(elIdxDies).prop("disabled", true);
+			});
+		},
+
+		handleSelesaiPukul: function() {
+			
+		}
 	}
 })(jQuery);

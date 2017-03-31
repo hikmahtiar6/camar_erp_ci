@@ -76,7 +76,7 @@
 					</select>
 				</td>
 				<td>
-					<button class="btn btn-success">
+					<button class="btn btn-success btn-mulai-pukul" type="button">
 						Mulai Pukul
 					</button>
 				</td>
@@ -89,7 +89,7 @@
 							{% set mulai = trims(get_detail_header.time_start) %}
 						{% endif %}
 					{% endif %}
-					<input class="form-control" name="time_start" type="text" value="{{ mulai_str }}">
+					<input class="form-control input-mulai-pukul" name="time_start" type="text" value="{{ mulai_str }}" readonly="readonly">
 				</td>
 			</tr>
 			<tr>
@@ -258,8 +258,9 @@
 	window.LOT.handleTagEditor();
 	window.LOT.handleSaveHeaderLot();	
 	window.LOT.handleNumberInput();
-
 	var el = '.index-dice';
+	window.LOT.handleMulaiPukul('.btn-mulai-pukul', '.input-mulai-pukul', el);
+
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
 
