@@ -174,7 +174,7 @@
 												{# sum_target_section('', machine, master_row.shift, tgl) #}
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
-											<td></td>
+											<td>{{ get_total_billet_kg(master_row.master_detail_id, machine, master_row.section_id, master_row.p_billet_aktual, master_row.jumlah_billet) }}</td>
 											<td>{{ get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) }}</td>
 											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
 											<td>{{ master_row.pot_end_butt }}</td>
@@ -182,11 +182,12 @@
 											<td></td>
 										</tr>
 
-										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
-										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
-										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) %}
-										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
-										{% set jumlah_endbutt = jumlah_endbutt + master_row.pot_end_butt %}
+									{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
+									{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
+									{% set jumlah_akt_billet_kg = jumlah_akt_billet_kg + get_total_billet_kg(master_row.master_detail_id, machine, master_row.section_id, master_row.p_billet_aktual, master_row.jumlah_billet) %}
+									{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) %}
+									{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
+									{% set jumlah_endbutt = jumlah_endbutt + master_row.pot_end_butt %}
 
 
 									{% endfor %}
@@ -240,7 +241,7 @@
 							<td colspan="5">Grand Total</td>
 							<td><b>{{ jumlah_target_prod_btg }}</b></td>
 							<td><b>{{ jumlah_target_prod_kg }}</b></td>
-							<td><b></b></td>
+							<td><b>{{ jumlah_akt_billet_kg }}</b></td>
 							<td><b>{{ jumlah_hasil_prod_btg }}</b></td>
 							<td><b>{{ jumlah_hasil_prod_kg }}</b></td>
 							<td><b>{{ jumlah_endbutt }}</b></td>

@@ -91,6 +91,9 @@ class Lot extends CI_Controller {
 			$rata2_berat_ak = ($get_sum_ak->jml != NULL) ? (float) round($get_sum_ak->jml / $get_counting_ak->jml * 2 / 1000, 3) : '';
 			$berat_billet = ($get_sum_ak->jml != NULL) ? (float) round($gmd->p_billet_aktual * $gmd->jumlah_billet * $billet_weight, 2) : '';
 
+			$berat_hasil = $len * $get_sum_jml_btg->jml * $rata2_berat_ak;
+			$recovery = round($get_sum_jml_btg->jml / $berat_hasil, 3);
+
 			$response->rows[$i]['id']   = $gmd->lot_id;
 			$response->rows[$i]['cell'] = array(
 				$weight_standard,
@@ -105,8 +108,8 @@ class Lot extends CI_Controller {
 				$gmd->rak_btg,
 				($gmd->jumlah_di_rak_btg > 0) ? $gmd->jumlah_di_rak_btg : '',
 				$get_sum_jml_btg->jml,
-				$len * $get_sum_jml_btg->jml * $rata2_berat_ak,
-				$len * $get_sum_jml_btg->jml * $rata2_berat_ak,
+				$berat_hasil,
+				$recovery,
 			);
 			$i++;
 		}

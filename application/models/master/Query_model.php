@@ -125,8 +125,6 @@ class Query_model extends CI_Model
 			f.finishing_name,
 			s.SectionDescription,
 			hl.pot_end_butt,
-			l.p_billet_aktual,
-			l.jumlah_billet,
 			lent.Length
 			
 		FROM dbo.SpkDetail d
@@ -134,8 +132,7 @@ class Query_model extends CI_Model
 		INNER JOIN Inventory.MasterDimensionLength lent ON d.len = lent.LengthId
 		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
 		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
-		LEFT JOIN dbo.SpkHeaderLot hl ON d.master_detail_id = hl.master_detail_id
-		INNER JOIN dbo.SpkLot l ON d.master_detail_id = l.master_detail_id ";
+		LEFT JOIN dbo.SpkHeaderLot hl ON d.master_detail_id = hl.master_detail_id ";
 		
 		
 		if($machine_id != '')
@@ -153,7 +150,7 @@ class Query_model extends CI_Model
 			$sql .= "AND d.shift ='".$shift."' ";
 		}
 
-		$sql = str_replace("l.master_detail_id AND", "l.master_detail_id WHERE", $sql);
+		$sql = str_replace("hl.master_detail_id AND", "hl.master_detail_id WHERE", $sql);
 		
 		$sql .= $sql." ORDER BY d.shift DESC";
 
