@@ -1,0 +1,74 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="row clearfix">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="card" style="width: 70%; margin: 0 auto !important;">
+
+				<div class="header">
+					<h2>
+						Dies yang Harus Disiapkan
+					</h2>
+				</div>
+
+				<div class="body">
+
+					<form class="form-dies-idx" method="post" action="{{ site_url('admin/dies/filter') }}">
+						<table class="table" style="width: 40%">
+							<tr>
+								<td>
+									<label>Tanggal</label>
+								</td>
+								<td>
+									<input class="date-bootstrap form-control" name="tanggal-dies" value="{{ date_now }}">
+								</td>
+								<td>
+									<button class="btn btn-primary" type="submit">Filter</button>
+								</td>
+							</tr>
+						</table>
+					
+					</form>
+
+					<table class="table table-bordered">
+						<thead>
+							<tr align="center">
+								<td><b>Tanggal</b></td>
+								<td><b>Shift</b></td>
+								<td><b>Dies Index</b></td>
+								<td><b>Action</b></td>
+							</tr>
+						</thead>
+						<tbody class="result-dies-idx">
+						</tbody>
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/date.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/dies.js') }}"></script>
+	<script type="text/javascript">
+		window.DATE.init();
+		window.DIES.init();
+		window.DIES.submitFilter();
+	</script>
+
+{% endblock %}

@@ -67,7 +67,7 @@ class Master extends CI_Controller {
 		{
 			$machine_id = $header_data->machine_id;
 		}
-		$machine_id = '';
+		//$machine_id = '';
 
 		$data = $this->query_model->get_master_advance($machine_id)->result();
 

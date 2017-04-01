@@ -1,6 +1,8 @@
 <?php
 /**
  * Model Master Spk Lot
+ *
+ * @author Hikmahtiar <hikmahtiar.cool@gmail.com>
  */
 class Lot_model extends CI_Model {
 
@@ -230,6 +232,24 @@ class Lot_model extends CI_Model {
 	public function delete($id)
 	{
 		$this->db->where('lot_id', $id);
+		return $this->db->delete(static::TABLE);
+	}
+
+	/**
+	 * Delete head lot
+	 */
+	public function delete_head_lot($master_detail_id)
+	{
+		$this->db->where('master_detail_id', $master_detail_id);
+		return $this->db->delete(static::TABLE_HEAD_LOT);
+	}
+
+	/**
+	 * Delete lot
+	 */
+	public function delete_lot($master_detail_id)
+	{
+		$this->db->where('master_detail_id', $master_detail_id);
 		return $this->db->delete(static::TABLE);
 	}
 }

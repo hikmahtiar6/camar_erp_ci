@@ -92,7 +92,7 @@ class Lot extends CI_Controller {
 			$berat_billet = ($get_sum_ak->jml != NULL) ? (float) round($gmd->p_billet_aktual * $gmd->jumlah_billet * $billet_weight, 2) : '';
 
 			$berat_hasil = $len * $get_sum_jml_btg->jml * $rata2_berat_ak;
-			$recovery = round($get_sum_jml_btg->jml / $berat_hasil, 3);
+			$recovery = ($berat_hasil > 0) ? round($get_sum_jml_btg->jml / $berat_hasil, 3) : 0;
 
 			$response->rows[$i]['id']   = $gmd->lot_id;
 			$response->rows[$i]['cell'] = array(
@@ -264,6 +264,20 @@ class Lot extends CI_Controller {
 		}
 
 		return rtrim($str, ', ');
+	}
+
+	/**
+	 * Check selisih waktu
+	 */
+	public function check_selisih_time()
+	{
+		$time1 = $this->input->post('time1');
+		$time2 = $this->input->post('time2');
+
+		$date1 = date('Y-m-d ').$time1.':00';
+		$date2 = date('Y-m-d ').$time2.':00';
+
+		$this->output->set_output(selisih_waktu($date2, $date1));
 	}
 
 }

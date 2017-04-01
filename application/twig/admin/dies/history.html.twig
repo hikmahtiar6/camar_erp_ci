@@ -1,0 +1,68 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="row clearfix">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="card" style="width: 70%; margin: 0 auto !important;">
+
+				<div class="header">
+					<h2>
+						Dies History
+					</h2>
+				</div>
+
+				<div class="body">
+
+					<table class="table table-bordered">
+						<thead>
+							<tr align="center">
+								<td><b>Dies ID</b></td>
+								<td><b>Status</b></td>
+								<td><b>Lokasi</b></td>
+								<td><b>Action</b></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% if data %}
+
+								{% for row in data %}
+							
+									<tr>
+										<td>{{ row.DiesId }}</td>
+										<td>{{ row.DiesStatus }}</td>
+										<td>{{ row.Location }}</td>
+										<td></td>
+									</tr>
+
+
+								{% endfor %}
+
+							{% endif %}
+						</tbody>
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/dies.js') }}"></script>
+	<script type="text/javascript">
+	</script>
+
+{% endblock %}

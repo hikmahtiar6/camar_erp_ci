@@ -21,6 +21,7 @@ class Transaction extends CI_Controller
 		$this->load->model('master/header_model');
 		$this->load->model('master/shift_model');
 		$this->load->model('master/query_model');
+		$this->load->model('master/lot_model');
 	}
 
 	/**
@@ -804,6 +805,8 @@ class Transaction extends CI_Controller
 			break;
 			case 'del':
 				$this->detail_model->delete($id);
+				$this->lot_model->delete_lot($id);
+				$this->lot_model->delete_head_lot($id);
 			break;
 		}	
 	}

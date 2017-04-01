@@ -1,10 +1,16 @@
 <?php
 /**
  * Model Master Index DIce
+ *
+ * @author Hikmahtiar <hikamhtiar.cool@gmail.com>
  */
 class Indexdice_model extends CI_Model {
 
 	const TABLE = 'Purchasing.DieReceivingDetail';
+	const TABLE_SPK = 'dbo.SpkDetail';
+	const TABLE_DIES_LOG = 'dbo.DiesHistoryCardLog';
+	const TABLE_DIES_LOCATION = 'dbo.DiesLocation';
+	const TABLE_DIES_STATUS = 'dbo.DiesStatus';
 
 	public function __construct()
 	{
@@ -45,6 +51,67 @@ class Indexdice_model extends CI_Model {
 		//$sql->where($array);
 
 		$sql->group_by('DiesId');
+
+		$get = $sql->get();
+		return $get;
+	}
+
+	public function filter_dies_departement($tgl, $shift)
+	{
+		$sql = $this->db;
+
+		$sql->select('index_dice');
+		$sql->from(static::TABLE_SPK);
+		$sql->where('index_dice IS NOT NULL');
+		$sql->where('tanggal', $tgl);
+		$sql->where('shift', $shift);
+
+		$get = $sql->get();
+		return $get->result();
+
+	}
+
+	/**
+	 * save log
+	 */
+	public function set_dies_log($data)
+	{
+		return $this->db->insert(static::TABLE_DIES_LOG, $data);
+	}
+
+	/**
+	 * get log
+	 */
+	public function get_dies_log($date = '', $status = '', $location = '', $dies_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('a.*, b.DiesStatus, c.Location');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_DIES_STATUS.' b', 'a.DiesStatusId = b.DiesCode', 'inner');
+		$sql->join(static::TABLE_DIES_LOCATION.' c', 'a.DiesLocationId = c.DiesLocationId', 'inner');
+		
+		if($date != '')
+		{
+			$sql->where('CONVERT(VARCHAR(10),LogTime,120)', $date);	
+		}
+		
+		if($status != '')
+		{
+			$sql->where('DiesStatusId', $status);	
+		}
+
+		if($dies_id != '')
+		{
+			$sql->where('DiesId', $dies_id);	
+		}
+
+		if($location != '')
+		{
+			$sql->where('DiesLocationId', $location);
+		}
+
+		$sql->order_by('DiesHistoryCardLogId', 'desc');
 
 		$get = $sql->get();
 		return $get;

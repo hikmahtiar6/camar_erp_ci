@@ -368,14 +368,70 @@ window.LOT = (function($) {
 				var date = new Date();
 				var time = date.getHours() + ':' + date.getMinutes();
 
-				$(elInput).val(time);
+				if($(elInput).val() == "")
+				{
+					$(elInput).val(time);
+				}
 
+
+				var formHeaderLot = $('.form-header-lot');
+				formHeaderLot.submit();
 				$(elIdxDies).prop("disabled", true);
 			});
 		},
 
-		handleSelesaiPukul: function() {
-			
+		handleSelesaiPukul: function(elBtn, elInputMulai, elInputSelesai, elSelisih) {
+			$(elBtn).click(function() {
+				var date = new Date();
+				var time = date.getHours() + ':' + date.getMinutes();
+
+				if($(elInputSelesai).val() == " " || $(elInputSelesai).val() == "")
+				{
+					$(elInputSelesai).val(time);
+				}
+
+				$.ajax({
+					url: window.APP.siteUrl + 'admin/lot/check_selisih_time',
+					type: 'POST',
+					data: {
+						time1: $(elInputMulai).val(),
+						time2: $(elInputSelesai).val()
+					},
+					success: function(response) {
+						$(elSelisih).html(response);
+					}
+				});
+
+
+				var formHeaderLot = $('.form-header-lot');
+				formHeaderLot.submit();
+			});
+		},
+
+		handlePosting: function(el) {
+			$(el).click(function() {
+				swal({
+					title: "Perlu Caustic ?",
+					text: '<button class="btn btn-primary yes-swal">Ya</button>' +
+						'<button class="btn btn-warning no-swal">Tidak</button>' +
+						'<button class="btn btn-danger problem-swal">Problem</button>',
+					showConfirmButton: false,
+					html: true
+				});
+
+				$('.yes-swal').click(function() {
+					//alert('yes');
+				});
+
+				$('.no-swal').click(function() {
+					//alert('no');
+				});
+
+				$('.problem-swal').click(function() {
+					//alert('prob');
+				});
+
+			});
 		}
 	}
 })(jQuery);

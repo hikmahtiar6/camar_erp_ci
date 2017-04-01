@@ -12,7 +12,14 @@
 	    	Form Transaksi Lot
 	    </h4>
 
+
 		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
+
+		<div class="pull-right" style="padding-right: 200px;">
+		    <button class="btn btn-info btn-posting-lot">
+		    	Posting
+		    </button>
+	    </div>
 
 	</div>
 	<div class="modal-body">
@@ -111,7 +118,7 @@
 					</div>
 				</td>
 				<td>
-					<button class="btn btn-danger">
+					<button class="btn btn-danger btn-selesai-pukul" type="button">
 						Selesai Pukul
 					</button>
 				</td>
@@ -124,7 +131,7 @@
 							{% set selesai = trims(get_detail_header.time_finish) %}
 						{% endif %}
 					{% endif %}
-					<input class="form-control" name="time_finish" type="text" value="{{ selesai_str }}">
+					<input class="form-control input-selesai-pukul" name="time_finish" type="text" value="{{ selesai_str }}">
 				</td>
 			</tr>
 			<tr>
@@ -149,8 +156,11 @@
 					<label>Selisih Pukul</label>
 				</td>
 				<td>
-					
-					{{ selisih_waktu(get_detail.tanggal ~ ' '~ selesai ~ ':00', get_detail.tanggal ~ ' '~ mulai ~ ':00') }}
+					{% if selesai_str != " " %}
+						<div class="div-selisih-waktu">
+							{{ selisih_waktu(get_detail.tanggal ~ ' '~ selesai ~ ':00', get_detail.tanggal ~ ' '~ mulai ~ ':00') }}
+						</div>
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
@@ -260,6 +270,8 @@
 	window.LOT.handleNumberInput();
 	var el = '.index-dice';
 	window.LOT.handleMulaiPukul('.btn-mulai-pukul', '.input-mulai-pukul', el);
+	window.LOT.handleSelesaiPukul('.btn-selesai-pukul', '.input-mulai-pukul', '.input-selesai-pukul', '.div-selisih-waktu');
+	window.LOT.handlePosting('.btn-posting-lot');
 
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
@@ -289,3 +301,9 @@
 
 
 </script>
+
+{% if mulai_str != "" %}
+	<script type="text/javascript">
+		$('.index-dice').prop("disabled", true);
+	</script>
+{% endif %}

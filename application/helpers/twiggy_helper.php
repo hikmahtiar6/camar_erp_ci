@@ -15,6 +15,11 @@ function arr_sum($arr)
 	return array_sum($arr);
 }
 
+function strpos_text($str, $check)
+{
+	return strpos($str, $check) !== false;
+}
+
 function get_shift_end($shift_start, $apt, $target_prod)
 {
 	if($apt != '' || $apt != NULL)
@@ -334,7 +339,7 @@ function selisih_waktu($waktu_akhir, $waktu_awal)
 
 	$diff  = $awal->diff($akhir);
 	
-	$res = '';
+	$res = '-';
 
 	if($diff->h > 0)
 	{
@@ -424,6 +429,50 @@ function get_target_prod_btg($machine_id, $section_id, $target_prod, $len)
 		'target_prod_btg'   => $target_prod_btg,
 		'target_section_kg' => $target_section
 	);
+}
+
+function get_dies_department($tgl, $shift)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/indexdice_model');
+
+	$data = $ci->indexdice_model->filter_dies_departement($tgl, $shift);
+	return $data;
+}
+
+function convert_dies_department($data)
+{
+	$txt  = '';
+
+	foreach($data as $row) 
+	{
+		$txt .= $row->index_dice. ", ";
+	}
+
+	$txt  = rtrim($txt, ", ");
+
+	if(strpos_text($txt, ","))
+	{
+		return explode(",", $txt);
+	}
+	else
+	{
+		if($txt != " " && $txt != "")
+		{
+			return array($txt);
+		}
+	}
+
+	return false;
+}
+
+function check_dies_log($dies_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/indexdice_model');
+
+	$data = $ci->indexdice_model->get_dies_log($date = '', $status = '', $location = '', $dies_id)->row();
+	return $data;
 }
 
 ?>
