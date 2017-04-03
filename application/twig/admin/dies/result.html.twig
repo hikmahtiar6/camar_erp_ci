@@ -1,25 +1,32 @@
 {% for sh in shift %}
 	
-	{% set dies = get_dies_department(date_now2, sh) %}
+	{% set dies = get_dies_department(date_now2, sh, machine) %}
 	{% set convert_dies = convert_dies_department(dies) %}
 
 	{% if convert_dies %}
 		{% for key, conv in convert_dies %}
+
+		{% set split_dies = split_text(conv, '|') %}
+		{% set dies_id = split_dies[0] %}
+		{% set dies_section = split_dies[1] %}
 		<tr>
 			{% if key == 0 %}
 			<td rowspan="{{ convert_dies|length }}">{{ date_now }}</td>
 			<td rowspan="{{ convert_dies|length }}">Shift {{ sh }}</td>
 			{% endif %}
 			<td>
-				{{ conv }}
+				{{ dies_section }}
+			</td>
+			<td>
+				{{ dies_id }}
 			</td>
 			<td align="center">
-				{% set check_dies = check_dies_log(conv) %}
+				{% set check_dies = check_dies_log(dies_id, date_now2) %}
 
 				{% if check_dies %}
 					<i class="material-icons">done</i>
 				{% else %}
-					<button class="btn btn-info btn-action-die" data-dies-id="{{ conv }}">Button</button>
+					<button class="btn btn-info btn-action-die" data-dies-id="{{ dies_id }}">Button</button>
 				{% endif %}
 			</td>
 		</tr>

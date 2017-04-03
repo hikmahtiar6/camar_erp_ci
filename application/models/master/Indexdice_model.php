@@ -11,6 +11,8 @@ class Indexdice_model extends CI_Model {
 	const TABLE_DIES_LOG = 'dbo.DiesHistoryCardLog';
 	const TABLE_DIES_LOCATION = 'dbo.DiesLocation';
 	const TABLE_DIES_STATUS = 'dbo.DiesStatus';
+	const TABLE_HEAD = 'SpkHeader';
+	const TABLE_BARANG = 'Inventory.Sections';
 
 	public function __construct()
 	{
@@ -56,15 +58,24 @@ class Indexdice_model extends CI_Model {
 		return $get;
 	}
 
-	public function filter_dies_departement($tgl, $shift)
+	public function filter_dies_departement($tgl, $shift, $machine = '')
 	{
 		$sql = $this->db;
 
-		$sql->select('index_dice');
-		$sql->from(static::TABLE_SPK);
-		$sql->where('index_dice IS NOT NULL');
-		$sql->where('tanggal', $tgl);
-		$sql->where('shift', $shift);
+		$sql->select('a.*, c.SectionDescription, d.machine_id as MachineId');
+		$sql->from(static::TABLE_SPK. ' a');
+		$sql->join(static::TABLE_BARANG. ' c', 'a.section_id = c.SectionId', 'left');
+		$sql->join(static::TABLE_HEAD. ' d', 'a.header_id = d.header_id', 'inner');
+
+		$sql->where('a.index_dice IS NOT NULL');
+		$sql->where('a.index_dice NOT LIKE ""');
+		$sql->where('a.tanggal', $tgl);
+		$sql->where('a.shift', $shift);
+
+		if($machine != '')
+		{
+			$sql->where('d.machine_id', $machine);
+		}
 
 		$get = $sql->get();
 		return $get->result();

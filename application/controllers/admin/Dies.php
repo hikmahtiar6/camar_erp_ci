@@ -14,7 +14,9 @@ class Dies extends CI_Controller
 	{
 		parent::__construct();
 
+		// load model
 		$this->load->model('master/indexdice_model');
+		$this->load->model('master/machine_model');
 	}
 	
 	/**
@@ -22,6 +24,9 @@ class Dies extends CI_Controller
 	 */
 	public function index()
 	{
+		$machine_data = $this->machine_model->get_data();
+
+		$this->twiggy->set('machine_data', $machine_data);
 		$this->twiggy->set('date_now', date('d/m/Y'));
 		$this->twiggy->template('admin/dies/index')->display();
 	}
@@ -31,11 +36,17 @@ class Dies extends CI_Controller
 	 */
 	public function filter()
 	{
+		// post
 		$tgl = $this->input->post('tanggal-dies');
+		$mesin = $this->input->post('mesin-dies');
+
+		// var
 		$date_now = change_format_date($tgl, 'd-m-Y');
 		$date_now2 = change_format_date($tgl);
 		$shift = array('1', '2');
 
+		// view
+		$this->twiggy->set('machine', $mesin);
 		$this->twiggy->set('date_now', $date_now);
 		$this->twiggy->set('date_now2', $date_now2);
 		$this->twiggy->set('shift', $shift);

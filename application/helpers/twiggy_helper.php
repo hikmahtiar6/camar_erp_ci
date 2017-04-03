@@ -15,6 +15,11 @@ function arr_sum($arr)
 	return array_sum($arr);
 }
 
+function split_text($str, $spliten)
+{
+	return explode($spliten, $str);
+}
+
 function strpos_text($str, $check)
 {
 	return strpos($str, $check) !== false;
@@ -431,12 +436,12 @@ function get_target_prod_btg($machine_id, $section_id, $target_prod, $len)
 	);
 }
 
-function get_dies_department($tgl, $shift)
+function get_dies_department($tgl, $shift, $machine)
 {
 	$ci =& get_instance();
 	$ci->load->model('master/indexdice_model');
 
-	$data = $ci->indexdice_model->filter_dies_departement($tgl, $shift);
+	$data = $ci->indexdice_model->filter_dies_departement($tgl, $shift, $machine);
 	return $data;
 }
 
@@ -446,7 +451,7 @@ function convert_dies_department($data)
 
 	foreach($data as $row) 
 	{
-		$txt .= $row->index_dice. ", ";
+		$txt .= $row->index_dice.'|'.$row->SectionDescription. ", ";
 	}
 
 	$txt  = rtrim($txt, ", ");
@@ -466,12 +471,12 @@ function convert_dies_department($data)
 	return false;
 }
 
-function check_dies_log($dies_id)
+function check_dies_log($dies_id, $date)
 {
 	$ci =& get_instance();
 	$ci->load->model('master/indexdice_model');
 
-	$data = $ci->indexdice_model->get_dies_log($date = '', $status = '', $location = '', $dies_id)->row();
+	$data = $ci->indexdice_model->get_dies_log($date, $status = '', $location = '', $dies_id)->row();
 	return $data;
 }
 

@@ -23,6 +23,28 @@
 						<table class="table" style="width: 40%">
 							<tr>
 								<td>
+									<label>Mesin</label>
+								</td>
+								<td>
+									<select class="form-control" name="mesin-dies">
+		                                <option value="">-- Silahkan Pilih --</option>
+		                                {% if machine_data %}
+
+		                                    {% for machine_row in machine_data %}
+
+		                                        <option value="{{ machine_row.MachineId }}">
+		                                            {{ machine_row.MachineId }}
+		                                        </option>
+		                                    {% endfor %}
+
+		                                {% endif %}
+		                            </select>
+								</td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<td>
 									<label>Tanggal</label>
 								</td>
 								<td>
@@ -41,6 +63,7 @@
 							<tr align="center">
 								<td><b>Tanggal</b></td>
 								<td><b>Shift</b></td>
+								<td><b>Section Name</b></td>
 								<td><b>Dies Index</b></td>
 								<td><b>Action</b></td>
 							</tr>
