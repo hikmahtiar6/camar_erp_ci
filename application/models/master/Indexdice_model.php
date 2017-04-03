@@ -68,7 +68,7 @@ class Indexdice_model extends CI_Model {
 		$sql->join(static::TABLE_HEAD. ' d', 'a.header_id = d.header_id', 'inner');
 
 		$sql->where('a.index_dice IS NOT NULL');
-		$sql->where('a.index_dice NOT LIKE', '');
+		$sql->where('CONVERT(VARCHAR, a.index_dice) != ', '');
 		$sql->where('a.tanggal', $tgl);
 		$sql->where('a.shift', $shift);
 
