@@ -86,10 +86,10 @@ class Indexdice_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('a.*, b.DiesStatus, c.Location');
-		$sql->from(static::TABLE_DIES_LOG.' a');
-		$sql->join(static::TABLE_DIES_STATUS.' b', 'a.DiesStatusId = b.DiesCode', 'inner');
-		$sql->join(static::TABLE_DIES_LOCATION.' c', 'a.DiesLocationId = c.DiesLocationId', 'inner');
+		$sql->select('DiesId, 
+			(SELECT top 1 b.DiesStatus FROM DiesHistoryCardLog a INNER JOIN DiesStatus b ON a.DiesStatusId = b.DiesCode order by a.LogTime DESC ) as DiesStatus,
+			(SELECT top 1 c.Location FROM DiesHistoryCardLog a INNER JOIN DiesLocation c ON a.DiesLocationId = c.DiesLocationId order by a.LogTime DESC ) as DiesLocation');
+		$sql->from(static::TABLE_DIES_LOG);
 		
 		if($date != '')
 		{
@@ -111,7 +111,7 @@ class Indexdice_model extends CI_Model {
 			$sql->where('DiesLocationId', $location);
 		}
 
-		$sql->order_by('DiesHistoryCardLogId', 'desc');
+		$sql->group_by('DiesId');
 
 		$get = $sql->get();
 		return $get;

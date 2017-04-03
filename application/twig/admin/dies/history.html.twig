@@ -19,7 +19,21 @@
 
 				<div class="body">
 
-					<table class="table table-bordered">
+					<form class="form-dies-idx" method="post" action="{{ site_url('admin/dies/filter') }}">
+						<table class="table" style="width: 40%">
+							<tr>
+								<td>
+									<label>Pencarian</label>
+								</td>
+								<td>
+									<input class="form-control dies-history-search">
+								</td>
+							</tr>
+						</table>
+					
+					</form>
+
+					<table class="table table-bordered dies-history-table" style="width: 100%; margin-top: -20px !important;">
 						<thead>
 							<tr align="center">
 								<td><b>Dies ID</b></td>
@@ -36,8 +50,8 @@
 									<tr>
 										<td>{{ row.DiesId }}</td>
 										<td>{{ row.DiesStatus }}</td>
-										<td>{{ row.Location }}</td>
-										<td></td>
+										<td>{{ row.DiesLocation }}</td>
+										<td align="center"><button class="btn btn-info">Button</button></td>
 									</tr>
 
 
@@ -63,6 +77,7 @@
 
 	<script type="text/javascript" src="{{ base_url('assets_app/js/dies.js') }}"></script>
 	<script type="text/javascript">
+		window.DIES.DiesHistoryDatatable();
 	</script>
 
 {% endblock %}

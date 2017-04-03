@@ -15,7 +15,7 @@ window.DIES = (function($) {
 
 					if(response.length == 24) {
 						html = "<tr>" +
-						"<td colspan='4'>Data tidak tersedia.</td>" +
+						"<td colspan='4'>No data available in table.</td>" +
 						"</tr>"; 
 					}
 					$('.result-dies-idx').html(html);
@@ -49,6 +49,18 @@ window.DIES = (function($) {
 					}
 				});
 
+			});
+		},
+
+		DiesHistoryDatatable: function() {
+			var dTable = $('.dies-history-table').DataTable({
+				info: false
+			});
+
+			$('.dataTables_length, .dataTables_filter').remove();
+
+			$('.dies-history-search').keyup(function() {
+				dTable.search(this.value).draw();
 			});
 		}
 	}
