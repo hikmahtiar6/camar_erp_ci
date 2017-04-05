@@ -97,9 +97,7 @@ class Indexdice_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('DiesId, 
-			(SELECT top 1 b.DiesStatus FROM DiesHistoryCardLog a INNER JOIN DiesStatus b ON a.DiesStatusId = b.DiesCode order by a.LogTime DESC ) as DiesStatus,
-			(SELECT top 1 c.Location FROM DiesHistoryCardLog a INNER JOIN DiesLocation c ON a.DiesLocationId = c.DiesLocationId order by a.LogTime DESC ) as DiesLocation');
+		$sql->select('DiesId');
 		$sql->from(static::TABLE_DIES_LOG);
 		
 		if($date != '')
@@ -126,6 +124,40 @@ class Indexdice_model extends CI_Model {
 
 		$get = $sql->get();
 		return $get;
+	}
+
+	/**
+	 * get last status log
+	 */
+	public function get_last_status_log($dies_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('b.DiesStatus');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_DIES_STATUS.' b', 'a.DiesStatusId = b.DiesCode', 'inner');
+		$sql->where('a.DiesId', $dies_id);
+		$sql->order_by('a.LogTime', 'desc');
+
+		$get = $sql->get();
+		return $get->row();
+	}
+
+	/**
+	 * get last status log
+	 */
+	public function get_last_location_log($dies_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('c.Location');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_DIES_LOCATION.' c', 'a.DiesLocationId = c.DiesLocationId', 'inner');
+		$sql->where('a.DiesId', $dies_id);
+		$sql->order_by('a.LogTime', 'desc');
+
+		$get = $sql->get();
+		return $get->row();
 	}
 }
 

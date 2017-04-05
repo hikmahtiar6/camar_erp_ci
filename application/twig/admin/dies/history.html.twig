@@ -38,6 +38,7 @@
 							<tr align="center">
 								<td><b>Dies ID</b></td>
 								<td><b>Status</b></td>
+								<td><b>Note</b></td>
 								<td><b>Lokasi</b></td>
 								<td><b>Action</b></td>
 							</tr>
@@ -49,8 +50,9 @@
 							
 									<tr>
 										<td>{{ row.DiesId }}</td>
-										<td>{{ row.DiesStatus }}</td>
-										<td>{{ row.DiesLocation }}</td>
+										<td>{{ get_last_status_log_dies(row.DiesId) }}</td>
+										<td></td>
+										<td>{{ get_last_location_log_dies(row.DiesId) }}</td>
 										<td align="center"><button class="btn btn-info">Button</button></td>
 									</tr>
 

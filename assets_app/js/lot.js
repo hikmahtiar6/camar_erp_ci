@@ -432,6 +432,8 @@ window.LOT = (function($) {
 		},
 
 		handlePosting: function(el) {
+			var _this = this;
+
 			$(el).click(function() {
 				swal({
 					title: "Perlu Caustic ?",
@@ -444,14 +446,71 @@ window.LOT = (function($) {
 
 				$('.yes-swal').click(function() {
 					//alert('yes');
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/dies/set_log',
+						type: 'post',
+						data: {
+							status: 2,
+							location: 1,
+							dies_id: $('.index-dice').val()
+						},
+						success: function() {
+							swal({
+							  title: "Dies telah di set Ya",
+							  text: "",
+							  timer: 2000,
+							  type: "success",
+							  showConfirmButton: false
+							});
+						}
+					});
 				});
 
 				$('.no-swal').click(function() {
 					//alert('no');
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/dies/set_log',
+						type: 'post',
+						data: {
+							status: 2,
+							location: 1,
+							dies_id: $('.index-dice').val()
+						},
+						success: function() {
+							swal({
+							  title: "Dies telah di set Tidak",
+							  text: "",
+							  type: "success",
+							  timer: 2000,
+							  showConfirmButton: false
+							});
+
+						}
+					});
 				});
 
 				$('.problem-swal').click(function() {
 					//alert('prob');
+					//
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/dies/set_log',
+						type: 'post',
+						data: {
+							status: 29,
+							location: 1,
+							dies_id: $('.index-dice').val()
+						},
+						success: function() {
+							swal({
+							  title: "Dies telah di set Problem",
+							  text: "",
+							  type: "warning",
+							  timer: 2000,
+							  showConfirmButton: false
+							});
+
+						}
+					});
 				});
 
 			});
