@@ -73,16 +73,34 @@ class Dies extends CI_Controller
 		$status = $this->input->post('status');
 		$dies_id = $this->input->post('dies_id');
 
-		$data = array(
-			'LogTime'        => date('Y-m-d H:i:s'),
-			'DiesId'         => $dies_id,
-			'DiesStatusId'   => $status,
-			'DiesLocationId' => $location
-		);
+		if(is_array($dies_id))
+		{
+			foreach ($dies_id as $value) {
 
-		$save = $this->indexdice_model->set_dies_log($data);
-		
-		$this->output->set_output('<i class="material-icons">done</i>');
+				$data = array(
+					'LogTime'        => date('Y-m-d H:i:s'),
+					'DiesId'         => $value,
+					'DiesStatusId'   => $status,
+					'DiesLocationId' => $location
+				);
+
+				$save = $this->indexdice_model->set_dies_log($data);
+			}
+		}
+		else
+		{
+			$data = array(
+				'LogTime'        => date('Y-m-d H:i:s'),
+				'DiesId'         => $dies_id,
+				'DiesStatusId'   => $status,
+				'DiesLocationId' => $location
+			);
+
+			$save = $this->indexdice_model->set_dies_log($data);
+			
+			$this->output->set_output('<i class="material-icons">done</i>');
+		}
+
 	}
 }
 ?>

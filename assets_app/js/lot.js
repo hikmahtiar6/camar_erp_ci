@@ -363,15 +363,38 @@ window.LOT = (function($) {
 		    });
 		},
 
+		handleSaveCardLog(status, location, dies)
+		{
+			var request = $.ajax({
+				url: window.APP.siteUrl + 'admin/dies/set_log',
+				type: 'post',
+				data: {
+					status: status,
+					location: location,
+					dies_id: dies
+				},
+				success: function() {
+
+				}
+			});
+
+			return request;
+		},
+
 		handleMulaiPukul: function(elBtn, elInput, elIdxDies) {
+
+			var _this = this;
+
 			$(elBtn).click(function() {
 				var date = new Date();
 				var time = date.getHours() + ':' + date.getMinutes();
 
-				if($(elInput).val() == "")
+				if($(elInput).val() == "" || $(elInput).val() == " ")
 				{
 					$(elInput).val(time);
 				}
+
+				_this.handleSaveCardLog("0", 1, $(elIdxDies).val());
 
 
 				var formHeaderLot = $('.form-header-lot');
