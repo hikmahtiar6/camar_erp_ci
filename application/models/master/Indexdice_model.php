@@ -13,6 +13,7 @@ class Indexdice_model extends CI_Model {
 	const TABLE_DIES_STATUS = 'dbo.DiesStatus';
 	const TABLE_HEAD = 'SpkHeader';
 	const TABLE_BARANG = 'Inventory.Sections';
+	const TABLE_PROBLEM = 'dbo.DiesProblem';
 
 	public function __construct()
 	{
@@ -112,7 +113,7 @@ class Indexdice_model extends CI_Model {
 
 		if($dies_id != '')
 		{
-			$sql->where('DiesId', $dies_id);	
+			$sql->where('DiesId', trim($dies_id));	
 		}
 
 		if($location != '')
@@ -159,6 +160,64 @@ class Indexdice_model extends CI_Model {
 		$get = $sql->get();
 		return $get->row();
 	}
+	
+	/**
+	 * get last log
+	 */
+	public function get_last_problem_log($dies_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('c.DiesProblemId, c.Problem');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_PROBLEM.' c', 'a.DiesProblemId = c.DiesProblemId', 'inner');
+		$sql->where('a.DiesId', $dies_id);
+		$sql->order_by('a.LogTime', 'desc');
+
+		$get = $sql->get();
+		return $get->row();
+	}
+	
+	/**
+	 * get last log
+	 */
+	public function get_last_log_by_dies($dies)
+	{
+		$sql = $this->db;
+
+		$sql->select('a.*, b.DiesStatus, c.Location');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_DIES_STATUS.' b', 'a.DiesStatusId = b.DiesCode', 'inner');
+		$sql->join(static::TABLE_DIES_LOCATION.' c', 'a.DiesLocationId = c.DiesLocationId', 'inner');
+		$sql->where('a.DiesId', $dies);
+		$sql->order_by('a.LogTime', 'desc');
+
+		$get = $sql->get();
+		return $get->row();
+	}
+	
+	/**
+	 * Get data BPLEmr
+	 */
+	 public function get_data_problem()
+	 {
+		 $sql = $this->db;
+
+		 $sql->select('*');
+		 $sql->from(static::TABLE_PROBLEM);
+
+		 $get = $sql->get();
+		 return $get->result();
+	 }
+	 
+	 /**
+	  * Update log
+	  */
+	 public function update_log($data, $id)
+	 {
+		 $this->db->where('DiesHistoryCardLogId', $id);
+		 return $this->db->update(static::TABLE_DIES_LOG, $data);
+	 }
 }
 
 ?>

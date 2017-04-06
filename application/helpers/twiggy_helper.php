@@ -451,7 +451,20 @@ function convert_dies_department($data)
 
 	foreach($data as $row) 
 	{
-		$txt .= $row->index_dice.'|'.$row->SectionDescription. ", ";
+		
+		if(strpos_text($row->index_dice, ","))
+		{
+			$expl = explode(",", $row->index_dice);
+			foreach($expl as $exp)
+			{
+				$txt .= $exp.'|'.$row->SectionDescription.", ";
+			}
+		}
+		else
+		{
+			$txt .= $row->index_dice.'|'.$row->SectionDescription. ", ";	
+		}
+		
 	}
 
 	$txt  = rtrim($txt, ", ");
@@ -506,6 +519,23 @@ function get_last_location_log_dies($dies_id)
 	}
 
 	return '-';
+}
+
+function get_last_problem_log_dies($dies_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/indexdice_model');
+
+	$data = $ci->indexdice_model->get_last_problem_log($dies_id);
+	if($data)
+	{
+		return array(
+			'problem_id' => $data->DiesProblemId,
+			'problem' => $data->Problem
+		);
+	}
+
+	return '';
 }
 
 ?>

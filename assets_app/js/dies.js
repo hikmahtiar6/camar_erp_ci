@@ -62,6 +62,31 @@ window.DIES = (function($) {
 			$('.dies-history-search').keyup(function() {
 				dTable.search(this.value).draw();
 			});
+		},
+		
+		handleModalHistory: function() {
+			var _this = this;
+			$('.btn-history').click(function() {
+				var _input = $(this);
+				
+				$('.dies-header-text').html(_input.attr('data-dies'));
+				$('.dies-header-input').val(_input.attr('data-dies'));
+				
+				$('.content-modal-history').load(window.APP.siteUrl + 'admin/dies/edit/'+_input.attr('data-problem'));
+				
+				_this.handleFormHistoryProblem();
+			})
+		},
+		
+		handleFormHistoryProblem: function() {
+			$('.form-problem').ajaxForm({
+				dataType: 'json',
+				success: function(response) {
+					alert(response.message);
+					window.location.reload();
+					
+				}
+			});
 		}
 	}
 })(jQuery);

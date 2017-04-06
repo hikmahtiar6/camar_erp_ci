@@ -47,13 +47,22 @@
 							{% if data %}
 
 								{% for row in data %}
-							
+									{% set dies_status =  get_last_status_log_dies(row.DiesId) %}
+									{% set dies_problem =  get_last_problem_log_dies(row.DiesId) %}
+									{% set problem_id = "" %}
+									{% set problem = "" %}
+									{% if dies_problem %}
+										{% set problem_id = dies_problem['problem_id'] %}
+										{% set problem = dies_problem['problem'] %}
+									{% endif %}
 									<tr>
 										<td>{{ row.DiesId }}</td>
-										<td>{{ get_last_status_log_dies(row.DiesId) }}</td>
-										<td></td>
+										<td>{{ dies_status }}</td>
+										<td>{{ problem }}</td>
 										<td>{{ get_last_location_log_dies(row.DiesId) }}</td>
-										<td align="center"><button class="btn btn-info">Button</button></td>
+										<td align="center">
+											<button class="btn btn-info btn-history" {% if same(dies_status, 'Problem') %} data-toggle="modal" data-target=".defaultModal" {% endif %} data-dies="{{ row.DiesId }}" data-problem="{{ problem_id }}">Button</button>
+										</td>
 									</tr>
 
 
@@ -70,6 +79,26 @@
 		</div>
 
 	</div>
+	
+	<div class="modal fade defaultModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-md" >
+		<div class="modal-content">
+		
+			<form class="form-problem" method="post" action="{{ site_url('admin/dies/save_problem')  }}">
+				<div class="modal-header">
+				    <h4 class="modal-title">
+				    	Problem Dies 
+						<input class="dies-header-input" name="dies" type="hidden">
+						<span class="dies-header-text"></span>
+				    </h4>
+				</div>
+				<div class="modal-body content-modal-history">
+					
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
 
 	
 {% endblock %}
@@ -80,6 +109,7 @@
 	<script type="text/javascript" src="{{ base_url('assets_app/js/dies.js') }}"></script>
 	<script type="text/javascript">
 		window.DIES.DiesHistoryDatatable();
+		window.DIES.handleModalHistory();
 	</script>
 
 {% endblock %}

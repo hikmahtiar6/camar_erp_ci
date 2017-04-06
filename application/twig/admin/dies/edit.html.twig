@@ -1,0 +1,23 @@
+<table class="table">
+    <tr>
+        <td><b>Problem</b></td>
+        <td>
+        <select name="problem" required="required">
+            <option value="">
+                - Pilih Problem -
+            </option>
+            {% if problem %}
+                {% for prob in problem %}
+                    <option value="{{ prob.DiesProblemId }}" {% if same(prob.DiesProblemId, problem_id) %} selected="selected" {% endif %}>{{ prob.Problem }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <button class="btn btn-primary" type="submit">Simpan</button>
+        </td>
+    </tr>
+</table>
