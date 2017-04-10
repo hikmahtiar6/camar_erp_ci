@@ -72,6 +72,7 @@ class Dies extends CI_Controller
 		$location = $this->input->post('location');
 		$status = $this->input->post('status');
 		$dies_id = $this->input->post('dies_id');
+		$dies_problem = $this->input->post('dies_problem');
 
 		if(is_array($dies_id))
 		{
@@ -83,6 +84,11 @@ class Dies extends CI_Controller
 					'DiesStatusId'   => $status,
 					'DiesLocationId' => $location
 				);
+				
+				if($dies_problem)
+				{
+					$data['DiesProblemId'] = $dies_problem;
+				}
 
 				$save = $this->indexdice_model->set_dies_log($data);
 			}
@@ -97,6 +103,11 @@ class Dies extends CI_Controller
 				'DiesStatusId'   => $status,
 				'DiesLocationId' => $location
 			);
+			
+			if($dies_problem)
+			{
+				$data['DiesProblemId'] = $dies_problem;
+			}
 
 			$save = $this->indexdice_model->set_dies_log($data);
 			
@@ -114,6 +125,22 @@ class Dies extends CI_Controller
 		$this->twiggy->set('problem', $data_problem);
 		$this->twiggy->set('problem_id', $problem_id);
 		$this->twiggy->display('admin/dies/edit');
+	}
+	
+	/**
+	 * List Problem
+	 * @return html <option>
+	 */
+	public function list_problem()
+	{
+		$txt = "";
+		$data_problem = $this->indexdice_model->get_data_problem();
+		foreach($data_problem as $problem)
+		{
+			$txt .= '<option value="'.$problem->DiesProblemId.'">'.$problem->Problem.'</option>';
+		}
+		
+		$this->output->set_output($txt);
 	}
 	
 	/**

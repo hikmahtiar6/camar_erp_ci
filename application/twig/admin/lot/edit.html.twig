@@ -16,7 +16,7 @@
 		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
 
 		<div class="pull-right" style="padding-right: 200px;">
-		    <button class="btn btn-info btn-posting-lot">
+		    <button class="btn btn-info btn-posting-lot" data-toggle="modal" data-target=".defaultModal">
 		    	Posting
 		    </button>
 	    </div>
@@ -257,6 +257,31 @@
 		</div>
 
 	</div>
+	
+	<div class="modal fade defaultModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-sm" >
+		<div class="modal-content">
+		
+			<div class="modal-header">
+			    <h4 class="modal-title">
+			    	Posting Dies
+					<input class="dies-header-input" name="dies" type="hidden">
+					<span class="dies-header-text"></span>
+			    </h4>
+			</div>
+			<div class="modal-body content-modal-posting">
+				<button class="btn btn-primary yes-swal" data-dismiss="modal">Ya</button>
+				<button class="btn btn-warning no-swal" data-dismiss="modal">Tidak</button>
+				<button class="btn btn-danger problem-swal">Problem</button>
+				<div class="select-problem" style="display: none;">
+					<select class="list-problem">
+					</select>
+					<button class="btn btn-primary save-swal" data-dismiss="modal">Simpan</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
 
 
 <script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.caret.min.js') }}"></script>
@@ -271,7 +296,7 @@
 	var el = '.index-dice';
 	window.LOT.handleMulaiPukul('.btn-mulai-pukul', '.input-mulai-pukul', el);
 	window.LOT.handleSelesaiPukul('.btn-selesai-pukul', '.input-mulai-pukul', '.input-selesai-pukul', '.div-selisih-waktu');
-	window.LOT.handlePosting('.btn-posting-lot');
+	window.LOT.handlePosting();
 
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';

@@ -431,74 +431,80 @@ window.LOT = (function($) {
 			});
 		},
 
-		handlePosting: function(el) {
+		handlePosting: function() {
 			var _this = this;
 
-			$(el).click(function() {
-				swal({
-					title: "Perlu Caustic ?",
-					text: '<button class="btn btn-primary yes-swal">Ya</button>' +
-						'<button class="btn btn-warning no-swal">Tidak</button>' +
-						'<button class="btn btn-danger problem-swal">Problem</button>',
-					showConfirmButton: false,
-					html: true
+								
+				
+			$.ajax({
+				url: window.APP.siteUrl + 'admin/dies/list_problem',
+				success: function(response) {
+					$('.list-problem').html(response);
+				}
+			});
+			
+
+			$('.yes-swal').click(function() {
+				//alert('yes');
+				$.ajax({
+					url: window.APP.siteUrl + 'admin/dies/set_log',
+					type: 'post',
+					data: {
+						status: 2,
+						location: 1,
+						dies_id: $('.index-dice').val()
+					},
+					success: function() {
+						swal({
+						  title: "Dies telah di set Ya",
+						  text: "",
+						  timer: 2000,
+						  type: "success",
+						  showConfirmButton: false
+						});
+					}
 				});
+			});
 
-				$('.yes-swal').click(function() {
-					//alert('yes');
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/dies/set_log',
-						type: 'post',
-						data: {
-							status: 2,
-							location: 1,
-							dies_id: $('.index-dice').val()
-						},
-						success: function() {
-							swal({
-							  title: "Dies telah di set Ya",
-							  text: "",
-							  timer: 2000,
-							  type: "success",
-							  showConfirmButton: false
-							});
-						}
-					});
+			$('.no-swal').click(function() {
+				//alert('no');
+				$.ajax({
+					url: window.APP.siteUrl + 'admin/dies/set_log',
+					type: 'post',
+					data: {
+						status: 2,
+						location: 1,
+						dies_id: $('.index-dice').val()
+					},
+					success: function() {
+						swal({
+						  title: "Dies telah di set Tidak",
+						  text: "",
+						  type: "success",
+						  timer: 2000,
+						  showConfirmButton: false
+						});
+
+					}
 				});
+			});
 
-				$('.no-swal').click(function() {
-					//alert('no');
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/dies/set_log',
-						type: 'post',
-						data: {
-							status: 2,
-							location: 1,
-							dies_id: $('.index-dice').val()
-						},
-						success: function() {
-							swal({
-							  title: "Dies telah di set Tidak",
-							  text: "",
-							  type: "success",
-							  timer: 2000,
-							  showConfirmButton: false
-							});
-
-						}
-					});
-				});
-
-				$('.problem-swal').click(function() {
-					//alert('prob');
-					//
+			$('.problem-swal').click(function() {
+				
+				$('.no-swal').hide();
+				$('.yes-swal').hide();
+				$('.select-problem').show();
+				$(this).hide();
+				
+				$('.save-swal').click(function() {
 					$.ajax({
 						url: window.APP.siteUrl + 'admin/dies/set_log',
 						type: 'post',
 						data: {
 							status: 29,
 							location: 1,
-							dies_id: $('.index-dice').val()
+							dies_id: $('.index-dice').val(),
+							dies_problem: $('.list-problem').val()
 						},
 						success: function() {
 							swal({
@@ -512,7 +518,10 @@ window.LOT = (function($) {
 						}
 					});
 				});
-
+				//alert('prob');
+				//
+				
+				
 			});
 		}
 	}
