@@ -3,6 +3,11 @@
 		<th style="vertical-align: middle;">No. Mesin</th>
 		<th style="vertical-align: middle;">Shift</th>
 		<th style="vertical-align: middle;">Target Produksi</th>
+		{% if tanggal|length > 0 %}
+			<th style="vertical-align: middle;">Scrap</th>
+			<th style="vertical-align: middle;">Lost</th>
+			<th style="vertical-align: middle;">End Butt</th>
+		{% endif %}
 	</tr>
 </thead>
 <tbody>
@@ -11,12 +16,27 @@
 	<tr>
 		<td>{{ grid_row.MachineId }}</td>		
 		<td>{{ grid_row.shift }}</td>		
-		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.shift, tgl) }}</td>		
+		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.shift, tgl) }}</td>
+		{% if tanggal|length > 0 %}
+			<td>
+				<input type="text">
+			</td>
+			<td>
+				<input type="text">
+			</td>
+			<td>
+				<input type="text">
+			</td>
+		{% endif %}		
 	</tr>
 	{% endfor %}
 	{% else %}
 	<tr>
-		<td colspan="3">Data tidak tersedia</td>
+		{% if tanggal|length > 0 %}
+			<td colspan="6">Data tidak tersedia</td>
+		{% else %}
+			<td colspan="3">Data tidak tersedia</td>
+		{% endif %}
 	</tr>
 	{% endif %}
 </tbody>

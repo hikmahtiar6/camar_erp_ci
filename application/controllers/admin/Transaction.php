@@ -55,13 +55,16 @@ class Transaction extends CI_Controller
 	public function detail($header_id)
 	{
 		$machine = '';
+		$dates = false;
 
 		$get_header = $this->header_model->get_data_by_id($header_id);
 		if($get_header)
 		{
 			$machine = $get_header->machine_id;
+			$dates = create_date_range($get_header->date_start,$get_header->date_finish);
 		}
-
+		
+		$this->twiggy->set('dates', $dates);
 		$this->twiggy->set('header_id', $header_id);
 		$this->twiggy->set('machine_id', $machine);
 		$this->twiggy->template('admin/transaction/index')->display();
@@ -676,6 +679,9 @@ class Transaction extends CI_Controller
 		$sidx  = ($this->input->post('sidx')) ? $this->input->post('sidx') : 'master_detail_id';
 		$sord  = ($this->input->post('sord')) ? $this->input->post('sord') : 'master_detail_id';
 		$search_get  = $this->input->post('_search');
+		
+		$date = ($this->input->post('tanggal') != '') ? date('Y-m-d', strtotime($this->input->post('tanggal'))) : '';
+		
 		$sum = array();
 
 		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
@@ -718,7 +724,7 @@ class Transaction extends CI_Controller
 			$start = $limit*$page - $limit;
 		if($start <0) $start = 0;		
 		 
-		$data1 = $get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, $limit + $start, $start);
+		$data1 = $get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, $limit + $start, $start, $date);
 
 		//echo ($limit + $start).'-'.$start;
 		
@@ -883,6 +889,8 @@ class Transaction extends CI_Controller
 
 	public function grid_dinamic($header_id = '', $machine_id = '', $shift = 0, $tgl = '')
 	{
+		$tanggal = $this->input->post('tanggal');
+		
 		if($header_id == 'no')
 		{
 			$header_id = '';
@@ -893,6 +901,7 @@ class Transaction extends CI_Controller
 		$this->twiggy->set('grid_data', $grid_data);
 		$this->twiggy->set('header', $header_id);
 		$this->twiggy->set('tgl', $tgl);
+		$this->twiggy->set('tanggal', $tanggal);
 		$this->twiggy->template('admin/transaction/grid.dinamic')->display();
 	}
 

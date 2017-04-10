@@ -439,7 +439,7 @@ $(function () {
     $.AdminBSB.navbar.activate();
     $.AdminBSB.dropdownMenu.activate();
     $.AdminBSB.input.activate();
-    $.AdminBSB.select.activate();
+    //$.AdminBSB.select.activate();
     $.AdminBSB.search.activate();
 
     setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);

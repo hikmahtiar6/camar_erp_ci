@@ -919,11 +919,16 @@ window.TRANSACTION = (function($) {
 			//$.jgrid.defaults.responsive = true;     
 			//$.jgrid.defaults.width = $('.navbar').width() - 150;     
 		    $.jgrid.defaults.styleUI = 'Bootstrap';
+			
+			var _this = this;
 
 			var grid = $('.list-spk');
 			grid.jqGrid({
 				url: APP.siteUrl + 'admin/transaction/json/' + $('.header-id').val(), //URL Tujuan Yg Mengenerate data Json nya
 				datatype: "json", //Datatype yg di gunakan
+				postData: {
+					tanggal: $('.tgl-transaction').val()
+				},
 				height: "auto", //Mengset Tinggi table jadi Auto menyesuaikan dengan isi table
 				mtype: "POST",
 				cmTemplate: {sortable:false},
@@ -1599,6 +1604,17 @@ window.TRANSACTION = (function($) {
 		        
 
 		    }
+			
+			$('.tgl-transaction').change(function() {
+				grid.jqGrid('setGridParam', { 
+					postData: {
+						tanggal: $(this).val() 
+					}
+				});
+				grid.trigger("reloadGrid");
+				
+				_this.handleGridUpDinamic();
+			});
 
 		    
 		},
@@ -1607,10 +1623,14 @@ window.TRANSACTION = (function($) {
 			var table = $('.grid-dinamic');
 			var headerId = $('.header-id').val();
 			var machineId = $('.machine-id').val();
+			var tgl = $('.tgl-transaction').val();
 
 			$.ajax({
 				url: APP.siteUrl + 'admin/transaction/grid_dinamic/'+headerId,
-				type: 'GET',
+				type: 'POST',
+				data: {
+					tanggal: tgl
+				},
 				dataType: 'html',
 				success: function(response) {
 					table.html(response);

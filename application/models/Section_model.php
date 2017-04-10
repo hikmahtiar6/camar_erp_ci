@@ -118,7 +118,7 @@ class Section_model extends CI_Model {
 	/**
 	 * get data detail new
 	 */
-	public function get_data_detail_new($date_start = '', $date_finish = '', $shift = 0, $machine_id = '', $section_id = '', $header_id = '', $limit = '', $start = '')
+	public function get_data_detail_new($date_start = '', $date_finish = '', $shift = 0, $machine_id = '', $section_id = '', $header_id = '', $limit = '', $start = '', $date = '')
 	{
 		$sql = "
 			SELECT * 
@@ -148,6 +148,11 @@ class Section_model extends CI_Model {
 					".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
 				LEFT JOIN
 					".static::TABLE_LEN." i ON a.len = i.LengthId ";
+				
+		if($date != '')
+		{
+			$sql .= "AND a.tanggal = '$date' ";
+		}
 
 		if($date_start != '')
 		{
