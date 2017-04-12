@@ -1641,6 +1641,23 @@ window.TRANSACTION = (function($) {
 		handleModalLot: function(masterDetailId) {
             $(document).find('.content-modal-transaksi').load(APP.siteUrl + 'admin/lot/get_detail/' + masterDetailId);
 
+		},
+
+		handleSaveScrap: function(elScrap, elLost, elEndButt, elShift) {
+			//$('.frm-scrap').ajaxForm();
+
+			$.ajax({
+				url: window.APP.siteUrl + 'admin/dies/save_scrap',
+				type: 'post',
+				data: {
+					scrap: $(elScrap).val(),
+					lost: $(elLost).val(),
+					endbutt: $(elEndButt).val(),
+					header_id: $('.header-id').val(),
+					tanggal: $('.tgl-transaction').val(),
+					shift: $(elShift).val()
+				}
+			});
 		}
 	}
 

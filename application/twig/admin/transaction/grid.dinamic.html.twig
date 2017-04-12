@@ -7,25 +7,35 @@
 			<th style="vertical-align: middle;">Scrap</th>
 			<th style="vertical-align: middle;">Lost</th>
 			<th style="vertical-align: middle;">End Butt</th>
+			<th style="vertical-align: middle;">Tools</th>
 		{% endif %}
 	</tr>
 </thead>
 <tbody>
 	{% if grid_data %}
-	{% for grid_row in grid_data %}
+	{% for key, grid_row in grid_data %}
 	<tr>
 		<td>{{ grid_row.MachineId }}</td>		
 		<td>{{ grid_row.shift }}</td>		
 		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.shift, tgl) }}</td>
 		{% if tanggal|length > 0 %}
+
+			{% set scrap_data = get_lot_scrap(header, tanggal, grid_row.shift) %}
+
 			<td>
-				<input type="text">
+				<input id="shift{{ key + 1 }}" type="hidden" value="{{ grid_row.shift }}">
+				<input class="form-control" id="scrap{{ key + 1 }}" type="text" value="{{ scrap_data['scrap'] }}">
 			</td>
 			<td>
-				<input type="text">
+				<input class="form-control" id="lost{{ key + 1 }}" type="text" value="{{ scrap_data['lost'] }}">
 			</td>
 			<td>
-				<input type="text">
+				<input class="form-control" id="end_butt{{ key + 1 }}" type="text" value="{{ scrap_data['endbutt'] }}">
+			</td>
+			<td>
+				<button class="btn btn-primary" type="submit" onclick="window.TRANSACTION.handleSaveScrap('#scrap{{ key + 1 }}', '#lost{{ key + 1 }}', '#end_butt{{ key + 1 }}', '#shift{{ key + 1 }}')">
+					Simpan
+				</button>
 			</td>
 		{% endif %}		
 	</tr>
@@ -33,7 +43,7 @@
 	{% else %}
 	<tr>
 		{% if tanggal|length > 0 %}
-			<td colspan="6">Data tidak tersedia</td>
+			<td colspan="7">Data tidak tersedia</td>
 		{% else %}
 			<td colspan="3">Data tidak tersedia</td>
 		{% endif %}

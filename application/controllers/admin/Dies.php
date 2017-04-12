@@ -17,6 +17,7 @@ class Dies extends CI_Controller
 		// load model
 		$this->load->model('master/indexdice_model');
 		$this->load->model('master/machine_model');
+		$this->load->model('master/scrap_model');
 	}
 	
 	/**
@@ -175,5 +176,38 @@ class Dies extends CI_Controller
 		
 		$this->output->set_output(json_encode($response));
 	} 
+
+	/**
+	 * Save Scrap
+	 */
+	public function save_scrap()
+	{
+		$scrap = $this->input->post('scrap');
+		$tanggal = $this->input->post('tanggal');
+		$shift = $this->input->post('shift');
+		$lost = $this->input->post('lost');
+		$endbutt = $this->input->post('endbutt');
+		$header_id = $this->input->post('header_id');
+
+		$data_save = array(
+			'Scrap'      => $scrap,
+			'EndButt'    => $endbutt, 
+			'Lost'       => $lost,
+			'Shift'      => $shift,
+			'Tanggal'    => date('Y-m-d', strtotime($tanggal)),
+			'SpkHeaderId'=> $header_id,
+		);
+
+		$check_data = $this->scrap_model->get_data_tgl_header($header_id, $tanggal, $shift);
+		if($check_data)
+		{
+			$this->scrap_model->update($check_data->LotScrapId, $data_save);
+		}
+		else
+		{
+			$this->scrap_model->save($data_save);
+		}
+
+	}
 }
 ?>

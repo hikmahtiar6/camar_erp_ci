@@ -538,4 +538,26 @@ function get_last_problem_log_dies($dies_id)
 	return '';
 }
 
+function get_lot_scrap($header_id, $tgl, $shift = '')
+{
+	$ci =& get_instance();
+	$ci->load->model('master/scrap_model');
+
+	$data = $ci->scrap_model->get_data_tgl_header($header_id, $tgl, $shift);
+	if($data)
+	{
+		return array(
+			'scrap'   => $data->Scrap,
+			'lost'    => $data->Lost,
+			'endbutt' => $data->EndButt,
+		);
+	}
+
+	return array(
+		'scrap'   => '',
+		'lost'    => '',
+		'endbutt' => '',
+	);
+}
+
 ?>
