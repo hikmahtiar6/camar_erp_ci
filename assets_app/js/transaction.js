@@ -1626,7 +1626,7 @@ window.TRANSACTION = (function($) {
 			var tgl = $('.tgl-transaction').val();
 
 			$.ajax({
-				url: APP.siteUrl + 'admin/transaction/grid_dinamic/'+headerId,
+				url: APP.siteUrl + 'admin/transaction/grid_dinamic/'+headerId+'/no/0/'+tgl,
 				type: 'POST',
 				data: {
 					tanggal: tgl

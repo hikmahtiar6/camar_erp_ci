@@ -5,6 +5,7 @@
 class Scrap_model extends CI_Model {
 	
 	const TABLE = 'dbo.LotScrap';
+	const TABLE_HEADER = 'dbo.SpkHeader';
 
 	public function __construct()
 	{
@@ -45,6 +46,52 @@ class Scrap_model extends CI_Model {
 		$get = $sql->get();
 
 		return $get->row();
+	}
+	
+	/**
+	 * Suming for Reporting Lot Harian
+	 */
+	public function sum_field($field, $machine, $shift, $tanggal)
+	{
+		switch ($field) {
+			case 'scrap':
+				$field = 'Scrap';
+				break;
+				
+			case 'lost':
+				$field = 'Lost';
+				break;
+
+			case 'endbutt':
+				$field = 'EndButt';
+				break;
+			
+			default:
+				$field = 'Scrap';
+				break;
+		}
+		
+		$sql = $this->db;
+
+		$sql->select('SUM(CONVERT(INT, a.'.$field.')) as field');
+		$sql->from(static::TABLE.' a');
+		$sql->join(static::TABLE_HEADER.' b', 'a.SpkHeaderId = b.header_id', 'inner');
+		$sql->where('b.machine_id', $machine);
+		$sql->where('a.Shift', $shift);
+		$sql->where('a.Tanggal', date('Y-m-d', strtotime($tanggal)));
+		
+		$get = $sql->get();
+		$row = $get->row();
+		
+		if($row)
+		{
+			if($row->field != NULL)
+			{
+				return $row->field;
+			}
+		}
+		
+		return '0';
 	}
 }
 ?>

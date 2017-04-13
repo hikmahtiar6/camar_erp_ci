@@ -887,7 +887,7 @@ class Transaction extends CI_Controller
 		return $this->output->set_output(json_encode($response));
 	}
 
-	public function grid_dinamic($header_id = '', $machine_id = '', $shift = 0, $tgl = '')
+	public function grid_dinamic($header_id = '', $machine_id = 'no', $shift = 0, $tgl = '')
 	{
 		$tanggal = $this->input->post('tanggal');
 		

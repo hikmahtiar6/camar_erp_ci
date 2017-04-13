@@ -137,7 +137,7 @@ class Detail_model extends CI_Model {
 		return '0';
 	}
 
-	public function get_data_for_grid_dinamic($header_id = '', $shift = 0, $group = true, $machine_id = '', $tanggal = '')
+	public function get_data_for_grid_dinamic($header_id = '', $shift = 0, $group = true, $machine_id = 'no', $tanggal = '')
 	{
 		$sql = $this->db;
 
@@ -160,14 +160,14 @@ class Detail_model extends CI_Model {
 			$sql->where('c.header_id', $header_id);
 		}
 
-		if($machine_id != '')
+		if($machine_id != 'no')
 		{
 			$sql->where('c.machine_id', $machine_id);
 		}
 
 		if($tanggal != '')
 		{
-			$sql->where('a.tanggal', $tanggal);
+			$sql->where('a.tanggal', date('Y-m-d', strtotime($tanggal)));
 		}
 
 		if($shift > 0)

@@ -560,4 +560,12 @@ function get_lot_scrap($header_id, $tgl, $shift = '')
 	);
 }
 
+function sum_scrap($field, $machine, $shift, $tanggal)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/scrap_model');
+	
+	return $ci->scrap_model->sum_field($field, $machine, $shift, $tanggal);
+}
+
 ?>
