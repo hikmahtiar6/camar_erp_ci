@@ -608,6 +608,7 @@ class Transaction extends CI_Controller
 	public function add_row_by_header()
 	{
 		$header_id = $this->input->post('header_id');
+		$tanggal = $this->input->post('tanggal');
 		$get_header = $this->header_model->get_data_by_id($header_id);
 		$tgl = '';
 
@@ -637,7 +638,14 @@ class Transaction extends CI_Controller
 				$sec_id = '035';
 			}
 
-			$tgl = $get_last_data_detail->tanggal;
+			if($tanggal == '')
+			{
+				$tgl = $get_last_data_detail->tanggal;
+			}
+			else
+			{
+				$tgl = date('Y-m-d', strtotime($tanggal));		
+			}
 
 			$data_insert_detail = array(
 				'header_id'   => $header_id,

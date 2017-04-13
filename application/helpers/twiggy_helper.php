@@ -344,7 +344,7 @@ function selisih_waktu($waktu_akhir, $waktu_awal)
 
 	$diff  = $awal->diff($akhir);
 	
-	$res = '-';
+	$res = '';
 
 	if($diff->h > 0)
 	{
@@ -354,6 +354,11 @@ function selisih_waktu($waktu_akhir, $waktu_awal)
 	if($diff->i > 0)
 	{
 		$res .= $diff->i .' menit';
+	}
+	
+	if($res == '')
+	{
+		return '-';
 	}
 
 	return $res;

@@ -12,6 +12,4 @@ function change_format_date($date, $format = 'Y-m-d', $replace = "/", $changeTo 
 
 	return date($format, $to_time);
 }
-
-
 ?>

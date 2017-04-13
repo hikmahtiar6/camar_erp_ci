@@ -54,7 +54,7 @@
 
 						<td valign="bottom" align="center">
 							<h2 class="font16 bold">
-								Recovery ...%</u>
+								Recovery <span class="total-recovery">..</spam> </u>
 							</h2>
 						</td>
 
@@ -148,9 +148,16 @@
 									<td colspan="4">
 										Shift {{ r_shift2 }}
 									</td>
-									<td colspan="8">
+									<td colspan="5">
 									</td>
+									<td>{{ sum_scrap('endbutt', machine, r_shift2, tgl) }}</td>
+									<td>{{ sum_scrap('scrap', machine, r_shift2, tgl) }}</td>
+									<td>{{ sum_scrap('lost', machine, r_shift2, tgl) }}</td>
 								</tr>
+								
+								{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, r_shift2, tgl) %}
+								{% set jumlah_scrap = jumlah_scrap + sum_scrap('scrap', machine, r_shift2, tgl) %}
+								{% set jumlah_lost = jumlah_lost + sum_scrap('lost', machine, r_shift2, tgl) %}
 
 								{% set check_detail = get_detail_advance_lot(machine, tgl, r_shift2) %}
 
@@ -179,18 +186,16 @@
 											<td>{{ master_row.target_prod }}</td>
 											<td>{{ get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) }}</td>
 											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
-											<td>{{ sum_scrap('endbutt', machine, r_shift2, tgl) }}</td>
-											<td>{{ sum_scrap('scrap', machine, r_shift2, tgl) }}</td>
-											<td>{{ sum_scrap('lost', machine, r_shift2, tgl) }}</td>
+											<td></td>
+											<td></td>
+											<td></td>
 										</tr>
 
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
-										{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, r_shift2, tgl) %}
-										{% set jumlah_scrap = jumlah_scrap + sum_scrap('scrap', machine, r_shift2, tgl) %}
-										{% set jumlah_lost = jumlah_lost + sum_scrap('lost', machine, r_shift2, tgl) %}
+										
 										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
 
 									{% endfor %}
@@ -204,8 +209,15 @@
 								<td colspan="4">
 									Shift {{ shift }}
 								</td>
-								<td colspan="8">
+								<td colspan="5">
 								</td>
+								<td>{{ sum_scrap('endbutt', machine, shift, tgl) }}</td>
+								<td>{{ sum_scrap('scrap', machine, shift, tgl) }}</td>
+								<td>{{ sum_scrap('lost', machine, shift, tgl) }}</td>
+								
+								{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, shift, tgl) %}
+								{% set jumlah_scrap = jumlah_scrap + sum_scrap('scrap', machine, shift, tgl) %}
+								{% set jumlah_lost = jumlah_lost + sum_scrap('lost', machine, shift, tgl) %}
 							</tr>
 
 							{% set check_detail = get_detail_advance_lot(machine, tgl, shift) %}
@@ -235,18 +247,16 @@
 											<td>{{ master_row.target_prod }}</td>
 											<td>{{ get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) }}</td>
 											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
-											<td>{{ sum_scrap('endbutt', machine, shift, tgl) }}</td>
-											<td>{{ sum_scrap('scrap', machine, shift, tgl) }}</td>
-											<td>{{ sum_scrap('lost', machine, shift, tgl) }}</td>
+											<td></td>
+											<td></td>
+											<td></td>
 										</tr>
 										
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
-										{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, shift, tgl) %}
-										{% set jumlah_scrap = jumlah_scrap + sum_scrap('scrap', machine, shift, tgl) %}
-										{% set jumlah_lost = jumlah_lost + sum_scrap('lost', machine, shift, tgl) %}
+										
 										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
 
 									{% endfor %}
@@ -258,13 +268,13 @@
 						<tr>
 							<td colspan="5">Grand Total</td>
 							<td><b>{{ jumlah_target_prod_btg }}</b></td>
-							<td><b>{{ jumlah_target_prod_kg }}</b></td>
+							<td><b class="total-prod-kg">{{ jumlah_target_prod_kg }}</b></td>
 							<td><b>{{ jumlah_akt_billet_kg }}</b></td>
 							<td><b>{{ jumlah_hasil_prod_btg }}</b></td>
-							<td><b>{{ jumlah_hasil_prod_kg }}</b></td>
-							<td><b>{{ jumlah_endbutt }}</b></td>
-							<td><b>{{ jumlah_scrap }}</b></td>
-							<td><b>{{ jumlah_lost }}</b></td>
+							<td><b class="total-hasil-prod-kg">{{ jumlah_hasil_prod_kg }}</b></td>
+							<td><b></b></td>
+							<td><b></b></td>
+							<td><b></b></td>
 						</tr>
 					</tfoot>
 				</table>
@@ -298,6 +308,16 @@
 				window.close();
 				return false;
 			});
+			
+			var bil1 = $('.total-hasil-prod-kg').html();
+			var bil2 = $('.total-prod-kg').html();
+			
+			var total = (bil1 / bil2) * 100;
+			
+			var fixTotal = Math.round(total * 1000) / 1000;
+			
+			$('.total-recovery').html(fixTotal + '%');
+			
 	    });
 
 	    /**

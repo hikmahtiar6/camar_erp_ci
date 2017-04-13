@@ -843,7 +843,8 @@ window.TRANSACTION = (function($) {
 					type: 'post',
 					dataType: 'json',
 					data: {
-						header_id: $(this).attr('data-header')
+						header_id: $(this).attr('data-header'),
+						tanggal: $('.tgl-transaction').val()
 					},
 					success: function(response) {
 						
