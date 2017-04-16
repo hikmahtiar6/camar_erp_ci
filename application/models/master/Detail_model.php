@@ -11,6 +11,7 @@ class Detail_model extends CI_Model {
 	const TABLE_MACHINE = 'Factory.Machines';
 	const TABLE_SHIFT = 'Factory.Shifts';
 	const TABLE_FINISHING = 'Finishing';
+	const TABLE_LOT = 'dbo.SpkLot';
 
 	public function __construct()
 	{
@@ -233,6 +234,28 @@ class Detail_model extends CI_Model {
 	{
 		$this->db->where('master_detail_id', $id);
 		return $this->db->delete(static::TABLE);
+	}
+
+	/**
+	 * sum for lot
+	 */
+	public function suming_lot($field, $master_detail_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('SUM(CONVERT(INT, '.$field.')) as field');
+		$sql->from(static::TABLE_LOT);
+		$sql->where('master_detail_id', $master_detail_id);
+
+		$get = $sql->get();
+		$row =  $get->row();
+
+		if($row != NULL)
+		{
+			return $row->field;
+		}
+
+		return '';
 	}
 }
 

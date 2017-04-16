@@ -189,6 +189,12 @@
 											<td></td>
 											<td></td>
 											<td></td>
+											<td class="berta-billet">
+												{% set sump = suming_lot('p_billet_aktual', master_row.master_detail_id) %}
+												{% set sumbb = suming_lot('jumlah_billet', master_row.master_detail_id) %}
+												{# get_berat_billet(master_row.master_detail_id, machine, master_row.section_id, sump, sumbb) #}
+												
+											</td>
 										</tr>
 
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}

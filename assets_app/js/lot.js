@@ -156,6 +156,25 @@ window.LOT = (function($) {
 					});
 					
 					$('.total-billet').html(Math.round(total * 100) / 100);
+
+
+					var span = 1;
+					var prevTD = "";
+					var prevTDVal = "";
+					$(".total-billet").each(function() { //for each first td in every tr
+					  var $this = $(this);
+					  if ($this.text() == prevTDVal) { // check value of previous td text
+						 span++;
+						 if (prevTD != "") {
+							prevTD.attr("rowspan", span); // add attribute to previous td
+							$this.remove(); // remove current td
+						 }
+					  } else {
+						 prevTD     = $this; // store current td 
+						 prevTDVal  = $this.text();
+						 span       = 1;
+					  }
+					});
 				}
             });
 
