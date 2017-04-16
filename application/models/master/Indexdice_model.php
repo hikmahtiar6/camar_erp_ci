@@ -168,9 +168,9 @@ class Indexdice_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('c.DiesProblemId, c.Problem');
+		$sql->select('c.DiesProblemId, c.Problem, a.DiesStatusId');
 		$sql->from(static::TABLE_DIES_LOG.' a');
-		$sql->join(static::TABLE_PROBLEM.' c', 'a.DiesProblemId = c.DiesProblemId', 'inner');
+		$sql->join(static::TABLE_PROBLEM.' c', 'a.DiesProblemId = c.DiesProblemId', 'left');
 		$sql->where('a.DiesId', $dies_id);
 		$sql->order_by('a.LogTime', 'desc');
 

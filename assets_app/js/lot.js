@@ -431,86 +431,67 @@ window.LOT = (function($) {
 			});
 		},
 
-		handlePosting: function() {
+		handlePosting: function(el) {
 			var _this = this;
 
-								
-				
-			$.ajax({
-				url: window.APP.siteUrl + 'admin/dies/list_problem',
-				success: function(response) {
-					$('.list-problem').html(response);
-				}
-			});
-			
-
-			$('.yes-swal').click(function() {
-				//alert('yes');
-				$.ajax({
-					url: window.APP.siteUrl + 'admin/dies/set_log',
-					type: 'post',
-					data: {
-						status: 2,
-						location: 1,
-						dies_id: $('.index-dice').val()
-					},
-					success: function() {
-						swal({
-						  title: "Dies telah di set Ya",
-						  text: "",
-						  timer: 2000,
-						  type: "success",
-						  showConfirmButton: false
-						});
-					}
+			$(el).click(function() {
+				swal({
+					title: "Perlu Caustic ?",
+					text: '<a href="#" class="btn btn-primary yes-swal">Ya</a>&nbsp;&nbsp;' +
+						'<a href="#" class="btn btn-warning no-swal">Tidak</a>&nbsp;&nbsp;' +
+						'<a href="#" class="btn btn-danger problem-swal">Problem</a>&nbsp;&nbsp;' + 
+						'<div class="select-problem" style="display: none;">' + 
+							'<select class="list-problem" style="padding: 5px;"></select>&nbsp;&nbsp;'+
+							'<a href="#" class="btn btn-primary save-swal">Simpan</a>' + 
+						'</div>',
+					showConfirmButton: false,
+					html: true
 				});
-			});
 
-			$('.no-swal').click(function() {
-				//alert('no');
 				$.ajax({
-					url: window.APP.siteUrl + 'admin/dies/set_log',
-					type: 'post',
-					data: {
-						status: 2,
-						location: 1,
-						dies_id: $('.index-dice').val()
-					},
-					success: function() {
-						swal({
-						  title: "Dies telah di set Tidak",
-						  text: "",
-						  type: "success",
-						  timer: 2000,
-						  showConfirmButton: false
-						});
-
+					url: window.APP.siteUrl + 'admin/dies/list_problem',
+					success: function(response) {
+						$('.list-problem').html(response);
 					}
-				});
-			});
+				});	
 
-			$('.problem-swal').click(function() {
-				
-				$('.no-swal').hide();
-				$('.yes-swal').hide();
-				$('.select-problem').show();
-				$(this).hide();
-				
-				$('.save-swal').click(function() {
+				$('.yes-swal').click(function() {
+					//alert('yes');
 					$.ajax({
 						url: window.APP.siteUrl + 'admin/dies/set_log',
 						type: 'post',
 						data: {
-							status: 29,
+							status: 2,
 							location: 1,
-							dies_id: $('.index-dice').val(),
-							dies_problem: $('.list-problem').val()
+							dies_id: $('.index-dice').val()
 						},
 						success: function() {
 							swal({
-							  title: "Dies telah di set Problem",
+							  title: "Dies telah di set Ya",
 							  text: "",
-							  type: "warning",
+							  timer: 2000,
+							  type: "success",
+							  showConfirmButton: false
+							});
+						}
+					});
+				});
+
+				$('.no-swal').click(function() {
+					//alert('no');
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/dies/set_log',
+						type: 'post',
+						data: {
+							status: 2,
+							location: 1,
+							dies_id: $('.index-dice').val()
+						},
+						success: function() {
+							swal({
+							  title: "Dies telah di set Tidak",
+							  text: "",
+							  type: "success",
 							  timer: 2000,
 							  showConfirmButton: false
 							});
@@ -518,11 +499,47 @@ window.LOT = (function($) {
 						}
 					});
 				});
-				//alert('prob');
-				//
+
+				$('.problem-swal').click(function() {
+					
+					$('.no-swal').hide();
+					$('.yes-swal').hide();
+					$('.select-problem').show();
+					$(this).hide();
+					
+					$('.save-swal').click(function() {
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/dies/set_log',
+							type: 'post',
+							data: {
+								status: 29,
+								location: 1,
+								dies_id: $('.index-dice').val(),
+								dies_problem: $('.list-problem').val()
+							},
+							success: function() {
+								swal({
+								  title: "Dies telah di set Problem",
+								  text: "",
+								  type: "warning",
+								  timer: 2000,
+								  showConfirmButton: false
+								});
+
+							}
+						});
+					});
+					//alert('prob');
+					//
+					
+					
+				});
+			});				
 				
-				
-			});
+			
+			
+
+			
 		}
 	}
 })(jQuery);

@@ -531,16 +531,20 @@ function get_last_problem_log_dies($dies_id)
 	$ci =& get_instance();
 	$ci->load->model('master/indexdice_model');
 
+	$res['problem'] = '';
+	$res['problem_id'] = '';
+
 	$data = $ci->indexdice_model->get_last_problem_log($dies_id);
 	if($data)
 	{
-		return array(
-			'problem_id' => $data->DiesProblemId,
-			'problem' => $data->Problem
-		);
+		if($data->DiesStatusId == 29)
+		{
+			$res['problem'] = $data->Problem;
+			$res['problem_id'] = $data->DiesProblemId;
+		}
 	}
 
-	return '';
+	return $res;
 }
 
 function get_lot_scrap($header_id, $tgl, $shift = '')
