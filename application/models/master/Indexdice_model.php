@@ -14,6 +14,7 @@ class Indexdice_model extends CI_Model {
 	const TABLE_HEAD = 'SpkHeader';
 	const TABLE_BARANG = 'Inventory.Sections';
 	const TABLE_PROBLEM = 'dbo.DiesProblem';
+	const TABLE_LOT = 'dbo.SpkLot';
 
 	public function __construct()
 	{
@@ -217,6 +218,32 @@ class Indexdice_model extends CI_Model {
 	 {
 		 $this->db->where('DiesHistoryCardLogId', $id);
 		 return $this->db->update(static::TABLE_DIES_LOG, $data);
+	 }
+
+	 /**
+	  * Get history card filter
+	  */
+	 public function filter_history_card($section_id = '', $dice = '')
+	 {
+	 	$sql = $this->db;
+
+	 	$sql->select('a.*, b.*');
+	 	$sql->from(static::TABLE_SPK.' a');
+	 	$sql->join(static::TABLE_LOT.' b', 'a.master_detail_id = b.master_detail_id', 'inner');
+
+	 	if($section_id != '')
+	 	{
+	 		$sql->where('a.section_id', $section_id);
+	 	}
+
+	 	if($dice != '')
+	 	{
+	 		$sql->like('a.index_dice', $dice);
+	 	}
+
+	 	$get = $sql->get();
+
+	 	return $get->result();
 	 }
 }
 

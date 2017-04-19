@@ -1,0 +1,46 @@
+<table class="table" style="border: none;">
+	<tr>
+		<td>{{ section_id }}</td>
+		<td>{{ dice }}</td>
+	</tr>
+</table>
+
+<table class="table table-bordered">
+	<thead>
+		<tr align="center">
+			<td rowspan="2" style="vertical-align: middle;"><b>Tanggal</b></td>
+			<td colspan="3"><b>Hasil Press</b></td>
+			<td colspan="2"><b>Akumulasi</b></td>
+			<td rowspan="2" style="vertical-align: middle;"><b>OK/NG</b></td>
+			<td rowspan="2" style="vertical-align: middle;"><b>Problem</b></td>
+			<td rowspan="2" style="vertical-align: middle;"><b>Koreksi</b></td>
+			<td rowspan="2" style="vertical-align: middle;"><b>Nama Korektor</b></td>
+		</tr>
+
+		<tr>
+			<td><b>Panjang Billet</b></td>
+			<td><b>Jml Billet</b></td>
+			<td><b>Jumlah KG</b></td>
+			<td><b>Billet</b></td>
+			<td><b>KG</b></td>
+		</tr>
+	</thead>
+	<tbody class="result-dies-idx">
+		{% if data %}
+			{% for row in data %}
+			<tr>
+				<td>{{ row.tanggal }}</td>
+				<td>{{ row.p_billet_aktual }}</td>
+				<td>{{ row.jumlah_billet }}</td>
+				<td></td>
+				<td>{{ row.berat_ak }}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			{% endfor %}
+		{% endif %}
+	</tbody>
+</table>

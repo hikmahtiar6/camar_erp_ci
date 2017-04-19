@@ -87,6 +87,14 @@ window.DIES = (function($) {
 					
 				}
 			});
+		},
+
+		handleFilterCard: function() {
+			$('.card-form').ajaxForm({
+				success: function(response) {
+					$('.result-card').html(response);
+				}
+			});
 		}
 	}
 })(jQuery);

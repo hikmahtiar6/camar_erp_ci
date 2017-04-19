@@ -18,6 +18,7 @@ class Dies extends CI_Controller
 		$this->load->model('master/indexdice_model');
 		$this->load->model('master/machine_model');
 		$this->load->model('master/scrap_model');
+		$this->load->model('section_model');
 	}
 	
 	/**
@@ -208,6 +209,34 @@ class Dies extends CI_Controller
 			$this->scrap_model->save($data_save);
 		}
 
+	}
+
+	/**
+	 * Dies History Card
+	 */
+	public function history_card()
+	{
+		$sections = $this->section_model->get_section_grouping();
+		$dices = $this->indexdice_model->get_data2()->result();
+
+		$this->twiggy->set('sections', $sections);
+		$this->twiggy->set('dices', $dices);
+		$this->twiggy->display('admin/dies/history.card');
+	}
+
+	/**
+	 * Dies History Card
+	 */
+	public function history_card_search()
+	{
+		$dice = $this->input->post('dice');
+		$section_id = $this->input->post('section');
+
+		$data = $this->indexdice_model->filter_history_card($section_id, $dice);
+		$this->twiggy->set('data', $data);
+		$this->twiggy->set('dice', $dice);
+		$this->twiggy->set('section_id', $section_id);
+		$this->twiggy->display('admin/dies/history.card.result');
 	}
 }
 ?>

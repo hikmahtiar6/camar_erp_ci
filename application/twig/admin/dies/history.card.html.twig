@@ -1,0 +1,98 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	
+{% endblock %}
+
+{% block content %}
+
+	<div class="row clearfix">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="card" style="width: 70%; margin: 0 auto !important;">
+
+				<div class="header">
+					<h2>
+						Dies History Card
+					</h2>
+				</div>
+
+				<div class="body">
+
+					<form class="card-form" method="POST" action="{{ site_url('admin/dies/history_card_search') }}" target="_blank">
+                        <div class="form-group">
+                            <label>Section</label>
+                            <br>
+                                    
+                            <select class="form-control" name="section" style="width: 40%;" required="required">
+                                <option value="">-- Silahkan Pilih --</option>
+                                {% if sections %}
+
+                                    {% for section_row in sections %}
+
+                                        <option value="{{ section_row.SectionId }}">
+                                            {{ section_row.SectionDescription }}
+                                        </option>
+                                    {% endfor %}
+
+                                {% endif %}
+                            </select>   
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dies Index</label>
+
+                            <br>
+
+                            <select class="form-control dice" name="dice" style="width: 40%;" required="required">
+                                <option value="">-- Silahkan Pilih --</option>
+                                {% if dices %}
+
+                                    {% for dice_row in dices %}
+
+                                        <option value="{{ dice_row.DiesId }}">
+                                            {{ dice_row.DiesId }}
+                                        </option>
+                                    {% endfor %}
+
+                                {% endif %}
+                            </select>   
+
+                        </div>
+
+                        <div class="form-group">
+                            <input class="btn btn-primary" value="Submit" type="submit">
+                        </div>
+		                <div class="clearfix">&nbsp;</div>
+                    </form>
+
+					<div class="result-card">
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/dies.js') }}"></script>
+	<script type="text/javascript">
+
+		//$('table').DataTable();
+
+		window.DIES.handleFilterCard();
+
+		$('select').select2();
+		//$('.card-form').submit();
+	</script>
+
+{% endblock %}

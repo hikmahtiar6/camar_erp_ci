@@ -57,17 +57,17 @@ class Master extends CI_Controller {
 		return $this->output->set_output(json_encode($row));
 	}
 
-	public function get_data_section($header_id, $type = '')
+	public function get_data_section($header_id = '', $type = '')
 	{
 		$row = array();
 		$header_data = $this->header_model->get_data_by_id($header_id);
 
+		$machine_id = '';
 
 		if($header_data)
 		{
 			$machine_id = $header_data->machine_id;
 		}
-		//$machine_id = '';
 
 		$data = $this->query_model->get_master_advance($machine_id)->result();
 
