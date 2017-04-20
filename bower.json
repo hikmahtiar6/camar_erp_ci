@@ -36,6 +36,7 @@
     "jqGrid": "jqgrid#^5.2.0",
     "chosen": "^1.6.2",
     "multiple-select": "^1.2.1",
-    "jquery-tag-editor": "^1.0.20"
+    "jquery-tag-editor": "^1.0.20",
+    "custombox": "^4.0.1"
   }
 }

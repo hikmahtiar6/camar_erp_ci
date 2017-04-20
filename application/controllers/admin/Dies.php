@@ -124,7 +124,11 @@ class Dies extends CI_Controller
 	public function edit($problem_id = '')
 	{
 		$data_problem = $this->indexdice_model->get_data_problem();
+		$data_status = $this->indexdice_model->get_dice_status();
+		
+
 		$this->twiggy->set('problem', $data_problem);
+		$this->twiggy->set('status', $data_status);
 		$this->twiggy->set('problem_id', $problem_id);
 		$this->twiggy->display('admin/dies/edit');
 	}
@@ -152,30 +156,68 @@ class Dies extends CI_Controller
 	{
 		$problem_id = $this->input->post('problem');
 		$dies_id = $this->input->post('dies');
-		
-		$get_last_data = $this->indexdice_model->get_last_log_by_dies($dies_id);
-		
-		$data_update = array(
-			'DiesProblemId' => $problem_id
-		);
-		$update = $this->indexdice_model->update_log($data_update, $get_last_data->DiesHistoryCardLogId);
-		
-		if($update)
+		$status = $this->input->post('status');
+		$koreksi = $this->input->post('koreksi');
+		$korektor = $this->input->post('korektor');
+
+		if($status)
 		{
-			$response = array(
-				'status'  => 'success',
-				'message' => 'Berhasil input Problem'
+			$data = array(
+				'LogTime'        => date('Y-m-d H:i:s'),
+				'DiesId'         => $dies_id,
+				'DiesStatusId'   => $status,
+				'DiesLocationId' => 1
 			);
+
+			$save = $this->indexdice_model->set_dies_log($data);
+			if($save)
+			{
+				$response = array(
+					'status'  => 'success',
+					'message' => 'Berhasil input status'
+				);
+			}
+			else
+			{
+				$response = array(
+					'status'  => 'error',
+					'message' => 'Gagal input status'
+				);
+			}
+			
+
 		}
 		else
 		{
-			$response = array(
-				'status'  => 'error',
-				'message' => 'Gagal input Problem'
-			);
-		}
+			$get_last_data = $this->indexdice_model->get_last_log_by_dies($dies_id);
 		
-		$this->output->set_output(json_encode($response));
+			$data_update = array(
+				'DiesProblemId' => $problem_id,
+				'Koreksi'       => $koreksi,
+				'Korektor'       => $korektor,
+			);
+			$update = $this->indexdice_model->update_log($data_update, $get_last_data->DiesHistoryCardLogId);
+			
+			if($update)
+			{
+				$response = array(
+					'status'  => 'success',
+					'message' => 'Berhasil input Problem'
+				);
+			}
+			else
+			{
+				$response = array(
+					'status'  => 'error',
+					'message' => 'Gagal input Problem'
+				);
+			}
+			
+		}
+
+			$this->output->set_output(json_encode($response));
+
+		
 	} 
 
 	/**

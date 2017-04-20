@@ -71,6 +71,15 @@ window.DIES = (function($) {
 				
 				$('.dies-header-text').html(_input.attr('data-dies'));
 				$('.dies-header-input').val(_input.attr('data-dies'));
+
+				if(_input.attr('data-problem') == "")
+				{
+					$('.title-modal').html('Status Dies');
+				}
+				else {
+					$('.title-modal').html('Problem Dies');
+
+				}
 				
 				$('.content-modal-history').load(window.APP.siteUrl + 'admin/dies/edit/'+_input.attr('data-problem'));
 				

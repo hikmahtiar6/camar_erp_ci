@@ -245,6 +245,21 @@ class Indexdice_model extends CI_Model {
 
 	 	return $get->result();
 	 }
+
+	/**
+	 * get data status
+	 */
+	public function get_dice_status()
+	{
+		$sql = $this->db;
+
+	 	$sql->select('*');
+	 	$sql->from(static::TABLE_DIES_STATUS);
+	 	$sql->order_by('DiesCode', 'asc');
+	 	$get = $sql->get();
+
+	 	return $get->result();
+	}
 }
 
 ?>

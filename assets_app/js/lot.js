@@ -455,16 +455,34 @@ window.LOT = (function($) {
 
 			$(el).click(function() {
 				swal({
-					title: "Perlu Caustic ?",
-					text: '<a href="#" class="btn btn-primary yes-swal">Ya</a>&nbsp;&nbsp;' +
+					title: "",
+					text: '<h2 class="title-swal">Perlu Caustic ?</h2>' +
+						'<a href="#" class="btn btn-primary yes-swal">Ya</a>&nbsp;&nbsp;' +
 						'<a href="#" class="btn btn-warning no-swal">Tidak</a>&nbsp;&nbsp;' +
 						'<a href="#" class="btn btn-danger problem-swal">Problem</a>&nbsp;&nbsp;' + 
 						'<div class="select-problem" style="display: none;">' + 
-							'<select class="list-problem" style="padding: 5px;"></select>&nbsp;&nbsp;'+
-							'<a href="#" class="btn btn-primary save-swal">Simpan</a>' + 
-						'</div>',
+							'<select class="list-problem" style="padding: 5px"></select>&nbsp;&nbsp;'+
+							'<a href="#" class="btn btn-primary save-swal">Simpan</a>&nbsp;&nbsp;' + 
+							'<a href="#" class="btn btn-default back-swal">Kembali</a>' + 
+						'</div>'+
+						'<a href="#" class="btn btn-default cancel-swal">Batal</a>&nbsp;&nbsp;',
 					showConfirmButton: false,
 					html: true
+				});
+
+				// Instantiate new modal
+				/*var modal = new Custombox.modal({
+				  content: {
+				    effect: 'fadein',
+				    target: '.modal-custombox'
+				  }
+				});
+
+				// Open
+				modal.open();*/
+
+				document.addEventListener('custombox:overlay:open', function() {
+				  //alert('aaa');
 				});
 
 				$.ajax({
@@ -525,6 +543,8 @@ window.LOT = (function($) {
 					$('.yes-swal').hide();
 					$('.select-problem').show();
 					$(this).hide();
+					$('.title-swal').html('Memilih Problem');
+					$('.cancel-swal').hide();
 					
 					$('.save-swal').click(function() {
 						$.ajax({
@@ -548,10 +568,24 @@ window.LOT = (function($) {
 							}
 						});
 					});
-					//alert('prob');
-					//
+
+					$('.back-swal').click(function() {
+						$('.no-swal').show();
+						$('.yes-swal').show();
+						$('.select-problem').hide();
+						$('.problem-swal').show();
+						$('.title-swal').html('Perlu Caustic ?');
+						$('.cancel-swal').show();
+
+					});
 					
+
+
 					
+				});
+
+				$('.cancel-swal').click(function() {
+					swal.close();
 				});
 			});				
 				

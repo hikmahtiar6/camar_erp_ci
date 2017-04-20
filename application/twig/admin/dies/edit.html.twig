@@ -1,8 +1,37 @@
+{% if same(problem_id, '') %}
+
+    <table class="table">
+        <tr>
+            <td><b>Status</b></td>
+            <td>
+            <select name="status" required="required">
+                <option value="">
+                    - Pilih Status -
+                </option>
+                {% if status %}
+                    {% for prob in status %}
+                        <option value="{{ prob.DiesCode }}">{{ prob.DiesStatus }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button class="btn btn-primary" type="submit">Simpan</button>
+                <button class="btn btn-default" type="submit" data-dismiss="modal">Batal</button>
+            </td>
+        </tr>
+    </table>
+
+{% else %}
+
 <table class="table">
     <tr>
         <td><b>Problem</b></td>
         <td>
-        <select name="problem" required="required">
+        <select name="problem" disabled="disabled">
             <option value="">
                 - Pilih Problem -
             </option>
@@ -12,12 +41,28 @@
                 {% endfor %}
             {% endif %}
         </select>
+        <input name="problem" type="hidden" value="{{ problem_id }}">
+        </td>
+    </tr>
+    <tr>
+        <td><b>Koreksi</b></td>
+        <td>
+            <input class="form-control" type="text" name="koreksi">
+        </td>
+    </tr>
+    <tr>
+        <td><b>Nama Korektor</b></td>
+        <td>
+            <input class="form-control" type="text" name="korektor">
         </td>
     </tr>
     <tr>
         <td></td>
         <td>
             <button class="btn btn-primary" type="submit">Simpan</button>
+            <button class="btn btn-default" type="submit" data-dismiss="modal">Batal</button>
         </td>
     </tr>
 </table>
+
+{% endif %}
