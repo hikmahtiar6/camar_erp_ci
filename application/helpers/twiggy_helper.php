@@ -557,6 +557,8 @@ function get_last_problem_log_dies($dies_id)
 
 	$res['problem'] = '';
 	$res['problem_id'] = '';
+	$res['koreksi'] = '';
+	$res['korektor'] = '';
 
 	$data = $ci->indexdice_model->get_last_problem_log($dies_id);
 	if($data)
@@ -565,6 +567,8 @@ function get_last_problem_log_dies($dies_id)
 		{
 			$res['problem'] = $data->Problem;
 			$res['problem_id'] = $data->DiesProblemId;
+			$res['koreksi'] = $data->Koreksi;
+			$res['korektor'] = $data->Korektor;
 		}
 	}
 

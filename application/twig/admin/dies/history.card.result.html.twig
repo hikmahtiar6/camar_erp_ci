@@ -27,6 +27,18 @@
 	</thead>
 	<tbody class="result-dies-idx">
 		{% if data %}
+			{% set dies_problem =  get_last_problem_log_dies(dice) %}
+			{% set problem_id = "" %}
+			{% set problem = "" %}
+			{% set koreksi = "" %}
+			{% set korektor = "" %}
+
+			{% if dies_problem %}
+				{% set problem_id = dies_problem['problem_id'] %}
+				{% set problem = dies_problem['problem'] %}
+				{% set koreksi = dies_problem['koreksi'] %}
+				{% set korektor = dies_problem['korektor'] %}
+			{% endif %}
 			{% for row in data %}
 			<tr>
 				<td>{{ row.tanggal }}</td>
@@ -36,9 +48,9 @@
 				<td>{{ row.berat_ak }}</td>
 				<td></td>
 				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{ problem }}</td>
+				<td>{{ koreksi }}</td>
+				<td>{{ korektor }}</td>
 			</tr>
 			{% endfor %}
 		{% else %}

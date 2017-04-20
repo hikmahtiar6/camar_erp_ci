@@ -169,7 +169,7 @@ class Indexdice_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('c.DiesProblemId, c.Problem, a.DiesStatusId');
+		$sql->select('c.DiesProblemId, c.Problem, a.DiesStatusId, a.Koreksi, a.Korektor');
 		$sql->from(static::TABLE_DIES_LOG.' a');
 		$sql->join(static::TABLE_PROBLEM.' c', 'a.DiesProblemId = c.DiesProblemId', 'left');
 		$sql->where('a.DiesId', $dies_id);
