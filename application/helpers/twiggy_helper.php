@@ -571,6 +571,16 @@ function get_last_problem_log_dies($dies_id)
 	return $res;
 }
 
+function get_last_log_by_dies($dies_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/indexdice_model');
+
+	$data = $ci->indexdice_model->get_last_log_by_dies($dies_id);
+
+	return $data;
+}
+
 function get_lot_scrap($header_id, $tgl, $shift = '')
 {
 	$ci =& get_instance();

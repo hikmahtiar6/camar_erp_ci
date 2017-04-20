@@ -49,11 +49,19 @@
 								{% for row in data %}
 									{% set dies_status =  get_last_status_log_dies(row.DiesId) %}
 									{% set dies_problem =  get_last_problem_log_dies(row.DiesId) %}
+									{% set last_log = get_last_log_by_dies(row.DiesId) %}
+
 									{% set problem_id = "" %}
 									{% set problem = "" %}
+									{% set history_card = "" %}
+
 									{% if dies_problem %}
 										{% set problem_id = dies_problem['problem_id'] %}
 										{% set problem = dies_problem['problem'] %}
+									{% endif %}
+
+									{% if last_log %}
+										{% set history_card = last_log.DiesHistoryCardLogId %}
 									{% endif %}
 									<tr>
 										<td>{{ row.DiesId }}</td>
@@ -61,7 +69,7 @@
 										<td>{{ problem }}</td>
 										<td>{{ get_last_location_log_dies(row.DiesId) }}</td>
 										<td align="center">
-											<button class="btn btn-info btn-history" data-toggle="modal" data-target=".defaultModal" data-dies="{{ row.DiesId }}" data-problem="{{ problem_id }}">Button</button>
+											<button class="btn btn-info btn-history" data-toggle="modal" data-target=".defaultModal" data-id="{{ history_card }}" data-dies="{{ row.DiesId }}" data-problem="{{ problem_id }}">Button</button>
 										</td>
 									</tr>
 

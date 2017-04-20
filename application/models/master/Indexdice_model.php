@@ -260,6 +260,24 @@ class Indexdice_model extends CI_Model {
 
 	 	return $get->result();
 	}
+
+	/**
+	 * get data by id
+	 */
+	public function get_log_by_id($card_log_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('a.*, b.DiesStatus, c.Location');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_DIES_STATUS.' b', 'a.DiesStatusId = b.DiesCode', 'inner');
+		$sql->join(static::TABLE_DIES_LOCATION.' c', 'a.DiesLocationId = c.DiesLocationId', 'inner');
+		$sql->where('a.DiesHistoryCardLogId', $card_log_id);
+		$sql->order_by('a.LogTime', 'desc');
+
+		$get = $sql->get();
+		return $get->row();
+	}
 }
 
 ?>

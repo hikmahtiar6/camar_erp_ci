@@ -203,7 +203,7 @@ $config['twiggy']['register_functions'] = array
 	'get_detail_advance', 'selisih_waktu', 'trims', 'get_detail_advance_lot', 'get_hasil_prod_btg', 
 	'get_berat_hasil', 'get_total_billet_kg', 'get_target_prod_btg', 'get_dies_department', 'convert_dies_department', 
 	'check_dies_log', 'split_text', 'get_last_status_log_dies', 'get_last_location_log_dies', 'get_last_problem_log_dies', 
-	'get_lot_scrap', 'sum_scrap', 'get_berat_billet', 'suming_lot'
+	'get_lot_scrap', 'sum_scrap', 'get_berat_billet', 'suming_lot', 'get_last_log_by_dies'
 );
 
 

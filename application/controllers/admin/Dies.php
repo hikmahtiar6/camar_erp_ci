@@ -121,13 +121,24 @@ class Dies extends CI_Controller
 	/**
 	 * Edit view
 	 */
-	public function edit($problem_id = '')
+	public function edit($dies_card_id = '', $problem_id = '')
 	{
 		$data_problem = $this->indexdice_model->get_data_problem();
 		$data_status = $this->indexdice_model->get_dice_status();
-		
+
+		$koreksi = '';
+		$korektor = '';
+
+		$last_data = $this->indexdice_model->get_log_by_id($dies_card_id);
+		if($last_data)
+		{
+			$koreksi = $last_data->Koreksi;
+			$korektor = $last_data->Korektor;
+		}
 
 		$this->twiggy->set('problem', $data_problem);
+		$this->twiggy->set('koreksi', $koreksi);
+		$this->twiggy->set('korektor', $korektor);
 		$this->twiggy->set('status', $data_status);
 		$this->twiggy->set('problem_id', $problem_id);
 		$this->twiggy->display('admin/dies/edit');
@@ -195,6 +206,7 @@ class Dies extends CI_Controller
 				'DiesProblemId' => $problem_id,
 				'Koreksi'       => $koreksi,
 				'Korektor'       => $korektor,
+				'DiesLocationId' => 2
 			);
 			$update = $this->indexdice_model->update_log($data_update, $get_last_data->DiesHistoryCardLogId);
 			

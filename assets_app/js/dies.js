@@ -81,7 +81,7 @@ window.DIES = (function($) {
 
 				}
 				
-				$('.content-modal-history').load(window.APP.siteUrl + 'admin/dies/edit/'+_input.attr('data-problem'));
+				$('.content-modal-history').load(window.APP.siteUrl + 'admin/dies/edit/'+_input.attr('data-id')+'/'+_input.attr('data-problem'));
 				
 				_this.handleFormHistoryProblem();
 			})
@@ -91,7 +91,7 @@ window.DIES = (function($) {
 			$('.form-problem').ajaxForm({
 				dataType: 'json',
 				success: function(response) {
-					alert(response.message);
+					//alert(response.message);
 					window.location.reload();
 					
 				}
