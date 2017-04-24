@@ -1644,7 +1644,7 @@ window.TRANSACTION = (function($) {
 
 		},
 
-		handleSaveScrap: function(elScrap, elLost, elEndButt, elShift) {
+		handleSaveScrap: function(elScrap, elLost, elEndButt, elShift, elOpr1, elOpr2) {
 			//$('.frm-scrap').ajaxForm();
 
 			$.ajax({
@@ -1656,7 +1656,9 @@ window.TRANSACTION = (function($) {
 					endbutt: $(elEndButt).val(),
 					header_id: $('.header-id').val(),
 					tanggal: $('.tgl-transaction').val(),
-					shift: $(elShift).val()
+					shift: $(elShift).val(),
+					opr1: $(elOpr1).val(),
+					opr2: $(elOpr2).val(),
 				}
 			});
 		}

@@ -22,6 +22,7 @@ class Transaction extends CI_Controller
 		$this->load->model('master/shift_model');
 		$this->load->model('master/query_model');
 		$this->load->model('master/lot_model');
+		$this->load->model('master/operatorLot_model');
 	}
 
 	/**
@@ -904,8 +905,12 @@ class Transaction extends CI_Controller
 			$header_id = '';
 		}
 
+		$get_operator = $this->operatorLot_model->get_data_by(array('grup' => 'operator'));
+		$get_operator2 = $this->operatorLot_model->get_data_by(array('grup' => 'wakil'));
 		$grid_data = $this->detail_model->get_data_for_grid_dinamic($header_id, $shift, true, $machine_id, $tgl);
 
+		$this->twiggy->set('get_operator', $get_operator);
+		$this->twiggy->set('get_operator2', $get_operator2);
 		$this->twiggy->set('grid_data', $grid_data);
 		$this->twiggy->set('header', $header_id);
 		$this->twiggy->set('tgl', $tgl);

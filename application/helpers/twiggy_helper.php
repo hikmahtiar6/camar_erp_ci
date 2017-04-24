@@ -597,6 +597,8 @@ function get_lot_scrap($header_id, $tgl, $shift = '')
 			'scrap'   => $data->Scrap,
 			'lost'    => $data->Lost,
 			'endbutt' => $data->EndButt,
+			'opr1'    => $data->Opr1,
+			'opr2'    => $data->Opr2,
 		);
 	}
 
@@ -604,6 +606,8 @@ function get_lot_scrap($header_id, $tgl, $shift = '')
 		'scrap'   => '',
 		'lost'    => '',
 		'endbutt' => '',
+		'opr1'    => '',
+		'opr2'    => '',
 	);
 }
 

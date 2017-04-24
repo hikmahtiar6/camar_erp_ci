@@ -243,6 +243,8 @@ class Dies extends CI_Controller
 		$lost = $this->input->post('lost');
 		$endbutt = $this->input->post('endbutt');
 		$header_id = $this->input->post('header_id');
+		$opr1 = $this->input->post('opr1');
+		$opr2 = $this->input->post('opr2');
 
 		$data_save = array(
 			'Scrap'      => $scrap,
@@ -251,6 +253,8 @@ class Dies extends CI_Controller
 			'Shift'      => $shift,
 			'Tanggal'    => date('Y-m-d', strtotime($tanggal)),
 			'SpkHeaderId'=> $header_id,
+			'Opr1'       => $opr1,
+			'Opr2'       => $opr2,
 		);
 
 		$check_data = $this->scrap_model->get_data_tgl_header($header_id, $tanggal, $shift);

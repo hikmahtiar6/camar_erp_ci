@@ -208,8 +208,8 @@ class Lot extends CI_Controller {
 	public function save_header()
 	{
 		$master_detail_id = $this->input->post('master_detail_id');
-		$opr1 = $this->input->post('opr1');
-		$opr2 = $this->input->post('opr2');
+		//$opr1 = $this->input->post('opr1');
+		//$opr2 = $this->input->post('opr2');
 		$scrap = $this->input->post('scrap');
 		$pot_end_butt = $this->input->post('potendbutt');
 		$time_start = $this->input->post('time_start');
@@ -224,8 +224,8 @@ class Lot extends CI_Controller {
 
 		$data = array(
 			'master_detail_id' => $master_detail_id,
-			'opr1'             => $opr1,
-			'opr2'             => $opr2,
+			//'opr1'             => $opr1,
+			//'opr2'             => $opr2,
 			'scrap'            => $scrap,
 			'pot_end_butt'     => $pot_end_butt,
 			'time_start'       => $time_start,

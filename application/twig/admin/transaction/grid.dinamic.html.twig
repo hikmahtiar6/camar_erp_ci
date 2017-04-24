@@ -7,6 +7,8 @@
 			<th style="vertical-align: middle;">Scrap</th>
 			<th style="vertical-align: middle;">Lost</th>
 			<th style="vertical-align: middle;">End Butt</th>
+			<th style="vertical-align: middle;">Operator 1</th>
+			<th style="vertical-align: middle;">Operator 2</th>
 			<th style="vertical-align: middle;">Tools</th>
 		{% endif %}
 	</tr>
@@ -33,7 +35,27 @@
 				<input class="form-control" id="end_butt{{ key + 1 }}" type="text" value="{{ scrap_data['endbutt'] }}">
 			</td>
 			<td>
-				<button class="btn btn-primary" type="submit" onclick="window.TRANSACTION.handleSaveScrap('#scrap{{ key + 1 }}', '#lost{{ key + 1 }}', '#end_butt{{ key + 1 }}', '#shift{{ key + 1 }}')">
+				<select class="form-control " name="opr1" id="opr1{{ key + 1 }}">
+					<option value="">- Pilih -</option>
+					{% if get_operator %}
+						{% for row_opr in get_operator %}
+							<option value="{{ row_opr.operator_id }}" {% if same(scrap_data['opr1'], row_opr.operator_id ) %} selected="selected" {% endif %}>{{ row_opr.name }}</option>
+						{% endfor %}
+					{% endif %}
+				</select>
+			</td>
+			<td>
+				<select class="form-control " id="opr2{{ key + 1 }}">
+					<option value="">- Pilih -</option>
+					{% if get_operator %}
+						{% for row_opr in get_operator2 %}
+							<option value="{{ row_opr.operator_id }}" {% if same(scrap_data['opr2'], row_opr.operator_id ) %} selected="selected" {% endif %}>{{ row_opr.name }}</option>
+						{% endfor %}
+					{% endif %}
+				</select>
+			</td>
+			<td>
+				<button class="btn btn-primary" type="submit" onclick="window.TRANSACTION.handleSaveScrap('#scrap{{ key + 1 }}', '#lost{{ key + 1 }}', '#end_butt{{ key + 1 }}', '#shift{{ key + 1 }}', '#opr1{{ key + 1 }}', '#opr2{{ key + 1 }}')">
 					Simpan
 				</button>
 			</td>
