@@ -64,10 +64,11 @@ window.DIES = (function($) {
 			});
 		},
 		
-		handleModalHistory: function() {
+		handleModalHistory: function(btn) {
+
 			var _this = this;
-			$('.btn-history').click(function() {
-				var _input = $(this);
+			//$('.btn-history').click(function() {
+				var _input = $(btn);
 				
 				$('.dies-header-text').html(_input.attr('data-dies'));
 				$('.dies-header-input').val(_input.attr('data-dies'));
@@ -78,13 +79,12 @@ window.DIES = (function($) {
 				}
 				else {
 					$('.title-modal').html('Problem Dies');
-
 				}
 				
 				$('.content-modal-history').load(window.APP.siteUrl + 'admin/dies/edit/'+_input.attr('data-id')+'/'+_input.attr('data-problem'));
 				
 				_this.handleFormHistoryProblem();
-			})
+			//})
 		},
 		
 		handleFormHistoryProblem: function() {

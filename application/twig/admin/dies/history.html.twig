@@ -69,7 +69,8 @@
 										<td>{{ problem }}</td>
 										<td>{{ get_last_location_log_dies(row.DiesId) }}</td>
 										<td align="center">
-											<button class="btn btn-info btn-history" data-toggle="modal" data-target=".defaultModal" data-id="{{ history_card }}" data-dies="{{ row.DiesId }}" data-problem="{{ problem_id }}">Button</button>
+											<button class="btn btn-info btn-history" data-toggle="modal" data-target=".defaultModal" data-id="{{ history_card }}" data-dies="{{ row.DiesId }}" data-problem="{{ problem_id }}"
+											onclick="window.DIES.handleModalHistory(this)">Button</button>
 										</td>
 									</tr>
 
@@ -117,7 +118,7 @@
 	<script type="text/javascript" src="{{ base_url('assets_app/js/dies.js') }}"></script>
 	<script type="text/javascript">
 		window.DIES.DiesHistoryDatatable();
-		window.DIES.handleModalHistory();
+		
 	</script>
 
 {% endblock %}
