@@ -32,6 +32,36 @@ class Indexdice_model extends CI_Model {
 		return $get->result();
 	}
 
+	public function get_data_by_machine_section($machinetypeid = '', $sectionid = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('DiesId');
+		$sql->from(static::TABLE);
+
+		if($sectionid != '')
+		{
+			$sql->where('SectionId', $sectionid);
+		}
+
+		if($machinetypeid != '')
+		{
+			if($machinetypeid == '0750T')
+			{
+				$sql->where_in('MachineTypeId', array('0750T', '0690T'));
+			}
+			else
+			{
+				$sql->where('MachineTypeId', $machinetypeid);			
+			}
+		}
+
+		$sql->group_by('DiesId');
+
+		$get = $sql->get();
+		return $get;
+	}
+
 	public function get_data_by($array)
 	{
 		$sql = $this->db;

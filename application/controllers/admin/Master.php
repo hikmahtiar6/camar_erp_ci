@@ -69,7 +69,7 @@ class Master extends CI_Controller {
 			$machine_id = $header_data->machine_id;
 		}
 
-		$data = $this->query_model->get_master_advance($machine_id)->result();
+		$data = $this->query_model->get_master_section($machine_id)->result();
 
 		if($data)
 		{
@@ -157,8 +157,8 @@ class Master extends CI_Controller {
 				'SectionId'     => $section_id,
 				'MachineTypeId' => $machine_type_id
 			);
-			//$get_dice = $this->indexdice_model->get_data_by($get_data)->result();
-			$get_dice = $this->indexdice_model->get_data2()->result();
+			$get_dice = $this->indexdice_model->get_data_by_machine_section($machine_type_id, $section_id)->result();
+			//$get_dice = $this->indexdice_model->get_data2()->result();
 		}
 
 		if($get_dice)
