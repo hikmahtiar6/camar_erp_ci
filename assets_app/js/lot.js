@@ -588,11 +588,73 @@ window.LOT = (function($) {
 					swal.close();
 				});
 			});				
-				
 			
-			
+		},
 
-			
+		handleLotBillet: function(elTable) {
+			var billetTable = new Vue({
+				el: elTable,
+				data: {
+					billets: [],
+					submitted: false
+				},
+				methods: {
+					addNewRowBillet: function() {
+						this.billets.push({
+							pBilletActual: '',
+							jmlBillet: '',
+							billetVendorId: ''
+						});
+					},
+					removeRowBillet: function(row) {
+						this.billets.splice(row, 1);
+					}
+				}
+			});
+		},
+
+		handleLotBeratAktual: function(elTable) {
+			var beratAktualTable = new Vue({
+				el: elTable,
+				data: {
+					beratAktuals: [],
+					submitted: false
+				},
+				methods: {
+					addNewRowBeratAktual: function() {
+						this.beratAktuals.push({
+							beratStd: '',
+							beratAkt: '',
+							rataAkt: ''
+						});
+					},
+					removeRowBeratAktual: function(row) {
+						this.beratAktuals.splice(row, 1);
+					}
+				}
+			});
+		},
+
+		handleLotHasil: function(elTable) {
+			var hasilTable = new Vue({
+				el: elTable,
+				data: {
+					hasils: [],
+					submitted: false
+				},
+				methods: {
+					addNewRowHasil: function() {
+						this.hasils.push({
+							rak: '',
+							jmlRak: '',
+							none: ''
+						});
+					},
+					removeRowHasil: function(row) {
+						this.hasils.splice(row, 1);
+					}
+				}
+			});
 		}
 	}
 })(jQuery);

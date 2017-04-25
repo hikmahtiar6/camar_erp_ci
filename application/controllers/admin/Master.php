@@ -93,7 +93,7 @@ class Master extends CI_Controller {
 	public function get_data_len($detail_id)
 	{
 		$row = array();
-		$data = $this->len_model->get_data();
+		$data = $this->len_model->get_data()->result();
 		$machine_id = '';
 
 		$get_detail = $this->detail_model->get_data_by_id($detail_id);

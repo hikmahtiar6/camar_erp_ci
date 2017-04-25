@@ -917,7 +917,7 @@ window.TRANSACTION = (function($) {
 		},
 
 		handlejqGrid: function() {
-			//$.jgrid.defaults.responsive = true;     
+			$.jgrid.defaults.responsive = true;     
 			//$.jgrid.defaults.width = $('.navbar').width() - 150;     
 		    $.jgrid.defaults.styleUI = 'Bootstrap';
 			
@@ -957,7 +957,7 @@ window.TRANSACTION = (function($) {
 						label: "<br>",
                         name: "to_lot",
                         hidden: false,
-                        width: 80,  
+                        width: 50,  
                     },
 					{
 						label: 'Tanggal <br><br>',
@@ -965,7 +965,7 @@ window.TRANSACTION = (function($) {
 						index:'tanggal', 
 						hidden: false,
 						editable:true,
-						width: 120,
+						width: 100,
 						edittype: "select",
 						editoptions: {
 							dataInit: function(el) {
@@ -1027,7 +1027,7 @@ window.TRANSACTION = (function($) {
 						index:'section_id', 
 						hidden: false,
 						editable:true,
-						width: 150,
+						width: 120,
 						edittype: "select",
 						editoptions: {
 							dataInit: function(el) {
@@ -1157,7 +1157,7 @@ window.TRANSACTION = (function($) {
 						index:'section_name', 
 						hidden: false,
 						editable:false,
-						width: 200
+						width: 100
 					},
 					{
 						label: 'Mesin Id <br><br>',
@@ -1173,7 +1173,7 @@ window.TRANSACTION = (function($) {
 						index:'billet_id', 
 						hidden: false,
 						editable:false,
-						width: 120
+						width: 100
 					},
 					{
 						label: 'Len (m) <br><br>',
@@ -1262,12 +1262,12 @@ window.TRANSACTION = (function($) {
 					},
 					
 					{
-						label: 'Index Die <br><br>',
+						label: 'Index Dice <br><br>',
 						name:'index_dice', 
 						index:'index_dice', 
 						hidden: false,
 						editable: true,
-						width: 300,
+						width: 220,
 						multipleselect: true,
 						edittype: "select", 
 						editoptions: {
@@ -1314,12 +1314,12 @@ window.TRANSACTION = (function($) {
 						}
 					},
 					{
-						label: 'Index Die Qty',
+						label: 'Index Die <br>Qty',
 						name:'index_dice_qty', 
 						index:'index_dice_qty', 
 						hidden: false,
 						editable:false,
-						width: 90
+						width: 50
 					},
 					{
 						label: 'Target Prod <br> (Bilet)',
@@ -1439,6 +1439,7 @@ window.TRANSACTION = (function($) {
 						index:'weight_standard', 
 						hidden: false,
 						editable:false,
+						width: 100
 					},
 					{
 						label: 'Target Section Kg<br><br>',

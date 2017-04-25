@@ -50,9 +50,22 @@ class Query_model extends CI_Model
 		LEFT JOIN Inventory.Sections s ON s.SectionId=d.SectionId
 		LEFT JOIN Inventory.MasterDieTypes mdt ON mdt.DieTypeId=s.DieTypeId ";
 
-		if($machine_id != '')
+		/*if($machine_id != '')
 		{
 			$sql .= "AND MACHINEID='".$machine_id."' ";
+		}*/
+
+		if($machine_id != '')
+		{
+			if($machine_id == 'SN0750.01')
+			{
+				$sql .= "AND MachineId IN ('SN0690.01', 'SN0690.02', 'SN0690.03', '".$machine_id."') ";
+			}
+			else
+			{
+				$sql .= "AND MACHINEID='".$machine_id."' ";
+			}
+
 		}
 
 		if($section_id != '')
