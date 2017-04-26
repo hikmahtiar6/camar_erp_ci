@@ -296,22 +296,15 @@
 									<td></td>
 								</tr>
 								<template >
-								<tr v-for="billet in billets">
-									<td>
-										<input type="text" v-model="billet.pBilletActual" class="form-control">
-									</td>
-									<td>
-										<input type="text" v-model="billet.jmlBillet" class="form-control">
-									</td>
-									<td>
-										<input type="text" v-model="billet.billetVendorId" class="form-control">
-									</td>
-									<td>
-										<button class="btn btn-danger btn-xs" @click="removeRowBillet(billet)">Hapus</button>
-									</td>
+								<tr v-for="(billet, idxbillet) in billets"
+								is="billet-item" 
+								v-bind:key="billet"
+								v-bind:title="billet"
+								v-on:remove="removeRowBillet(idxbillet)">
 								</tr>
 								</template>
 							</table>
+
 
 						</td>
 
@@ -339,19 +332,13 @@
 									<td></td>
 								</tr>
 								<template >
-								<tr v-for="beratAktual in beratAktuals">
-									<td>
-										<input type="text" v-model="beratAktual.beratStd" class="form-control">
-									</td>
-									<td>
-										<input type="text" v-model="beratAktual.beratAkt" class="form-control">
-									</td>
-									<td>
-										<input type="text" v-model="beratAktual.rataAkt" class="form-control">
-									</td>
-									<td>
-										<button class="btn btn-danger btn-xs" @click="removeRowBeratAktual(beratAktual)">Hapus</button>
-									</td>
+								<tr v-for="(beratAktual, idxBeratktual) in beratAktuals"
+									is="berat-actual-item" 
+									v-bind:key="beratAktual"
+									v-bind:title="beratAktual"
+									v-on:remove="removeRowBeratAktual(idxBeratktual)"
+									>
+									
 								</tr>
 								</template>
 							</table>
@@ -379,16 +366,12 @@
 
 								</tr>
 								<template >
-								<tr v-for="hasil in hasils">
-									<td>
-										<input type="text" v-model="hasil.rak" class="form-control">
-									</td>
-									<td>
-										<input type="text" v-model="hasil.jmlRak" class="form-control">
-									</td>
-									<td>
-										<button class="btn btn-danger btn-xs" @click="removeRowHasil(hasil)">Hapus</button>
-									</td>
+								<tr v-for="(hasil, idxhasil) in hasils"
+									is="hasil-item" 
+									v-bind:key="hasil"
+									v-bind:title="hasil"
+									v-on:remove="removeRowHasil(idxhasil)">
+									
 								</tr>
 								</template>
 							</table>

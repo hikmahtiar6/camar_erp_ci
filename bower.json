@@ -38,6 +38,7 @@
     "multiple-select": "^1.2.1",
     "jquery-tag-editor": "^1.0.20",
     "custombox": "^4.0.1",
-    "vue": "^2.2.6"
+    "vue": "^2.2.6",
+    "notify": "https://github.com/egig/notify.git"
   }
 }

@@ -15,6 +15,9 @@ class Lot_model extends CI_Model {
 	const TABLE_MACHINE = 'Factory.Machines';
 	const TABLE_SHIFT = 'Factory.Shifts';
 	const TABLE_FINISHING = 'Finishing';
+	const TABLE_BILLET = 'SpkLotBillet';
+	const TABLE_BERAT_ACTUAL = 'SpkLotBeratActual';
+	const TABLE_HASIL = 'SpkLotHasil';
 
 	public function __construct()
 	{
@@ -251,6 +254,193 @@ class Lot_model extends CI_Model {
 	{
 		$this->db->where('master_detail_id', $master_detail_id);
 		return $this->db->delete(static::TABLE);
+	}
+
+	/**
+	 * Save lot billet, berat_actual, hasil
+	 */
+	public function save_lot_billet($data)
+	{
+		return $this->db->insert(static::TABLE_BILLET, $data);
+	}
+
+	/**
+	 * Update lot billet
+	 */
+	public function update_lot_billet($id, $data)
+	{
+		$this->db->where('SpkLotBilletId', $id);
+		return $this->db->update(static::TABLE_BILLET, $data);
+	}
+
+	/**
+	 * Delete lot billet
+	 */
+	public function delete_lot_billet($id)
+	{
+		$this->db->where('SpkLotBilletId', $id);
+		return $this->db->delete(static::TABLE_BILLET);
+	}
+
+	/**
+	 * get lot billet
+	 */
+	public function get_lot_billet($master_detail_id = '', $id = '', $billet_actual = '', $jml_billet = '', $vendor_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE_BILLET);
+
+		if($master_detail_id != '')
+		{
+			$sql->where('MasterDetailId', $master_detail_id);
+		}
+
+		if($id != '')
+		{
+			$sql->where('SpkLotBilletId', $id);
+		}
+
+		if($billet_actual != '')
+		{
+			$sql->where('PBilletActual', $billet_actual);
+		}
+
+		if($jml_billet != '')
+		{
+			$sql->where('JumlahBillet', $jml_billet);
+		}
+
+		if($vendor_id != '')
+		{
+			$sql->where('BilletVendorId', $vendor_id);
+		}
+
+		$sql->order_by('SpkLotBilletId', 'ASC');
+
+		$get = $sql->get();
+		return $get;	
+	}
+
+
+	/**
+	 * Save lot hasil
+	 */
+	public function save_lot_hasil($data)
+	{
+		return $this->db->insert(static::TABLE_HASIL, $data);
+	}
+
+	/**
+	 * Update lot hasil
+	 */
+	public function update_lot_hasil($id, $data)
+	{
+		$this->db->where('SpkLotHasilId', $id);
+		return $this->db->update(static::TABLE_HASIL, $data);
+	}
+
+	/**
+	 * Delete lot hasil
+	 */
+	public function delete_lot_hasil($id)
+	{
+		$this->db->where('SpkLotHasilId', $id);
+		return $this->db->delete(static::TABLE_HASIL);
+	}
+
+	/**
+	 * get lot hasil
+	 */
+	public function get_lot_hasil($master_detail_id = '', $id = '', $rak = '', $jml_rak = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE_HASIL);
+
+		if($master_detail_id != '')
+		{
+			$sql->where('MasterDetailId', $master_detail_id);
+		}
+
+		if($id != '')
+		{
+			$sql->where('SpkLotHasilId', $id);
+		}
+
+		if($rak != '')
+		{
+			$sql->where('Rak', $rak);
+		}
+
+		if($jml_rak != '')
+		{
+			$sql->where('JumlahBtgRak', $jml_rak);
+		}
+
+		$sql->order_by('SpkLotHasilId', 'ASC');
+
+		$get = $sql->get();
+		return $get;	
+	}
+
+	/**
+	 * Save lot berat actual
+	 */
+	public function save_lot_berat_actual($data)
+	{
+		return $this->db->insert(static::TABLE_BERAT_ACTUAL, $data);
+	}
+
+	/**
+	 * Update lot berat actual
+	 */
+	public function update_lot_berat_actual($id, $data)
+	{
+		$this->db->where('SpkLotBeratActualId', $id);
+		return $this->db->update(static::TABLE_BERAT_ACTUAL, $data);
+	}
+
+	/**
+	 * Delete lot berat actual
+	 */
+	public function delete_lot_berat_actual($id)
+	{
+		$this->db->where('SpkLotBeratActualId', $id);
+		return $this->db->delete(static::TABLE_BERAT_ACTUAL);
+	}
+
+	/**
+	 * get lot berat actual
+	 */
+	public function get_lot_berat_actual($master_detail_id = '', $id = '', $akt50 = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE_BERAT_ACTUAL);
+
+		if($master_detail_id != '')
+		{
+			$sql->where('MasterDetailId', $master_detail_id);
+		}
+
+		if($id != '')
+		{
+			$sql->where('SpkLotBeratActualId', $id);
+		}
+
+		if($akt50 != '')
+		{
+			$sql->where('BeratAkt', $akt50);
+		}
+
+		$sql->order_by('SpkLotBeratActualId', 'ASC');
+
+		$get = $sql->get();
+		return $get;	
 	}
 }
 

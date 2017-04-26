@@ -1,0 +1,14 @@
+{
+  "name": "notify",
+  "homepage": "https://github.com/egig/notify",
+  "version": "0.8.0",
+  "_release": "0.8.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.8.0",
+    "commit": "22e9503950984d019ea0897bf19d9cf376a94c4c"
+  },
+  "_source": "https://github.com/egig/notify.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/egig/notify.git"
+}

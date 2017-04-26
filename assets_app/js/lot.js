@@ -592,67 +592,276 @@ window.LOT = (function($) {
 		},
 
 		handleLotBillet: function(elTable) {
-			var billetTable = new Vue({
-				el: elTable,
-				data: {
-					billets: [],
-					submitted: false
-				},
+
+			Vue.component('billet-item', {
+			  props: ['title'],
+			  template: `
+				 <tr>
+				  	<td>
+						<input type="text" v-model="title.pBilletActual" class="form-control">
+					</td>
+					<td>
+						<input type="text" v-model="title.jmlBillet" class="form-control">
+					</td>
+					<td>
+						<input type="text" v-model="title.billetVendorId" class="form-control" @keyup.enter="saveBillet(title)">
+					</td>
+					<td>
+						<button class="btn btn-danger btn-xs" @click="$emit('remove')">Hapus</button>
+					</td>
+				</tr>`,
 				methods: {
-					addNewRowBillet: function() {
-						this.billets.push({
-							pBilletActual: '',
-							jmlBillet: '',
-							billetVendorId: ''
+					saveBillet: function(row) {
+
+						var _this = this;
+
+						var postData = {
+							lot_billet_id    : row.lotBilletId,
+							p_billet_aktual  : row.pBilletActual,
+							jml_billet       : row.jmlBillet,
+							vendor_id        : row.billetVendorId,
+							master_detail_id : $('.master-detail-id').val()
+						};
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/save_billet',
+							type: 'post',
+							dataType: 'json',
+							data: postData,
+							success: function(response) {
+								_this.$set(row, 'lotBilletId', response.id);
+
+								$.notify(response.message, response.status);
+							}
 						});
 					},
-					removeRowBillet: function(row) {
-						this.billets.splice(row, 1);
-					}
+					
 				}
 			});
+
+			var billetData = [];
+
+			$.ajax({
+				url: window.APP.siteUrl + 'admin/lot/get_billet/' + $('.master-detail-id').val(),
+				type: 'get',
+				dataType: 'json',
+				success: function(response) {
+					billetData = response;
+
+					var billetTable = new Vue({
+						el: elTable,
+						delimiters: ['<%', '%>'],
+						data: {
+							billets: billetData,
+							submitted: false
+						},
+						methods: {
+							addNewRowBillet: function() {
+								this.billets.push({
+									lotBilletId: '',
+									pBilletActual: '',
+									jmlBillet: '',
+									billetVendorId: ''
+								});
+
+							},
+							removeRowBillet: function(row) {
+
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/lot/delete_billet',
+									type: 'post',
+									data: {
+										'id': this.billets[row].lotBilletId
+									},
+									dataType: 'json',
+									success: function(response) {
+										$.notify(response.message, response.status);
+									}
+								});
+								this.billets.splice(row, 1);
+							},
+							
+						}
+					});
+				}
+			});
+
+			
 		},
 
 		handleLotBeratAktual: function(elTable) {
-			var beratAktualTable = new Vue({
-				el: elTable,
-				data: {
-					beratAktuals: [],
-					submitted: false
-				},
+
+			Vue.component('berat-actual-item', {
+			  props: ['title'],
+			  template: `
+				 <tr>
+				  	<td>
+						{{ title.beratStd }}
+					</td>
+					<td>
+						<input type="text" v-model="title.beratAkt" class="form-control" @keyup.enter="saveBeratActual(title)">
+					</td>
+					<td>
+						{{ title.rataAkt }}
+					</td>
+					<td>
+						<button class="btn btn-danger btn-xs" @click="$emit('remove')">Hapus</button>
+					</td>
+				</tr>`,
 				methods: {
-					addNewRowBeratAktual: function() {
-						this.beratAktuals.push({
-							beratStd: '',
-							beratAkt: '',
-							rataAkt: ''
+					saveBeratActual: function(row) {
+
+						var _this = this;
+
+						var postData = {
+							lot_berat_actual_id  : row.lotBeratId,
+							berat_akt            : row.beratAkt,
+							master_detail_id     : $('.master-detail-id').val()
+						};
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/save_berat_actual',
+							type: 'post',
+							dataType: 'json',
+							data: postData,
+							success: function(response) {
+								_this.$set(row, 'lotBeratId', response.id);
+
+								$.notify(response.message, response.status);
+							}
 						});
 					},
-					removeRowBeratAktual: function(row) {
-						this.beratAktuals.splice(row, 1);
-					}
+					
+				}
+			});
+
+			var beratData = [];
+
+			$.ajax({
+				url: window.APP.siteUrl + 'admin/lot/get_berat_actual/' + $('.master-detail-id').val(),
+				type: 'get',
+				dataType: 'json',
+				success: function(response) {
+					beratData = response;
+
+					var beratAktualTable = new Vue({
+						el: elTable,
+						data: {
+							beratAktuals: beratData,
+							submitted: false
+						},
+						methods: {
+							addNewRowBeratAktual: function() {
+								this.beratAktuals.push({
+									lotBeratId: '',
+									beratStd: '',
+									beratAkt: '',
+									rataAkt: '',
+								});
+							},
+							removeRowBeratAktual: function(row) {
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/lot/delete_berat_actual',
+									type: 'post',
+									data: {
+										'id': this.beratAktuals[row].lotBeratId
+									},
+									dataType: 'json',
+									success: function(response) {
+										$.notify(response.message, response.status);
+									}
+								});
+								this.beratAktuals.splice(row, 1);
+							}
+						}
+					});
 				}
 			});
 		},
 
 		handleLotHasil: function(elTable) {
-			var hasilTable = new Vue({
-				el: elTable,
-				data: {
-					hasils: [],
-					submitted: false
-				},
+
+			Vue.component('hasil-item', {
+			  props: ['title'],
+			  template: `
+				 <tr>
+				  	<td>
+						<input type="text" v-model="title.rak" class="form-control">
+					</td>
+					<td>
+						<input type="text" v-model="title.jmlRak" class="form-control" @keyup.enter="saveHasil(title)">
+					</td>
+					<td>
+						<button class="btn btn-danger btn-xs" @click="$emit('remove')">Hapus</button>
+					</td>
+				</tr>`,
 				methods: {
-					addNewRowHasil: function() {
-						this.hasils.push({
-							rak: '',
-							jmlRak: '',
-							none: ''
+					saveHasil: function(row) {
+
+						var _this = this;
+
+						var postData = {
+							lot_hasil_id     : row.lotHasilId,
+							rak              : row.rak,
+							jml_rak          : row.jmlRak,
+							master_detail_id : $('.master-detail-id').val()
+						};
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/save_hasil',
+							type: 'post',
+							dataType: 'json',
+							data: postData,
+							success: function(response) {
+								_this.$set(row, 'lotHasilId', response.id);
+
+								$.notify(response.message, response.status);
+							}
 						});
 					},
-					removeRowHasil: function(row) {
-						this.hasils.splice(row, 1);
-					}
+					
+				}
+			});
+
+			var hasilData = [];
+
+			$.ajax({
+				url: window.APP.siteUrl + 'admin/lot/get_hasil/' + $('.master-detail-id').val(),
+				type: 'get',
+				dataType: 'json',
+				success: function(response) {
+					hasilData = response;
+
+					var hasilTable = new Vue({
+						el: elTable,
+						data: {
+							hasils: hasilData,
+							submitted: false
+						},
+						methods: {
+							addNewRowHasil: function() {
+								this.hasils.push({
+									rak: '',
+									jmlRak: '',
+									none: ''
+								});
+							},
+							removeRowHasil: function(row) {
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/lot/delete_hasil',
+									type: 'post',
+									data: {
+										'id': this.hasils[row].lotHasilId
+									},
+									dataType: 'json',
+									success: function(response) {
+										$.notify(response.message, response.status);
+									}
+								});
+								this.hasils.splice(row, 1);
+							}
+						}
+					});
 				}
 			});
 		}

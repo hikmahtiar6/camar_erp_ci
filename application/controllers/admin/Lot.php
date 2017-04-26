@@ -280,6 +280,340 @@ class Lot extends CI_Controller {
 		$this->output->set_output(selisih_waktu($date2, $date1));
 	}
 
+	/**
+	 * Get Lot Billet
+	 */
+	public function get_billet($master_detail_id = '')
+	{
+		$data = $this->lot_model->get_lot_billet($master_detail_id)->result();
+		$response = [];
+
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				$response[] = array(
+					'lotBilletId'   => $row->SpkLotBilletId,
+					'pBilletActual' => $row->PBilletActual,
+					'jmlBillet'     => $row->JumlahBillet,
+					'billetVendorId'=> $row->BilletVendorId
+				);
+			}
+			
+		}
+
+		$this->output->set_output(json_encode($response));
+	}
+
+	/**
+	 * Save Lot billet
+	 */
+	public function save_billet()
+	{
+		$master_detail_id = $this->input->post('master_detail_id');
+		$p_billet_aktual = $this->input->post('p_billet_aktual');
+		$jml_billet = $this->input->post('jml_billet');
+		$vendor_id = $this->input->post('vendor_id');
+		$lot_billet_id = $this->input->post('lot_billet_id');
+
+		$data_save = array(
+			'PBilletActual'  => $p_billet_aktual,
+			'JumlahBillet'   => $jml_billet,
+      		'BilletVendorId' => $vendor_id,
+			'MasterDetailId' => $master_detail_id
+		);
+
+		if($lot_billet_id == '')
+		{
+			$save = $this->lot_model->save_lot_billet($data_save);
+			if($save)
+			{
+				$response = array(
+					'message' => 'Berhasil menyimpan lot billet',
+					'status'  => 'success'
+				);
+			}
+			else
+			{
+				$response = array(
+					'message' => 'Gagal menyimpan lot billet',
+					'status'  => 'danger'
+				);
+			}
+		}
+		else
+		{
+			$update = $this->lot_model->update_lot_billet($lot_billet_id, $data_save);
+			if($update)
+			{
+				$response = array(
+					'message' => 'Berhasil update lot billet',
+					'status'  => 'success'
+				);
+			}
+			else
+			{
+				$response = array(
+					'message' => 'Gagal update lot billet',
+					'status'  => 'danger'
+				);
+			}
+		}
+
+		$get_lot_billet_id = $this->lot_model->get_lot_billet($master_detail_id, '', $p_billet_aktual, $jml_billet, $vendor_id)->row();
+
+		$id = ($get_lot_billet_id) ? $get_lot_billet_id->SpkLotBilletId : '';
+
+		$response['id'] = $id;		
+
+		$this->output->set_output(json_encode($response));
+	}
+
+	/**
+	 * Delete Lot billet
+	 */
+	public function delete_billet()
+	{
+		$id = $this->input->post('id');
+		$delete = $this->lot_model->delete_lot_billet($id);
+		if($delete)
+		{
+			$response = array(
+				'message' => 'Berhasil menghapus lot billet',
+				'status'  => 'success'
+			);
+		}
+		else
+		{
+			$response = array(
+				'message' => 'Gagal menghapus lot billet',
+				'status'  => 'danger'
+			);
+		}
+		$this->output->set_output(json_encode($response));
+	}
+
+
+	/**
+	 * Save Lot hasil
+	 */
+	public function save_hasil()
+	{
+		$master_detail_id = $this->input->post('master_detail_id');
+		$rak = $this->input->post('rak');
+		$jml_rak = $this->input->post('jml_rak');
+		$lot_hasil_id = $this->input->post('lot_hasil_id');
+
+		$data_save = array(
+			'Rak'            => $rak,
+			'JumlahBtgRak'   => $jml_rak,
+			'MasterDetailId' => $master_detail_id
+		);
+
+		if($lot_hasil_id == '')
+		{
+			$save = $this->lot_model->save_lot_hasil($data_save);
+			if($save)
+			{
+				$response = array(
+					'message' => 'Berhasil menyimpan lot hasil',
+					'status'  => 'success'
+				);
+			}
+			else
+			{
+				$response = array(
+					'message' => 'Gagal menyimpan lot hasil',
+					'status'  => 'danger'
+				);
+			}
+		}
+		else
+		{
+			$update = $this->lot_model->update_lot_hasil($lot_hasil_id, $data_save);
+			if($update)
+			{
+				$response = array(
+					'message' => 'Berhasil update lot hasil',
+					'status'  => 'success'
+				);
+			}
+			else
+			{
+				$response = array(
+					'message' => 'Gagal update lot hasil',
+					'status'  => 'danger'
+				);
+			}
+		}
+
+		$get_lot_hasil_id = $this->lot_model->get_lot_hasil($master_detail_id, '', $rak, $jml_rak)->row();
+
+		$id = ($get_lot_hasil_id) ? $get_lot_hasil_id->SpkLotHasilId : '';
+
+		$response['id'] = $id;		
+
+		$this->output->set_output(json_encode($response));
+	}
+
+	/**
+	 * Delete Lot hasil
+	 */
+	public function delete_hasil()
+	{
+		$id = $this->input->post('id');
+		$delete = $this->lot_model->delete_lot_hasil($id);
+		if($delete)
+		{
+			$response = array(
+				'message' => 'Berhasil menghapus lot hasil',
+				'status'  => 'success'
+			);
+		}
+		else
+		{
+			$response = array(
+				'message' => 'Gagal menghapus lot hasil',
+				'status'  => 'danger'
+			);
+		}
+		$this->output->set_output(json_encode($response));
+	}
+
+	/**
+	 * Get Lot Hasil
+	 */
+	public function get_hasil($master_detail_id = '')
+	{
+		$data = $this->lot_model->get_lot_hasil($master_detail_id)->result();
+		$response = [];
+
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				$response[] = array(
+					'lotHasilId'   => $row->SpkLotHasilId,
+					'rak'          => $row->Rak,
+					'jmlRak'       => $row->JumlahBtgRak,
+				);
+			}
+			
+		}
+
+		$this->output->set_output(json_encode($response));
+	}
+
+
+	/**
+	 * Save Lot Berat Actual
+	 */
+	public function save_berat_actual()
+	{
+		$master_detail_id = $this->input->post('master_detail_id');
+		$berat_akt = $this->input->post('berat_akt');
+		$lot_berat_actual_id = $this->input->post('lot_berat_actual_id');
+
+		$data_save = array(
+			'BeratAkt'       => $berat_akt,
+			'MasterDetailId' => $master_detail_id
+		);
+
+		if($lot_berat_actual_id == '')
+		{
+			$save = $this->lot_model->save_lot_berat_actual($data_save);
+			if($save)
+			{
+				$response = array(
+					'message' => 'Berhasil menyimpan lot berat aktual',
+					'status'  => 'success'
+				);
+			}
+			else
+			{
+				$response = array(
+					'message' => 'Gagal menyimpan lot berat aktual',
+					'status'  => 'danger'
+				);
+			}
+		}
+		else
+		{
+			$update = $this->lot_model->update_lot_berat_actual($lot_berat_actual_id, $data_save);
+			if($update)
+			{
+				$response = array(
+					'message' => 'Berhasil update lot berat aktual',
+					'status'  => 'success'
+				);
+			}
+			else
+			{
+				$response = array(
+					'message' => 'Gagal update lot berat aktual',
+					'status'  => 'danger'
+				);
+			}
+		}
+
+		$get_lot_berat_actual_id = $this->lot_model->get_lot_berat_actual($master_detail_id, '', $berat_akt)->row();
+
+		$id = ($get_lot_berat_actual_id) ? $get_lot_berat_actual_id->SpkLotBeratActualId : '';
+
+		$response['id'] = $id;		
+
+		$this->output->set_output(json_encode($response));
+	}
+
+	/**
+	 * Delete Lot Berat Actual
+	 */
+	public function delete_berat_actual()
+	{
+		$id = $this->input->post('id');
+		$delete = $this->lot_model->delete_lot_berat_actual($id);
+		if($delete)
+		{
+			$response = array(
+				'message' => 'Berhasil menghapus lot berat aktual',
+				'status'  => 'success'
+			);
+		}
+		else
+		{
+			$response = array(
+				'message' => 'Gagal menghapus lot berat aktual',
+				'status'  => 'danger'
+			);
+		}
+		$this->output->set_output(json_encode($response));
+	}
+
+	/**
+	 * Get Lot Berat Actual
+	 */
+	public function get_berat_actual($master_detail_id = '')
+	{
+		$data = $this->lot_model->get_lot_berat_actual($master_detail_id)->result();
+		$response = [];
+
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				$response[] = array(
+					'lotBeratActualId' => $row->SpkLotBeratActualId,
+					'beratAkt'         => $row->BeratAkt,
+					'beratStd'         => '',
+					'rataAkt'          => '',
+				);
+			}
+			
+		}
+
+		$this->output->set_output(json_encode($response));
+	}
+
 }
 
 ?>
