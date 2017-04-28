@@ -326,19 +326,31 @@ class Lot_model extends CI_Model {
 	/**
 	 * Get last billet actual
 	 */
-	public function get_last_billet_actual($master_detail_id = '')
+	public function get_last_billet_actual($master_detail_id = '', $machine_id = '', $section_id = '')
 	{
 		$sql = $this->db;
 
-		$sql->select('*');
-		$sql->from(static::TABLE_BILLET);
+		$sql->select('a.*');
+		$sql->from(static::TABLE_BILLET. ' a');
+		$sql->join(static::TABLE_DETAIL. ' b', 'a.MasterDetailId = b.master_detail_id', 'inner');
+		$sql->join(static::TABLE_HEAD. ' c', 'b.header_id = c.header_id', 'inner');
 
 		if($master_detail_id != '')
 		{
-			$sql->where('MasterDetailId', $master_detail_id);
+			$sql->where('a.MasterDetailId', $master_detail_id);
 		}
 
-		$sql->order_by('SpkLotBilletId', 'DESC');
+		if($section_id != '')
+		{
+			$sql->where('b.section_id', $section_id);
+		}
+		
+		if($machine_id != '')
+		{
+			$sql->where('c.machine_id', $machine_id);
+		}
+
+		$sql->order_by('a.SpkLotBilletId', 'DESC');
 
 		$get = $sql->get();
 

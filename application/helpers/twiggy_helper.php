@@ -618,12 +618,12 @@ function sum_scrap($field, $machine, $shift, $tanggal)
 	return $ci->scrap_model->sum_field($field, $machine, $shift, $tanggal);
 }
 
-function get_last_billet_actual($master_detail_id = '')
+function get_last_billet_actual($master_detail_id = '', $machine_id = '', $section_id = '')
 {
 	$ci =& get_instance();
 	$ci->load->model('master/lot_model');
 	
-	return $ci->lot_model->get_last_billet_actual($master_detail_id);
+	return $ci->lot_model->get_last_billet_actual($master_detail_id, $machine_id, $section_id);
 }
 
 /**

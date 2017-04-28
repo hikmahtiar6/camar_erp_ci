@@ -127,6 +127,26 @@ class Master extends CI_Controller {
 
 		return $this->output->set_output(json_encode($row));
 	}
+	
+	public function get_dice()
+	{
+		$section_id = $this->input->post('section_id');
+		
+		$get_dice = $this->indexdice_model->get_data_by_machine_section('', $section_id)->result();
+		if($get_dice)
+		{
+			foreach($get_dice as $r)
+			{
+				$row[] = array(
+					'value' => $r->DiesId,
+					'id' => $r->DiesId,
+					'text'  => $r->DiesId,
+				);
+			}
+		}
+
+		return $this->output->set_output(json_encode($row));
+	}
 
 	public function get_data_index_dice($id, $machine_id)
 	{

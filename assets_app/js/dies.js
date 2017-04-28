@@ -99,6 +99,37 @@ window.DIES = (function($) {
 		},
 
 		handleFilterCard: function() {
+			$('.card-form').validate();
+			
+			var section = $('.section');
+			var dice = $('.dice');
+			
+			dice.select2();
+			
+			section.select2().change(function() {
+				console.log(this.value);
+				
+				$.ajax({
+					url: window.APP.siteUrl + 'admin/master/get_dice',
+					type: 'post',
+					data: {
+						section_id: this.value
+					},
+					dataType: 'json',
+					success: function(result) {
+						var _data = '';
+						for (var i = 0; i < result.length; i++) {
+							_data += '<option>'+result[i].value+'</option>';
+						}
+						
+						dice.html(_data);
+						
+					}
+				});
+				
+			});
+			
+			
 			$('.card-form').ajaxForm({
 				success: function(response) {
 					$('.result-card').html(response);

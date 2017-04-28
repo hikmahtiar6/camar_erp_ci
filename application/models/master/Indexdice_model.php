@@ -257,9 +257,8 @@ class Indexdice_model extends CI_Model {
 	 {
 	 	$sql = $this->db;
 
-	 	$sql->select('a.*, b.*');
+	 	$sql->select('a.*');
 	 	$sql->from(static::TABLE_SPK.' a');
-	 	$sql->join(static::TABLE_LOT.' b', 'a.master_detail_id = b.master_detail_id', 'inner');
 
 	 	if($section_id != '')
 	 	{
