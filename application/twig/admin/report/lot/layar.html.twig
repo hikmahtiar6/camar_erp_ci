@@ -150,8 +150,8 @@
 									</td>
 									<td colspan="5">
 									</td>
-									<td>{{ sum_scrap('endbutt', machine, r_shift2, tgl) }}</td>
-									<td>{{ sum_scrap('scrap', machine, r_shift2, tgl) }}</td>
+									<td>{{ to_decimal(sum_scrap('endbutt', machine, r_shift2, tgl)) }}</td>
+									<td>{{ to_decimal(sum_scrap('scrap', machine, r_shift2, tgl)) }}</td>
 									<td>{# sum_scrap('lost', machine, r_shift2, tgl) #}</td>
 								</tr>
 								
@@ -186,10 +186,14 @@
 											<td>{{ master_row.target_prod }}</td>
 											<td>
 												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, r_shift2, tgl) %}
-												{{ hasil_prod_btg }}
+												{{ to_decimal(hasil_prod_btg) }}
 											
 											</td>
-											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
+											<td>
+												{% set rata2beratakt = to_decimal(get_rata2_berat_akt(master_row.master_detail_id)) %}
+												{% set hasil_prod_kg = get_hasil_prod_kg(master_row.master_detail_id, master_row.Length, rata2beratakt) %}
+												{{ to_decimal(hasil_prod_kg) }}
+											</td>
 											<td></td>
 											<td></td>
 											<td class="berta-billet">
@@ -203,7 +207,7 @@
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
-										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
+										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + hasil_prod_kg %}
 										
 										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
 
@@ -256,9 +260,13 @@
 											<td>{{ master_row.target_prod }}</td>
 											<td>
 												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, shift, tgl) %}
-												{{ hasil_prod_btg }}
+												{{ to_decimal(hasil_prod_btg) }}
 											</td>
-											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
+											<td>
+												{% set rata2beratakt = to_decimal(get_rata2_berat_akt(master_row.master_detail_id)) %}
+												{% set hasil_prod_kg = get_hasil_prod_kg(master_row.master_detail_id, master_row.Length, rata2beratakt) %}
+												{{ to_decimal(hasil_prod_kg) }}
+											</td>
 											<td></td>
 											<td></td>
 											<td></td>
@@ -267,7 +275,7 @@
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
-										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
+										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + to_decimal(hasil_prod_kg) %}
 										
 										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
 
@@ -279,11 +287,11 @@
 					<tfoot>
 						<tr>
 							<td colspan="5">Grand Total</td>
-							<td><b>{{ jumlah_target_prod_btg }}</b></td>
+							<td><b>{{ to_decimal(jumlah_target_prod_btg) }}</b></td>
 							<td><b class="total-prod-kg">{{ jumlah_target_prod_kg }}</b></td>
-							<td><b>{{ jumlah_akt_billet_kg }}</b></td>
-							<td><b>{{ jumlah_hasil_prod_btg }}</b></td>
-							<td><b class="total-hasil-prod-kg">{{ jumlah_hasil_prod_kg }}</b></td>
+							<td><b>{{ to_decimal(jumlah_akt_billet_kg) }}</b></td>
+							<td><b>{{ to_decimal(jumlah_hasil_prod_btg) }}</b></td>
+							<td><b class="total-hasil-prod-kg">{{ to_decimal(jumlah_hasil_prod_kg) }}</b></td>
 							<td><b></b></td>
 							<td><b></b></td>
 							<td><b></b></td>

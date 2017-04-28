@@ -235,7 +235,11 @@ $config['twiggy']['register_functions'] = array
 	'suming_lot', 
 	'get_last_log_by_dies',
 	'get_row_master', 
-	'get_last_billet_actual'
+	'get_last_billet_actual',
+	'number_float',
+	'to_decimal',
+	'get_rata2_berat_akt',
+	'get_hasil_prod_kg'
 );
 
 

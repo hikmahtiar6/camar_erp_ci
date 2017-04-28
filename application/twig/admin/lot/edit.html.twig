@@ -53,7 +53,7 @@
 				</td>
 				<td style="width: 250px;">
 					<span class="lot-length">
-						{{ get_row_master('Length', machine, section_id) }}
+						{{ number_float(get_row_master('Length', machine, section_id)) }}
 					</span>
 					
 					<!--
@@ -102,7 +102,7 @@
 				<td>
 					<!-- berat standard -->
 					<span id="berat-standard" style="display: none;">
-						{{ get_row_master('WeightStandard', machine, section_id) }}
+						{{ to_decimal(get_row_master('WeightStandard', machine, section_id)) }}
 					</span>
 
 					<!-- billet weight -->
@@ -158,7 +158,9 @@
 				</td>
 				<td>
 					
-					{% if get_master_query %} {{ get_master_query.InitialPullingLength }} {% endif %}
+					{% if get_master_query %} 
+					{{ to_decimal(get_master_query.InitialPullingLength) }}
+					 {% endif %}
 				</td>
 				<td>
 					<button class="btn btn-danger btn-selesai-pukul" type="button">
@@ -213,7 +215,9 @@
 					<label>Bs. Blkg</label>
 				</td>
 				<td>
-					{% if get_master_query %} {{ get_master_query.BadEndLength }} {% endif %}
+					{% if get_master_query %} 
+					{{ to_decimal(get_master_query.BadEndLength) }} 
+					{% endif %}
 				</td>
 				<td>
 					<label>Downtime</label>
@@ -430,7 +434,7 @@
 									<td>
 										Jml Btg <br> Dirak
 									</td>
-									<td>Berat Billet</td>
+									<td>Berat Hasil</td>
 									<td></td>
 
 								</tr>

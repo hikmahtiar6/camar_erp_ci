@@ -335,6 +335,11 @@ function number_float($val) {
 	return (float) number_format($val, 3, ',', '.');
 }
 
+function to_decimal($val)
+{
+	return round($val, 3, PHP_ROUND_HALF_ODD);
+}
+
 function check_array($array)
 {
 	if(is_array($array))
@@ -619,6 +624,56 @@ function get_last_billet_actual($master_detail_id = '')
 	$ci->load->model('master/lot_model');
 	
 	return $ci->lot_model->get_last_billet_actual($master_detail_id);
+}
+
+/**
+ * Get rata2 berat Akt
+ */
+function get_rata2_berat_akt($master_detail_id = '')
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+	
+	$data = $ci->lot_model->get_lot_berat_actual($master_detail_id)->result();
+	
+	$sum = 0;
+	
+	if($data)
+	{
+		foreach($data as $row) 
+		{
+			$sum += $row->BeratAkt;
+		}
+	}
+	
+	$hasil = ($sum /count($data) * 2) / 1000;
+	
+	return $hasil;
+}
+
+/**
+ * Get hasil berat billet
+ */
+function get_hasil_prod_kg($master_detail_id = '', $len = '0', $rata2_berat_ak = '')
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+	
+	$data = $ci->lot_model->get_lot_hasil($master_detail_id)->result();
+	
+	$sum = 0;
+	
+	if($data)
+	{
+		foreach($data as $row) 
+		{
+			$sum += $row->JumlahBtgRak;
+		}
+	}
+	
+	$hasil = $sum * $len * $rata2_berat_ak;
+	
+	return $hasil;
 }
 
 ?>

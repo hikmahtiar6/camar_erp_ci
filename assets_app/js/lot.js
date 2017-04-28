@@ -866,7 +866,8 @@ window.LOT = (function($) {
 
 								var hasil = (sum / items.length * 2) / 1000;
 								setTimeout(function() {
-									$('#berat-standard2').html($('#berat-standard').html());
+									var beratStandard = window.APP.decimal3($('#berat-standard').html());
+									$('#berat-standard2').html(beratStandard);
 									$('#rata-berat-ak').html(window.APP.decimal3(hasil));
 								}, 200);
 							}
