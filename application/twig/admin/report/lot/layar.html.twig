@@ -162,9 +162,9 @@
 									</td>
 									<td id="total-hasil-prod-kg-shift{{ r_shift2 }}">
 									</td>
-									<td>{{ to_decimal(sum_scrap('endbutt', machine, r_shift2, tgl)) }}</td>
-									<td>{{ to_decimal(sum_scrap('scrap', machine, r_shift2, tgl)) }}</td>
-									<td>{# sum_scrap('lost', machine, r_shift2, tgl) #}</td>
+									<td id="total-endbutt-shift{{ r_shift2 }}">{{ to_decimal(sum_scrap('endbutt', machine, r_shift2, tgl)) }}</td>
+									<td id="total-scrap-shift{{ r_shift2 }}">{{ to_decimal(sum_scrap('scrap', machine, r_shift2, tgl)) }}</td>
+									<td class="total-loss-shift{{ r_shift2 }}"></td>
 								</tr>
 								
 								{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, r_shift2, tgl) %}
@@ -205,18 +205,16 @@
 												{% set hasil_prod_kg = get_hasil_prod_kg(master_row.master_detail_id, master_row.Length, rata2beratakt) %}
 												{{ to_decimal(hasil_prod_kg) }}
 											</td>
-											<td></td>
-											<td></td>
-											<td>
-											</td>
+											<td id="total-endbutt-shift{{ shift }}">{{ to_decimal(sum_scrap('endbutt', machine, shift, tgl)) }}</td>
+											<td id="total-scrap-shift{{ shift }}">{{ to_decimal(sum_scrap('scrap', machine, shift, tgl)) }}</td>
+											<td class="total-loss-shift{{ shift }}"></td>
 										</tr>
 
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + hasil_prod_kg %}
-										
-										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
+										{% set jumlah_akt_billet_kg =  jumlah_akt_billet_kg + master_row.target_prod %}
 
 									{% endfor %}
 								{% endif %}
@@ -229,11 +227,19 @@
 								<td colspan="4">
 									Shift {{ shift }}
 								</td>
-								<td colspan="5">
+								<td id="total-target-prod-btg-shift{{ shift }}">
 								</td>
-								<td>{{ sum_scrap('endbutt', machine, shift, tgl) }}</td>
-								<td>{{ sum_scrap('scrap', machine, shift, tgl) }}</td>
-								<td>{# sum_scrap('lost', machine, shift, tgl) #}</td>
+								<td id="total-target-prod-kg-shift{{ shift }}">
+								</td>
+								<td id="total-akt-billet-shift{{ shift }}">
+								</td>
+								<td id="total-hasil-prod-btg-shift{{ shift }}">
+								</td>
+								<td id="total-hasil-prod-kg-shift{{ shift }}">
+								</td>
+								<td id="total-endbutt-shift{{ shift }}">{{ to_decimal(sum_scrap('endbutt', machine, shift, tgl)) }}</td>
+								<td id="total-scrap-shift{{ shift }}">{{ to_decimal(sum_scrap('scrap', machine, shift, tgl)) }}</td>
+								<td class="total-loss-shift{{ shift }}">{# sum_scrap('lost', machine, shift, tgl) #}</td>
 								
 								{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, shift, tgl) %}
 								{% set jumlah_scrap = jumlah_scrap + sum_scrap('scrap', machine, shift, tgl) %}
@@ -256,20 +262,20 @@
 											<td>
 												{{ master_row.SectionDescription }}
 											</td>
-											<td>
+											<td class="target-prod-btg-shift{{ shift }}">
 												{{ target_prod_btg['target_prod_btg'] }}
-												
 											</td>
-											<td>
+											<td class="target-prod-kg-shift{{ shift }}">
 												{# sum_target_section('', machine, master_row.shift, tgl) #}
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
-											<td>{{ master_row.target_prod }}</td>
-											<td>
+											<td class="akt-billet-shift{{ shift }}">{{ master_row.target_prod }}</td>
+											<td class="hasil-prod-btg-shift{{ shift }}">
 												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, shift, tgl) %}
 												{{ to_decimal(hasil_prod_btg) }}
+											
 											</td>
-											<td>
+											<td class="hasil-prod-kg-shift{{ shift }}">
 												{% set rata2beratakt = to_decimal(get_rata2_berat_akt(master_row.master_detail_id)) %}
 												{% set hasil_prod_kg = get_hasil_prod_kg(master_row.master_detail_id, master_row.Length, rata2beratakt) %}
 												{{ to_decimal(hasil_prod_kg) }}
@@ -277,6 +283,8 @@
 											<td></td>
 											<td></td>
 											<td></td>
+												
+												
 										</tr>
 										
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
@@ -284,7 +292,7 @@
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + to_decimal(hasil_prod_kg) %}
 										
-										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
+										{% set jumlah_akt_billet_kg =  jumlah_akt_billet_kg +  master_row.target_prod %}
 
 									{% endfor %}
 								{% endif %}
@@ -296,7 +304,7 @@
 							<td colspan="5">Grand Total</td>
 							<td><b>{{ to_decimal(jumlah_target_prod_btg) }}</b></td>
 							<td><b class="total-prod-kg">{{ to_decimal(jumlah_target_prod_kg) }}</b></td>
-							<td><b>{{ to_decimal(jumlah_akt_billet_kg) }}</b></td>
+							<td><b class="total-akt-billet">{{ to_decimal(jumlah_akt_billet_kg) }}</b></td>
 							<td><b>{{ to_decimal(jumlah_hasil_prod_btg) }}</b></td>
 							<td><b class="total-hasil-prod-kg">{{ to_decimal(jumlah_hasil_prod_kg) }}</b></td>
 							<td><b></b></td>
@@ -353,6 +361,23 @@
                 return Math.round(total * 1000) / 1000;
             }
 			
+			function setLoss()
+			{
+				var aktBillet = $('.total-akt-billet').html();
+				var hasilProdKg = $('.total-hasil-prod-kg').html();
+				
+				for(var i = 1; i<= 2; i++) {
+					var sumTarget = 0;
+					var shiftTotal = $('.total-loss-shift'+i);
+					var endButtTotal = $('#total-endbutt-shift'+i).html();
+					var scrapTotal = $('#total-scrap-shift'+i).html();
+					
+					var hasilLoss = aktBillet - hasilProdKg - endButtTotal - scrapTotal;
+					
+					shiftTotal.html(decimal3(hasilLoss));
+				}
+			}
+			
 			function setTotalPershift(elTotal, elCounting)
 			{
 				for(var i = 1; i<= 2; i++) {
@@ -374,6 +399,7 @@
 				setTotalPershift('#total-akt-billet-shift', '.akt-billet-shift');
 				setTotalPershift('#total-hasil-prod-btg-shift', '.hasil-prod-btg-shift');
 				setTotalPershift('#total-hasil-prod-kg-shift', '.hasil-prod-kg-shift');
+				setLoss();
 				
 				
 			}, 500);
