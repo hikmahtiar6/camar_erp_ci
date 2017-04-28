@@ -377,19 +377,13 @@ function trims($str)
 	return trim($str);
 }
 
-function get_hasil_prod_btg($master_detail_id, $machine_id, $section_id)
+function get_hasil_prod_btg($mesin_id = '', $section_id = '', $shift = '', $tgl = '')
 {
+	error_reporting(0);
 	$ci =& get_instance();
 	$ci->load->model('master/lot_model');
 
-	$get_sum_jml_btg = $ci->lot_model->suming('a.jumlah_di_rak_btg', 0, $master_detail_id, $machine_id, $section_id)->row();
-
-	if($get_sum_jml_btg)
-	{
-		return $get_sum_jml_btg->jml;
-	}
-
-	return 0;
+	return $ci->lot_model->get_hasil_prod_btg($mesin_id, $section_id, $shift, $tgl);
 }
 
 function get_berat_hasil($master_detail_id, $machine_id, $section_id)
@@ -617,6 +611,14 @@ function sum_scrap($field, $machine, $shift, $tanggal)
 	$ci->load->model('master/scrap_model');
 	
 	return $ci->scrap_model->sum_field($field, $machine, $shift, $tanggal);
+}
+
+function get_last_billet_actual($master_detail_id = '')
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+	
+	return $ci->lot_model->get_last_billet_actual($master_detail_id);
 }
 
 ?>

@@ -248,8 +248,7 @@ class Dies extends CI_Controller
 
 		$data_save = array(
 			'Scrap'      => $scrap,
-			'EndButt'    => $endbutt, 
-			'Lost'       => $lost,
+			'EndButt'    => $endbutt,
 			'Shift'      => $shift,
 			'Tanggal'    => date('Y-m-d', strtotime($tanggal)),
 			'SpkHeaderId'=> $header_id,
@@ -260,12 +259,29 @@ class Dies extends CI_Controller
 		$check_data = $this->scrap_model->get_data_tgl_header($header_id, $tanggal, $shift);
 		if($check_data)
 		{
-			$this->scrap_model->update($check_data->LotScrapId, $data_save);
+			$save = $this->scrap_model->update($check_data->LotScrapId, $data_save);
 		}
 		else
 		{
-			$this->scrap_model->save($data_save);
+			$save = $this->scrap_model->save($data_save);
 		}
+
+		if($save)
+		{
+			$response = array(
+				'message' => 'Berhasil menyimpan scrap dan End butt',
+				'status'  => 'success'
+			);
+		}
+		else
+		{
+			$response = array(
+				'message' => 'Gagal menyimpan scrap dan End butt',
+				'status'  => 'danger'
+			);
+		}
+
+		$this->output->set_output(json_encode($response));
 
 	}
 

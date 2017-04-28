@@ -152,7 +152,7 @@
 									</td>
 									<td>{{ sum_scrap('endbutt', machine, r_shift2, tgl) }}</td>
 									<td>{{ sum_scrap('scrap', machine, r_shift2, tgl) }}</td>
-									<td>{{ sum_scrap('lost', machine, r_shift2, tgl) }}</td>
+									<td>{# sum_scrap('lost', machine, r_shift2, tgl) #}</td>
 								</tr>
 								
 								{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, r_shift2, tgl) %}
@@ -184,9 +184,12 @@
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
 											<td>{{ master_row.target_prod }}</td>
-											<td>{{ get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) }}</td>
+											<td>
+												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, r_shift2, tgl) %}
+												{{ hasil_prod_btg }}
+											
+											</td>
 											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
-											<td></td>
 											<td></td>
 											<td></td>
 											<td class="berta-billet">
@@ -199,7 +202,7 @@
 
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
-										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) %}
+										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
 										
 										{% set jumlah_akt_billet_kg =  master_row.target_prod %}
@@ -219,7 +222,7 @@
 								</td>
 								<td>{{ sum_scrap('endbutt', machine, shift, tgl) }}</td>
 								<td>{{ sum_scrap('scrap', machine, shift, tgl) }}</td>
-								<td>{{ sum_scrap('lost', machine, shift, tgl) }}</td>
+								<td>{# sum_scrap('lost', machine, shift, tgl) #}</td>
 								
 								{% set jumlah_endbutt = jumlah_endbutt + sum_scrap('endbutt', machine, shift, tgl) %}
 								{% set jumlah_scrap = jumlah_scrap + sum_scrap('scrap', machine, shift, tgl) %}
@@ -251,7 +254,10 @@
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
 											<td>{{ master_row.target_prod }}</td>
-											<td>{{ get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) }}</td>
+											<td>
+												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, shift, tgl) %}
+												{{ hasil_prod_btg }}
+											</td>
 											<td>{{ get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) }}</td>
 											<td></td>
 											<td></td>
@@ -260,7 +266,7 @@
 										
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
-										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + get_hasil_prod_btg(master_row.master_detail_id, machine, master_row.section_id) %}
+										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + get_berat_hasil(master_row.master_detail_id, machine, master_row.section_id) %}
 										
 										{% set jumlah_akt_billet_kg =  master_row.target_prod %}

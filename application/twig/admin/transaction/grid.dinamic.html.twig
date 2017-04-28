@@ -5,7 +5,9 @@
 		<th style="vertical-align: middle;">Target Produksi</th>
 		{% if tanggal|length > 0 %}
 			<th style="vertical-align: middle;">Scrap</th>
+			<!--
 			<th style="vertical-align: middle;">Lost</th>
+			-->
 			<th style="vertical-align: middle;">End Butt</th>
 			<th style="vertical-align: middle;">Operator 1</th>
 			<th style="vertical-align: middle;">Operator 2</th>
@@ -28,9 +30,11 @@
 				<input id="shift{{ key + 1 }}" type="hidden" value="{{ grid_row.shift }}">
 				<input class="form-control" id="scrap{{ key + 1 }}" type="text" value="{{ scrap_data['scrap'] }}">
 			</td>
+			<!--
 			<td>
 				<input class="form-control" id="lost{{ key + 1 }}" type="text" value="{{ scrap_data['lost'] }}">
 			</td>
+			-->
 			<td>
 				<input class="form-control" id="end_butt{{ key + 1 }}" type="text" value="{{ scrap_data['endbutt'] }}">
 			</td>
@@ -65,7 +69,7 @@
 	{% else %}
 	<tr>
 		{% if tanggal|length > 0 %}
-			<td colspan="7">Data tidak tersedia</td>
+			<td colspan="8">Data tidak tersedia</td>
 		{% else %}
 			<td colspan="3">Data tidak tersedia</td>
 		{% endif %}

@@ -1179,7 +1179,13 @@
     <script type="text/javascript">
         window.APP = {
             siteUrl: "{{ site_url() }}/",
-            baseUrl: "{{ base_url() }}/"
+            baseUrl: "{{ base_url() }}/",
+            decimal3: function(total) {
+                return Math.round(total * 1000) / 1000;
+            },
+            decimalSum: function(integer) {
+                return Math.round((integer) * 1e12) / 1e12;
+            }
         }
     </script>
 

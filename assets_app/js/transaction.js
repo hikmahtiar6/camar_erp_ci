@@ -1651,6 +1651,7 @@ window.TRANSACTION = (function($) {
 			$.ajax({
 				url: window.APP.siteUrl + 'admin/dies/save_scrap',
 				type: 'post',
+				dataType: 'json',
 				data: {
 					scrap: $(elScrap).val(),
 					lost: $(elLost).val(),
@@ -1660,6 +1661,9 @@ window.TRANSACTION = (function($) {
 					shift: $(elShift).val(),
 					opr1: $(elOpr1).val(),
 					opr2: $(elOpr2).val(),
+				},
+				success: function(response) {
+					$.notify(response.message, response.status);
 				}
 			});
 		}

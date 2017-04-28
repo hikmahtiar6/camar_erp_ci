@@ -406,7 +406,9 @@ window.LOT = (function($) {
 
 			$(elBtn).click(function() {
 				var date = new Date();
-				var time = date.getHours() + ':' + date.getMinutes();
+				var minutes = (date.getMinutes() < 10 ? '0' :'') + date.getMinutes();
+				var hours = (date.getHours() < 10 ? '0' :'') + date.getHours();
+				var time = hours + ':' + minutes;
 
 				if($(elInput).val() == "" || $(elInput).val() == " ")
 				{
@@ -425,7 +427,9 @@ window.LOT = (function($) {
 		handleSelesaiPukul: function(elBtn, elInputMulai, elInputSelesai, elSelisih) {
 			$(elBtn).click(function() {
 				var date = new Date();
-				var time = date.getHours() + ':' + date.getMinutes();
+				var minutes = (date.getMinutes() < 10 ? '0' :'') + date.getMinutes();
+				var hours = (date.getHours() < 10 ? '0' :'') + date.getHours();
+				var time = hours + ':' + minutes;
 
 				if($(elInputSelesai).val() == " " || $(elInputSelesai).val() == "")
 				{
@@ -593,7 +597,7 @@ window.LOT = (function($) {
 
 		handleLotBillet: function(elTable) {
 
-			Vue.component('billet-item', {
+			/*Vue.component('billet-item', {
 			  props: ['title'],
 			  template: `
 				 <tr>
@@ -606,6 +610,7 @@ window.LOT = (function($) {
 					<td>
 						<input type="text" v-model="title.billetVendorId" class="form-control" @keyup.enter="saveBillet(title)">
 					</td>
+
 					<td>
 						<button class="btn btn-danger btn-xs" @click="$emit('remove')">Hapus</button>
 					</td>
@@ -637,7 +642,7 @@ window.LOT = (function($) {
 					},
 					
 				}
-			});
+			});*/
 
 			var billetData = [];
 
@@ -665,6 +670,30 @@ window.LOT = (function($) {
 								});
 
 							},
+							saveBillet: function(row) {
+
+								var _this = this;
+
+								var postData = {
+									lot_billet_id    : row.lotBilletId,
+									p_billet_aktual  : row.pBilletActual,
+									jml_billet       : row.jmlBillet,
+									vendor_id        : row.billetVendorId,
+									master_detail_id : $('.master-detail-id').val()
+								};
+
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/lot/save_billet',
+									type: 'post',
+									dataType: 'json',
+									data: postData,
+									success: function(response) {
+										_this.$set(row, 'lotBilletId', response.id);
+
+										$.notify(response.message, response.status);
+									}
+								});
+							},
 							removeRowBillet: function(row) {
 
 								$.ajax({
@@ -681,7 +710,33 @@ window.LOT = (function($) {
 								this.billets.splice(row, 1);
 							},
 							
-						}
+						},
+
+						computed: {
+							totalBillet: function() {
+								var sum = 0;
+								var totalPerRow = 0;
+								var items = this.billets;
+
+								var billetWeight = $('.billet-weight').html();
+
+
+								for(var i in items)
+								{
+									var pBilletSum = window.APP.decimalSum(items[i].pBilletActual);
+									var jmlBilletSum = window.APP.decimalSum(items[i].jmlBillet);
+
+									totalPerRow += pBilletSum * jmlBilletSum * billetWeight;
+								}
+
+
+								var hasil = (sum / items.length * 2) / 1000;
+								setTimeout(function() {
+									$('#total-billet').html(window.APP.decimal3(totalPerRow));
+									//$('#rata-berat-ak').html(window.APP.decimal3(hasil));
+								}, 200);
+							}
+						},
 					});
 				}
 			});
@@ -689,25 +744,24 @@ window.LOT = (function($) {
 			
 		},
 
+		sumTotalBeratAktual: function() {
+			var sum = 0;
+			var inp = $('.inp-berat-akt');
+			inp.each(function() {
+				sum +=  Math.round(($(this).val()) * 1e12) / 1e12;
+			});
+
+			return sum;
+		},
+
 		handleLotBeratAktual: function(elTable) {
 
-			Vue.component('berat-actual-item', {
+			var __this = this;
+
+			/*Vue.component('berat-actual-item', {
 			  props: ['title'],
-			  template: `
-				 <tr>
-				  	<td>
-						{{ title.beratStd }}
-					</td>
-					<td>
-						<input type="text" v-model="title.beratAkt" class="form-control" @keyup.enter="saveBeratActual(title)">
-					</td>
-					<td>
-						{{ title.rataAkt }}
-					</td>
-					<td>
-						<button class="btn btn-danger btn-xs" @click="$emit('remove')">Hapus</button>
-					</td>
-				</tr>`,
+			  delimiters: ['<%', '%>'],
+			  template: '#template-berat-actual',
 				methods: {
 					saveBeratActual: function(row) {
 
@@ -719,7 +773,7 @@ window.LOT = (function($) {
 							master_detail_id     : $('.master-detail-id').val()
 						};
 
-						$.ajax({
+						/*$.ajax({
 							url: window.APP.siteUrl + 'admin/lot/save_berat_actual',
 							type: 'post',
 							dataType: 'json',
@@ -734,6 +788,7 @@ window.LOT = (function($) {
 					
 				}
 			});
+						*/
 
 			var beratData = [];
 
@@ -745,11 +800,14 @@ window.LOT = (function($) {
 					beratData = response;
 
 					var beratAktualTable = new Vue({
+			  			delimiters: ['<%', '%>'],
 						el: elTable,
 						data: {
 							beratAktuals: beratData,
+							totalBerat: 0,
 							submitted: false
 						},
+
 						methods: {
 							addNewRowBeratAktual: function() {
 								this.beratAktuals.push({
@@ -759,9 +817,30 @@ window.LOT = (function($) {
 									rataAkt: '',
 								});
 							},
+							saveBeratActual: function(row) {
+								var _this = this;
+
+								var postData = {
+									lot_berat_actual_id  : row.lotBeratId,
+									berat_akt            : row.beratAkt,
+									master_detail_id     : $('.master-detail-id').val()
+								};
+
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/lot/save_berat_actual',
+									type: 'post',
+									dataType: 'json',
+									data: postData,
+									success: function(response) {
+										_this.$set(row, 'lotBeratId', response.id);
+
+										$.notify(response.message, response.status);
+									}
+								});
+							},
 							removeRowBeratAktual: function(row) {
 								$.ajax({
-									url: window.APP.siteUrl + 'admin/lot/delete_berat_actual',
+									url: window.APP.siteUrl + 'admin/lot/delete_berat_actual/',
 									type: 'post',
 									data: {
 										'id': this.beratAktuals[row].lotBeratId
@@ -771,9 +850,27 @@ window.LOT = (function($) {
 										$.notify(response.message, response.status);
 									}
 								});
+
 								this.beratAktuals.splice(row, 1);
 							}
-						}
+						},
+						computed: {
+							total: function() {
+								var sum = 0;
+								var items = this.beratAktuals;
+
+								for(var i in items)
+								{
+									sum += window.APP.decimalSum(items[i].beratAkt);
+								}
+
+								var hasil = (sum / items.length * 2) / 1000;
+								setTimeout(function() {
+									$('#berat-standard2').html($('#berat-standard').html());
+									$('#rata-berat-ak').html(window.APP.decimal3(hasil));
+								}, 200);
+							}
+						},
 					});
 				}
 			});
@@ -781,7 +878,7 @@ window.LOT = (function($) {
 
 		handleLotHasil: function(elTable) {
 
-			Vue.component('hasil-item', {
+			/*Vue.component('hasil-item', {
 			  props: ['title'],
 			  template: `
 				 <tr>
@@ -791,6 +888,8 @@ window.LOT = (function($) {
 					<td>
 						<input type="text" v-model="title.jmlRak" class="form-control" @keyup.enter="saveHasil(title)">
 					</td>
+					<td></td>
+					
 					<td>
 						<button class="btn btn-danger btn-xs" @click="$emit('remove')">Hapus</button>
 					</td>
@@ -820,8 +919,8 @@ window.LOT = (function($) {
 						});
 					},
 					
-				}
-			});
+				},
+			});*/
 
 			var hasilData = [];
 
@@ -834,16 +933,41 @@ window.LOT = (function($) {
 
 					var hasilTable = new Vue({
 						el: elTable,
+						delimiters: ['<%', '%>'],
 						data: {
 							hasils: hasilData,
 							submitted: false
 						},
+						
 						methods: {
 							addNewRowHasil: function() {
 								this.hasils.push({
 									rak: '',
 									jmlRak: '',
 									none: ''
+								});
+							},
+							saveHasil: function(row) {
+
+								var _this = this;
+
+								var postData = {
+									lot_hasil_id     : row.lotHasilId,
+									rak              : row.rak,
+									jml_rak          : row.jmlRak,
+									master_detail_id : $('.master-detail-id').val()
+								};
+
+								$.ajax({
+									url: window.APP.siteUrl + 'admin/lot/save_hasil',
+									type: 'post',
+									dataType: 'json',
+									data: postData,
+									success: function(response) {
+										_this.$set(row, 'lotHasilId', response.id);
+
+										$.notify(response.message, response.status);
+									}
 								});
 							},
 							removeRowHasil: function(row) {
@@ -860,9 +984,52 @@ window.LOT = (function($) {
 								});
 								this.hasils.splice(row, 1);
 							}
-						}
+						},
+
+						computed: {
+							totalHasil: function() {
+
+								var sum = 0;
+								var items = this.hasils;
+
+								for(var i in items)
+								{
+									sum += window.APP.decimalSum(items[i].jmlRak);
+								}
+
+								setTimeout(function() {
+									var len = $('.lot-length').html();
+									var rata2akt = $('#rata-berat-ak').html();
+
+									var lotHasil = window.APP.decimal3(sum * len * rata2akt);
+									$('#hasil-berat-billet').html(lotHasil);
+									//$('#berat-standard2').html($('#berat-standard').html());
+									//$('#rata-berat-ak').html(window.APP.decimal3(hasil));
+								}, 500);
+							}
+						},
 					});
 				}
+			});
+		},
+
+		grupRowspan: function(elSpan) {
+			var span = 1;
+			var prevTD = "";
+			var prevTDVal = "";
+			$(elSpan).each(function() { //for each first td in every tr
+			  var $this = $(this);
+			  if ($this.text() == prevTDVal) { // check value of previous td text
+				 span++;
+				 if (prevTD != "") {
+					prevTD.attr("rowspan", span); // add attribute to previous td
+					$this.remove(); // remove current td
+				 }
+			  } else {
+				 prevTD     = $this; // store current td 
+				 prevTDVal  = $this.text();
+				 span       = 1;
+			  }
 			});
 		}
 	}

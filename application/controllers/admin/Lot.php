@@ -602,7 +602,7 @@ class Lot extends CI_Controller {
 			foreach($data as $row)
 			{
 				$response[] = array(
-					'lotBeratActualId' => $row->SpkLotBeratActualId,
+					'lotBeratId' => $row->SpkLotBeratActualId,
 					'beratAkt'         => $row->BeratAkt,
 					'beratStd'         => '',
 					'rataAkt'          => '',

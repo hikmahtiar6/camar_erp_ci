@@ -323,6 +323,34 @@ class Lot_model extends CI_Model {
 		return $get;	
 	}
 
+	/**
+	 * Get last billet actual
+	 */
+	public function get_last_billet_actual($master_detail_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE_BILLET);
+
+		if($master_detail_id != '')
+		{
+			$sql->where('MasterDetailId', $master_detail_id);
+		}
+
+		$sql->order_by('SpkLotBilletId', 'DESC');
+
+		$get = $sql->get();
+
+		$row = $get->row();
+
+		if($row)
+		{
+			return $row->PBilletActual;
+		}
+		return '';
+	}
+
 
 	/**
 	 * Save lot hasil
@@ -441,6 +469,49 @@ class Lot_model extends CI_Model {
 
 		$get = $sql->get();
 		return $get;	
+	}
+
+	/**
+	 * Get Hasil Prod (btg)
+	 */
+	public function get_hasil_prod_btg($mesin_id = '', $section_id = '', $shift = '', $tgl = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('SUM(CONVERT(DECIMAL(18, 3), a.JumlahBtgRak)) AS HasilProd');
+		$sql->from(static::TABLE_HASIL.' a');
+		$sql->join(static::TABLE_DETAIL.' b', 'a.MasterDetailId = b.master_detail_id', 'inner');
+		$sql->join(static::TABLE_HEAD.' c', 'b.header_id = c.header_id', 'inner');
+
+		if($mesin_id != '')
+		{
+			$sql->where('c.machine_id', $mesin_id);
+		}
+
+		if($section_id != '')
+		{
+			$sql->where('b.section_id', $section_id);
+		}
+
+		if($shift != '')
+		{
+			$sql->where('b.shift', $shift);
+		}
+
+		if($tgl != '')
+		{
+			$sql->where('b.tanggal', date('Y-m-d', strtotime($tgl)));
+		}
+
+		$get = $sql->get();
+		$row = $get->row();
+
+		if($row)
+		{
+			return $row->HasilProd;
+		}
+		
+		return '';
 	}
 }
 

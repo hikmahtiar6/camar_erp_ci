@@ -73,7 +73,7 @@ class Scrap_model extends CI_Model {
 		
 		$sql = $this->db;
 
-		$sql->select('SUM(CONVERT(INT, a.'.$field.')) as field');
+		$sql->select('SUM(CONVERT(DECIMAL(18, 3), a.'.$field.')) as field');
 		$sql->from(static::TABLE.' a');
 		$sql->join(static::TABLE_HEADER.' b', 'a.SpkHeaderId = b.header_id', 'inner');
 		$sql->where('b.machine_id', $machine);

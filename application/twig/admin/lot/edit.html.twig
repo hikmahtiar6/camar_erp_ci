@@ -6,6 +6,11 @@
 			padding: 5px;
 		}
 	</style> 
+	{% set section_id = '' %}
+
+	{% if get_detail %} 
+		{% set section_id = get_detail.section_id %}
+	{% endif %}
 
 	<div class="modal-header">
 	    <h4 class="modal-title pull-left" id="defaultModalLabel">
@@ -43,10 +48,15 @@
 				</td>
 				<td>
 					<!--<label>Operator 1</label>-->
-					<label>Scrap</label>
+					<!--<label>Scrap</label>-->
+					<label>Len</label>
 				</td>
 				<td style="width: 250px;">
+					<span class="lot-length">
+						{{ get_row_master('Length', machine, section_id) }}
+					</span>
 					
+					<!--
 					<div class="row clearfix">
 						<div class="col-md-8">
 	                        <input class="form-control" name="scrap" type="text" value="{% if get_detail_header %}{{ get_detail_header.scrap }}{% endif %}">
@@ -55,6 +65,7 @@
 							kg
 						</div>
 					</div>
+					-->
 					<!--<select class="form-control " name="opr1">
 						<option value="">- Pilih -</option>
 						{% if get_operator %}
@@ -85,9 +96,21 @@
 				</td>
 				<td>
 					<!--<label>Operator 2</label>-->
-					<label>Pot End Butt</label>
+					<!--<label>Pot End Butt</label>-->
+					<label>Billet Weight</label>
 				</td>
 				<td>
+					<!-- berat standard -->
+					<span id="berat-standard" style="display: none;">
+						{{ get_row_master('WeightStandard', machine, section_id) }}
+					</span>
+
+					<!-- billet weight -->
+					<span class="billet-weight">
+						{{ get_row_master('BilletWeight', machine, section_id) }}
+					</span>
+
+					<!--
 					<div class="row clearfix">
 						<div class="col-md-8">
                             <input class="form-control" name="potendbutt" type="text" value="{% if get_detail_header %}{{ get_detail_header.pot_end_butt }}{% endif %}">
@@ -96,6 +119,7 @@
 							kg
 						</div>
 					</div>
+					-->
 					<!--<select class="form-control" name="opr2">
 						<option value="">- Pilih -</option>
 						{% if get_operator2 %}
@@ -171,11 +195,11 @@
 					<label>Selisih Pukul</label>
 				</td>
 				<td>
-					{% if selesai_str != " " %}
 						<div class="div-selisih-waktu">
+					{% if selesai_str != " " %}
 							{{ selisih_waktu(get_detail.tanggal ~ ' '~ selesai ~ ':00', get_detail.tanggal ~ ' '~ mulai ~ ':00') }}
-						</div>
 					{% endif %}
+						</div>
 				</td>
 			</tr>
 			<tr>
@@ -203,6 +227,7 @@
 					<label>Panjang Billet Max</label>
 				</td>
 				<td>
+					{{ get_row_master('F2_BilletLengthTotalMax', machine, section_id) }}
 				</td>
 				<td>
 					<label>Bs. Blkg Actual</label>
@@ -222,6 +247,7 @@
 					<label>Panjang Billet Actual Terakhir</label>
 				</td>
 				<td>
+					{{ get_last_billet_actual(master_detail_id) }}
 				</td>
 				<td>
 					<label>Pressure Bar</label>
@@ -279,7 +305,7 @@
 									<td align="center">
 										<b>BILLET</b>
 									</td>
-									<td colspan="3">
+									<td colspan="4">
 										<button class="btn btn-primary" @click="addNewRowBillet">Tambah</button>
 									</td>
 								</tr>
@@ -293,18 +319,42 @@
 									<td>
 										Billet <br> VendorId
 									</td>
+									<td>
+										Total Billet
+									</td>
 									<td></td>
 								</tr>
-								<template >
-								<tr v-for="(billet, idxbillet) in billets"
+								<template 
+								v-for="(billet, idxbillet) in billets"
 								is="billet-item" 
 								v-bind:key="billet"
 								v-bind:title="billet"
 								v-on:remove="removeRowBillet(idxbillet)">
+								<tr >
+									<td>
+										<input type="text" v-model="billet.pBilletActual" class="form-control">
+									</td>
+									<td>
+										<input type="text" v-model="billet.jmlBillet" class="form-control">
+									</td>
+									<td>
+										<input type="text" v-model="billet.billetVendorId" class="form-control" @keyup.enter="saveBillet(billet)">
+									</td>
+									<td>
+										<span id="total-billet">
+											<% totalBillet %>
+										</span>
+									</td>
+									<td>
+										<button class="btn btn-danger btn-xs" @click="removeRowBillet(idxbillet)" title="Hapus">
+											<i class="material-icons">delete</i>
+										</button>
+									</td>
+
 								</tr>
+
 								</template>
 							</table>
-
 
 						</td>
 
@@ -324,24 +374,42 @@
 										Berat <br> Std
 									</td>
 									<td>
-										Berat <br> Akt/50
+										Berat <br> Akt/50<br>
+
 									</td>
 									<td>
 										Rata2 <br> Akt/m
+										<br>
 									</td>
 									<td></td>
 								</tr>
-								<template >
-								<tr v-for="(beratAktual, idxBeratktual) in beratAktuals"
+							<template id="template-berat-actual" 
+								v-for="(beratAktual, idxBeratktual) in beratAktuals"
 									is="berat-actual-item" 
 									v-bind:key="beratAktual"
-									v-bind:title="beratAktual"
-									v-on:remove="removeRowBeratAktual(idxBeratktual)"
+									v-bind:title="beratAktual">
+								<tr 
 									>
+									  	<td id="berat-standard2">
+											
+										</td>
+										<td>
+										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.enter="saveBeratActual(beratAktual)">
+										</td>
+										<td id="rata-berat-ak">
+											<% total %>
+										</td>
+										<td>
+											<button class="btn btn-danger btn-xs" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
+												<i class="material-icons">delete</i>
+											</button>
+										</td>
 									
 								</tr>
-								</template>
+							</template>
 							</table>
+
+								
 						</td>
 
 						<td valign="top">
@@ -350,7 +418,7 @@
 									<td align="center">
 										<b>HASIL</b>
 									</td>
-									<td colspan="2">
+									<td colspan="3">
 										<button class="btn btn-primary" @click="addNewRowHasil">Tambah</button>
 									</td>
 								</tr>
@@ -362,15 +430,31 @@
 									<td>
 										Jml Btg <br> Dirak
 									</td>
+									<td>Berat Billet</td>
 									<td></td>
 
 								</tr>
-								<template >
-								<tr v-for="(hasil, idxhasil) in hasils"
+								<template v-for="(hasil, idxhasil) in hasils"
 									is="hasil-item" 
 									v-bind:key="hasil"
-									v-bind:title="hasil"
-									v-on:remove="removeRowHasil(idxhasil)">
+									v-bind:title="hasil">
+								<tr >
+
+									<td>
+										<input type="text" v-model="hasil.rak" class="form-control">
+									</td>
+									<td>
+										<input type="text" v-model="hasil.jmlRak" class="form-control" @keyup.enter="saveHasil(hasil)">
+									</td>
+									<td id="hasil-berat-billet">
+										<% totalHasil %>
+									</td>
+									
+									<td>
+										<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
+											<i class="material-icons">delete</i>
+										</button>
+									</td>
 									
 								</tr>
 								</template>
