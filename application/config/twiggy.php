@@ -239,7 +239,10 @@ $config['twiggy']['register_functions'] = array
 	'number_float',
 	'to_decimal',
 	'get_rata2_berat_akt',
-	'get_hasil_prod_kg'
+	'get_hasil_prod_kg',
+	'get_total_billet',
+	'date_now',
+	'get_jumlah_billet_kg'
 );
 
 

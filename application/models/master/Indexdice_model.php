@@ -15,6 +15,9 @@ class Indexdice_model extends CI_Model {
 	const TABLE_BARANG = 'Inventory.Sections';
 	const TABLE_PROBLEM = 'dbo.DiesProblem';
 	const TABLE_LOT = 'dbo.SpkLot';
+	const TABLE_BILLET = 'SpkLotBillet';
+	const TABLE_BERAT_ACTUAL = 'SpkLotBeratActual';
+	const TABLE_HASIL = 'SpkLotHasil';
 
 	public function __construct()
 	{
@@ -253,12 +256,13 @@ class Indexdice_model extends CI_Model {
 	 /**
 	  * Get history card filter
 	  */
-	 public function filter_history_card($section_id = '', $dice = '')
+	 public function filter_history_card($section_id = '', $dice = '', $tgl = '')
 	 {
 	 	$sql = $this->db;
 
-	 	$sql->select('a.*');
+	 	$sql->select('a.*, b.PBilletActual, b.JumlahBillet');
 	 	$sql->from(static::TABLE_SPK.' a');
+		$sql->join(static::TABLE_BILLET.' b', 'a.master_detail_id = b.MasterDetailId', 'left');
 
 	 	if($section_id != '')
 	 	{
@@ -269,10 +273,15 @@ class Indexdice_model extends CI_Model {
 	 	{
 	 		$sql->like('a.index_dice', $dice);
 	 	}
+		
+		if($tgl != '')
+		{
+			$sql->where('a.tanggal', change_format_date($tgl));
+		}
 
 	 	$get = $sql->get();
 
-	 	return $get->result();
+	 	return $get->result_array();
 	 }
 
 	/**

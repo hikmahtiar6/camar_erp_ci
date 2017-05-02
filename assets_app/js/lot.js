@@ -729,8 +729,6 @@ window.LOT = (function($) {
 									totalPerRow += pBilletSum * jmlBilletSum * billetWeight;
 								}
 
-
-								var hasil = (sum / items.length * 2) / 1000;
 								setTimeout(function() {
 									$('#total-billet').html(window.APP.decimal3(totalPerRow));
 									//$('#rata-berat-ak').html(window.APP.decimal3(hasil));

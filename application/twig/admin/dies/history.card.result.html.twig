@@ -39,14 +39,27 @@
 				{% set koreksi = dies_problem['koreksi'] %}
 				{% set korektor = dies_problem['korektor'] %}
 			{% endif %}
-			{% for row in data %}
+			{% set jml_billet =  0 %}
+			{% set jml_kg =  0 %}
+			{% for key, row in data %}
+			
 			<tr>
-				<td>{{ row.tanggal }}</td>
-				<td>{{ row.p_billet_aktual }}</td>
-				<td>{{ row.jumlah_billet }}</td>
-				<td></td>
-				<td>{{ row.berat_ak }}</td>
-				<td></td>
+				<td>{{ row.tanggal|date('d-M-Y') }}</td>
+				<td>{{ row.PBilletActual }}</td>
+				<td>{{ row.JumlahBillet }}</td>
+				<td>
+					{% set billet_weight = to_decimal(get_row_master('BilletWeight', '', row.section_id)) %}
+					{% set jumlah_kg = to_decimal(get_jumlah_billet_kg(row.PBilletActual, row.JumlahBillet, billet_weight)) %}
+					{{ jumlah_kg }}
+				</td>
+				<td>
+					 {% set jml_billet =  jml_billet + row.JumlahBillet %}
+					 {{ jml_billet }}
+				</td>
+				<td>
+					{% set jml_kg =  jml_kg + jumlah_kg %}
+					{{ jml_kg }}
+				</td>
 				<td></td>
 				<td>{{ problem }}</td>
 				<td>{{ koreksi }}</td>

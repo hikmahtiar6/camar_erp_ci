@@ -7,7 +7,7 @@ function dump($dumping)
 
 function arr_push($arr, $data)
 {
-	return array_push($arr, $data);
+	array_push($arr, $data);
 }
 
 function arr_sum($arr)
@@ -674,6 +674,39 @@ function get_hasil_prod_kg($master_detail_id = '', $len = '0', $rata2_berat_ak =
 	$hasil = $sum * $len * $rata2_berat_ak;
 	
 	return $hasil;
+}
+
+/**
+ * Get total billet
+ */
+function get_total_billet($master_detail_id = '', $billet_weight = 0)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+	
+	$data = $ci->lot_model->get_lot_billet($master_detail_id)->result();
+	
+	$sum = 0;
+	
+	if($data)
+	{
+		foreach($data as $row) 
+		{
+			$sum += $row->PBilletActual * $row->JumlahBillet;
+		}
+	}
+	
+	$hasil = $sum;
+	
+	return $hasil;
+}
+
+/**
+ * Get jumlah billet kg
+ */
+function get_jumlah_billet_kg($panjang = 0, $jumlah = 0, $billet_weight = 0)
+{
+	return $panjang * $jumlah * $billet_weight;
 }
 
 ?>

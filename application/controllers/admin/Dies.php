@@ -305,8 +305,9 @@ class Dies extends CI_Controller
 	{
 		$dice = $this->input->post('dice');
 		$section_id = $this->input->post('section');
+		$tanggal = $this->input->post('tanggal');
 
-		$data = $this->indexdice_model->filter_history_card($section_id, $dice);
+		$data = $this->indexdice_model->filter_history_card($section_id, $dice, $tanggal);
 		$this->twiggy->set('data', $data);
 		$this->twiggy->set('dice', $dice);
 		$this->twiggy->set('section_id', $section_id);

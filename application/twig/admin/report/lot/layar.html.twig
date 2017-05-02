@@ -194,7 +194,11 @@
 												{# sum_target_section('', machine, master_row.shift, tgl) #}
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
-											<td class="akt-billet-shift{{ r_shift2 }}">{{ master_row.target_prod }}</td>
+											<td class="akt-billet-shift{{ r_shift2 }}">
+												{% set billet_weight = to_decimal(get_row_master('BilletWeight', machine, master_row.section_id)) %}
+												{% set total_billet = get_total_billet(master_row.master_detail_id, billet_weight) %}
+												{{ total_billet }}
+											</td>
 											<td class="hasil-prod-btg-shift{{ r_shift2 }}">
 												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, r_shift2, tgl) %}
 												{{ to_decimal(hasil_prod_btg) }}
@@ -214,7 +218,7 @@
 										{% set jumlah_target_prod_kg = jumlah_target_prod_kg + target_prod_btg['target_section_kg'] %}
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + hasil_prod_kg %}
-										{% set jumlah_akt_billet_kg =  jumlah_akt_billet_kg + master_row.target_prod %}
+										{% set jumlah_akt_billet_kg =  jumlah_akt_billet_kg + total_billet %}
 
 									{% endfor %}
 								{% endif %}
@@ -269,7 +273,11 @@
 												{# sum_target_section('', machine, master_row.shift, tgl) #}
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
-											<td class="akt-billet-shift{{ shift }}">{{ master_row.target_prod }}</td>
+											<td class="akt-billet-shift{{ shift }}">
+												{% set billet_weight = to_decimal(get_row_master('BilletWeight', machine, master_row.section_id)) %}
+												{% set total_billet = get_total_billet(master_row.master_detail_id, billet_weight) %}
+												{{ total_billet }}
+											</td>
 											<td class="hasil-prod-btg-shift{{ shift }}">
 												{% set hasil_prod_btg = get_hasil_prod_btg(machine, master_row.section_id, shift, tgl) %}
 												{{ to_decimal(hasil_prod_btg) }}
@@ -292,7 +300,7 @@
 										{% set jumlah_hasil_prod_btg = jumlah_hasil_prod_btg + hasil_prod_btg %}
 										{% set jumlah_hasil_prod_kg = jumlah_hasil_prod_kg + to_decimal(hasil_prod_kg) %}
 										
-										{% set jumlah_akt_billet_kg =  jumlah_akt_billet_kg +  master_row.target_prod %}
+										{% set jumlah_akt_billet_kg =  jumlah_akt_billet_kg +  total_billet %}
 
 									{% endfor %}
 								{% endif %}
