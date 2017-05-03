@@ -1,0 +1,297 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	
+{% endblock %}
+
+{% block content %}
+
+	<div class="row clearfix">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="card" style="width: 100%; margin: 0 auto !important;">
+
+				<div class="header">
+					<h2>
+						Daftar DO Dies
+					</h2>
+				</div>
+				
+				<div class="body">
+					
+					<div style="position: absolute; right: 0; top: 70px; ">
+						<table style="width: 200px">
+							<tr>
+								<td colspan="3" align="center">
+									Navigasi Tabel
+								</td>
+							</tr>
+							<tr align="center">
+								<td>
+									<a class="kiri" href="javascript:;">
+									
+										<i class="material-icons">arrow_back</i>
+									</a>
+								</td>
+								<td align="center">
+								</td>
+								<td>
+									<a class="kanan" href="javascript:;">
+										<i class="material-icons">arrow_forward</i>
+									</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+					
+					<div class="wrap-grid" style="overflow: auto;">
+					<div class="vue-do">
+						
+						<button class="btn btn-primary" @click="addNewRow">
+							Tambah
+						</button>
+												
+						<br />
+						<br />
+						
+						<table class="table table-bordered" id="tbl-do">
+							<thead>
+								<tr>
+									<td>
+										
+									</td>
+									<td>
+										<b>Customer Name</b>
+									</td>
+									<td>
+										<b>Supplier</b>
+									</td>
+									<td>
+										<b>DO COntract No</b>
+									</td>
+									<td>
+										<b>DO Date</b>
+									</td>
+									<td>
+										<b>Status</b>
+									</td>
+									<td>
+										<b>RCV Date</b>
+									</td>
+									<td>
+										<b>RCV No</b>
+									</td>
+									<td>
+										<b>Line No</b>
+									</td>
+									<td>
+										<b>Catatan</b>
+									</td>
+									<td>
+										<b>Die Type</b>
+									</td>
+									<td>
+										<b>SubComp</b>
+									</td>
+									<td>
+										<b>Product Code</b>
+									</td>
+									<td>
+										<b>Size</b>
+									</td>
+									<td>
+										<b>Unit</b>
+									</td>
+									<td>
+										<b>Quantity</b>
+									</td>
+									<td>
+										<b>Year</b>
+									</td>
+									<td>
+										<b>Year + Index</b>
+									</td>
+									<td>
+										<b>Final Idx</b>
+									</td>
+									<td>
+										<b>JE Idx</b>
+									</td>
+									<td>
+										<b>FinalIndex</b>
+									</td>
+									<td>
+										<b>FinalSuffix</b>
+									</td>
+									<td>
+										<b>Change Idx?</b>
+									</td>
+									<td>
+										<b>N.W.</b>
+									</td>
+									<td>
+										<b>G.W.</b>
+									</td>
+									<td>
+										<b>Size/cm</b>
+									</td>
+									<td>
+										<b>CBM</b>
+									</td>
+									<td>
+										<b>Nomor PO</b>
+									</td>
+									<td>
+										<b>Year2</b>
+									</td>
+									<td>
+										<b>PO Date</b>
+									</td>
+									<td>
+										<b>SectionId</b>
+									</td>
+									<td>
+										<b>Section Name</b>
+									</td>
+									<td>
+										<b>Comps</b>
+									</td>
+									<td>
+										<b>Tebal</b>
+									</td>
+									<td>
+										<b>Mesin</b>
+									</td>
+									<td>
+										<b>Billet</b>
+									</td>
+									<td>
+										<b>Hole</b>
+									</td>
+									<td>
+										<b>POUnitPrice</b>
+									</td>
+									<td>
+										<b>Total PO</b>
+									</td>
+									<td>
+										<b>InvUnitPrice</b>
+									</td>
+									<td>
+										<b>Rate</b>
+									</td>
+									<td>
+										<b>InvUP_Rp</b>
+									</td>
+									<td>
+										<b>Total Invoice</b>
+									</td>
+									<td>
+										<b>Inv_TotalRp</b>
+									</td>
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<template
+									v-for="(doRow, idx) in doData"
+									v-bind:key="doRow"
+									v-bind:title="doRow">
+									<tr>
+										<td>
+											<button class="btn btn-xs btn-danger" @click="removeRow(idx)">
+												<i class="material-icons">delete</i>
+											</button>
+										</td>
+										<td>
+											<input class="width100" type="text" v-model="doRow.customerName"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="width100 date-bootstrap" type="text"/>
+										</td>
+										<td>
+											<select>
+												<option>
+													PO
+												</option>
+												<option>
+													In Transit
+												</option>
+												<option>
+													Received
+												</option>
+											</select>
+										</td>
+										<td>
+											<input class="width100 date-bootstrap" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+									</tr>
+									
+								</template>
+								
+							</tbody>
+						</table>
+						
+					</div>
+					</div>
+					
+					
+				</div>
+				
+
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/date.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/do.js') }}"></script>
+	<script type="text/javascript">
+
+		window.DO.handleNavigate();
+		window.DO.handleTable();
+		
+		window.DATE.init();
+	</script>
+
+{% endblock %}

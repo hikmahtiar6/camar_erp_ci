@@ -1,9 +1,9 @@
 <?php
 /**
- * CLass Po
+ * CLass Do
  * @author Hikmahtiar <hikmahtiar.cool@gmail.com>
  */
-class Po extends CI_Controller {
+class DeliveryOrder extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
@@ -11,7 +11,7 @@ class Po extends CI_Controller {
     
     public function index()
     {
-        $this->twiggy->display('admin/po/index');
+        $this->twiggy->display('admin/do/index');
     }
 }
 ?>
