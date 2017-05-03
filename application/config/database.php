@@ -75,11 +75,11 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost\SQLEXPRESS',
-	'username' => 'sa',
-	'password' => 'rootmssql',
-	'database' => 'ArumiExtrusion',
-	'dbdriver' => 'sqlsrv',
+	'hostname' => '',
+	'username' => '',
+	'password' => '',
+	'database' => '',
+	'dbdriver' => 'mssql',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
