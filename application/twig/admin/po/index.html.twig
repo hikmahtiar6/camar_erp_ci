@@ -14,16 +14,136 @@
 
 				<div class="header">
 					<h2>
-						Daftar PO
+						Daftar PO Dies
 					</h2>
 				</div>
 				
 				<div class="body">
-					
-					
+					<form method="POST">
+						<label>Tanggal</label><br>
+						<input class="form-control date-bootstrap" name="tanggal" style="width: 40%" value="01/08/2015">
+						<br>
+						<input type="submit" class="btn btn-success" value="Cari">
+					</form>	
+					<hr>
+					<table class="table table-bordered" id="result" style="display:none;">
+						<tr>
+							<th>SectionID</th>
+							<th>Sec Name</th>
+							<th>FIDX#</th>
+							<th>Product Code</th>
+							<th>JE Idx</th>
+							<th>InvUP_Rp</th>
+							<th>SubComp</th>
+							<th>Nomor PO</th>
+							<th>Qty</th>
+							<th>Total Inv (CNY)</th>
+							<th>Total PO (IDR)</th>
+						</tr>
+						<tr>
+							<td colspan="8" align="center" bgcolor="yellow"><b>01 Agustus 2015</b></td>
+							<td>65</td>
+							<td>123,533</td>
+							<td>298,948,650</td>
+						</tr>
+							<td colspan="8"><b>E-0-01-2015</b></td>
+							<td>65</td>
+							<td>123,533</td>
+							<td>298,948,650</td>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+						<tr>
+							<td>035</td>
+							<td>035 [0.80]</td>
+							<td>1</td>
+							<td>0035M</td>
+							<td>1</td>
+							<td>3,932,500</td>
+							<td>FM</td>
+							<td>EM150707001</td>
+							<td>1</td>
+							<td>1,625</td>
+							<td>3,932,500</td>
+						</tr>
+					</table>
 				</div>
 				
-
 			</div>
 
 		</div>
@@ -36,7 +156,10 @@
 	{{ parent() }}
 
 	<script type="text/javascript" src="{{ base_url('assets_app/js/po.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/date.js') }}"></script>
 	<script type="text/javascript">
+	window.DATE.init();
+	window.PO.init();
 	</script>
 
 {% endblock %}
