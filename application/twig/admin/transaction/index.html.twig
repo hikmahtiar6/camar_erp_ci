@@ -85,13 +85,39 @@
 	            </div>
 
 
-	            <div class="body" style="overflow: auto; padding: 5px">
+	            <div style="overflow: auto; padding: 5px">
 
 
 		            <div class="col-md-12 body-width">
-
-			            	<table class="table table-bordered grid-dinamic" style="width: 70%">
-			            	</table>
+						
+						<table class="table table-bordered grid-dinamic" style="width: 70%">
+		            	</table>
+							
+						<div style="position: absolute; right: 0; top: 0; ">
+							<table style="width: 200px">
+								<tr>
+									<td colspan="3" align="center">
+										Navigasi Tabel
+									</td>
+								</tr>
+								<tr align="center">
+									<td>
+										<a class="kiri" href="javascript:;">
+										
+											<i class="material-icons">arrow_back</i>
+										</a>
+									</td>
+									<td align="center">
+									</td>
+									<td>
+										<a class="kanan" href="javascript:;">
+											<i class="material-icons">arrow_forward</i>
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+						
 		            	<form class="frm-scrap" method="post" action="{{ site_url('admin/dies/save_scrap') }}">
 		            	</form>
 
@@ -137,9 +163,13 @@
 
 		            	<br>
 		            	<br>
+						
+						<div class="wrap-grid" style="overflow: auto; padding: 5px">
+							<table class="list-spk table table-hovered" id="list2" cellpadding="0" cellspacing="0" style="width: 100%"></table>
+							<div class="opr-spk" id="pager2" style="text-align:center;"></div>
+							
+						</div>
 
-		            	<table class="list-spk table table-hovered" id="list2" cellpadding="0" cellspacing="0" style="width: 100%"></table>
-						<div class="opr-spk" id="pager2" style="text-align:center;"></div>
 		                
 		                <!--<table class="table table-bordered table-striped table-transaksi">
 		                	<thead>

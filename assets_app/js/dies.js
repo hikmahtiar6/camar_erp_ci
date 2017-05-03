@@ -131,7 +131,11 @@ window.DIES = (function($) {
 			
 			
 			$('.card-form').ajaxForm({
+				beforeSend: function() {
+					APP.loader().show();
+				},
 				success: function(response) {
+					APP.loader().hide();
 					$('.result-card').html(response);
 				}
 			});

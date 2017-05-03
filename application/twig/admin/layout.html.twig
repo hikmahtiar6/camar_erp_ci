@@ -51,6 +51,7 @@
 
     <!-- Custom Css -->
     <link href="{{ base_url('assets_app/css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ base_url('assets_app/css/themes/all-themes.min.css') }}" rel="stylesheet" />
@@ -380,6 +381,12 @@
                         <a href="{{ site_url('admin/dies/history_card') }}">
                             <i class="material-icons">layers</i>
                             <span>Dies History Card</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ site_url('admin/po') }}">
+                            <i class="material-icons">layers</i>
+                            <span>PO</span>
                         </a>
                     </li>
                     <!--
@@ -1185,6 +1192,9 @@
             },
             decimalSum: function(integer) {
                 return Math.round((integer) * 1e12) / 1e12;
+            },
+            loader: function() {
+                return $('.loader');
             }
         }
     </script>

@@ -69,6 +69,15 @@
 .bg-gray {
 	background: #DDD;
 }
+
 .bold {
 	font-weight: bold;
+}
+
+.loader {
+    width: 30px;
+}
+
+.not-show {
+    display: none;
 }

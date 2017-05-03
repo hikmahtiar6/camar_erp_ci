@@ -917,7 +917,7 @@ window.TRANSACTION = (function($) {
 		},
 
 		handlejqGrid: function() {
-			$.jgrid.defaults.responsive = true;     
+			//$.jgrid.defaults.responsive = true;     
 			//$.jgrid.defaults.width = $('.navbar').width() - 150;     
 		    $.jgrid.defaults.styleUI = 'Bootstrap';
 			
@@ -1636,8 +1636,26 @@ window.TRANSACTION = (function($) {
 				dataType: 'html',
 				success: function(response) {
 					table.html(response);
+					
+					var listSpk = $('.wrap-grid');
+					$('.kanan').click(function() {
+						
+						var pos = listSpk.scrollLeft() + 150;
+						listSpk.animate({
+							scrollLeft:pos
+						}, 200);
+					});
+					
+					$('.kiri').click(function() {
+						
+						var pos = listSpk.scrollLeft() - 150;
+						listSpk.animate({
+							scrollLeft:pos
+						}, 200);
+					});
 				}
 			});
+			
 		},
 
 		handleModalLot: function(masterDetailId) {
