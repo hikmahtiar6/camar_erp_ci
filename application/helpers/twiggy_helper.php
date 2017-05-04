@@ -335,9 +335,9 @@ function number_float($val) {
 	return (float) number_format($val, 3, ',', '.');
 }
 
-function to_decimal($val)
+function to_decimal($val, $num = 3)
 {
-	return round($val, 3, PHP_ROUND_HALF_ODD);
+	return round($val, $num, PHP_ROUND_HALF_ODD);
 }
 
 function check_array($array)

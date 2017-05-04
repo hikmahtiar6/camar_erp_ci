@@ -95,8 +95,8 @@
 							<th style="vertical-align: middle; width: 200px;">Section Id</th>
 							<th style="vertical-align: middle; width: 400px;">Section Name</th>
 							<th style="vertical-align: middle;">Finishing</th>
-							<th style="vertical-align: middle;">Tbl</th>
-							<th style="vertical-align: middle;">Tol</th>
+							<th style="vertical-align: middle;">Tbl Min</th>
+							<th style="vertical-align: middle;">Tbl Max</th>
 							<th style="vertical-align: middle;">Hole</th>
 							<th style="vertical-align: middle;">Berat Std</th>
 							<th style="vertical-align: middle;">PPIC Note</th>
@@ -105,7 +105,10 @@
 							<th style="vertical-align: middle;">Pull Awal</th>
 							<th style="vertical-align: middle;">BS Blkg</th>
 							<th style="vertical-align: middle; width: 100px"">P Tarik</th>
+							<th style="vertical-align: middle; width: 100px"">BeratMax</th>
+							<th style="vertical-align: middle; width: 100px"">BeratMin</th>
 							<th style="vertical-align: middle; width: 100px">H Jadi</th>
+							<th style="vertical-align: middle;">BltMin</th>
 							<th style="vertical-align: middle;">BltMax</th>
 							<th style="vertical-align: middle;">BltVen</th>
 							<th style="vertical-align: middle;">FrBlt</th>
@@ -114,7 +117,7 @@
 
 						</tr>
 						<tr>
-							<td class="bg-gray font12 bold" colspan="21" align="center">
+							<td class="bg-gray font12 bold" colspan="24" align="center">
 								{{ tanggal }}
 							</td>
 						</tr>
@@ -150,18 +153,21 @@
 							<td>{{ row_data.section_id }}</td>
 							<td class="font12" style="width: 300px;">{{ row_data.SectionDescription }}</td>
 							<td>{{ row_data.finishing_name }}</td>
-							<td>{{ row_data.ThicknessLowerLimit|number_format(3, '.', ',') }}</td>
-							<td>{{ row_data.ThicknessUpperLimit|number_format(3, '.', ',') }}</td>
+							<td>{{ to_decimal(row_data.ThicknessLowerLimit, 2) }}</td>
+							<td>{{ to_decimal(row_data.ThicknessUpperLimit, 2) }}</td>
 							<td>{{ row_data.HoleCount }}</td>
 							<td>{{ row_data.WeightStandard|number_format(3, '.', ',') }}</td>
 							<td>{{ row_data.ppic_note }}</td>
 							<td class="font12" style="width: 300px;">{{ convert_dice2(row_data.index_dice) }}</td>
 							<td>{{ row_data.BolsterTypeId }}</td>
-							<td>{{ row_data.InitialPullingLength }}m</td>
-							<td>{{ row_data.BadEndLength }}m</td>
-							<td>{{ row_data.F2_PullingLength }}m</td>
+							<td>{{ to_decimal(row_data.InitialPullingLength, 2) }}m</td>
+							<td>{{ to_decimal(row_data.BadEndLength, 2) }}m</td>
+							<td>{{ to_decimal(row_data.F2_PullingLength, 1) }}m</td>
+							<td>{{ to_decimal(row_data.WeightUpperLimit, 2) }}m</td>
+							<td>{{ to_decimal(row_data.WeightLowerLimit, 2) }}m</td>
 							<td>{{ row_data.F2_EstFG }} BTG</td>
-							<td>{{ row_data.F2_EstBilletLengthMax }}m</td>
+							<td>{{ to_decimal(row_data.F2_EstBilletLengthMin, 2) }}cm</td>
+							<td>{{ to_decimal(row_data.F2_EstBilletLengthMax, 2) }}cm</td>
 							<td>{{ '' }}</td>
 							<td>{{ row_data.F2_FreqBillet }} Blt</td>
 							<td>{{ row_data.F2_FreqCut }}xPot</td>
@@ -176,7 +182,7 @@
 					</tbody>
 					<tfoot>
 						<tr class="font12 bold">
-							<th class="bg-gray" colspan="20">Grand Total</th>
+							<th class="bg-gray" colspan="23">Grand Total</th>
 							<th class="bg-gray"> {{ total }} Blt</th>
 						</tr>
 					</tfoot>

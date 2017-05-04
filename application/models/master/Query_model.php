@@ -122,8 +122,11 @@ class Query_model extends CI_Model
 				g.F2_PullingLength,
 				g.F2_EstFG,
 				g.F2_EstBilletLengthMax,
+				F2_EstBilletLengthMin,
 				g.F2_FreqBillet,
-				g.F2_FreqCut	
+				g.F2_FreqCut,
+				g.WeightUpperLimit,	
+				g.WeightLowerLimit
 				
 			FROM dbo.SpkDetail d
 			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
