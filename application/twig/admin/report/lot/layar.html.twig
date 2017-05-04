@@ -209,9 +209,12 @@
 												{% set hasil_prod_kg = get_hasil_prod_kg(master_row.master_detail_id, master_row.Length, rata2beratakt) %}
 												{{ to_decimal(hasil_prod_kg) }}
 											</td>
-											<td id="total-endbutt-shift{{ shift }}">{{ to_decimal(sum_scrap('endbutt', machine, shift, tgl)) }}</td>
-											<td id="total-scrap-shift{{ shift }}">{{ to_decimal(sum_scrap('scrap', machine, shift, tgl)) }}</td>
-											<td class="total-loss-shift{{ shift }}"></td>
+											<td>
+											</td>
+											<td>
+											</td>
+											<td>
+											</td>
 										</tr>
 
 										{% set jumlah_target_prod_btg = jumlah_target_prod_btg + target_prod_btg['target_prod_btg'] %}

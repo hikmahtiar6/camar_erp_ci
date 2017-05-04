@@ -215,6 +215,22 @@ class Indexdice_model extends CI_Model {
 	/**
 	 * get last log
 	 */
+	public function get_last_datetime_log($dies_id)
+	{
+		$sql = $this->db;
+
+		$sql->select('a.LogTime');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->where('a.DiesId', $dies_id);
+		$sql->order_by('a.LogTime', 'desc');
+
+		$get = $sql->get();
+		return $get->row();
+	}
+	
+	/**
+	 * get last log
+	 */
 	public function get_last_log_by_dies($dies)
 	{
 		$sql = $this->db;

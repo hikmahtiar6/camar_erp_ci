@@ -549,6 +549,20 @@ function get_last_location_log_dies($dies_id)
 	return '-';
 }
 
+function get_last_datetime_log_dies($dies_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/indexdice_model');
+
+	$data = $ci->indexdice_model->get_last_datetime_log($dies_id);
+	if($data)
+	{
+		return $data->LogTime;
+	}
+
+	return '-';
+}
+
 function get_last_problem_log_dies($dies_id)
 {
 	$ci =& get_instance();

@@ -36,6 +36,7 @@
 					<table class="table table-bordered dies-history-table" style="width: 100%; margin-top: -20px !important;">
 						<thead>
 							<tr align="center">
+								<td><b>Tanggal</b></td>
 								<td><b>Dies ID</b></td>
 								<td><b>Status</b></td>
 								<td><b>Note</b></td>
@@ -50,6 +51,7 @@
 									{% set dies_status =  get_last_status_log_dies(row.DiesId) %}
 									{% set dies_problem =  get_last_problem_log_dies(row.DiesId) %}
 									{% set last_log = get_last_log_by_dies(row.DiesId) %}
+									{% set datetime_log = get_last_datetime_log_dies(row.DiesId) %}
 
 									{% set problem_id = "" %}
 									{% set problem = "" %}
@@ -64,6 +66,7 @@
 										{% set history_card = last_log.DiesHistoryCardLogId %}
 									{% endif %}
 									<tr>
+										<td>{{ datetime_log|date('d-m-Y H:i:s') }}</td>
 										<td>{{ row.DiesId }}</td>
 										<td>{{ dies_status }}</td>
 										<td>{{ problem }}</td>
