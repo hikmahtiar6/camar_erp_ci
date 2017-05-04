@@ -4,7 +4,7 @@
  */
 class OperatorLot_model extends CI_Model {
 
-	const TABLE = 'OperatorLot';
+	const TABLE = 'Operator';
 
 	public function __construct()
 	{

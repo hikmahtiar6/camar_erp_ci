@@ -415,7 +415,7 @@ window.LOT = (function($) {
 					$(elInput).val(time);
 				}
 
-				_this.handleSaveCardLog("0", 1, $(elIdxDies).val());
+				_this.handleSaveCardLog("4", 1, $(elIdxDies).val());
 
 
 				var formHeaderLot = $('.form-header-lot');

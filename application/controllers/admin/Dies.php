@@ -171,7 +171,7 @@ class Dies extends CI_Controller
 		$koreksi = $this->input->post('koreksi');
 		$korektor = $this->input->post('korektor');
 
-		if($status)
+		if(isset($status))
 		{
 			$data = array(
 				'LogTime'        => date('Y-m-d H:i:s'),
