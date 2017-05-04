@@ -350,7 +350,10 @@
 										</span>
 									</td>
 									<td>
-										<button class="btn btn-danger btn-xs" @click="removeRowBillet(idxbillet)" title="Hapus">
+										<button class="btn btn-success btn-xs" @click="saveBillet(billet)" title="Simpan">
+											<i class="material-icons">check</i>
+										</button>
+										<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBillet(idxbillet)" title="Hapus">
 											<i class="material-icons">delete</i>
 										</button>
 									</td>
@@ -404,7 +407,11 @@
 											<% total %>
 										</td>
 										<td>
-											<button class="btn btn-danger btn-xs" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
+											<button class="btn btn-success btn-xs" @click="saveBeratActual(beratAktual)" title="Simpan">
+												<i class="material-icons">check</i>
+											</button>
+											
+											<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
 												<i class="material-icons">delete</i>
 											</button>
 										</td>
@@ -455,6 +462,10 @@
 									</td>
 									
 									<td>
+										<button class="btn btn-success btn-xs" @click="saveHasil(hasil)" title="Simpan">
+											<i class="material-icons">check</i>
+										</button>
+										
 										<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
 											<i class="material-icons">delete</i>
 										</button>

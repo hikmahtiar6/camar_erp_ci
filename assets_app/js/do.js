@@ -56,7 +56,11 @@ window.DO = (function($) {
                                     catatan      : '',
                                     dieType      : '',
                                     subComp      : '',
-                                    productCode  : ''
+                                    productCode  : '',
+                                    size  : '',
+                                    unit  : '',
+                                    qty  : '',
+                                    finalIdx  : '',
                                 });
                                 
                                 setTimeout(function() {

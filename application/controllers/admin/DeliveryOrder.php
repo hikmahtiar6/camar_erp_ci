@@ -36,7 +36,11 @@ class DeliveryOrder extends CI_Controller {
                 'Note'         => $row['catatan'],
                 'DieType'      => $row['dieType'],
                 'SubComp'      => $row['subComp'],
-                'DiesId'       => $row['productCode']
+                'DiesId'       => $row['productCode'],
+                'Size'      => $row['size'],
+                'Unit'      => $row['unit'],
+                'Qty'       => $row['qty'],
+                'FinalIdx'  => $row['finalIdx'],
             );
             
             if($row['masterDoId'] == '')
@@ -117,7 +121,11 @@ class DeliveryOrder extends CI_Controller {
                     'catatan'   => $row->Note,
                     'dieType'   => $row->DieType,
                     'subComp'   => $row->SubComp,
-                    'productCode'   => $row->DiesId
+                    'productCode'   => $row->DiesId,
+                    'size'  => $row->Size,
+                    'unit'  => $row->Unit,
+                    'qty'  => $row->Qty,
+                    'finalIdx'  => $row->FinalIdx,
                 );
             }
         }

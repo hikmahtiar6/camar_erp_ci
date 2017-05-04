@@ -48,13 +48,15 @@
 					<div class="wrap-grid" style="overflow: auto;">
 					<div class="vue-do">
 						
-						<button class="btn btn-primary" @click="addNewRow" type="button">
-							Tambah
-						</button>
-						
-						<button class="btn btn-success not-show do-save" type="submit" @click="saveAllRow">
-							Simpan
-						</button>
+						<div style="position: absolute;">
+							<button class="btn btn-primary" @click="addNewRow" type="button">
+								Tambah
+							</button>
+							
+							<button class="btn btn-success not-show do-save" type="submit" @click="saveAllRow">
+								Simpan
+							</button>
+						</div>
 												
 						<br />
 						<br />
@@ -255,20 +257,20 @@
 											<input class="width300" type="text" v-model="doRow.productCode"/>
 										</td>
 										<td>
-											<input class="width50" type="text"/>
+											<input class="width50" type="text" v-model="doRow.size"/>
 										</td>
 										<td>
-											<input class="width50" type="text"/>
+											<input class="width50" type="text" v-model="doRow.unit"/>
 										</td>
 										<td>
-											<input class="width50" type="text"/>
+											<input class="width50" type="text" v-model="doRow.qty"/>
 										</td>
 										<td>
 										</td>
 										<td>
 										</td>
 										<td>
-											<input class="width50" type="text"/>
+											<input class="width50" type="text" v-model="doRow.finalIdx"/>
 										</td>
 										<td>
 											<input class="width50" type="text"/>
