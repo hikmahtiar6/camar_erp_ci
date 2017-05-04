@@ -48,13 +48,17 @@
 					<div class="wrap-grid" style="overflow: auto;">
 					<div class="vue-do">
 						
-						<button class="btn btn-primary" @click="addNewRow">
+						<button class="btn btn-primary" @click="addNewRow" type="button">
 							Tambah
+						</button>
+						
+						<button class="btn btn-success not-show do-save" type="submit" @click="saveAllRow">
+							Simpan
 						</button>
 												
 						<br />
 						<br />
-						
+												
 						<table class="table table-bordered" id="tbl-do">
 							<thead>
 								<tr>
@@ -200,24 +204,24 @@
 									v-bind:title="doRow">
 									<tr>
 										<td>
-											<button class="btn btn-xs btn-danger" @click="removeRow(idx)">
+											<button class="btn btn-xs btn-danger" @click="removeRow(idx)" type="button">
 												<i class="material-icons">delete</i>
 											</button>
 										</td>
 										<td>
-											<input class="width100" type="text" v-model="doRow.customerName"/>
+											<input class="width100" type="text" v-model="doRow.customerName" value=""/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input class="width100" type="text" v-model="doRow.supplier"/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input class="width100" type="text" v-model="doRow.doContractNo"/>
 										</td>
 										<td>
-											<input class="width100 date-bootstrap" type="text"/>
+											<input class="width100" v-model="doRow.doDate" type="date"/>
 										</td>
 										<td>
-											<select>
+											<select v-model="doRow.status">
 												<option>
 													PO
 												</option>
@@ -230,25 +234,51 @@
 											</select>
 										</td>
 										<td>
-											<input class="width100 date-bootstrap" type="text"/>
+											<input class="width100" type="text" v-model="doRow.rcvDate"/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input type="text" v-model="doRow.rcvNo"/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input class="width100" type="text" v-model="doRow.lineNo"/>
 										</td>
 										<td>
-											<input class="" type="text"/>
+											<input class="" type="text" v-model="doRow.catatan"/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input class="width100" type="text" v-model="doRow.dieType"/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input class="width100" type="text" v-model="doRow.subComp"/>
 										</td>
 										<td>
-											<input class="width100" type="text"/>
+											<input class="width300" type="text" v-model="doRow.productCode"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+										</td>
+										<td>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
 										</td>
 										<td>
 											<input class="width50" type="text"/>
@@ -258,6 +288,59 @@
 										</td>
 										<td>
 											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width100" type="text"/>
+										</td>
+										<td>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											<input class="width50" type="text"/>
+										</td>
+										<td>
+											
+										</td>
+										<td>
+											
+										</td>
+										<td>
+											
 										</td>
 									</tr>
 									
@@ -265,6 +348,7 @@
 								
 							</tbody>
 						</table>
+						
 						
 					</div>
 					</div>
@@ -290,8 +374,9 @@
 
 		window.DO.handleNavigate();
 		window.DO.handleTable();
-		
-		window.DATE.init();
+		setTimeout(function() {
+			window.DATE.init();
+		}, 500);
 	</script>
 
 {% endblock %}

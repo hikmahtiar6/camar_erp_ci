@@ -1640,7 +1640,7 @@ window.TRANSACTION = (function($) {
 					var listSpk = $('.wrap-grid');
 					$('.kanan').click(function() {
 						
-						var pos = listSpk.scrollLeft() + 150;
+						var pos = listSpk.scrollLeft() + 300;
 						listSpk.animate({
 							scrollLeft:pos
 						}, 200);
@@ -1648,7 +1648,7 @@ window.TRANSACTION = (function($) {
 					
 					$('.kiri').click(function() {
 						
-						var pos = listSpk.scrollLeft() - 150;
+						var pos = listSpk.scrollLeft() - 300;
 						listSpk.animate({
 							scrollLeft:pos
 						}, 200);
