@@ -10,7 +10,7 @@
 
 		<div class="col-md-12 col-sm-12 col-xs-12">
 
-			<div class="card" style="width: 70%; margin: 0 auto !important;">
+			<div class="card" style="width: 100%; margin: 0 auto !important;">
 
 				<div class="header">
 					<h2>
@@ -20,66 +20,136 @@
 
 				<div class="body">
 
-					<form class="card-form" method="POST" action="{{ site_url('admin/dies/history_card_search') }}" target="_blank">
-							
-						<div class="form-group">
-                            <label>Tanggal</label>
-                            <br>
-                                    
-                            <input class="date-bootstrap" name="tanggal" type="text" style="padding: 5px;" value="{{ date_now|date('d/m/Y') }}" required="required"/>   
+                    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" data-toggle="tab">By Dies Id</a></li>
+                        <li role="presentation"><a href="#profile" data-toggle="tab">By Dies Index</a></li>
+                    </ul>
 
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="home">
+                            <form class="card-form" method="POST" action="{{ site_url('admin/dies/history_card_search') }}" target="_blank">
+                            
+                                <div class="form-group">
+                                    <label>Tanggal</label>
+                                    <br>
+                                            
+                                    <input class="date-bootstrap" name="tanggal" type="text" style="padding: 5px;" value="{{ date_now|date('d/m/Y') }}" required="required"/>   
+
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Section</label>
+                                    <br>
+                                            
+                                    <select class="form-control section" name="section" style="width: 40%;" required="required">
+                                        <option value="">-- Silahkan Pilih --</option>
+                                        {% if sections %}
+
+                                            {% for section_row in sections %}
+
+                                                <option value="{{ section_row.SectionId }}">
+                                                    {{ section_row.SectionDescription }}
+                                                </option>
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    </select>   
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Dies Id</label>
+
+                                    <br>
+
+                                    <select class="form-control dice" name="dice" style="width: 40%;" required="required">
+                                        <option value="">-- Silahkan Pilih --</option>
+                                        {% if dices %}
+
+                                            {% for dice_row in dices %}
+
+                                                <option value="{{ dice_row.DiesId }}">
+                                                    {{ dice_row.DiesId }}
+                                                </option>
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    </select>   
+
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="btn btn-primary" value="Submit" type="submit">
+                                    <img class="loader not-show" src="{{ base_url('assets_app/images/loader.gif') }}"/>
+                                </div>
+                                <div class="clearfix">&nbsp;</div>
+                            </form>
+
+                            <div class="result-card">
+                            </div>
                         </div>
-						
-                        <div class="form-group">
-                            <label>Section</label>
-                            <br>
-                                    
-                            <select class="form-control section" name="section" style="width: 40%;" required="required">
-                                <option value="">-- Silahkan Pilih --</option>
-                                {% if sections %}
+                        <div role="tabpanel" class="tab-pane fade" id="profile">
+                            <form method="post" class="card-form" action="{{ site_url('admin/dies/history_card_search_index') }}">
+                            <div class="form-group">
+                                <label>Section</label>
+                                <br>
+                                        
+                                <select class="form-control section" name="section" style="width: 40%;" required="required">
+                                    <option value="">-- Silahkan Pilih --</option>
+                                    {% if sections %}
 
-                                    {% for section_row in sections %}
+                                        {% for section_row in sections %}
 
-                                        <option value="{{ section_row.SectionId }}">
-                                            {{ section_row.SectionDescription }}
-                                        </option>
-                                    {% endfor %}
+                                            <option value="{{ section_row.SectionId }}">
+                                                {{ section_row.SectionDescription }}
+                                            </option>
+                                        {% endfor %}
 
-                                {% endif %}
-                            </select>   
+                                    {% endif %}
+                                </select>   
 
+                            </div>
+
+                            <div class="form-group">
+                                <label>Dies Index</label>
+
+                                <br>
+
+                                <select class="form-control dice2" name="dice" style="width: 40%;" required="required">
+                                    {% if seqno %}
+
+                                        {% for seq in seqno %}
+
+                                            <option value="{{ seq.DiesSeqNo }}">
+                                                {{ seq.DiesSeqNo }}
+                                            </option>
+                                        {% endfor %}
+
+                                    {% endif %}
+                                </select>   
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>Dies Year</label>
+
+                                <br> 
+
+                                <input type="text" name="dies_year">
+
+                            </div>
+
+                            <div class="form-group">
+                                <input class="btn btn-primary" value="Submit" type="submit">
+                                <img class="loader not-show" src="{{ base_url('assets_app/images/loader.gif') }}"/>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            </form>
+
+                            <div class="result-card">
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Dies Index</label>
-
-                            <br>
-
-                            <select class="form-control dice" name="dice" style="width: 40%;" required="required">
-                                <option value="">-- Silahkan Pilih --</option>
-                                {% if dices %}
-
-                                    {% for dice_row in dices %}
-
-                                        <option value="{{ dice_row.DiesId }}">
-                                            {{ dice_row.DiesId }}
-                                        </option>
-                                    {% endfor %}
-
-                                {% endif %}
-                            </select>   
-
-                        </div>
-
-                        <div class="form-group">
-                            <input class="btn btn-primary" value="Submit" type="submit">
-							<img class="loader not-show" src="{{ base_url('assets_app/images/loader.gif') }}"/>
-                        </div>
-		                <div class="clearfix">&nbsp;</div>
-                    </form>
-
-					<div class="result-card">
-					</div>
+                    </div>
 
 				</div>
 

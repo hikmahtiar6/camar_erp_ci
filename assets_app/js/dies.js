@@ -103,8 +103,10 @@ window.DIES = (function($) {
 			
 			var section = $('.section');
 			var dice = $('.dice');
+			var dice2 = $('.dice2');
 			
 			dice.select2();
+			dice2.select2();
 			
 			section.select2().change(function() {
 				console.log(this.value);
@@ -129,14 +131,19 @@ window.DIES = (function($) {
 				
 			});
 			
+
+			var resultCardEl = $('.result-card');
 			
 			$('.card-form').ajaxForm({
 				beforeSend: function() {
 					APP.loader().show();
+					resultCardEl.html('');
+					resultCardEl.slideUp();
 				},
 				success: function(response) {
 					APP.loader().hide();
-					$('.result-card').html(response);
+					resultCardEl.html(response);
+					resultCardEl.slideDown();
 				}
 			});
 		}

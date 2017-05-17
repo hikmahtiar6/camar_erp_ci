@@ -1,6 +1,8 @@
 <?php
 /**
  * Model Query Master
+ *
+ * @author Hikmahtiar <hikmahtiar.cool@gmail.com>
  */
 class Query_model extends CI_Model 
 {
@@ -22,7 +24,7 @@ class Query_model extends CI_Model
 		{
 			if($machine_id == 'SN0750.01')
 			{
-				$sql .= "AND MachineId IN ('SN0690.01', 'SN0690.02', 'SN0690.03', '".$machine_id."') ";
+				$sql .= "AND MachineId IN ('SN0690.02', 'SN0690.03', '".$machine_id."') ";
 			}
 			else
 			{
@@ -59,7 +61,7 @@ class Query_model extends CI_Model
 		{
 			if($machine_id == 'SN0750.01')
 			{
-				$sql .= "AND MachineId IN ('SN0690.01', 'SN0690.02', 'SN0690.03', '".$machine_id."') ";
+				$sql .= "AND MachineId IN ('SN0690.02', 'SN0690.03', '".$machine_id."') ";
 			}
 			else
 			{
@@ -204,6 +206,111 @@ class Query_model extends CI_Model
 
 		$query = $this->db->query($sql);
 		return $query;
+	}
+
+	/**
+	 * Get detail effective item dimension
+	 */
+	public function get_effective_item_dimension($section_id = '')
+	{
+		$sql = "
+		SELECT
+			*
+		FROM
+			Inventory.ViewEffectiveItemDimension ";
+
+		if($section_id != '')
+		{
+			$sql .= "WHERE SectionId ='".$section_id."' ";
+		}
+
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	/**
+	 * get report pr
+	 */
+	public function get_report_pr($header_id)
+	{
+		$sql = "
+		SELECT 
+			DISTINCT pd.SectionId, 
+			s.SectionDescription, 
+			pd.HoleCount, 
+			pd.DieTypeId, 
+			dt.DieTypeName, 
+			pd.MachineTypeId, 
+			bt.BilletDiameter,
+			pd.PurchaseRequestHeaderId
+		FROM dbo.DiePurchaseRequestDetail pd
+		INNER JOIN Inventory.Sections s ON s.SectionId = pd.SectionId
+		INNER JOIN Inventory.MasterDieTypes dt ON dt.DieTypeId = pd.DieTypeId
+		INNER JOIN Inventory.MasterBilletTypes bt ON bt.BilletTypeId = pd.BilletTypeId
+		WHERE pd.PurchaseRequestHeaderId = '".$header_id."'
+		";
+
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	/**
+	 * qty per section
+	 */
+	public function qty_pr_per_section($header_id, $section_id)
+	{
+		$sql = "
+		SELECT COUNT(DiePurchaseRequestDetailId) AS total
+		FROM dbo.DiePurchaseRequestDetail
+		WHERE PurchaseRequestHeaderId = '".$header_id."'
+		AND SectionId = '".$section_id."'
+		";
+
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		if($row)
+		{
+			return $row->total;
+		}
+
+		return 0;
+	}
+
+	public function get_max_min_dies_pr($header_id, $section_id , $die_type_id, $type = 'min')
+	{
+		$sql = "
+		SELECT $type(CONVERT(INT, DiesSeqNo)) AS seqno 
+		FROM dbo.DiePurchaseRequestDetail
+		WHERE SectionId = '035'
+		AND PurchaseRequestHeaderId = '".$header_id."'
+		AND DieTypeId = '".$die_type_id."'
+		";
+
+		$query = $this->db->query($sql);
+		$row = $query->row();
+		if($row)
+		{
+			if($row->seqno != null)
+			{
+				return $row->seqno;
+			}
+			return 0;
+		}
+
+		return 0;
+	}
+
+	public function get_seq_no()
+	{
+		$sql = "
+		SELECT d.DiesSeqNo from Purchasing.DieReceivingDetail d
+			LEFT JOIN Purchasing.DieReceivingHeader h on h.DieReceivingNo = d.DieReceivingNo
+			GROUP BY d.DiesSeqNo
+			ORDER BY DiesSeqNo ASC
+		";
+
+		$query = $this->db->query($sql);
+		return $query->result();
 	}
 
 }

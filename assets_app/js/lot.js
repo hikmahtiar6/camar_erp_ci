@@ -864,9 +864,35 @@ window.LOT = (function($) {
 
 								var hasil = (sum / items.length * 2) / 1000;
 								setTimeout(function() {
+									var rata2aktEl = $('#rata-berat-ak');
+									var addEl = $('.add-berat-actual');
+									var beratStandardEl = $('#berat-standard2');
+									var saveBeratActualEl = $('.save-berat-actual');
+									var limit = $('.weight-upperlimit').html();
 									var beratStandard = window.APP.decimal3($('#berat-standard').html());
-									$('#berat-standard2').html(beratStandard);
-									$('#rata-berat-ak').html(window.APP.decimal3(hasil));
+									var hasilFix = window.APP.decimal3(hasil);
+
+									if(hasilFix > limit)
+									{
+										alert('Rata2 Akt/m melebihi Weight Upper Limit.');
+										addEl.hide();
+										saveBeratActualEl.hide();
+										rata2aktEl.css({
+											color: 'red'
+										});
+									}
+									else
+									{
+										addEl.show();
+										saveBeratActualEl.show();
+										rata2aktEl.css({
+											color: '#666'
+										});
+									}
+
+									beratStandardEl.html(beratStandard);
+									rata2aktEl.html(hasilFix);
+
 								}, 200);
 							}
 						},

@@ -243,7 +243,12 @@ $config['twiggy']['register_functions'] = array
 	'get_hasil_prod_kg',
 	'get_total_billet',
 	'date_now',
-	'get_jumlah_billet_kg'
+	'get_jumlah_billet_kg',
+	'indonesian_date',
+	'get_detail_machine',
+	'get_effective_item_dimension',
+	'count_die_pr_by_header',
+	'qty_pr_per_section'
 );
 
 

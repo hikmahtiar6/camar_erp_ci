@@ -21,3 +21,11 @@ function get_row_master($show = 'SectionId', $machine_id = '', $section_id = '')
 	
 	return '';
 }
+
+function qty_pr_per_section($header_id, $section_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/query_model');
+
+	return $ci->query_model->qty_pr_per_section($header_id, $section_id);
+}

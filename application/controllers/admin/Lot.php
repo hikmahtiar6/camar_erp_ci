@@ -123,6 +123,7 @@ class Lot extends CI_Controller {
 		$get_detail_header = $this->lot_model->get_data_header_by_master_detail_id($master_detail_id);
 		$get_operator = $this->operatorLot_model->get_data_by(array('grup' => 'operator'));
 		$get_operator2 = $this->operatorLot_model->get_data_by(array('grup' => 'wakil'));
+		$vendor_lot_data = list_vendor_lot();
 
 		$machine_id = '';
 		$section_id = '';
@@ -133,6 +134,7 @@ class Lot extends CI_Controller {
 		}
 		$get_master_query =  $this->query_model->get_master_advance($machine_id, $section_id)->row();
 
+		$this->twiggy->set('vendor_lot_data', $vendor_lot_data);
 		$this->twiggy->set('get_operator', $get_operator);
 		$this->twiggy->set('get_operator2', $get_operator2);
 		$this->twiggy->set('get_detail', $get_detail);

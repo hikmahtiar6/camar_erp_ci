@@ -18,6 +18,8 @@ class Dies extends CI_Controller
 		$this->load->model('master/indexdice_model');
 		$this->load->model('master/machine_model');
 		$this->load->model('master/scrap_model');
+		$this->load->model('master/die_model');
+		$this->load->model('master/query_model');
 		$this->load->model('section_model');
 	}
 	
@@ -290,11 +292,13 @@ class Dies extends CI_Controller
 	 */
 	public function history_card()
 	{
-		$sections = $this->section_model->get_section_grouping();
+		$sections = $this->section_model->get_section_grouping()->result();
 		$dices = $this->indexdice_model->get_data2()->result();
+		$seqno = $this->query_model->get_seq_no();
 
 		$this->twiggy->set('sections', $sections);
 		$this->twiggy->set('dices', $dices);
+		$this->twiggy->set('seqno', $seqno);
 		$this->twiggy->display('admin/dies/history.card');
 	}
 
@@ -306,11 +310,59 @@ class Dies extends CI_Controller
 		$dice = $this->input->post('dice');
 		$section_id = $this->input->post('section');
 		$tanggal = $this->input->post('tanggal');
+		$tgl_pembelian = '';
+
+		$section_description = '';
+		$get_section_description = $this->section_model->get_section_grouping($section_id)->row();
+		if($get_section_description)
+		{
+			$section_description = $get_section_description->SectionDescription;
+		}
+
+		$get_pembelian = $this->die_model->get_detail($dice);
+		if($get_pembelian != '')
+		{
+			$tgl_pembelian = indonesian_date($get_pembelian);
+		}
 
 		$data = $this->indexdice_model->filter_history_card($section_id, $dice, $tanggal);
 		$this->twiggy->set('data', $data);
 		$this->twiggy->set('dice', $dice);
+		$this->twiggy->set('tgl_pembelian', $tgl_pembelian);
 		$this->twiggy->set('section_id', $section_id);
+		$this->twiggy->set('section_description', $section_description);
+		$this->twiggy->display('admin/dies/history.card.result');
+	}
+
+	/**
+	 * Dies History Card
+	 */
+	public function history_card_search_index()
+	{
+		$dice = $this->input->post('dice');
+		$section_id = $this->input->post('section');
+		$tanggal = $this->input->post('dies_year');
+		$tgl_pembelian = '';
+
+		$section_description = '';
+		$get_section_description = $this->section_model->get_section_grouping($section_id)->row();
+		if($get_section_description)
+		{
+			$section_description = $get_section_description->SectionDescription;
+		}
+
+		$get_pembelian = $this->die_model->get_detail($dice);
+		if($get_pembelian != '')
+		{
+			$tgl_pembelian = indonesian_date($get_pembelian);
+		}
+
+		$data = $this->indexdice_model->filter_history_card($section_id, $dice, $tanggal);
+		$this->twiggy->set('data', $data);
+		$this->twiggy->set('dice', $dice);
+		$this->twiggy->set('tgl_pembelian', $tgl_pembelian);
+		$this->twiggy->set('section_id', $section_id);
+		$this->twiggy->set('section_description', $section_description);
 		$this->twiggy->display('admin/dies/history.card.result');
 	}
 }

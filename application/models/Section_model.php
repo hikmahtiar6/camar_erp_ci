@@ -304,18 +304,24 @@ class Section_model extends CI_Model {
 	/**
 	 * get section grouping
 	 */
-	public function get_section_grouping()
+	public function get_section_grouping($section_id = '')
 	{
 		$sql = $this->db;
 
 		$sql->select('SectionId, SectionDescription');
 		$sql->from('Extrusion.ExtrusionGuideFinal2()');
+
+		if($section_id != '')
+		{
+			$sql->where('SectionId', $section_id);
+		}
+		
 		$sql->group_by('SectionId');
 		$sql->group_by('SectionDescription');
 
 		$get = $sql->get();
 
-		return $get->result();
+		return $get;
 	}
 }
 ?>

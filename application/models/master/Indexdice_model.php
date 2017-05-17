@@ -18,6 +18,7 @@ class Indexdice_model extends CI_Model {
 	const TABLE_BILLET = 'SpkLotBillet';
 	const TABLE_BERAT_ACTUAL = 'SpkLotBeratActual';
 	const TABLE_HASIL = 'SpkLotHasil';
+	const TABLE_MACHINE = 'Factory.Machines';
 
 	public function __construct()
 	{
@@ -59,7 +60,9 @@ class Indexdice_model extends CI_Model {
 			}
 		}
 
-		$sql->group_by('DiesId');
+		$sql->order_by('DiesYear, DiesSeqNo, DiesSuffix, DieTypeComponentId, DieTypeSubComponentId');
+
+		//$sql->group_by('DiesId');
 
 		$get = $sql->get();
 		return $get;

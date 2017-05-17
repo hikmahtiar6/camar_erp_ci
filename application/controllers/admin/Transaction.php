@@ -774,7 +774,7 @@ class Transaction extends CI_Controller
 				$len,
 				$gmd->finishing_name,
 				$this->convert_dice($gmd->index_dice),
-				$this->count_dice($gmd->index_dice),
+				//$this->count_dice($gmd->index_dice),
 				($gmd->target_prod == null) ? '' : $gmd->target_prod,
 				($gmd->ppic_note == null) ? '' : $gmd->ppic_note,
 				$target_prod_btg,

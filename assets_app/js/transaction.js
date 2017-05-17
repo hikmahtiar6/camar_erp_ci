@@ -687,10 +687,10 @@ window.TRANSACTION = (function($) {
 						data: 'index_dice',
 						render: renderIndexDIce
 					},
-					{
+					/*{
 						data: 'index_dice_count',
 						render: renderIndexDIceCount
-					},
+					},*/
 					{
 						data: 'ppic_note',
 						render: renderPPICNote
@@ -1160,20 +1160,20 @@ window.TRANSACTION = (function($) {
 						width: 100
 					},
 					{
-						label: 'Mesin Id <br><br>',
+						label: 'Mesin<br><br>',
 						name:'machine_id', 
 						index:'machine_id', 
 						hidden: false,
 						editable:false,
-						width: 120
+						width: 80
 					},
 					{
-						label: 'Billet Id <br><br>', 
+						label: 'Billet<br><br>', 
 						name:'billet_id', 
 						index:'billet_id', 
 						hidden: false,
 						editable:false,
-						width: 100
+						width: 70
 					},
 					{
 						label: 'Len (m) <br><br>',
@@ -1181,7 +1181,7 @@ window.TRANSACTION = (function($) {
 						index:'master_detail_id', 
 						hidden: false,
 						editable:true,
-						width: 90,
+						width: 70,
 						edittype: "select",
 						editoptions: {
 							dataInit: function(el) {
@@ -1262,7 +1262,7 @@ window.TRANSACTION = (function($) {
 					},
 					
 					{
-						label: 'Index Dice <br><br>',
+						label: 'Index Die <br><br>',
 						name:'index_dice', 
 						index:'index_dice', 
 						hidden: false,
@@ -1297,7 +1297,7 @@ window.TRANSACTION = (function($) {
 											} else {
 												selected = '';
 											}
-								            output += '<option value="' + val.value + '" '+selected+'>' + val.text + '</option>';
+								            output += '<option test="'+key+'" value="' + val.value + '" '+selected+'>' + val.text + '</option>';
 								        });
 								        $(el).html(output);
 
@@ -1306,21 +1306,20 @@ window.TRANSACTION = (function($) {
 								        $(el).select2({
 								            width: "100%",
 								    	});
-								    	
 								    });
 						    	
 						    	
 						    }
 						}
 					},
-					{
+					/*{
 						label: 'Index Die <br>Qty',
 						name:'index_dice_qty', 
 						index:'index_dice_qty', 
 						hidden: false,
 						editable:false,
 						width: 50
-					},
+					},*/
 					{
 						label: 'Target Prod <br> (Bilet)',
 						name:'target_prod', 
@@ -1439,7 +1438,7 @@ window.TRANSACTION = (function($) {
 						index:'weight_standard', 
 						hidden: false,
 						editable:false,
-						width: 100
+						width: 70
 					},
 					{
 						label: 'Target Section Kg<br><br>',

@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'form', 'twiggy', 'user', 'date', 'query');
+$autoload['helper'] = array('url', 'form', 'twiggy', 'user', 'date', 'query', 'lot', 'output');
 
 /*
 | -------------------------------------------------------------------

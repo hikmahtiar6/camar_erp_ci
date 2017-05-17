@@ -107,7 +107,7 @@
 
 					<!-- billet weight -->
 					<span class="billet-weight">
-						{{ to_decimal(get_row_master('BilletWeight', machine, section_id)) }}
+						{{ to_decimal(get_detail_machine(machine, 'BilletWeight')) }}
 					</span>
 
 					<!--
@@ -267,8 +267,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
+				<td>
+					<label>Weight Upper Limit</label>
+				</td>
+				<td>
+					<span class="weight-upperlimit">{{ to_decimal(get_effective_item_dimension(section_id)) }}</span>
+				</td>
 				<td></td>
 				<td></td>
 				<td>
@@ -342,7 +346,15 @@
 										<input type="text" v-model="billet.jmlBillet" class="form-control">
 									</td>
 									<td>
+									<!--
 										<input type="text" v-model="billet.billetVendorId" class="form-control" @keyup.enter="saveBillet(billet)">
+									-->
+									<select v-model="billet.billetVendorId">
+
+										{% for vendor_lot_row in vendor_lot_data %}
+											<option>{{ vendor_lot_row }}</option>
+										{% endfor %}
+									</select>
 									</td>
 									<td>
 										<span id="total-billet">
@@ -372,7 +384,7 @@
 										<b>BERAT AKTUAL</b>
 									</td>
 									<td colspan="3">
-										<button class="btn btn-primary" @click="addNewRowBeratAktual">Tambah</button>
+										<button class="btn btn-primary add-berat-actual" @click="addNewRowBeratAktual">Tambah</button>
 									</td>
 									
 								</tr>
@@ -401,13 +413,13 @@
 											
 										</td>
 										<td>
-										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.enter="saveBeratActual(beratAktual)">
+										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)">
 										</td>
 										<td id="rata-berat-ak">
 											<% total %>
 										</td>
 										<td>
-											<button class="btn btn-success btn-xs" @click="saveBeratActual(beratAktual)" title="Simpan">
+											<button class="btn btn-success btn-xs save-berat-actual" @click="saveBeratActual(beratAktual)" title="Simpan">
 												<i class="material-icons">check</i>
 											</button>
 											

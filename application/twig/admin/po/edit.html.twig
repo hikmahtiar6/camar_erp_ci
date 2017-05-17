@@ -1,0 +1,239 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	
+{% endblock %}
+
+{% block content %}
+
+	<div class="row clearfix">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="card" style="width: 100%; margin: 0 auto !important;">
+
+				<div class="header">
+					<h2>
+						Purchase Order
+					</h2>
+				</div>
+				
+				<div class="body">
+					<form class="form-pr" action="{{ site_url('admin/po/save_header') }}" method="post">
+						<table class="table table-bordered" style="width: 40%">
+							<tr>
+								<td>No. Dokumen PR</td>
+								<td>
+									<input class="po-id" name="id" type="hidden" value="{{ id }}">
+									<select class="pr-id" name="document_pr" required="required">
+										<option value=""> - Pilih - </option>
+										{% if pr_header %}
+
+											{% for pr_row in pr_header %}
+												<option value="{{ pr_row.PurchaseRequestHeaderId }}"
+												{% if same(pr_row.PurchaseRequestNo, document_pr) %}
+													selected="selected" 
+												{% endif %}
+												>
+													{{ pr_row.PurchaseRequestNo }}
+												</option>
+											{% endfor %}
+
+										{% endif %}
+									</select>									
+								</td>
+							</tr>
+
+							<tr>
+								<td>No. Dokumen</td>
+								<td>
+									<input name="document_no" type="text" value="{{ document_no }}" readonly="readonly">
+								</td>
+							</tr>
+							<tr>
+								<td>Tanggal</td>
+								<td>
+									<input class="date-bootstrap date-po" name="tgl" type="text" value="{{ tgl }}" required="required">
+								</td>
+							</tr>
+							<!--
+							<tr>
+								<td>Die Year</td>
+								<td>
+									<input class="year-pr" name="die_year" type="text">
+								</td>
+							</tr>
+							-->
+							<tr>
+								<td colspan="2">
+									<a class="btn bg-blue-grey waves-effect" href="{{ site_url('admin/po') }}">Kembali</a>
+									<button class="btn btn-primary call-modal waves-effect" type="submit" >Proses</button>
+
+									{% if same(posting, '') %}
+										<button class="btn bg-indigo waves-effect posting-po" type="button">
+											Posting
+										</button>
+									{% endif %}
+								</td>
+							</tr>
+						</table>
+					</form>
+
+					<div class="not-show" id="result">
+						<table class="table table-bordered po-table">
+							<thead>
+							<tr>
+								<td class="bold">
+									Section Id
+								</td>
+								<td class="bold">
+									Section Name
+								</td>
+								<td class="bold">
+									Product Code
+								</td>
+								<td class="bold">
+									Component
+								</td>
+								<td class="bold">
+									Price IDR
+								</td>
+								<td class="bold">
+									Price CHY
+								</td>
+								
+								{% if same(posting, '') %}
+									<td class="bold">
+										Setting
+									</td>
+								{% endif %}
+							</tr>
+							</thead>
+							<tbody>
+								
+								<template 
+								v-for="(prRow, prIdx) in prData"
+								v-bind:key="prRow"
+								v-bind:title="prRow">
+									<tr>
+										<td>
+											<% prRow.sectionId %>
+										</td>
+										<td v-model="prRow.sectionName"><% prRow.sectionName %></td>
+										<td><% prRow.diesId %></td>
+										<td><% prRow.component %></td>
+										<td>
+											<input type="text">
+										</td>
+										<td>
+											<input type="text">
+										</td>
+										{% if same(posting, '') %}
+											<td>
+												<span>
+													<button class="btn btn-xs btn-danger" title="Hapus" @click="removePr(prIdx)">
+														<i class="material-icons">delete</i>
+													</button>
+												</span>
+											</td>
+										{% endif %}
+
+									</tr>
+
+								</template>
+							</tbody>
+
+						</table>
+
+					</div>
+
+					<!--
+					<table class="table table-bordered pr-table">
+						<thead>
+						<tr>
+							<td class="bold">
+								Section Id
+							</td>
+							<td class="bold">
+								Section Name
+							</td>
+							<td class="bold">
+								Final DiesId
+							</td>
+							<td class="bold">
+								Type
+							</td>
+							<td class="bold">
+								Hole
+							</td>
+							<td class="bold">
+								Billet
+							</td>
+							<td class="bold">
+								Machine
+							</td>
+							
+							{% if same(posting, '') %}
+								<td class="bold">
+									Setting
+								</td>
+							{% endif %}
+						</tr>
+						</thead>
+						<tbody>
+							
+							<template 
+							v-for="(prRow, prIdx) in prData"
+							v-bind:key="prRow"
+							v-bind:title="prRow">
+								<tr>
+									<td>
+										<a class="section-pr" href="javascript:;" title="Klik utk mengedit" data-toggle="modal" data-target=".defaultModal2" @click="showModalEdit(prIdx)">
+											<% prRow.sectionId %>	
+										</a>
+									</td>
+									<td v-model="prRow.sectionName"><% prRow.sectionName %></td>
+									<td><% prRow.diesId %></td>
+									<td><% prRow.dieTypeName %></td>
+									<td><% prRow.hole %></td>
+									<td><% prRow.billet %></td>
+									<td><% prRow.machineType %></td>
+									{% if same(posting, '') %}
+										<td>
+											<span>
+												<button class="btn btn-xs btn-danger" title="Hapus" @click="removePr(prIdx)">
+													<i class="material-icons">delete</i>
+												</button>
+											</span>
+										</td>
+									{% endif %}
+
+								</tr>
+
+							</template>
+						</tbody>
+
+					</table>
+					-->	
+					
+				</div>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/po.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/date.js') }}"></script>
+	<script type="text/javascript">
+		window.DATE.init();
+		window.PO.init();
+	</script>
+
+{% endblock %}

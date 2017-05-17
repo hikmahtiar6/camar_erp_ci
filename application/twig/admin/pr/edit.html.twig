@@ -1,0 +1,294 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+	
+{% endblock %}
+
+{% block content %}
+
+	<div class="row clearfix">
+
+		<div class="col-md-12 col-sm-12 col-xs-12">
+
+			<div class="card" style="width: 100%; margin: 0 auto !important;">
+
+				<div class="header">
+					<h2>
+						Purchase Request
+					</h2>
+				</div>
+				
+				<div class="body">
+					<form class="form-pr" action="{{ site_url('admin/pr/save_header') }}" method="post">
+						<table class="table table-bordered" style="width: 40%">
+							<tr>
+								<td>Vendor</td>
+								<td>
+									<input class="header-data" name="header_id" type="hidden" value="{{ id }}">
+
+									{% if same(id, 'new') %}
+										<select class="vendor-data" name="vendor">
+											{% if vendor_data %}
+
+												{% for vendor_row in vendor_data %}
+													<option value="{{ vendor_row.BusinessPartnerId }}"
+													{% if same(vendor_row.Initial, vendor) %}
+														selected="selected" 
+													{% endif %}
+													>
+														{{ vendor_row.Initial }}
+													</option>
+												{% endfor %}
+
+											{% endif %}
+										</select>
+									{% else %}
+										<input class="vendor-data" name="vendor" type="hidden" value="{{ vendor_id }}">
+										{{ vendor }}
+									{% endif %}
+									
+									
+								</td>
+							</tr>
+
+							<tr>
+								<td>No. Dokumen</td>
+								<td>
+									<input name="document_no" type="text" value="{{ document_no }}" required="required" readonly="readonly">
+								</td>
+							</tr>
+							<tr>
+								<td>Tanggal</td>
+								<td>
+									<input class="datepicker-pr" name="tgl" type="text" value="{{ tgl }}" required="required">
+								</td>
+							</tr>
+							<!--
+							<tr>
+								<td>Die Year</td>
+								<td>
+									<input class="year-pr" name="die_year" type="text">
+								</td>
+							</tr>
+							-->
+							<tr>
+								<td colspan="2">
+									<a class="btn bg-blue-grey waves-effect" href="{{ site_url('admin/pr') }}">Kembali</a>
+									{% if same(posting, '') %}
+									<button class="btn btn-primary call-modal waves-effect" type="submit" data-toggle="modal" data-target=".defaultModal">Input Data</button>
+
+										<button class="btn bg-indigo waves-effect posting-pr" type="button">
+											Posting
+										</button>
+									{% endif %}
+								</td>
+							</tr>
+						</table>
+					</form>
+
+					<table class="table table-bordered pr-table">
+						<thead>
+						<tr>
+							<td class="bold">
+								Section Id
+							</td>
+							<td class="bold">
+								Section Name
+							</td>
+							<td class="bold">
+								Final DiesId
+							</td>
+							<td class="bold">
+								Type
+							</td>
+							<td class="bold">
+								Hole
+							</td>
+							<td class="bold">
+								Billet
+							</td>
+							<td class="bold">
+								Machine
+							</td>
+							
+							{% if same(posting, '') %}
+								<td class="bold">
+									Setting
+								</td>
+							{% endif %}
+						</tr>
+						</thead>
+						<tbody>
+							
+							<template 
+							v-for="(prRow, prIdx) in prData"
+							v-bind:key="prRow"
+							v-bind:title="prRow">
+								<tr>
+									<td>
+										<a class="section-pr" href="javascript:;" title="Klik utk mengedit" data-toggle="modal" data-target=".defaultModal2" @click="showModalEdit(prIdx)">
+											<% prRow.sectionId %>	
+										</a>
+									</td>
+									<td v-model="prRow.sectionName"><% prRow.sectionName %></td>
+									<td><% prRow.diesId %></td>
+									<td><% prRow.dieTypeName %></td>
+									<td><% prRow.hole %></td>
+									<td><% prRow.billet %></td>
+									<td><% prRow.machineType %></td>
+									{% if same(posting, '') %}
+										<td>
+											<span>
+												<button class="btn btn-xs btn-danger" title="Hapus" @click="removePr(prIdx)">
+													<i class="material-icons">delete</i>
+												</button>
+											</span>
+										</td>
+									{% endif %}
+
+								</tr>
+
+							</template>
+						</tbody>
+
+					</table>	
+					
+				</div>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal fade defaultModal" id="" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content content-modal-transaksi">
+            <div class="modal-header">
+			    <h4 class="modal-title pull-left" id="defaultModalLabel">
+			    	Input Purchase Request
+			    </h4>
+
+
+				<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+
+			<form class="form-detail-pr" action="{{ site_url('admin/pr/save_detail') }}" method="post">
+
+				<table class="table table-bordered">
+
+					<tr>
+						<td>Section</td>
+						<td>
+							<select class="section-data" name="section-id">
+								{% if section_data %}
+
+									{% for section_row in section_data %}
+										<option value="{{ section_row.SectionId }}">{{ section_row.SectionDescription }}</option>
+									{% endfor %}
+
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Machine Type</td>
+						<td>
+							<select class="machine-data" name="machine-type">
+								{% if machine_data %}
+
+									{% for machine_row in machine_data %}
+										<option value="{{ machine_row.MachineTypeId }}">{{ machine_row.MachineTypeId }}</option>
+									{% endfor %}
+
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Die Type</td>
+						<td>
+							<select class="die-type-data" name="die-type">
+								{% if dietype_data %}
+
+									{% for dietype_row in dietype_data %}
+										<option value="{{ dietype_row.DieTypeId }}">{{ dietype_row.DieTypeId }}</option>
+									{% endfor %}
+
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Billet</td>
+						<td>
+							<select class="billet-type-data" name="billet-type">
+								{% if billet_type_data %}
+
+									{% for billet_type_row in billet_type_data %}
+										<option value="{{ billet_type_row.BilletTypeId }}">{{ to_decimal(billet_type_row.BilletDiameter) }}</option>
+									{% endfor %}
+
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Hole</td>
+						<td>
+							<input class="hole-data" name="hole" type="text" required="required" autocomplete="off">
+						</td>
+					</tr>
+					<tr>
+						<td>Quantity</td>
+						<td>
+							<input name="qty" type="text" required="required" autocomplete="off">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button class="btn btn-success" type="submit">Tambahkan</button>
+
+                            <img class="loader not-show" src="{{ base_url('assets_app/images/loader.gif') }}"/>
+
+						</td>
+					</tr>
+				</table>
+			</form>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="modal fade defaultModal2" id="" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+			    <h4 class="modal-title pull-left" id="defaultModalLabel2">
+			    	Edit Die Purchase Request
+			    </h4>
+
+
+				<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+
+			<div class="result-edit-pr">
+			</div>
+
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<script type="text/javascript" src="{{ base_url('assets_app/js/pr.js') }}"></script>
+	<script type="text/javascript">
+		window.PR.init();
+	</script>
+
+{% endblock %}

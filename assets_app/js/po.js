@@ -2,10 +2,104 @@ window.PO = (function($) {
     return {
     	init: function() {
     		$("form").ajaxForm({
+    			dataType: 'json',
+    			beforeSend: function() {
+    				$("#result").slideUp(500);
+    			},
     			success: function(response) {
-    				$("#result").slideDown(1000);
+
+					var dataPR = [];
+					var tableEl = '.po-table';
+
+    				if(response.id != 'new') {
+						$('.po-id').val(response.id);
+					}
+    				$("#result").slideDown(500);
+
+    				var headerVal = $('.pr-id').val();
+
+    				$.ajax({
+						url      : window.APP.siteUrl + 'admin/pr/get_detail_by_header/' + headerVal,
+						type     : 'GET',
+						dataType : 'json',
+						success  : function(response) {
+							dataPR = response;
+
+							var vueTable = new Vue({
+								el: tableEl,
+								delimiters: ['<%', '%>'],
+								data: {
+									prData: dataPR,
+									submitted: false
+								},
+								methods: {
+									removePr: function(row) {
+										$.ajax({
+											url: window.APP.siteUrl + 'admin/po/delete_detail',
+											type: 'post',
+											data: {
+												'id': this.prData[row].prId
+											},
+											dataType: 'json',
+											success: function(response) {
+												$.notify(response.message, response.status);
+											}
+										});
+										this.prData.splice(row, 1);
+									},
+									showModalEdit: function(row) {
+										$('.result-edit-pr').load(window.APP.siteUrl + 'admin/pr/edit_detail/' + this.prData[row].prId, function() {
+											$('.form-edit-pr').ajaxForm({
+												dataType: 'json',
+												beforeSend: function() {
+													APP.loader().show();
+												},
+												success: function(response) {
+													APP.loader().hide();
+
+													$.notify(response.message, response.status);
+
+													if(response.status == 'success') {
+														setTimeout(function() {
+															window.location = window.APP.siteUrl + 'admin/pr/edit/'+response.id
+														}, 1000);
+													}
+												}
+											});
+										});
+									}
+								}
+							});
+
+						}
+					});
+
     			}
     		});
-    	}
+    	},
+
+    	handleDeleteHeader: function() {
+			$('.delete-header-po').click(function() {
+				if(confirm('Yakin akan menghapus ini ?')) {
+					var id = $(this).attr('data-id');
+
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/po/delete_header',
+						data: {
+							id: id
+						},
+						type: 'post',
+						dataType: 'json',
+						success: function(response) {
+							$.notify(response.message, response.status);
+
+							setTimeout(function() {
+								window.location.reload();
+							}, 1000);
+						}
+					});
+				}
+			});
+		}
     }
 })(jQuery);

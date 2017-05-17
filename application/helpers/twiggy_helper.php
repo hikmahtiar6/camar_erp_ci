@@ -237,9 +237,9 @@ function week_in_year() {
 	return $dt;	
 }
 
-function add_zero($numbering)
+function add_zero($numbering, $type = 2)
 {
-	return str_pad($numbering, 2, '0', STR_PAD_LEFT);
+	return str_pad($numbering, $type, '0', STR_PAD_LEFT);
 }
 
 /**
@@ -247,8 +247,13 @@ function add_zero($numbering)
  * @param  $date
  * @return Text
  */
-function indonesian_date($date){
+function indonesian_date($date, $type = 'full'){
 	$bln_indo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+	
+	if($type == 'three') 
+	{
+		$bln_indo = array("Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des");
+	}
  
 	$tahun = substr($date, 0, 4);
 	$bulan = substr($date, 5, 2);
@@ -723,4 +728,13 @@ function get_jumlah_billet_kg($panjang = 0, $jumlah = 0, $billet_weight = 0)
 	return $panjang * $jumlah * $billet_weight;
 }
 
+/**
+ * count die pr
+ */
+function count_die_pr_by_header($header_id)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/pr_model');
+	return $ci->pr_model->count_die_by_header($header_id);
+}
 ?>

@@ -1,0 +1,125 @@
+{% if get_detail %}
+	{% set id = get_detail.DiePurchaseRequestDetailId %}
+	{% set seqno = get_detail.DiesSeqNo %}
+	{% set section = get_detail.SectionId %}
+	{% set machine_type = get_detail.MachineTypeId %}
+	{% set die_type = get_detail.DieTypeId %}
+	{% set billet = get_detail.BilletTypeId %}
+	{% set hole = get_detail.HoleCount %}
+	{% set vendor = get_detail.VendorId %}
+	{% set year = get_detail.DiesYear %}
+
+{% else %}
+	{% set id = '' %}
+	{% set seqno = '' %}
+	{% set section = '' %}
+	{% set machine_type = '' %}
+	{% set die_type = '' %}
+	{% set billet = '' %}
+	{% set hole = '' %}
+	{% set vendor = '' %}
+	{% set year = '' %}
+{% endif %}
+
+<form class="form-edit-pr" method="post" action="{{ site_url('admin/pr/update_detail') }}">
+	<table class="table">
+		<tr>
+			<td>Section</td>
+			<td>
+				<input name="year" type="hidden" value="{{ year }}">
+				<input name="seqno" type="hidden" value="{{ seqno }}">
+				<input name="id" type="hidden" value="{{ id }}">
+				<input name="vendor" type="hidden" value="{{ vendor }}">
+				<select class="section-data" name="section-id">
+					{% if section_data %}
+
+						{% for section_row in section_data %}
+							<option value="{{ section_row.SectionId }}"
+							{% if same(section_row.SectionId, section) %}
+								selected="selected" 
+							{% endif %}
+							>
+							{{ section_row.SectionDescription }}
+							</option>
+						{% endfor %}
+
+					{% endif %}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Machine Type</td>
+			<td>
+				<select class="machine-data" name="machine-type">
+					{% if machine_data %}
+
+						{% for machine_row in machine_data %}
+							<option value="{{ machine_row.MachineTypeId }}"
+							{% if same(machine_row.MachineTypeId, machine_type) %}
+								selected="selected" 
+							{% endif %}
+							>
+							{{ machine_row.MachineTypeId }}
+							</option>
+						{% endfor %}
+
+					{% endif %}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Die Type</td>
+			<td>
+				<select class="die-type-data" name="die-type">
+					{% if dietype_data %}
+
+						{% for dietype_row in dietype_data %}
+							<option value="{{ dietype_row.DieTypeId }}"
+							{% if same(dietype_row.DieTypeId, billet) %}
+								selected="selected" 
+							{% endif %}
+							>
+							{{ dietype_row.DieTypeId }}
+							</option>
+						{% endfor %}
+
+					{% endif %}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Billet</td>
+			<td>
+				<select class="billet-type-data" name="billet-type">
+					{% if billet_type_data %}
+
+						{% for billet_type_row in billet_type_data %}
+							<option value="{{ billet_type_row.BilletTypeId }}"
+							{% if same(billet_type_row.BilletTypeId, die_type) %}
+								selected="selected" 
+							{% endif %}
+							>
+							{{ to_decimal(billet_type_row.BilletDiameter) }}
+							</option>
+						{% endfor %}
+
+					{% endif %}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Hole</td>
+			<td>
+				<input class="hole-data" name="hole" type="text" required="required" autocomplete="off" value="{{ hole }}">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button class="btn btn-success" type="submit">Simpan</button>
+
+                <img class="loader not-show" src="{{ base_url('assets_app/images/loader.gif') }}"/>
+
+			</td>
+		</tr>
+	</table>
+</form>

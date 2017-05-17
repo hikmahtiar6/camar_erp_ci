@@ -1,12 +1,232 @@
-<table class="table" style="border: none;">
-	<tr>
-		<td>{{ section_id }}</td>
-		<td>{{ dice }}</td>
+<table class="" style="border: none; width: 100%;">
+	<tr class="bold">
+		<td>DIE HISTORY CARD</td>
+		<td align="center">{{ section_description }}</td>
+		<td align="right">{{ dice }}</td>
 	</tr>
 </table>
 
+<!--
+<table class="table" style="width: 33%;float: left">
+	<tr>
+		<td>Customer</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Section Id</td>
+		<td colspan="3">
+			{{ section_id }}
+		</td>
+	</tr>
+	<tr>
+		<td>Section Name</td>
+		<td colspan="3">
+			{{ section_description }}
+		</td>
+	</tr>
+	<tr>
+		<td>Product Code</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Tahun</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Final Index</td>
+		<td></td>
+		<td>Supplier Index</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Die Type</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Hole</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Sub Komponen</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Berat Standar</td>
+		<td></td>
+		<td>Toleransi</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Total Standar</td>
+		<td></td>
+		<td>Toleransi</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>No. Freeds Plate</td>
+		<td></td>
+		<td>No. Backer</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Available Color</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Extrusion Ratic</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Die Ubah dari</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>No Perempatan</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Tanggal Order Die</td>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td>Tanggal Terima</td>
+		<td colspan="3"></td>
+	</tr>
+</table>
+
+<table class="table" style="width: 33%;float: left">
+	<tr>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+
+<table class="table" style="width: 33%;float: left">
+	<tr>
+		<td class="bold" colspan="3">STANDAR OPERASI</td>
+	</tr>
+	<tr>
+		<td>Kondisi Die</td>
+		<td>
+			<input type="checkbox">
+			Kritis
+		</td>
+		<td>
+			<input type="checkbox">
+			Rawan Macet
+		</td>
+	</tr>
+	<tr>
+		<td>Prioritas di Mesin</td>
+		<td colspan="2">
+		</td>
+	</tr>
+	<tr>
+		<td>Panjang BIllet Total Standar</td>
+		<td>
+		</td>
+		<td>
+			Min/Max &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td>Temperatur Awal Billet</td>
+		<td>
+		</td>
+		<td>
+			
+		</td>
+	</tr>
+	<tr>
+		<td>Jml Maksimum Billet Press</td>
+		<td>
+		</td>
+		<td>
+		</td>
+	</tr>
+	<tr>
+		<td>Hasil Jadi Standar</td>
+		<td colspan="2">
+		</td>
+	</tr>
+	<tr>
+		<td>Bolster Dipanaskan ?</td>
+		<td>
+			<input type="checkbox">
+			Ya
+		</td>
+		<td>
+			<input type="checkbox">
+			Tidak
+		</td>
+	</tr>
+	<tr>
+		<td>Memakai Canester ?</td>
+		<td>
+			<input type="checkbox">
+			Ya
+		</td>
+		<td>
+			<input type="checkbox">
+			Tidak
+		</td>
+	</tr>
+	<tr>
+		<td>Memakai Carbon Block ?</td>
+		<td>
+			<input type="checkbox">
+			Ya
+		</td>
+		<td>
+			<input type="checkbox">
+			Tidak
+		</td>
+	</tr>
+	<tr>
+		<td>Proses Press dibantu</td>
+		<td>
+			<input type="checkbox">
+			Tarik
+		</td>
+		<td>
+			<input type="checkbox">
+			Role
+		</td>
+	</tr>
+	<tr>
+		<td>Cek Etching Hasil Press ?</td>
+		<td>
+			<input type="checkbox">
+			Ya
+		</td>
+		<td>
+			<input type="checkbox">
+			Tidak
+		</td>
+	</tr>
+	<tr>
+		<td>Ada Sample Profil OK-QC ?</td>
+		<td>
+			<input type="checkbox">
+			Ya
+		</td>
+		<td>
+			<input type="checkbox">
+			Tidak
+		</td>
+	</tr>
+
+</table>
+-->
+
 <table class="table table-bordered">
 	<thead>
+		<tr>
+			<td class="bold">Tanggal Pembelian</td>
+			<td colspan="9">
+				{{ tgl_pembelian }}
+			</td>
+		</tr>
 		<tr align="center">
 			<td rowspan="2" style="vertical-align: middle;"><b>Tanggal</b></td>
 			<td colspan="3"><b>Hasil Press</b></td>

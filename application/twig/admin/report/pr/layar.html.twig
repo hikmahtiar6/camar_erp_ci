@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>View Reporting</title>
+	</head>
+	<link href="{{ base_url('assets_app/fonts/roboto-v15/font.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ base_url('assets_app/fonts/material-icons/font.css') }}" rel="stylesheet" type="text/css"> 
+    <link href="{{ base_url('web/vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ base_url('web/vendor/plugins-admin/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
+    <link href="{{ base_url('assets_app/css/new.style.css') }}" rel="stylesheet" type="text/css"> 
+    <style type="text/css">
+	    
+	</style>
+
+	<body>
+
+		<div class="row">
+		</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert alert-info button-action">
+				<button class="btn btn-primary report-print">Print</button>
+				<a href="javascript:;" class="btn btn-danger report-close">Tutup</a>
+			</div>
+
+
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive">
+
+				<h2>Purchase Request</h2>	
+				<br>
+
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<td class="bold">Section Id</td>
+							<td class="bold">Section Name</td>
+							<td class="bold">Final DiesId</td>
+							<td class="bold">Type</td>
+							<td class="bold">Hole</td>
+							<td class="bold">Billet</td>
+							<td class="bold">Machine</td>
+							<td class="bold">Quantity</td>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% set total_qty = 0 %}
+						{% if data_detail %}
+							{% for row_detail in data_detail %}
+								<tr>
+									<td>
+										{{ row_detail.SectionId }}
+									</td>
+									<td>
+										{{ row_detail.SectionDescription }}
+									</td>
+									<td>
+									</td>
+									<td>
+										{{ row_detail.DieTypeName }}
+									</td>
+									<td align="right">
+										{{ row_detail.HoleCount }}
+									</td>
+									<td>
+										{{ to_decimal(row_detail.BilletDiameter) }}
+									</td>
+									<td>
+										{{ row_detail.MachineTypeId }}
+									</td>
+									<td align="right">
+										{% set qty = qty_pr_per_section(row_detail.PurchaseRequestHeaderId, row_detail.SectionId) %}
+										{{ qty }}
+										{% set total_qty = total_qty + qty %}
+
+									</td>
+								</tr>
+							{% endfor %}
+						{% endif %}
+					</tbody>
+					<tfoot>
+						<tr class="font12 bold">
+							<td class="bold" colspan="7"> Total</td>
+							<td align="right">{{ total_qty }}</td>
+						</tr>
+					</tfoot>
+			</table>
+
+		</div>
+
+		
+
+	</body>
+
+	<script type="text/javascript">
+        window.APP = {
+            siteUrl: "{{ site_url() }}/",
+            baseUrl: "{{ base_url() }}/"
+        }
+    </script>
+
+    <script src="{{ base_url('web/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ base_url('web/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ base_url('assets_app/js/report.js') }}"></script>
+
+    <script type="text/javascript">
+    	$(document).ready(function() {
+			$('.report-print').click(function() {
+				window.print();
+				return false;
+			});
+			$('.report-close').click(function() {
+				window.close();
+				return false;
+			});
+	    });
+
+	    /**
+		 * function detect windows print
+		 */
+
+		var beforePrint = function() {
+			$('.button-action').hide();
+		};
+		var afterPrint = function() {
+			$('.button-action').show();
+		};
+
+		if (window.matchMedia) {
+			var mediaQueryList = window.matchMedia('print');
+			mediaQueryList.addListener(function(mql) {
+			    if (mql.matches) {
+			        beforePrint();
+			    } else {
+			        afterPrint();
+			    }
+			});
+		}
+    </script>
+
+
+
+</html>
