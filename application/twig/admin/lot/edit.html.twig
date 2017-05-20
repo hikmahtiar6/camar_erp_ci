@@ -5,10 +5,10 @@
 			border: 1px solid #CCC;
 			padding: 5px;
 		}
-	</style> 
+	</style>
 	{% set section_id = '' %}
 
-	{% if get_detail %} 
+	{% if get_detail %}
 		{% set section_id = get_detail.section_id %}
 	{% endif %}
 
@@ -41,10 +41,10 @@
 				</td>
 				<td style="width: 250px;">
 					{% set machine = '' %}
-					{% if get_detail %} 
+					{% if get_detail %}
 						{% set machine = get_detail.MachineId %}
 					{% endif %}
-						{{ machine }} 
+						{{ machine }}
 				</td>
 				<td>
 					<!--<label>Operator 1</label>-->
@@ -55,7 +55,7 @@
 					<span class="lot-length">
 						{{ number_float(get_row_master('Length', machine, section_id)) }}
 					</span>
-					
+
 					<!--
 					<div class="row clearfix">
 						<div class="col-md-8">
@@ -79,10 +79,10 @@
 					<label>Dies Index Used</label>
 				</td>
 				<td style="width: 250px;">
-					<select class="index-dice" name="index_dice[]" multiple="">	
+					<select class="index-dice" name="index_dice[]" multiple="">
 					</select>
 					{% set index_used = '' %}
-					{% if get_detail %} 
+					{% if get_detail %}
 						{% set index_used = convert_dice(get_detail.index_dice) %}
 					{% endif %}
 				</td>
@@ -90,7 +90,7 @@
 			<tr>
 				<td>
 					<label>Tanggal</label>
-				</td> 
+				</td>
 				<td>
 					{% if get_detail %} {{ get_detail.tanggal|date("d-m-Y") }} {% endif %}
 				</td>
@@ -157,8 +157,8 @@
 					<label>Pull Awal</label>
 				</td>
 				<td>
-					
-					{% if get_master_query %} 
+
+					{% if get_master_query %}
 					{{ to_decimal(get_master_query.InitialPullingLength) }}
 					 {% endif %}
 				</td>
@@ -190,7 +190,7 @@
 					<label>Pull Awal Actual</label>
 				</td>
 				<td>
-					
+
 					<input class="form-control" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}">
 				</td>
 				<td>
@@ -215,8 +215,8 @@
 					<label>Bs. Blkg</label>
 				</td>
 				<td>
-					{% if get_master_query %} 
-					{{ to_decimal(get_master_query.BadEndLength) }} 
+					{% if get_master_query %}
+					{{ to_decimal(get_master_query.BadEndLength) }}
 					{% endif %}
 				</td>
 				<td>
@@ -322,19 +322,19 @@
 										P. Billet <br> Actual
 									</td>
 									<td>
-										Jml <br> Billet
+										Jumlah<br>Billet (PCS)
 									</td>
 									<td>
 										Billet <br> VendorId
 									</td>
 									<td>
-										Total Billet
+										Total Billet (KG)
 									</td>
 									<td></td>
 								</tr>
-								<template 
+								<template
 								v-for="(billet, idxbillet) in billets"
-								is="billet-item" 
+								is="billet-item"
 								v-bind:key="billet"
 								v-bind:title="billet"
 								v-on:remove="removeRowBillet(idxbillet)">
@@ -386,31 +386,31 @@
 									<td colspan="3">
 										<button class="btn btn-primary add-berat-actual" @click="addNewRowBeratAktual">Tambah</button>
 									</td>
-									
+
 								</tr>
 								<tr align="center">
 									<td>
-										Berat <br> Std
+										Berat<br>Std
 									</td>
 									<td>
-										Berat <br> Akt/50<br>
+										Berat<br>Aktual/50 (g)<br>
 
 									</td>
 									<td>
-										Rata2 <br> Akt/m
+										Rata2<br>Aktual/m
 										<br>
 									</td>
 									<td></td>
 								</tr>
-							<template id="template-berat-actual" 
+							<template id="template-berat-actual"
 								v-for="(beratAktual, idxBeratktual) in beratAktuals"
-									is="berat-actual-item" 
+									is="berat-actual-item"
 									v-bind:key="beratAktual"
 									v-bind:title="beratAktual">
-								<tr 
+								<tr
 									>
 									  	<td id="berat-standard2">
-											
+
 										</td>
 										<td>
 										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)">
@@ -422,17 +422,17 @@
 											<button class="btn btn-success btn-xs save-berat-actual" @click="saveBeratActual(beratAktual)" title="Simpan">
 												<i class="material-icons">check</i>
 											</button>
-											
+
 											<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
 												<i class="material-icons">delete</i>
 											</button>
 										</td>
-									
+
 								</tr>
 							</template>
 							</table>
 
-								
+
 						</td>
 
 						<td valign="top">
@@ -451,14 +451,14 @@
 										Rak #
 									</td>
 									<td>
-										Jml Btg <br> Dirak
+										Jumlah Batang<br>Dirak (Batang)
 									</td>
-									<td>Berat Hasil</td>
+									<td>Berat (KG)</td>
 									<td></td>
 
 								</tr>
 								<template v-for="(hasil, idxhasil) in hasils"
-									is="hasil-item" 
+									is="hasil-item"
 									v-bind:key="hasil"
 									v-bind:title="hasil">
 								<tr >
@@ -472,25 +472,25 @@
 									<td id="hasil-berat-billet">
 										<% totalHasil %>
 									</td>
-									
+
 									<td>
 										<button class="btn btn-success btn-xs" @click="saveHasil(hasil)" title="Simpan">
 											<i class="material-icons">check</i>
 										</button>
-										
+
 										<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
 											<i class="material-icons">delete</i>
 										</button>
 									</td>
-									
+
 								</tr>
 								</template>
 							</table>
 						</td>
 
-						
-						
-						
+
+
+
 					</tr>
 				</thead>
 			</table>
@@ -512,16 +512,16 @@
 	        <div style="text-align: center;">
 				<a href="#" class="btn btn-primary yes-swal">Ya</a>&nbsp;&nbsp;
 				<a href="#" class="btn btn-warning no-swal">Tidak</a>&nbsp;&nbsp;
-				<a href="#" class="btn btn-danger problem-swal">Problem</a>&nbsp;&nbsp; 
-				<div class="select-problem" style="display: block;"> 
+				<a href="#" class="btn btn-danger problem-swal">Problem</a>&nbsp;&nbsp;
+				<div class="select-problem" style="display: block;">
 					<select class="list-problem" style="padding: 5px"></select>&nbsp;&nbsp;
-					<a href="#" class="btn btn-primary save-swal">Simpan</a>&nbsp;&nbsp; 
-					<a href="#" class="btn btn-default back-swal">Kembali</a> 
+					<a href="#" class="btn btn-primary save-swal">Simpan</a>&nbsp;&nbsp;
+					<a href="#" class="btn btn-default back-swal">Kembali</a>
 				</div>
 			</div>
 	    </div>
 	</div>
-	
+
 
 
 <script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.caret.min.js') }}"></script>
@@ -531,7 +531,7 @@
 	//window.LOT.handleJqgrid('.list-lot', '#pager-lot');
 	window.LOT.handleAddRow('.add-lot');
 	window.LOT.handleTagEditor();
-	window.LOT.handleSaveHeaderLot();	
+	window.LOT.handleSaveHeaderLot();
 	window.LOT.handleNumberInput();
 	var el = '.index-dice';
 	window.LOT.handleMulaiPukul('.btn-mulai-pukul', '.input-mulai-pukul', el);
@@ -565,7 +565,7 @@
 	    $(el).select2({
 	        width: "100%",
 		});
-		
+
 	});
 
 
