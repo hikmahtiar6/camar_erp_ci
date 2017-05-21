@@ -766,7 +766,7 @@ class Transaction extends CI_Controller
 				$gmd->master_detail_id,
 				'<a href="javascript:;" data-toggle="modal" data-target="#defaultModal" onclick="window.TRANSACTION.handleModalLot('.$gmd->master_detail_id.')">Isi Lot</a>', 
 				$tgl,
-				$gmd->shift,
+				$gmd->ShiftDescription,
 				$gmd->SectionDescription,
 				$gmd->section_id,
 				$gmd->machine_id_header,

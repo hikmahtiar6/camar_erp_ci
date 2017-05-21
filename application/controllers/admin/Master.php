@@ -28,7 +28,7 @@ class Master extends CI_Controller {
 			foreach($data as $r)
 			{
 				$row[] = array(
-					'value' => $r->ShiftNo,
+					'value' => $r->ShiftRefId,
 					'text' => $r->ShiftDescription,
 				);
 			}
@@ -191,6 +191,8 @@ class Master extends CI_Controller {
 					'text'  => $r->DiesId,
 				);
 			}
+
+			$row = super_unique_die($row);
 		}
 
 		return $this->output->set_output(json_encode($row));

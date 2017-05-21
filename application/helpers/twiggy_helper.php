@@ -737,4 +737,20 @@ function count_die_pr_by_header($header_id)
 	$ci->load->model('master/pr_model');
 	return $ci->pr_model->count_die_by_header($header_id);
 }
+
+function super_unique_die($array)
+{
+	$res = array();
+	$result = array_map("unserialize", array_unique(array_map("serialize", $array)) );
+
+	foreach ($result as $rr) {
+		$res[] = array(
+			'text' => $rr['text'],
+			'value' => $rr['value'],
+			'id' => $rr['id'],
+		);
+	}
+
+	return $res;
+}
 ?>

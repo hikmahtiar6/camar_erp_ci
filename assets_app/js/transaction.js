@@ -996,7 +996,7 @@ window.TRANSACTION = (function($) {
 						index:'shift', 
 						hidden: false,
 						editable:true,
-						width: 70,
+						width: 80,
 						edittype: "select",
 						editoptions: {
 							dataInit: function(el) {
@@ -1008,7 +1008,7 @@ window.TRANSACTION = (function($) {
 										var opt =  '';
 										var i = 0;
 										for(i in res) {
-											if(res[i]['value'] == $(el).parent().attr('title')) {
+											if(res[i]['text'] == $(el).parent().attr('title')) {
 												selected = 'selected="selected"';
 											} else {
 												selected = '';
@@ -1173,7 +1173,7 @@ window.TRANSACTION = (function($) {
 						index:'billet_id', 
 						hidden: false,
 						editable:false,
-						width: 70
+						width: 50
 					},
 					{
 						label: 'Len (m) <br><br>',
@@ -1431,6 +1431,7 @@ window.TRANSACTION = (function($) {
 						index:'target_prod_btg', 
 						hidden: false,
 						editable:false,
+						width: 70
 					},
 					{
 						label: 'Berat Std <br><br>',
@@ -1441,11 +1442,12 @@ window.TRANSACTION = (function($) {
 						width: 70
 					},
 					{
-						label: 'Target Section Kg<br><br>',
+						label: 'Target Section <br> (Kg)<br>',
 						name:'target_section', 
 						index:'target_section', 
 						hidden: false,
 						editable:false,
+						width: 80
 					},
 					{
 						label: 'Die Type <br><br>',
@@ -1453,7 +1455,7 @@ window.TRANSACTION = (function($) {
 						index:'die_type_name', 
 						hidden: false,
 						editable:false,
-						width: 150
+						width: 80
 					},
 					/*{
 						name:'lastName',

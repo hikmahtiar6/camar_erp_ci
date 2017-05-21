@@ -875,8 +875,8 @@ window.LOT = (function($) {
 									if(hasilFix > limit)
 									{
 										alert('Rata2 Akt/m melebihi Weight Upper Limit.');
-										addEl.hide();
-										saveBeratActualEl.hide();
+										//addEl.hide();
+										//saveBeratActualEl.hide();
 										rata2aktEl.css({
 											color: 'red'
 										});

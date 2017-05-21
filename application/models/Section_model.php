@@ -131,6 +131,7 @@ class Section_model extends CI_Model {
 					d.MachineTypeId as machine_type, 
 					e.ShiftDescription, 
 					e.ShiftStart, 
+					e.ShiftNo, 
 					g.finishing_name, 
 					i.*,
 					ROW_NUMBER() OVER(ORDER BY a.master_detail_id DESC) as RowNum
@@ -143,7 +144,7 @@ class Section_model extends CI_Model {
 				INNER JOIN
 					".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
 				LEFT JOIN
-					".static::TABLE_SHIFT." e ON a.shift = e.ShiftNo
+					".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
 				LEFT JOIN
 					".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
 				LEFT JOIN

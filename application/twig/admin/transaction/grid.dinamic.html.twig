@@ -20,8 +20,8 @@
 	{% for key, grid_row in grid_data %}
 	<tr>
 		<td>{{ grid_row.MachineId }}</td>		
-		<td>{{ grid_row.shift }}</td>		
-		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.shift, tgl) }}</td>
+		<td>{{ grid_row.ShiftNo }}</td>		
+		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.ShiftNo, tgl) }}</td>
 		{% if tanggal|length > 0 %}
 
 			{% set scrap_data = get_lot_scrap(header, tanggal, grid_row.shift) %}

@@ -58,7 +58,7 @@ class Detail_model extends CI_Model {
 				INNER JOIN
 					".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
 				LEFT JOIN
-					".static::TABLE_SHIFT." e ON a.shift = e.ShiftNo
+					".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
 				LEFT JOIN
 					".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
 				LEFT JOIN
@@ -144,17 +144,18 @@ class Detail_model extends CI_Model {
 
 		if($group)
 		{
-			$sql->select('a.shift, a.header_id, d.MachineId');
+			$sql->select('a.header_id, d.MachineId, s.ShiftNo');
 		}
 		else
 		{
-			$sql->select('a.*, b.Length, d.MachineId');
+			$sql->select('a.section_id, a.target_prod, b.Length, d.MachineId, s.ShiftNo');
 		}
 
 		$sql->from(static::TABLE. ' a');
 		$sql->join(static::TABLE_LEN. ' b', 'a.len = b.LengthId', 'left');
 		$sql->join(static::TABLE_HEAD. ' c', 'a.header_id = c.header_id', 'inner');
 		$sql->join(static::TABLE_MACHINE. ' d', 'c.machine_id = d.MachineId', 'inner');
+		$sql->join(static::TABLE_SHIFT. ' s', 's.ShiftRefId = a.shift', 'inner');
 
 		if($header_id != '')
 		{
@@ -173,12 +174,12 @@ class Detail_model extends CI_Model {
 
 		if($shift > 0)
 		{
-			$sql->where('a.shift', $shift);
+			$sql->where('s.ShiftNo', $shift);
 		}
 
 		if($group)
 		{
-			$sql->group_by('a.shift');
+			$sql->group_by('s.ShiftNo');
 			$sql->group_by('a.header_id');
 			$sql->group_by('d.MachineId');	
 		}
