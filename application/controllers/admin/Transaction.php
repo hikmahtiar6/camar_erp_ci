@@ -43,8 +43,8 @@ class Transaction extends CI_Controller
 		$this->twiggy->set('machine_data', $machine_data);
 		$this->twiggy->set('shift_data', $shift_data);
 
-		$week = date('W') - 2;
-		$week_next = $week + 4;
+		$week = date('W') - 5;
+		$week_next = $week + 10;
 
 		$this->twiggy->set('week', $week);
 		$this->twiggy->set('week_next', $week_next);
@@ -632,7 +632,7 @@ class Transaction extends CI_Controller
 			'header_id' => $header_id,
 			'tanggal'   => $tgl,
 			'section_id'=> '035',
-			'shift'     => 1
+			'shift'     => 'SH-15/10-0001'
 		);
 
 		$get_last_data_detail = $this->detail_model->advance_search($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '', $header_id, $limit = '', $start = '', $order = 'master_detail_id', $type_order = 'DESC')->row();

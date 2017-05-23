@@ -346,7 +346,7 @@
 								v-on:remove="removeRowBillet(idxbillet)">
 								<tr >
 									<td>
-										<input type="text" v-model="billet.pBilletActual" class="form-control" @change="saveBillet2(billet)">
+										<input type="text" v-model="billet.pBilletActual" class="form-control" @change="saveBillet2(billet)" autofocus>
 									</td>
 									<td>
 										<input type="text" v-model="billet.jmlBillet" class="form-control" @change="saveBillet2(billet)">
@@ -384,7 +384,9 @@
 								</template>
 								<tr>
 									<td>
+										<!--
 										<% totalPBilletActual %>
+										-->
 									</td>
 									<td>
 										<% totalJmlBillet %>
@@ -592,9 +594,6 @@
 	window.LOT.handlePosting('.btn-posting-lot');
 
 	window.LOT.handleLotBillet('#tbl-lot-billet');
-	window.LOT.handleLotBeratAktual('#tbl-lot-berat-aktual');
-	window.LOT.handleLotHasil('#tbl-lot-hasil');
-
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
 

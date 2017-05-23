@@ -598,6 +598,8 @@ window.LOT = (function($) {
 
 		handleLotBillet: function(elTable) {
 
+			__this = this;
+
 			/*Vue.component('billet-item', {
 			  props: ['title'],
 			  template: `
@@ -656,6 +658,8 @@ window.LOT = (function($) {
 				dataType: 'json',
 				success: function(response) {
 					billetData = response;
+
+					__this.handleLotBeratAktual('#tbl-lot-berat-aktual');
 
 					var billetTable = new Vue({
 						el: elTable,
@@ -869,6 +873,8 @@ window.LOT = (function($) {
 				success: function(response) {
 					beratData = response;
 
+					__this.handleLotHasil('#tbl-lot-hasil');
+
 					var beratAktualTable = new Vue({
 			  			delimiters: ['<%', '%>'],
 						el: elTable,
@@ -947,7 +953,7 @@ window.LOT = (function($) {
 								{
 									var beratAkt = window.APP.decimalSum(items[i].beratAkt);
 
-									totalPerRow += beratAkt;
+									totalPerRow += beratAkt / items.length;
 								}
 
 								return window.APP.decimal3(totalPerRow);
@@ -961,9 +967,9 @@ window.LOT = (function($) {
 									sum += window.APP.decimalSum(items[i].beratAkt);
 								}
 
-								var hasil = (sum * 2) / 1000;
+								var hasil = (sum / items.length * 2) / 1000;
 									var hasilFix = window.APP.decimal3(hasil);
-								/*setTimeout(function() {
+								setTimeout(function() {
 									var rata2aktEl = $('#rata-berat-ak');
 									var addEl = $('.add-berat-actual');
 									var beratStandardEl = $('#berat-standard2');
@@ -991,7 +997,7 @@ window.LOT = (function($) {
 
 									//beratStandardEl.html(beratStandard);
 
-								}, 200);*/
+								}, 200);
 								__this.rata2akt = hasilFix;
 									return hasilFix;//rata2aktEl.html(hasilFix);
 							}
@@ -1160,7 +1166,7 @@ window.LOT = (function($) {
 									var len = $('.lot-length').html();
 									var rata2akt = $('#rata-berat-ak').html();
 
-									var lotHasil = window.APP.decimal3(sum * len * rata2akt);
+									var lotHasil = window.APP.decimal3(sum * len * __this.rata2akt);
 									$('#hasil-berat-billet').html(lotHasil);
 									//$('#berat-standard2').html($('#berat-standard').html());
 									//$('#rata-berat-ak').html(window.APP.decimal3(hasil));

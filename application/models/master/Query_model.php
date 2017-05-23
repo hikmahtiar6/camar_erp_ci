@@ -28,7 +28,14 @@ class Query_model extends CI_Model
 			}
 			else
 			{
-				$sql .= "AND MACHINEID='".$machine_id."' ";
+				if($machine_id == 'SN0690.02' || $machine_id == 'SN0690.01' || $machine_id == 'SN0690.03')
+				{
+					$sql .= "AND MachineId IN ('SN0750.01', '".$machine_id."') ";
+				}
+				else
+				{
+					$sql .= "AND MACHINEID='".$machine_id."' ";	
+				}
 			}
 
 		}
@@ -65,7 +72,14 @@ class Query_model extends CI_Model
 			}
 			else
 			{
-				$sql .= "AND MACHINEID='".$machine_id."' ";
+				if($machine_id == 'SN0690.02' || $machine_id == 'SN0690.01' || $machine_id == 'SN0690.03')
+				{
+					$sql .= "AND MachineId IN ('SN0750.01', '".$machine_id."') ";
+				}
+				else
+				{
+					$sql .= "AND MACHINEID='".$machine_id."' ";
+				}
 			}
 		}
 
