@@ -934,9 +934,8 @@ window.LOT = (function($) {
 						computed: {
 							jmlBeratAktual50: function() {
 								return this.beratAktuals.map(function(item) {
-									var hasil = (item.beratAkt / 1 * 1) / 1000;
-									return '';
-					                //return window.APP.decimal3(hasil);
+									var hasil = item.beratAkt * 2 / 1000;
+					                return window.APP.decimal3(hasil);
 					            });
 							},
 							totalBeratAktual50: function() {
@@ -961,7 +960,7 @@ window.LOT = (function($) {
 									sum += window.APP.decimalSum(items[i].beratAkt);
 								}
 
-								var hasil = (sum / items.length * 2) / 1000;
+								var hasil = (sum * 2) / 1000;
 								setTimeout(function() {
 									var rata2aktEl = $('#rata-berat-ak');
 									var addEl = $('.add-berat-actual');
@@ -1121,6 +1120,16 @@ window.LOT = (function($) {
 						},
 
 						computed: {
+							jumlahQty: function() {
+					            return this.hasils.map(function(item) {
+								var len = $('.lot-length').html();
+								var rata2akt = $('.rata-berat-ak').html();
+
+								
+								
+					            	return '';
+					            });
+							},
 							totalQty: function() {
 								var items = this.hasils;
 								var totalPerRow = 0;

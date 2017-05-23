@@ -466,7 +466,7 @@
 									<td>
 										<% totalBeratAktual50 %>
 									</td>
-									<td id="rata-berat-ak">
+									<td class="rata-berat-ak" id="rata-berat-ak">
 										<% total %>
 									</td>
 									<td></td>
@@ -510,7 +510,9 @@
 									<td>
 										<input type="text" v-model="hasil.jmlRak" class="form-control" @change="saveHasil(hasil)">
 									</td>
-									<td></td>
+									<td>
+										<% jumlahQty[idxhasil] %>
+									</td>
 									<td>
 										<!--
 										<button class="btn btn-success btn-xs" @click="saveHasil(hasil)" title="Simpan">
