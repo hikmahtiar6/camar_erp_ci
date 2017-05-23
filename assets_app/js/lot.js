@@ -8,7 +8,8 @@ window.LOT = (function($) {
 
 		jqGrid: null, 
 		masterDetailId: null,
-		formHeaderLot: null, 
+		formHeaderLot: null,
+		rata2akt: 0, 
 
 		handleJqgrid: function(elJqgrid, elJqgridPager) {
 		    
@@ -961,14 +962,14 @@ window.LOT = (function($) {
 								}
 
 								var hasil = (sum * 2) / 1000;
-								setTimeout(function() {
+									var hasilFix = window.APP.decimal3(hasil);
+								/*setTimeout(function() {
 									var rata2aktEl = $('#rata-berat-ak');
 									var addEl = $('.add-berat-actual');
 									var beratStandardEl = $('#berat-standard2');
 									var saveBeratActualEl = $('.save-berat-actual');
 									var limit = $('.weight-upperlimit').html();
 									var beratStandard = window.APP.decimal3($('#berat-standard').html());
-									var hasilFix = window.APP.decimal3(hasil);
 
 									if(hasilFix > limit)
 									{
@@ -989,9 +990,10 @@ window.LOT = (function($) {
 									}
 
 									//beratStandardEl.html(beratStandard);
-									rata2aktEl.html(hasilFix);
 
-								}, 200);
+								}, 200);*/
+								__this.rata2akt = hasilFix;
+									return hasilFix;//rata2aktEl.html(hasilFix);
 							}
 						},
 					});
@@ -1000,6 +1002,8 @@ window.LOT = (function($) {
 		},
 
 		handleLotHasil: function(elTable) {
+
+			__this = this;
 
 			/*Vue.component('hasil-item', {
 			  props: ['title'],
@@ -1122,12 +1126,11 @@ window.LOT = (function($) {
 						computed: {
 							jumlahQty: function() {
 					            return this.hasils.map(function(item) {
-								var len = $('.lot-length').html();
-								var rata2akt = $('.rata-berat-ak').html();
+									var len = $('.lot-length').html();
 
-								
-								
-					            	return '';
+										
+									var hasil = window.APP.decimal3(len * __this.rata2akt * item.jmlRak);
+						            return hasil;
 					            });
 							},
 							totalQty: function() {
