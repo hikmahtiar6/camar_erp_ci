@@ -298,7 +298,8 @@ class Lot extends CI_Controller {
 					'lotBilletId'   => $row->SpkLotBilletId,
 					'pBilletActual' => $row->PBilletActual,
 					'jmlBillet'     => $row->JumlahBillet,
-					'billetVendorId'=> $row->BilletVendorId
+					'billetVendorId'=> $row->BilletVendorId,
+					'keterangan'    => $row->Keterangan,
 				);
 			}
 			
@@ -317,12 +318,14 @@ class Lot extends CI_Controller {
 		$jml_billet = $this->input->post('jml_billet');
 		$vendor_id = $this->input->post('vendor_id');
 		$lot_billet_id = $this->input->post('lot_billet_id');
+		$keterangan = $this->input->post('keterangan');
 
 		$data_save = array(
 			'PBilletActual'  => $p_billet_aktual,
 			'JumlahBillet'   => $jml_billet,
       		'BilletVendorId' => $vendor_id,
-			'MasterDetailId' => $master_detail_id
+			'MasterDetailId' => $master_detail_id,
+			'Keterangan'     => $keterangan
 		);
 
 		if($lot_billet_id == '')

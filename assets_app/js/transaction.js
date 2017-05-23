@@ -905,14 +905,28 @@ window.TRANSACTION = (function($) {
 			});
 		},
 		handleWeek: function() {
-			$('.week-options').change(function() {
+			var weekEl = $('.week-options');
+			var dateStartEl = $('.report-date-start');
+			var dateFinishEl = $('.report-date-finish');
+			var weekNumberEl = $('.week-number');
+
+			var splt = weekEl.val().split('-');
+			dateStartEl.val(splt[0]);
+			dateFinishEl.val(splt[1]);
+
+			var selectedText = $('.week-options option:selected').text();
+			var splt2 = selectedText.split('-');
+			weekNumberEl.val(splt2[0]);
+
+
+			weekEl.change(function() {
 				var splt = this.value.split('-');
-				$('.report-date-start').val(splt[0]);
-				$('.report-date-finish').val(splt[1]);
+				dateStartEl.val(splt[0]);
+				dateFinishEl.val(splt[1]);
 
 				var selectedText = $('.week-options option:selected').text();
 				var splt2 = selectedText.split('-');
-				$('.week-number').val(splt2[0]);
+				weekNumberEl.val(splt2[0]);
 			});
 		},
 

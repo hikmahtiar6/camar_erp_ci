@@ -22,11 +22,12 @@ class Detail_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('a.*, b.Length, c.SectionDescription, d.machine_id as MachineId');
+		$sql->select('a.*, b.Length, c.SectionDescription, d.machine_id as MachineId, s.ShiftNo');
 		$sql->from(static::TABLE. ' a');
 		$sql->join(static::TABLE_LEN. ' b', 'a.len = b.LengthId', 'left');
 		$sql->join(static::TABLE_BARANG. ' c', 'a.section_id = c.SectionId', 'left');
 		$sql->join(static::TABLE_HEAD. ' d', 'a.header_id = d.header_id', 'inner');
+		$sql->join(static::TABLE_SHIFT. ' s', 'a.shift = s.ShiftRefId', 'inner');
 		$sql->where('a.master_detail_id', $id);
 
 		$get = $sql->get();

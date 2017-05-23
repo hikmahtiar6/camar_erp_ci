@@ -20,4 +20,17 @@ function date_now()
 {
 	return date('Y-m-d');
 }
+
+/**
+ * get week number
+ */
+function get_week($date = '')
+{
+	if($date == '')
+	{
+		$date = date('Y-m-d');
+	}
+
+	return date('W', strtotime($date));
+}
 ?>

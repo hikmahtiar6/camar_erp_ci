@@ -248,7 +248,8 @@ $config['twiggy']['register_functions'] = array
 	'get_detail_machine',
 	'get_effective_item_dimension',
 	'count_die_pr_by_header',
-	'qty_pr_per_section'
+	'qty_pr_per_section',
+	'get_week'
 );
 
 

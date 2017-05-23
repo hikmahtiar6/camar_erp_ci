@@ -187,7 +187,7 @@ function date_to_time($date)
 	return strtotime($date);
 }
 
-function week_in_year() {
+function week_in_year($desc = false, $custom = '') {
 	
 	$ci =& get_instance();
 
@@ -219,13 +219,14 @@ function week_in_year() {
 		}
 
 
-			$dt[] =  array(
-				'no'          => $no,
-				'date_start'  => $date_start,
-				'date_finish' => $date_finish
-			);	
-		if($nextSunday <= strtotime($yearEnd.'-'.$endMonth.'-31')) {
-		}
+		$dt[] =  array(
+			'no'          => add_zero($no),
+			'date_start'  => $date_start,
+			'date_finish' => $date_finish
+		);	
+		
+		/*if($nextSunday <= strtotime($yearEnd.'-'.$endMonth.'-31')) {
+		}*/
 	
 		$nextMonday = strtotime('+1 week', $nextMonday);
 		$nextSunday = strtotime('+1 week', $nextSunday);
@@ -233,7 +234,14 @@ function week_in_year() {
 		$no++;
 		
 	}
-	
+
+	if($desc == 'true')
+	{
+		usort($dt, function($a, $b) {
+			return $b['no'] - $a['no'];
+		});
+	}
+
 	return $dt;	
 }
 

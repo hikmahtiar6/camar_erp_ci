@@ -143,7 +143,10 @@ class Master extends CI_Controller {
 					'text'  => $r->DiesId,
 				);
 			}
+
+			$row = super_unique_die($row);
 		}
+
 
 		return $this->output->set_output(json_encode($row));
 	}

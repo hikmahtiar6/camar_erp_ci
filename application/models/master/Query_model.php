@@ -44,7 +44,7 @@ class Query_model extends CI_Model
 		return $query;
 	}
 
-	public function get_master_advance($machine_id = '', $section_id = '')
+	public function get_master_advance($machine_id = '', $section_id = '', $length_id = '')
 	{
 		$sql = "
 		SELECT DISTINCT d.*, mdt.DieTypeName , s.SectionDescription
@@ -67,12 +67,16 @@ class Query_model extends CI_Model
 			{
 				$sql .= "AND MACHINEID='".$machine_id."' ";
 			}
-
 		}
 
 		if($section_id != '')
 		{
 			$sql .= "AND d.sectionid='".$section_id."' ";
+		}
+
+		if($length_id != '')
+		{
+			$sql .= "AND d.LengthId='".$length_id."' ";
 		}
 
 		$sql = str_replace("s.DieTypeId AND", "s.DieTypeId WHERE", $sql);
@@ -91,12 +95,13 @@ class Query_model extends CI_Model
 		if($district)
 		{
 			$sql = "
-			SELECT  DISTINCT s.SectionDescription, d.shift	
+			SELECT  DISTINCT s.SectionDescription, sh.ShiftNo	
 				
 			FROM dbo.SpkDetail d
 			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
 			LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
 			LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
+			INNER JOIN Factory.Shifts sh ON d.shift = sh.ShiftRefId
 			LEFT JOIN 
 				(SELECT *,
 					RowNo=ROW_NUMBER() OVER (PARTITION BY SectionId, MachineId, LengthId ORDER BY SectionId)
@@ -110,6 +115,7 @@ class Query_model extends CI_Model
 		{
 			$sql = "
 			SELECT d.*,
+				sh.ShiftNo,
 				h.machine_id as machine_id2,
 				f.finishing_name,
 				s.SectionDescription,
@@ -134,6 +140,7 @@ class Query_model extends CI_Model
 			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
 			LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
 			LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
+			INNER JOIN Factory.Shifts sh ON d.shift = sh.ShiftRefId
 			LEFT JOIN 
 				(SELECT *,
 					RowNo=ROW_NUMBER() OVER (PARTITION BY SectionId, MachineId, LengthId ORDER BY SectionId)
@@ -156,7 +163,7 @@ class Query_model extends CI_Model
 
 		if($shift > 0)
 		{
-			$sql .= "AND d.shift ='".$shift."' ";
+			$sql .= "AND sh.shiftNo ='".$shift."' ";
 		}
 
 		$sql = str_replace("g.RowNo=1 AND", "g.RowNo=1 WHERE", $sql);
@@ -307,6 +314,18 @@ class Query_model extends CI_Model
 			LEFT JOIN Purchasing.DieReceivingHeader h on h.DieReceivingNo = d.DieReceivingNo
 			GROUP BY d.DiesSeqNo
 			ORDER BY DiesSeqNo ASC
+		";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
+	public function get_dies_year_by_section($section_id)
+	{
+		$sql = "
+		SELECT DISTINCT DiesYear 
+		FROM Purchasing.DieReceivingDetail
+		WHERE SectionId = '".$section_id."'
 		";
 
 		$query = $this->db->query($sql);

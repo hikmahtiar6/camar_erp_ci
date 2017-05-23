@@ -43,6 +43,12 @@ class Transaction extends CI_Controller
 		$this->twiggy->set('machine_data', $machine_data);
 		$this->twiggy->set('shift_data', $shift_data);
 
+		$week = date('W') - 2;
+		$week_next = $week + 4;
+
+		$this->twiggy->set('week', $week);
+		$this->twiggy->set('week_next', $week_next);
+
 		if($search != '')
 		{
 			$this->twiggy->template('admin/transaction/step1search')->display();
@@ -315,7 +321,7 @@ class Transaction extends CI_Controller
 					'header_id'  => $this->section_model->get_last_insert_id(),
 					'tanggal'    => $tgl,
 					'section_id' => $sec_id,
-					'shift'      => 1
+					'shift'      => 'SH-15/10-0001'
 				);
 
 				$url = site_url('admin/transaction/detail/'.$this->section_model->get_last_insert_id());

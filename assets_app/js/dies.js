@@ -43,6 +43,7 @@ window.DIES = (function($) {
 						dies_id: $(this).attr('data-dies-id'),
 						location: 1,
 						status: 3,
+						date: $('.tanggal-dies').val()
 					},
 					success: function(response) {
 						$(_input).parent().html(response);
@@ -91,8 +92,25 @@ window.DIES = (function($) {
 			$('.form-problem').ajaxForm({
 				dataType: 'json',
 				success: function(response) {
-					//alert(response.message);
-					window.location.reload();
+
+					if(response.status == "success") {
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/dies/set_log',
+							type: 'post',
+							data: {
+								id: 'new',
+								dies_id: response.dies,
+								location: 1,
+								status: '0',
+							},
+							success: function(response) {
+								window.location.reload();
+							}
+						});
+					} else {
+						$.notify(response.message, response.status);
+					}
+					
 					
 				}
 			});

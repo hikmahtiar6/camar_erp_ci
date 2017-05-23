@@ -7,6 +7,7 @@
 	{% set billet = get_detail.BilletTypeId %}
 	{% set hole = get_detail.HoleCount %}
 	{% set vendor = get_detail.VendorId %}
+	{% set header = get_detail.PurchaseRequestHeaderId %}
 	{% set year = get_detail.DiesYear %}
 
 {% else %}
@@ -19,6 +20,7 @@
 	{% set hole = '' %}
 	{% set vendor = '' %}
 	{% set year = '' %}
+	{% set header = '' %}
 {% endif %}
 
 <form class="form-edit-pr" method="post" action="{{ site_url('admin/pr/update_detail') }}">
@@ -30,6 +32,7 @@
 				<input name="seqno" type="hidden" value="{{ seqno }}">
 				<input name="id" type="hidden" value="{{ id }}">
 				<input name="vendor" type="hidden" value="{{ vendor }}">
+				<input name="header" type="hidden" value="{{ header }}">
 				<select class="section-data" name="section-id">
 					{% if section_data %}
 
@@ -100,6 +103,27 @@
 							{% endif %}
 							>
 							{{ to_decimal(billet_type_row.BilletDiameter) }}
+							</option>
+						{% endfor %}
+
+					{% endif %}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Dies Year</td>
+			<td>
+				<select class="dies-year-data" name="dies-year">
+
+					{% if year_data %}
+
+						{% for year_row in year_data %}
+							<option value="{{ year_row }}"
+							{% if same(year_row, year) %}
+								selected="selected" 
+							{% endif %}
+							>
+								{{ to_decimal(year_row) }}
 							</option>
 						{% endfor %}
 

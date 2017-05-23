@@ -7,9 +7,15 @@
 		}
 	</style>
 	{% set section_id = '' %}
+	{% set machine = '' %}
+	{% set len_id = '' %}
+	{% set len = '' %}
 
 	{% if get_detail %}
+		{% set len_id = get_detail.len %}
+		{% set len = get_detail.Length %}
 		{% set section_id = get_detail.section_id %}
+		{% set machine = get_detail.MachineId %}
 	{% endif %}
 
 	<div class="modal-header">
@@ -40,11 +46,7 @@
 					<label>Mesin</label>
 				</td>
 				<td style="width: 250px;">
-					{% set machine = '' %}
-					{% if get_detail %}
-						{% set machine = get_detail.MachineId %}
-					{% endif %}
-						{{ machine }}
+					{{ machine }}
 				</td>
 				<td>
 					<!--<label>Operator 1</label>-->
@@ -53,7 +55,7 @@
 				</td>
 				<td style="width: 250px;">
 					<span class="lot-length">
-						{{ number_float(get_row_master('Length', machine, section_id)) }}
+						{{ to_decimal(len) }}
 					</span>
 
 					<!--
@@ -102,7 +104,7 @@
 				<td>
 					<!-- berat standard -->
 					<span id="berat-standard" style="display: none;">
-						{{ to_decimal(get_row_master('WeightStandard', machine, section_id)) }}
+						{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id)) }}
 					</span>
 
 					<!-- billet weight -->
@@ -143,7 +145,7 @@
 							{% set mulai = trims(get_detail_header.time_start) %}
 						{% endif %}
 					{% endif %}
-					<input class="form-control input-mulai-pukul" name="time_start" type="text" value="{{ mulai_str }}" readonly="readonly">
+					<input class="form-control input-mulai-pukul" name="time_start" type="text" value="{{ mulai_str }}">
 				</td>
 			</tr>
 			<tr>
@@ -151,16 +153,13 @@
 					<label>Shift</label>
 				</td>
 				<td>
-					{% if get_detail %} {{ get_detail.shift }} {% endif %}
+					{% if get_detail %} {{ get_detail.ShiftNo }} {% endif %}
 				</td>
 				<td>
 					<label>Pull Awal</label>
 				</td>
 				<td>
-
-					{% if get_master_query %}
-					{{ to_decimal(get_master_query.InitialPullingLength) }}
-					 {% endif %}
+					{{ to_decimal(get_row_master('InitialPullingLength', machine, section_id, len_id)) }}
 				</td>
 				<td>
 					<button class="btn btn-danger btn-selesai-pukul" type="button">
@@ -194,7 +193,7 @@
 					<input class="form-control" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}">
 				</td>
 				<td>
-					<label>Selisih Pukul</label>
+					<label>Lama Produksi</label>
 				</td>
 				<td>
 						<div class="div-selisih-waktu">
@@ -273,8 +272,12 @@
 				<td>
 					<span class="weight-upperlimit">{{ to_decimal(get_effective_item_dimension(section_id)) }}</span>
 				</td>
-				<td></td>
-				<td></td>
+				<td class="bold">
+					Berat Std
+				</td>
+				<td>
+					{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id)) }}
+				</td>
 				<td>
 					<label>Keterangan Ext</label>
 				</td>
@@ -313,22 +316,25 @@
 									<td align="center">
 										<b>BILLET</b>
 									</td>
-									<td colspan="4">
+									<td colspan="5">
 										<button class="btn btn-primary" @click="addNewRowBillet">Tambah</button>
 									</td>
 								</tr>
 								<tr align="center">
 									<td>
-										P. Billet <br> Actual
+										P. Billet <br> Actual (cm)
 									</td>
 									<td>
-										Jumlah<br>Billet (PCS)
+										Jumlah<br>Billet (pcs)
 									</td>
 									<td>
 										Billet <br> VendorId
 									</td>
 									<td>
-										Total Billet (KG)
+										Ket
+									</td>
+									<td>
+										Jumlah Billet (kg)
 									</td>
 									<td></td>
 								</tr>
@@ -340,16 +346,16 @@
 								v-on:remove="removeRowBillet(idxbillet)">
 								<tr >
 									<td>
-										<input type="text" v-model="billet.pBilletActual" class="form-control">
+										<input type="text" v-model="billet.pBilletActual" class="form-control" @change="saveBillet2(billet)">
 									</td>
 									<td>
-										<input type="text" v-model="billet.jmlBillet" class="form-control">
+										<input type="text" v-model="billet.jmlBillet" class="form-control" @change="saveBillet2(billet)">
 									</td>
 									<td>
 									<!--
 										<input type="text" v-model="billet.billetVendorId" class="form-control" @keyup.enter="saveBillet(billet)">
 									-->
-									<select v-model="billet.billetVendorId">
+									<select v-model="billet.billetVendorId" @change="saveBillet2(billet)">
 
 										{% for vendor_lot_row in vendor_lot_data %}
 											<option>{{ vendor_lot_row }}</option>
@@ -357,14 +363,17 @@
 									</select>
 									</td>
 									<td>
-										<span id="total-billet">
-											<% totalBillet %>
-										</span>
+										<input type="text" v-model="billet.keterangan" class="form-control" @change="saveBillet2(billet)">
 									</td>
 									<td>
+										<% jumlahBillet[idxbillet] %>
+									</td>
+									<td>
+										<!--
 										<button class="btn btn-success btn-xs" @click="saveBillet(billet)" title="Simpan">
 											<i class="material-icons">check</i>
 										</button>
+										-->
 										<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBillet(idxbillet)" title="Hapus">
 											<i class="material-icons">delete</i>
 										</button>
@@ -373,6 +382,22 @@
 								</tr>
 
 								</template>
+								<tr>
+									<td>
+										<% totalPBilletActual %>
+									</td>
+									<td>
+										<% totalJmlBillet %>
+									</td>
+									<td></td>
+									<td></td>
+									<td>
+										<span id="total-billet">
+											<% totalBillet %>
+										</span>
+									</td>
+									<td></td>
+								</tr>
 							</table>
 
 						</td>
@@ -389,9 +414,11 @@
 
 								</tr>
 								<tr align="center">
+									<!--
 									<td>
 										Berat<br>Std
 									</td>
+									-->
 									<td>
 										Berat<br>Aktual/50 (g)<br>
 
@@ -409,19 +436,24 @@
 									v-bind:title="beratAktual">
 								<tr
 									>
+									  	<!--
 									  	<td id="berat-standard2">
 
 										</td>
+										-->
 										<td>
-										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)">
-										</td>
-										<td id="rata-berat-ak">
-											<% total %>
+										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)" @change="saveBeratActual(beratAktual)">
 										</td>
 										<td>
+											<% jmlBeratAktual50[idxBeratktual] %>
+										</td>
+										<td>
+											<!--
 											<button class="btn btn-success btn-xs save-berat-actual" @click="saveBeratActual(beratAktual)" title="Simpan">
 												<i class="material-icons">check</i>
 											</button>
+
+											-->
 
 											<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
 												<i class="material-icons">delete</i>
@@ -430,6 +462,15 @@
 
 								</tr>
 							</template>
+								<tr>
+									<td>
+										<% totalBeratAktual50 %>
+									</td>
+									<td id="rata-berat-ak">
+										<% total %>
+									</td>
+									<td></td>
+								</tr>
 							</table>
 
 
@@ -451,9 +492,9 @@
 										Rak #
 									</td>
 									<td>
-										Jumlah Batang<br>Dirak (Batang)
+										Quantity (btg)
 									</td>
-									<td>Berat (KG)</td>
+									<td>Berat (kg)</td>
 									<td></td>
 
 								</tr>
@@ -467,16 +508,15 @@
 										<input type="text" v-model="hasil.rak" class="form-control">
 									</td>
 									<td>
-										<input type="text" v-model="hasil.jmlRak" class="form-control" @keyup.enter="saveHasil(hasil)">
+										<input type="text" v-model="hasil.jmlRak" class="form-control" @change="saveHasil(hasil)">
 									</td>
-									<td id="hasil-berat-billet">
-										<% totalHasil %>
-									</td>
-
+									<td></td>
 									<td>
+										<!--
 										<button class="btn btn-success btn-xs" @click="saveHasil(hasil)" title="Simpan">
 											<i class="material-icons">check</i>
 										</button>
+										-->
 
 										<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
 											<i class="material-icons">delete</i>
@@ -485,6 +525,17 @@
 
 								</tr>
 								</template>
+								<tr>
+									<td></td>
+									<td>
+										<% totalQty %>
+									</td>
+									
+									<td id="hasil-berat-billet">
+										<% totalHasil %>
+									</td>
+									<td></td>
+								</tr>
 							</table>
 						</td>
 

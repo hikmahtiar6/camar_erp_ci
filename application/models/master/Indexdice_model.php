@@ -19,6 +19,7 @@ class Indexdice_model extends CI_Model {
 	const TABLE_BERAT_ACTUAL = 'SpkLotBeratActual';
 	const TABLE_HASIL = 'SpkLotHasil';
 	const TABLE_MACHINE = 'Factory.Machines';
+	const TABLE_SHIFT = 'Factory.Shifts';
 
 	public function __construct()
 	{
@@ -104,11 +105,12 @@ class Indexdice_model extends CI_Model {
 		$sql->from(static::TABLE_SPK. ' a');
 		$sql->join(static::TABLE_BARANG. ' c', 'a.section_id = c.SectionId', 'left');
 		$sql->join(static::TABLE_HEAD. ' d', 'a.header_id = d.header_id', 'inner');
+		$sql->join(static::TABLE_SHIFT. ' s', 'a.shift = s.ShiftRefId', 'inner');
 
 		$sql->where('a.index_dice IS NOT NULL');
 		$sql->where('CONVERT(VARCHAR, a.index_dice) != ', '');
 		$sql->where('a.tanggal', $tgl);
-		$sql->where('a.shift', $shift);
+		$sql->where('s.ShiftNo', $shift);
 
 		if($machine != '')
 		{
@@ -150,7 +152,7 @@ class Indexdice_model extends CI_Model {
 
 		if($dies_id != '')
 		{
-			$sql->where('DiesId', trim($dies_id));	
+			$sql->where('DiesId', $dies_id);	
 		}
 
 		if($location != '')
@@ -297,6 +299,41 @@ class Indexdice_model extends CI_Model {
 		{
 			$sql->where('a.tanggal', change_format_date($tgl));
 		}
+
+	 	$get = $sql->get();
+
+	 	return $get->result_array();
+	 }
+
+	 /**
+	  * Get history card filter fix
+	  */
+	 public function filter_history_card_fix($section_id = '', $dice = '', $tgl = '')
+	 {
+	 	$sql = $this->db;
+
+	 	$sql->select('a.*, b.DiesStatus, c.Location, p.Problem');
+		$sql->from(static::TABLE_DIES_LOG.' a');
+		$sql->join(static::TABLE_DIES_STATUS.' b', 'a.DiesStatusId = b.DiesCode', 'inner');
+		$sql->join(static::TABLE_DIES_LOCATION.' c', 'a.DiesLocationId = c.DiesLocationId', 'inner');
+		$sql->join(static::TABLE_PROBLEM.' p', 'a.DiesProblemId = p.DiesProblemId', 'left');
+
+	 	/*if($section_id != '')
+	 	{
+	 		$sql->where('a.section_id', $section_id);
+	 	}*/
+
+	 	if($dice != '')
+	 	{
+	 		$sql->like('a.DiesId', $dice);
+	 	}
+		
+		if($tgl != '')
+		{
+			$sql->where('a.LogTime <=', change_format_date($tgl). ' 23:59:59');
+		}
+
+		$sql->order_by('a.LogTime', 'asc');
 
 	 	$get = $sql->get();
 

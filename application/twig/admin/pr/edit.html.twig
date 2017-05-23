@@ -99,6 +99,9 @@
 								Final DiesId
 							</td>
 							<td class="bold">
+								Dies Year
+							</td>
+							<td class="bold">
 								Type
 							</td>
 							<td class="bold">
@@ -132,6 +135,7 @@
 									</td>
 									<td v-model="prRow.sectionName"><% prRow.sectionName %></td>
 									<td><% prRow.diesId %></td>
+									<td><% prRow.year %></td>
 									<td><% prRow.dieTypeName %></td>
 									<td><% prRow.hole %></td>
 									<td><% prRow.billet %></td>
@@ -228,6 +232,20 @@
 
 									{% for billet_type_row in billet_type_data %}
 										<option value="{{ billet_type_row.BilletTypeId }}">{{ to_decimal(billet_type_row.BilletDiameter) }}</option>
+									{% endfor %}
+
+								{% endif %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Dies Year</td>
+						<td>
+							<select class="dies-year-data" name="dies-year">
+								{% if year_data %}
+
+									{% for year_row in year_data %}
+										<option value="{{ year_row }}">{{ to_decimal(year_row) }}</option>
 									{% endfor %}
 
 								{% endif %}

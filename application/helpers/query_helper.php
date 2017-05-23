@@ -2,12 +2,12 @@
 /**
  * Helper for QUery
  */
-function get_row_master($show = 'SectionId', $machine_id = '', $section_id = '')
+function get_row_master($show = 'SectionId', $machine_id = '', $section_id = '', $length_id = '')
 {
 	$ci =& get_instance();
 	$ci->load->model('master/query_model');
 
-	$get_data = $ci->query_model->get_master_advance($machine_id, $section_id)->row_array();
+	$get_data = $ci->query_model->get_master_advance($machine_id, $section_id, $length_id)->row_array();
 
 	if($get_data)
 	{

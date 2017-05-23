@@ -646,6 +646,9 @@ window.LOT = (function($) {
 
 			var billetData = [];
 
+			var typingTimer;
+			var doneTypingInterval = 1000;
+
 			$.ajax({
 				url: window.APP.siteUrl + 'admin/lot/get_billet/' + $('.master-detail-id').val(),
 				type: 'get',
@@ -666,7 +669,8 @@ window.LOT = (function($) {
 									lotBilletId: '',
 									pBilletActual: '',
 									jmlBillet: '',
-									billetVendorId: ''
+									billetVendorId: '',
+									keterangan: '',
 								});
 
 							},
@@ -679,6 +683,7 @@ window.LOT = (function($) {
 									p_billet_aktual  : row.pBilletActual,
 									jml_billet       : row.jmlBillet,
 									vendor_id        : row.billetVendorId,
+									keterangan       : row.keterangan,
 									master_detail_id : $('.master-detail-id').val()
 								};
 
@@ -693,6 +698,38 @@ window.LOT = (function($) {
 										$.notify(response.message, response.status);
 									}
 								});
+							},
+							saveBillet2: function(row) {
+
+								var _this = this;
+
+								clearTimeout(typingTimer);
+							    if (row.pBilletActual != "") {
+							        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+							    }
+
+								function doneTyping () {
+							    	var postData = {
+										lot_billet_id    : row.lotBilletId,
+										p_billet_aktual  : row.pBilletActual,
+										jml_billet       : row.jmlBillet,
+										vendor_id        : row.billetVendorId,
+										keterangan       : row.keterangan,
+										master_detail_id : $('.master-detail-id').val()
+									};
+
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/lot/save_billet',
+										type: 'post',
+										dataType: 'json',
+										data: postData,
+										success: function(response) {
+											_this.$set(row, 'lotBilletId', response.id);
+
+											//$.notify(response.message, response.status);
+										}
+									});
+								}
 							},
 							removeRowBillet: function(row) {
 
@@ -713,6 +750,38 @@ window.LOT = (function($) {
 						},
 
 						computed: {
+							totalPBilletActual: function() {
+								var items = this.billets;
+								var totalPerRow = 0;
+
+								for(var i in items)
+								{
+									var pBilletSum = window.APP.decimalSum(items[i].pBilletActual);
+
+									totalPerRow += pBilletSum;
+								}
+
+								return window.APP.decimal3(totalPerRow);
+							},
+							totalJmlBillet: function() {
+								var items = this.billets;
+								var totalPerRow = 0;
+
+								for(var i in items)
+								{
+									var jmlBillet = window.APP.decimalSum(items[i].jmlBillet);
+
+									totalPerRow += jmlBillet;
+								}
+
+								return window.APP.decimal3(totalPerRow);
+							},
+							jumlahBillet: function() {
+								var billetWeight = $('.billet-weight').html();
+								return this.billets.map(function(item) {
+					                return window.APP.decimal3(item.pBilletActual * item.jmlBillet * billetWeight);
+					            });
+							},
 							totalBillet: function() {
 								var sum = 0;
 								var totalPerRow = 0;
@@ -733,7 +802,7 @@ window.LOT = (function($) {
 									$('#total-billet').html(window.APP.decimal3(totalPerRow));
 									//$('#rata-berat-ak').html(window.APP.decimal3(hasil));
 								}, 200);
-							}
+							},
 						},
 					});
 				}
@@ -789,6 +858,8 @@ window.LOT = (function($) {
 						*/
 
 			var beratData = [];
+			var typingTimer;
+			var doneTypingInterval = 1000;
 
 			$.ajax({
 				url: window.APP.siteUrl + 'admin/lot/get_berat_actual/' + $('.master-detail-id').val(),
@@ -818,23 +889,31 @@ window.LOT = (function($) {
 							saveBeratActual: function(row) {
 								var _this = this;
 
-								var postData = {
-									lot_berat_actual_id  : row.lotBeratId,
-									berat_akt            : row.beratAkt,
-									master_detail_id     : $('.master-detail-id').val()
-								};
+								clearTimeout(typingTimer);
+							    if (row.beratAkt != "") {
+							        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+							    }
 
-								$.ajax({
-									url: window.APP.siteUrl + 'admin/lot/save_berat_actual',
-									type: 'post',
-									dataType: 'json',
-									data: postData,
-									success: function(response) {
-										_this.$set(row, 'lotBeratId', response.id);
+								function doneTyping () {
 
-										$.notify(response.message, response.status);
-									}
-								});
+									var postData = {
+										lot_berat_actual_id  : row.lotBeratId,
+										berat_akt            : row.beratAkt,
+										master_detail_id     : $('.master-detail-id').val()
+									};
+
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/lot/save_berat_actual',
+										type: 'post',
+										dataType: 'json',
+										data: postData,
+										success: function(response) {
+											_this.$set(row, 'lotBeratId', response.id);
+
+											//$.notify(response.message, response.status);
+										}
+									});
+								}
 							},
 							removeRowBeratAktual: function(row) {
 								$.ajax({
@@ -853,6 +932,26 @@ window.LOT = (function($) {
 							}
 						},
 						computed: {
+							jmlBeratAktual50: function() {
+								return this.beratAktuals.map(function(item) {
+									var hasil = (item.beratAkt / 1 * 1) / 1000;
+									return '';
+					                //return window.APP.decimal3(hasil);
+					            });
+							},
+							totalBeratAktual50: function() {
+								var items = this.beratAktuals;
+								var totalPerRow = 0;
+
+								for(var i in items)
+								{
+									var beratAkt = window.APP.decimalSum(items[i].beratAkt);
+
+									totalPerRow += beratAkt;
+								}
+
+								return window.APP.decimal3(totalPerRow);
+							},
 							total: function() {
 								var sum = 0;
 								var items = this.beratAktuals;
@@ -890,7 +989,7 @@ window.LOT = (function($) {
 										});
 									}
 
-									beratStandardEl.html(beratStandard);
+									//beratStandardEl.html(beratStandard);
 									rata2aktEl.html(hasilFix);
 
 								}, 200);
@@ -948,6 +1047,8 @@ window.LOT = (function($) {
 			});*/
 
 			var hasilData = [];
+			var typingTimer;
+			var doneTypingInterval = 1000;
 
 			$.ajax({
 				url: window.APP.siteUrl + 'admin/lot/get_hasil/' + $('.master-detail-id').val(),
@@ -976,24 +1077,32 @@ window.LOT = (function($) {
 
 								var _this = this;
 
-								var postData = {
-									lot_hasil_id     : row.lotHasilId,
-									rak              : row.rak,
-									jml_rak          : row.jmlRak,
-									master_detail_id : $('.master-detail-id').val()
-								};
+								clearTimeout(typingTimer);
+							    if (row.jmlRak != "") {
+							        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+							    }
 
-								$.ajax({
-									url: window.APP.siteUrl + 'admin/lot/save_hasil',
-									type: 'post',
-									dataType: 'json',
-									data: postData,
-									success: function(response) {
-										_this.$set(row, 'lotHasilId', response.id);
+								function doneTyping () {
 
-										$.notify(response.message, response.status);
-									}
-								});
+									var postData = {
+										lot_hasil_id     : row.lotHasilId,
+										rak              : row.rak,
+										jml_rak          : row.jmlRak,
+										master_detail_id : $('.master-detail-id').val()
+									};
+
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/lot/save_hasil',
+										type: 'post',
+										dataType: 'json',
+										data: postData,
+										success: function(response) {
+											_this.$set(row, 'lotHasilId', response.id);
+
+											//$.notify(response.message, response.status);
+										}
+									});
+								}
 							},
 							removeRowHasil: function(row) {
 								$.ajax({
@@ -1012,6 +1121,19 @@ window.LOT = (function($) {
 						},
 
 						computed: {
+							totalQty: function() {
+								var items = this.hasils;
+								var totalPerRow = 0;
+
+								for(var i in items)
+								{
+									var jmlRak = window.APP.decimalSum(items[i].jmlRak);
+
+									totalPerRow += jmlRak;
+								}
+
+								return window.APP.decimal3(totalPerRow);
+							},
 							totalHasil: function() {
 
 								var sum = 0;

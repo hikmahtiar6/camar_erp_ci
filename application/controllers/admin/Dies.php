@@ -47,7 +47,7 @@ class Dies extends CI_Controller
 		// var
 		$date_now = change_format_date($tgl, 'd-m-Y');
 		$date_now2 = change_format_date($tgl);
-		$shift = array('1', '2');
+		$shift = array('1', '2', '3');
 
 		// view
 		$this->twiggy->set('machine', $mesin);
@@ -77,13 +77,23 @@ class Dies extends CI_Controller
 		$status = $this->input->post('status');
 		$dies_id = $this->input->post('dies_id');
 		$dies_problem = $this->input->post('dies_problem');
+		$date = $this->input->post('date');
+
+		if(!$date)
+		{
+			$date = date('Y-m-d H:i:s');
+		}
+		else
+		{
+			$date = $date.' '.date('H:i:s');
+		}
 
 		if(is_array($dies_id))
 		{
 			foreach ($dies_id as $value) {
 
 				$data = array(
-					'LogTime'        => date('Y-m-d H:i:s'),
+					'LogTime'        => change_format_date($date, 'Y-m-d H:i:s'),
 					'DiesId'         => $value,
 					'DiesStatusId'   => $status,
 					'DiesLocationId' => $location
@@ -102,7 +112,7 @@ class Dies extends CI_Controller
 		else
 		{
 			$data = array(
-				'LogTime'        => date('Y-m-d H:i:s'),
+				'LogTime'        => change_format_date($date, 'Y-m-d H:i:s'),
 				'DiesId'         => $dies_id,
 				'DiesStatusId'   => $status,
 				'DiesLocationId' => $location
@@ -136,6 +146,11 @@ class Dies extends CI_Controller
 		{
 			$koreksi = $last_data->Koreksi;
 			$korektor = $last_data->Korektor;
+
+			if($korektor == "" && $korektor == null)
+			{
+				$korektor = $this->session->userdata('user_id');
+			}
 		}
 
 		$this->twiggy->set('problem', $data_problem);
@@ -216,7 +231,8 @@ class Dies extends CI_Controller
 			{
 				$response = array(
 					'status'  => 'success',
-					'message' => 'Berhasil input Problem'
+					'message' => 'Berhasil input Problem',
+					'dies'    => $dies_id
 				);
 			}
 			else
@@ -229,9 +245,7 @@ class Dies extends CI_Controller
 			
 		}
 
-			$this->output->set_output(json_encode($response));
-
-		
+		$this->output->set_output(json_encode($response));
 	} 
 
 	/**
@@ -322,10 +336,10 @@ class Dies extends CI_Controller
 		$get_pembelian = $this->die_model->get_detail($dice);
 		if($get_pembelian != '')
 		{
-			$tgl_pembelian = indonesian_date($get_pembelian);
+			$tgl_pembelian = change_format_date($get_pembelian, 'd-M-Y');
 		}
 
-		$data = $this->indexdice_model->filter_history_card($section_id, $dice, $tanggal);
+		$data = $this->indexdice_model->filter_history_card_fix($section_id= '', $dice, $tanggal);
 		$this->twiggy->set('data', $data);
 		$this->twiggy->set('dice', $dice);
 		$this->twiggy->set('tgl_pembelian', $tgl_pembelian);
@@ -364,6 +378,12 @@ class Dies extends CI_Controller
 		$this->twiggy->set('section_id', $section_id);
 		$this->twiggy->set('section_description', $section_description);
 		$this->twiggy->display('admin/dies/history.card.result');
+	}
+
+	public function get_dies_year_by_section()
+	{
+		$section_id = $this->input->post('section_id');
+
 	}
 }
 ?>

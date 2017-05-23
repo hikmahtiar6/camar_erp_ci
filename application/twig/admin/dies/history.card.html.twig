@@ -22,7 +22,7 @@
 
                     <ul class="nav nav-tabs tab-nav-right" role="tablist">
                         <li role="presentation" class="active"><a href="#home" data-toggle="tab">By Dies Id</a></li>
-                        <li role="presentation"><a href="#profile" data-toggle="tab">By Dies Index</a></li>
+                        <li role="presentation"><a href="#profile" data-toggle="tab">By Complete Set</a></li>
                     </ul>
 
                     <div class="tab-content">
@@ -30,7 +30,7 @@
                             <form class="card-form" method="POST" action="{{ site_url('admin/dies/history_card_search') }}" target="_blank">
                             
                                 <div class="form-group">
-                                    <label>Tanggal</label>
+                                    <label>Sampai Tanggal</label>
                                     <br>
                                             
                                     <input class="date-bootstrap" name="tanggal" type="text" style="padding: 5px;" value="{{ date_now|date('d/m/Y') }}" required="required"/>   

@@ -22,6 +22,14 @@
 					<form class="form-dies-idx" method="post" action="{{ site_url('admin/dies/filter') }}">
 						<table class="table" style="width: 40%">
 							<tr>
+								<td colspan="2">
+									<a class="btn bg-blue-grey waves-effect" href="{{ site_url('admin/dies/history') }}">
+										<i class="material-icons">cached</i>
+										Refresh
+									</a>
+								</td>
+							</tr>
+							<tr>
 								<td>
 									<label>Pencarian</label>
 								</td>
@@ -66,7 +74,7 @@
 										{% set history_card = last_log.DiesHistoryCardLogId %}
 									{% endif %}
 									<tr>
-										<td>{{ datetime_log|date('d-m-Y H:i:s') }}</td>
+										<td>{{ datetime_log|date('d-m-Y') }}</td>
 										<td>{{ row.DiesId }}</td>
 										<td>{{ dies_status }}</td>
 										<td>{{ problem }}</td>
