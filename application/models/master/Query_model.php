@@ -203,6 +203,7 @@ class Query_model extends CI_Model
 		INNER JOIN Inventory.MasterDimensionLength lent ON d.len = lent.LengthId
 		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
 		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
+		INNER JOIN Factory.Shifts sh ON d.shift = sh.ShiftRefId
 		LEFT JOIN dbo.SpkHeaderLot hl ON d.master_detail_id = hl.master_detail_id ";
 		
 		
@@ -218,12 +219,12 @@ class Query_model extends CI_Model
 
 		if($shift > 0)
 		{
-			$sql .= "AND d.shift ='".$shift."' ";
+			$sql .= "AND sh.ShiftNo ='".$shift."' ";
 		}
 
 		$sql = str_replace("hl.master_detail_id AND", "hl.master_detail_id WHERE", $sql);
 		
-		$sql .= $sql." ORDER BY d.shift DESC";
+		$sql .= $sql." ORDER BY sh.ShiftNo DESC";
 
 		$query = $this->db->query($sql);
 		return $query;
