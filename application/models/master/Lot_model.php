@@ -494,6 +494,7 @@ class Lot_model extends CI_Model {
 		$sql->from(static::TABLE_HASIL.' a');
 		$sql->join(static::TABLE_DETAIL.' b', 'a.MasterDetailId = b.master_detail_id', 'inner');
 		$sql->join(static::TABLE_HEAD.' c', 'b.header_id = c.header_id', 'inner');
+		$sql->join(static::TABLE_SHIFT.' s', 'b.shift = s.ShiftRefId', 'inner');
 
 		if($mesin_id != '')
 		{
@@ -507,7 +508,7 @@ class Lot_model extends CI_Model {
 
 		if($shift != '')
 		{
-			$sql->where('b.shift', $shift);
+			$sql->where('s.ShiftNo', $shift);
 		}
 
 		if($tgl != '')
