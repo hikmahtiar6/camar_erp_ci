@@ -356,11 +356,11 @@
 			});
 			
 			var bil1 = $('.total-hasil-prod-kg').html();
-			var bil2 = $('.total-prod-kg').html();
+			var bil2 = $('.total-akt-billet').html();
 			
 			var total = (bil1 / bil2) * 100;
 			
-			var fixTotal = Math.round(total * 1000) / 1000;
+			var fixTotal = Math.round(total * 100) / 100;
 			
 			$('.total-recovery').html(fixTotal + '%');
 			

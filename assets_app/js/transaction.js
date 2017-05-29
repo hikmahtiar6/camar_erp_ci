@@ -1642,6 +1642,8 @@ window.TRANSACTION = (function($) {
 			var machineId = $('.machine-id').val();
 			var tgl = $('.tgl-transaction').val();
 
+			table.html('Silahkan tunggu...');
+
 			$.ajax({
 				url: APP.siteUrl + 'admin/transaction/grid_dinamic/'+headerId+'/no/0/'+tgl,
 				type: 'POST',
