@@ -24,10 +24,10 @@
 		<td>{{ sum_target_section(header, grid_row.MachineId, grid_row.ShiftNo, tgl) }}</td>
 		{% if tanggal|length > 0 %}
 
-			{% set scrap_data = get_lot_scrap(header, tanggal, grid_row.shift) %}
+			{% set scrap_data = get_lot_scrap(header, tanggal, grid_row.ShiftNo) %}
 
 			<td>
-				<input id="shift{{ key + 1 }}" type="hidden" value="{{ grid_row.shift }}">
+				<input id="shift{{ key + 1 }}" type="hidden" value="{{ grid_row.ShiftNo }}">
 				<input class="form-control" id="scrap{{ key + 1 }}" type="text" value="{{ scrap_data['scrap'] }}">
 			</td>
 			<!--

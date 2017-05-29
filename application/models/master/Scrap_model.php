@@ -6,6 +6,7 @@ class Scrap_model extends CI_Model {
 	
 	const TABLE = 'dbo.LotScrap';
 	const TABLE_HEADER = 'dbo.SpkHeader';
+	const TABLE_SHIFT = 'Factory.Shifts';
 
 	public function __construct()
 	{
