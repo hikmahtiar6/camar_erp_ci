@@ -719,7 +719,7 @@ function get_total_billet($master_detail_id = '', $billet_weight = 0)
 	{
 		foreach($data as $row) 
 		{
-			$sum += $row->PBilletActual * $row->JumlahBillet;
+			$sum += $row->PBilletActual * $row->JumlahBillet * $billet_weight;
 		}
 	}
 	

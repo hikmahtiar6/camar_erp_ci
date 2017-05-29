@@ -277,7 +277,7 @@
 												{{ target_prod_btg['target_section_kg'] }}
 											</td>
 											<td class="akt-billet-shift{{ shift }}">
-												{% set billet_weight = to_decimal(get_row_master('BilletWeight', machine, master_row.section_id)) %}
+												{% set billet_weight = to_decimal(get_detail_machine(machine, 'BilletWeight')) %}
 												{% set total_billet = get_total_billet(master_row.master_detail_id, billet_weight) %}
 												{{ total_billet }}
 											</td>
