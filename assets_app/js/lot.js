@@ -343,7 +343,7 @@ window.LOT = (function($) {
 				}
 			});
 
-			if(posted) {
+			if(posted == 1) {
 				$('.input-lot').attr('disabled', 'disabled');
 			}
 
@@ -1338,8 +1338,8 @@ window.LOT = (function($) {
 					});
 
 					setTimeout(function() {
-						var posted = $('.is-posted');
-						if(posted) {
+						var posted = $('.is-posted').val();
+						if(posted == 1) {
 							$('.input-lot').attr('disabled', 'disabled');
 						}
 					}, 500);

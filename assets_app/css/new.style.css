@@ -105,3 +105,9 @@
 .remove-href-decoration:hover {
     text-decoration: none;
 }
+
+input:focus, select:focus, textarea:focus { 
+    outline: none !important;
+    border:3px solid blue !important;
+    box-shadow: 0 0 10px #719ECE !important;
+}

@@ -1073,7 +1073,7 @@ window.TRANSACTION = (function($) {
 									}
 								});
 
-								$(el).select2();
+								//$(el).select2();
 							},
 							dataEvents: [
 								{ 
