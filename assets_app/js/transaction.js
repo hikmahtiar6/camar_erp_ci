@@ -1357,44 +1357,53 @@ window.TRANSACTION = (function($) {
 
 								$(el).val(str.replace(',', ''));
 
-
+								var typingTimer;
+								var doneTypingInterval = 1000;
 
 								$(el).keyup(function() {
 									var grid = $('.list-spk');
+									var _thisInput = $(this).val();
 
-									$.ajax({
-										url: window.APP.siteUrl + 'admin/transaction/update_inline',
-										type: 'post',
-										dataType: 'json',
-										data: {
-											id: rowId,
-											type: 'target_prod',
-											value: $(this).val(),
-										},
-										success: function(response) {
-											setTimeout(function() {
-									        	window.TRANSACTION.handleGridUpDinamic();
-									        }, 1000);
-										}
-									});
+									clearTimeout(typingTimer);
+								    if (this.value != "") {
+								        typingTimer = setTimeout(function() {
 
-									$.ajax({
-										url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+$(this).val(),
-										type: 'POST',
-										dataType: 'json',
-										data: {
-											len: $('#len'+rowId+' option:selected').text()
-										},
-										success: function(data) {
-											grid.setRowData(rowId, { 
-									        	weight_standard: data.weight_standard,
-									        	target_prod_btg: data.target_prod_btg,
-									        	target_section: data.target_section,
-									        	die_type_name: data.die_type_name,
-									        });
-										}
-									});
+								        	$.ajax({
+												url: window.APP.siteUrl + 'admin/transaction/update_inline',
+												type: 'post',
+												dataType: 'json',
+												data: {
+													id: rowId,
+													type: 'target_prod',
+													value: _thisInput,
+												},
+												success: function(response) {
+													setTimeout(function() {
+											        	window.TRANSACTION.handleGridUpDinamic();
+											        }, 1000);
+												}
+											});
+
+											$.ajax({
+												url: window.APP.siteUrl + 'admin/transaction/get_rumus/'+rowId+'/'+_thisInput,
+												type: 'POST',
+												dataType: 'json',
+												data: {
+													len: $('#len'+rowId+' option:selected').text()
+												},
+												success: function(data) {
+													grid.setRowData(rowId, { 
+											        	weight_standard: data.weight_standard,
+											        	target_prod_btg: data.target_prod_btg,
+											        	target_section: data.target_section,
+											        	die_type_name: data.die_type_name,
+											        });
+												}
+											});
+								        }, doneTypingInterval);
+								    }
 								});
+
 							}
 						}
 					},
