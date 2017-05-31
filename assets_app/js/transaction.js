@@ -854,7 +854,9 @@ window.TRANSACTION = (function($) {
 							setTimeout(function() {
 								var grid = $('.list-spk');
 								grid.trigger("reloadGrid");
-								window.TRANSACTION.handleGridUpDinamic();
+								setTimeout(function() {
+		        					window.TRANSACTION.handleGridUpDinamic();
+								}, 1000);
 								//window.location.reload();							
 							}, 300);
 						}
@@ -971,7 +973,7 @@ window.TRANSACTION = (function($) {
 						label: "<br>",
                         name: "to_lot",
                         hidden: false,
-                        width: 50,  
+                        width: 75,  
                     },
 					{
 						label: 'Tanggal <br><br>',
@@ -1070,6 +1072,8 @@ window.TRANSACTION = (function($) {
 										$(el).html(opt);
 									}
 								});
+
+								$(el).select2();
 							},
 							dataEvents: [
 								{ 
@@ -1120,7 +1124,9 @@ window.TRANSACTION = (function($) {
 												        	die_type_name: data.die_type_name,
 												        });
 
-												        window.TRANSACTION.handleGridUpDinamic();
+												        setTimeout(function() {
+												        	window.TRANSACTION.handleGridUpDinamic();
+												        }, 1000);
 													}
 												});
 
@@ -1366,7 +1372,9 @@ window.TRANSACTION = (function($) {
 											value: $(this).val(),
 										},
 										success: function(response) {
-											window.TRANSACTION.handleGridUpDinamic();
+											setTimeout(function() {
+									        	window.TRANSACTION.handleGridUpDinamic();
+									        }, 1000);
 										}
 									});
 
@@ -1427,7 +1435,9 @@ window.TRANSACTION = (function($) {
 											    });
 												grid.trigger('reloadGrid');
 
-					        					window.TRANSACTION.handleGridUpDinamic();
+												setTimeout(function() {
+						        					window.TRANSACTION.handleGridUpDinamic();
+												}, 1000);
 
 												$('.body').animate({scrollLeft: -200},150);
 
@@ -1576,7 +1586,9 @@ window.TRANSACTION = (function($) {
 			            	focusField: 3,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
-					        	window.TRANSACTION.handleGridUpDinamic();
+						        setTimeout(function() {
+		        					window.TRANSACTION.handleGridUpDinamic();
+								}, 1000);
 
 						        /*grid.setRowData(rowid, { 
 						        	section_name:  
@@ -1592,7 +1604,9 @@ window.TRANSACTION = (function($) {
 			            	focusField: 3,
 			            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 						        grid.trigger("reloadGrid");
-					        	window.TRANSACTION.handleGridUpDinamic();
+						        setTimeout(function() {
+		        					window.TRANSACTION.handleGridUpDinamic();
+								}, 1000);
 
 						        /*grid.setRowData(rowid, { 
 						        	section_name:  
@@ -1608,7 +1622,9 @@ window.TRANSACTION = (function($) {
 		            	focusField: 3,
 		            	aftersavefunc: function (rowid, result) { // can add jqXHR, sentData, options 
 					        grid.trigger("reloadGrid");
-					        window.TRANSACTION.handleGridUpDinamic();
+					        setTimeout(function() {
+	        					window.TRANSACTION.handleGridUpDinamic();
+							}, 1000);
 					        /*grid.setRowData(rowid, { 
 					        	section_name:  
 					        });*/
@@ -1629,8 +1645,11 @@ window.TRANSACTION = (function($) {
 					}
 				});
 				grid.trigger("reloadGrid");
+
+				setTimeout(function() {
+					_this.handleGridUpDinamic();
+				}, 1000);
 				
-				_this.handleGridUpDinamic();
 			});
 
 		    
@@ -1676,6 +1695,7 @@ window.TRANSACTION = (function($) {
 		},
 
 		handleModalLot: function(masterDetailId) {
+            $(document).find('.content-modal-transaksi').html("silahkan tunggu...");
             $(document).find('.content-modal-transaksi').load(APP.siteUrl + 'admin/lot/get_detail/' + masterDetailId);
 
 		},

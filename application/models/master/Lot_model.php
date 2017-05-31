@@ -526,6 +526,50 @@ class Lot_model extends CI_Model {
 		
 		return '';
 	}
+
+	/**
+	 * [get_isian_billet_by_master_detail_id description]
+	 */
+	public function get_isian_billet_by_master_detail_id($master_detail_id, $type)
+	{
+		$sql = $this->db;
+		
+		switch ($type) {
+			case 'billet':
+			 	$sql->select('*');
+			 	$sql->from(static::TABLE_BILLET);
+			 	$sql->where('MasterDetailId', $master_detail_id);
+			 	$get = $sql->get();
+
+			 	return $get->result();
+
+				break;
+
+			case 'berat_aktual':
+			 	$sql->select('*');
+			 	$sql->from(static::TABLE_BERAT_ACTUAL);
+			 	$sql->where('MasterDetailId', $master_detail_id);
+			 	$get = $sql->get();
+
+			 	return $get->result();
+
+				break;
+
+			case 'hasil':
+			 	$sql->select('*');
+			 	$sql->from(static::TABLE_HASIL);
+			 	$sql->where('MasterDetailId', $master_detail_id);
+			 	$get = $sql->get();
+
+			 	return $get->result();
+
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+	}
 }
 
 ?>

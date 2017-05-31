@@ -22,7 +22,7 @@ class Query_model extends CI_Model
 
 		if($machine_id != '')
 		{
-			if($machine_id == 'SN0750.01')
+			/*if($machine_id == 'SN0750.01')
 			{
 				$sql .= "AND MachineId IN ('SN0690.02', 'SN0690.03', '".$machine_id."') ";
 			}
@@ -36,7 +36,8 @@ class Query_model extends CI_Model
 				{
 					$sql .= "AND MACHINEID='".$machine_id."' ";	
 				}
-			}
+			}*/
+					$sql .= "AND MACHINEID='".$machine_id."' ";	
 
 		}
 
@@ -66,7 +67,7 @@ class Query_model extends CI_Model
 
 		if($machine_id != '')
 		{
-			if($machine_id == 'SN0750.01')
+			/*if($machine_id == 'SN0750.01')
 			{
 				$sql .= "AND MachineId IN ('SN0690.02', 'SN0690.03', '".$machine_id."') ";
 			}
@@ -80,7 +81,8 @@ class Query_model extends CI_Model
 				{
 					$sql .= "AND MACHINEID='".$machine_id."' ";
 				}
-			}
+			}*/
+					$sql .= "AND MACHINEID='".$machine_id."' ";
 		}
 
 		if($section_id != '')
@@ -264,7 +266,47 @@ class Query_model extends CI_Model
 			dt.DieTypeName, 
 			pd.MachineTypeId, 
 			bt.BilletDiameter,
-			pd.PurchaseRequestHeaderId
+			pd.PurchaseRequestHeaderId,
+			(
+				SELECT MIN(CONVERT(VARCHAR, DiesId)) FROM DiePurchaseRequestDetail 
+				WHERE SectionId = pd.SectionId
+				AND DieTypeId = pd.DieTypeId
+				AND MachineTypeId = pd.MachineTypeId
+				AND HoleCount = pd.HoleCount
+				AND BilletTypeId = pd.BilletTypeId
+			) AS FirstDies,
+			(
+				SELECT MIN(DiesYear) FROM DiePurchaseRequestDetail 
+				WHERE SectionId = pd.SectionId
+				AND DieTypeId = pd.DieTypeId
+				AND MachineTypeId = pd.MachineTypeId
+				AND HoleCount = pd.HoleCount
+				AND BilletTypeId = pd.BilletTypeId
+			) AS FirstDiesYear,
+			(
+				SELECT MAX(CONVERT(VARCHAR, DiesId)) FROM DiePurchaseRequestDetail 
+				WHERE SectionId = pd.SectionId
+				AND DieTypeId = pd.DieTypeId
+				AND MachineTypeId = pd.MachineTypeId
+				AND HoleCount = pd.HoleCount
+				AND BilletTypeId = pd.BilletTypeId
+			) AS LastDies,
+			(
+				SELECT MAX(DiesYear) FROM DiePurchaseRequestDetail 
+				WHERE SectionId = pd.SectionId
+				AND DieTypeId = pd.DieTypeId
+				AND MachineTypeId = pd.MachineTypeId
+				AND HoleCount = pd.HoleCount
+				AND BilletTypeId = pd.BilletTypeId
+			) AS LastDiesYear,
+			(
+				SELECT MAX(DiesSeqNo) FROM DiePurchaseRequestDetail 
+				WHERE SectionId = pd.SectionId
+				AND DieTypeId = pd.DieTypeId
+				AND MachineTypeId = pd.MachineTypeId
+				AND HoleCount = pd.HoleCount
+				AND BilletTypeId = pd.BilletTypeId
+			) AS LastDiesSeqNo
 		FROM dbo.DiePurchaseRequestDetail pd
 		INNER JOIN Inventory.Sections s ON s.SectionId = pd.SectionId
 		INNER JOIN Inventory.MasterDieTypes dt ON dt.DieTypeId = pd.DieTypeId
@@ -322,13 +364,13 @@ class Query_model extends CI_Model
 		return 0;
 	}
 
-	public function get_seq_no()
+	public function get_seq_no_by_section_year($section_id, $year)
 	{
 		$sql = "
-		SELECT d.DiesSeqNo from Purchasing.DieReceivingDetail d
-			LEFT JOIN Purchasing.DieReceivingHeader h on h.DieReceivingNo = d.DieReceivingNo
-			GROUP BY d.DiesSeqNo
-			ORDER BY DiesSeqNo ASC
+		SELECT DISTINCT DiesSeqNo FROM Purchasing.DieReceivingDetail
+		WHERE DiesYear = '".$year."'
+		AND SectionId = '".$section_id."'
+		ORDER BY DiesSeqNo
 		";
 
 		$query = $this->db->query($sql);
@@ -341,6 +383,21 @@ class Query_model extends CI_Model
 		SELECT DISTINCT DiesYear 
 		FROM Purchasing.DieReceivingDetail
 		WHERE SectionId = '".$section_id."'
+		";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
+	public function get_dies_history_card2($section_id, $year, $seqno)
+	{
+		$sql = "
+		SELECT d.DiesId from Purchasing.DieReceivingDetail d
+		LEFT JOIN Purchasing.DieReceivingHeader h on h.DieReceivingNo = d.DieReceivingNo
+		WHERE SectionId = '".$section_id."'
+		AND DiesYear = '".$year."'
+		AND DiesSeqNo = '".$seqno."'
+		ORDER BY d.DiesYear, d.DiesSeqNo, d.DiesSuffix, d.DieTypeComponentId, d.DieTypeSubComponentId
 		";
 
 		$query = $this->db->query($sql);

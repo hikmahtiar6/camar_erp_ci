@@ -31,17 +31,17 @@ class Die_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('DieTypeComponentParent');
+		$sql->select('ComponentId');
 		$sql->from(static::DIE_COMPONENT);
 		$sql->where('DieTypeId', $die_type);
-		$sql->group_by('DieTypeComponentParent', 'asc');
+		$sql->group_by('ComponentId', 'asc');
 
 		$get = $sql->get();
 		$row = $get->row();
 
 		if($row)
 		{
-			return $row->DieTypeComponentParent;
+			return $row->ComponentId;
 		}
 
 		return '';

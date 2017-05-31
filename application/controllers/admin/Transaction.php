@@ -766,11 +766,19 @@ class Transaction extends CI_Controller
 			$len = $gmd->Length;
 			$target_section = $weight_standard * $target_prod_btg * $len;
 
+			$btn_lot = "Isi Lot";
+			$btn_class = "btn-primary";
+			if($gmd->is_posted)
+			{
+				$btn_class = "btn-success";
+				$btn_lot = "Lihat Lot";
+			}
+
 			$tgl = ($gmd->tanggal == null) ? '' : date('d-m-Y', strtotime($gmd->tanggal));
 			$response->rows[$i]['id']   = $gmd->master_detail_id;
 			$response->rows[$i]['cell'] = array(
 				$gmd->master_detail_id,
-				'<a href="javascript:;" data-toggle="modal" data-target="#defaultModal" onclick="window.TRANSACTION.handleModalLot('.$gmd->master_detail_id.')">Isi Lot</a>', 
+				'<a href="javascript:;" class="btn btn-xs '.$btn_class.' waves-effect" data-toggle="modal" data-target="#defaultModal" onclick="window.TRANSACTION.handleModalLot('.$gmd->master_detail_id.')">'.$btn_lot.'</a>', 
 				$tgl,
 				$gmd->ShiftDescription,
 				$gmd->SectionDescription,

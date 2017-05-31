@@ -619,6 +619,44 @@ class Lot extends CI_Controller {
 		$this->output->set_output(json_encode($response));
 	}
 
+	/**
+	 * Cek isian lot
+	 */
+	public function cek_isian_lot($master_detail_id = '')
+	{
+		$exists = array();
+
+		$cek_billet = $this->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, 'billet');
+		$cek_berat_aktual = $this->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, 'berat_aktual');
+		$cek_hasil = $this->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, 'hasil');
+
+		if(count($cek_billet) > 0) {
+			array_push($exists, 1);
+		}
+
+		if(count($cek_berat_aktual) > 0) {
+			array_push($exists, 1);
+		}
+
+		if(count($cek_hasil) > 0) {
+			array_push($exists, 1);
+		}
+
+		echo count($exists);
+
+	}
+
+	/**
+	 * set posting
+	 */
+	public function set_posting_header($master_detail_id = '')
+	{
+		$data_update = array(
+			'is_posted' => 1
+		);
+		return $this->lot_model->update_header($master_detail_id, $data_update);
+	}
+
 }
 
 ?>

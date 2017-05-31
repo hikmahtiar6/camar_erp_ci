@@ -54,6 +54,13 @@
 										{{ row_detail.SectionDescription }}
 									</td>
 									<td>
+										{{ row_detail.FirstDies }}
+
+										{% if same(row_detail.FirstDies, row_detail.LastDies) %}
+										{% else %}
+											- 
+											{{ get_last_dies_pr(row_detail.FirstDiesYear, row_detail.LastDiesSeqNo) }}
+										{% endif %}
 									</td>
 									<td>
 										{{ row_detail.DieTypeName }}

@@ -1,14 +1,31 @@
 window.PO = (function($) {
     return {
     	init: function() {
-    		$("form").ajaxForm({
+
+    		var _this = this;
+
+    		_this.handleSelectPR();
+    		_this.handleForm();
+    	},
+
+    	handleSelectPR: function() {
+    		var prEl = $('.pr-id');
+
+    		prEl.select2();
+    	},
+
+    	handleForm: function() {
+
+    		var formEl = $('.form-po');
+
+    		formEl.ajaxForm({
     			dataType: 'json',
     			beforeSend: function() {
     				$("#result").slideUp(500);
     			},
     			success: function(response) {
 
-					var dataPR = [];
+					/*var dataPR = [];
 					var tableEl = '.po-table';
 
     				if(response.id != 'new') {
@@ -73,6 +90,7 @@ window.PO = (function($) {
 
 						}
 					});
+					*/
 
     			}
     		});

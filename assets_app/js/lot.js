@@ -327,14 +327,40 @@ window.LOT = (function($) {
 
 		handleSaveHeaderLot: function() {
 
+			var posted = $('.is-posted').val();
 			var _this = this;
 
+			var typingTimer;
+			var doneTypingInterval = 1000;
+			var inputKeyup = $('.save-header-lot');
 			var formHeaderLot = $('.form-header-lot');
+
 			_this.formHeaderLot = formHeaderLot;
 			formHeaderLot.ajaxForm({
 				success: function() {
 					var grid = $('.list-spk');
 					grid.trigger("reloadGrid");
+				}
+			});
+
+			if(posted) {
+				$('.input-lot').attr('disabled', 'disabled');
+			}
+
+			inputKeyup.each(function() {
+
+				if(posted == '') {
+
+					$(this).keyup(function() {
+						clearTimeout(typingTimer);
+					    if (this.value != "") {
+					        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+					    }
+
+						function doneTyping () {
+							formHeaderLot.submit();
+						}
+					});
 				}
 			});
 
@@ -345,17 +371,21 @@ window.LOT = (function($) {
 			});
 
 			$('.close-modal').click(function() {
-				formHeaderLot.submit();
 
-				var grid = $('.list-lot');
+				var posted = $('.is-posted').val();
+				if(posted == '') {
+					formHeaderLot.submit();
+				}
+
+				/*var grid = $('.list-lot');
 
 				var rowKey = grid.jqGrid('getGridParam',"selrow");
 				//var idxDice = $('#indexdice'+rowKey).val();
 				grid.jqGrid('saveRow', rowKey, {
 					/*extraparam: {
 						idxdice: idxDice
-					},*/
-				});
+					},
+				});*/
 			});
 		},
 
@@ -383,15 +413,16 @@ window.LOT = (function($) {
 		    });
 		},
 
-		handleSaveCardLog(status, location, dies)
-		{
+		handleSaveCardLog(status, location, dies, masterDetailId, sectionId) {
 			var request = $.ajax({
 				url: window.APP.siteUrl + 'admin/dies/set_log',
 				type: 'post',
 				data: {
 					status: status,
 					location: location,
-					dies_id: dies
+					dies_id: dies,
+					master_detail_id: masterDetailId,
+					section_id: sectionId
 				},
 				success: function() {
 
@@ -411,13 +442,14 @@ window.LOT = (function($) {
 				var hours = (date.getHours() < 10 ? '0' :'') + date.getHours();
 				var time = hours + ':' + minutes;
 
+				var masterDetailId = $('.master-detail-id').val();
+				var sectionId = $('.section-id').val();
+
 				if($(elInput).val() == "" || $(elInput).val() == " ")
 				{
 					$(elInput).val(time);
+					_this.handleSaveCardLog("4", 1, $(elIdxDies).val(), masterDetailId, sectionId);
 				}
-
-				_this.handleSaveCardLog("4", 1, $(elIdxDies).val());
-
 
 				var formHeaderLot = $('.form-header-lot');
 				formHeaderLot.submit();
@@ -457,6 +489,8 @@ window.LOT = (function($) {
 
 		handlePosting: function(el) {
 			var _this = this;
+
+			var masterDetailId = $('.master-detail-id').val();
 
 			$(el).click(function() {
 				swal({
@@ -498,48 +532,140 @@ window.LOT = (function($) {
 				});	
 
 				$('.yes-swal').click(function() {
-					//alert('yes');
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/dies/set_log',
-						type: 'post',
-						data: {
-							status: 2,
-							location: 1,
-							dies_id: $('.index-dice').val()
-						},
-						success: function() {
-							swal({
-							  title: "Dies telah di set Ya",
-							  text: "",
-							  timer: 2000,
-							  type: "success",
-							  showConfirmButton: false
-							});
-						}
-					});
+					var formHeaderLot = $('.form-header-lot');
+					var closeModal = $('.close-modal');
+
+					formHeaderLot.validate({
+		                highlight: function (input) {
+		                    console.log(input);
+		                    $(input).parents('.form-line').addClass('error');
+		                },
+		                unhighlight: function (input) {
+		                    $(input).parents('.form-line').removeClass('error');
+		                },
+		                errorPlacement: function (error, element) {
+		                    $(element).parents('.input-group').append(error);
+		                }
+		            });
+
+		            if(formHeaderLot.valid()) {
+						// cek isian lot terlebih dahulu
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/cek_isian_lot/' + masterDetailId,
+							success: function(response) {
+								if(response < 3) {
+									$('.cancel-swal').click();
+		            				$.notify('Silahkan cek form isian lot terlebih dahulu', 'warning');
+								} else {
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/dies/set_log',
+										type: 'post',
+										data: {
+											status: 2,
+											location: 1,
+											dies_id: $('.index-dice').val()
+										},
+										success: function() {
+
+											$.ajax({
+												url: window.APP.siteUrl + 'admin/lot/set_posting_header/' + masterDetailId,
+												success: function() {
+													console.log('success');
+												}
+											});
+
+
+											swal({
+											  title: "Dies telah di set Ya",
+											  text: "",
+											  timer: 2000,
+											  type: "success",
+											  showConfirmButton: false
+											});
+
+											setTimeout(function() {
+												window.location.reload();
+											}, 2500);
+											
+										}
+									});
+								}				
+							}
+						});
+		            } else {
+		            	$('.cancel-swal').click();
+		            	$.notify('Silahkan cek form isian lot terlebih dahulu', 'warning');
+		            }
 				});
 
 				$('.no-swal').click(function() {
-					//alert('no');
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/dies/set_log',
-						type: 'post',
-						data: {
-							status: 2,
-							location: 1,
-							dies_id: $('.index-dice').val()
-						},
-						success: function() {
-							swal({
-							  title: "Dies telah di set Tidak",
-							  text: "",
-							  type: "success",
-							  timer: 2000,
-							  showConfirmButton: false
-							});
+					var formHeaderLot = $('.form-header-lot');
+					var closeModal = $('.close-modal');
+					formHeaderLot.validate({
+		                highlight: function (input) {
+		                    console.log(input);
+		                    $(input).parents('.form-line').addClass('error');
+		                },
+		                unhighlight: function (input) {
+		                    $(input).parents('.form-line').removeClass('error');
+		                },
+		                errorPlacement: function (error, element) {
+		                    $(element).parents('.input-group').append(error);
+		                }
+		            });
 
-						}
-					});
+           			$('.cancel-swal').click();
+
+		            if(formHeaderLot.valid()) {
+
+		            	// cek isian lot terlebih dahulu
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/cek_isian_lot/' + masterDetailId,
+							success: function(response) {
+								if(response < 3) {
+									$('.cancel-swal').click();
+		            				$.notify('Silahkan cek form isian lot terlebih dahulu', 'warning');
+								} else {
+
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/dies/set_log',
+										type: 'post',
+										data: {
+											status: 2,
+											location: 1,
+											dies_id: $('.index-dice').val()
+										},
+										success: function() {
+
+											$.ajax({
+												url: window.APP.siteUrl + 'admin/lot/set_posting_header/' + masterDetailId,
+												success: function() {
+													console.log('success');
+												}
+											});
+
+											swal({
+											  title: "Dies telah di set Tidak",
+											  text: "",
+											  type: "success",
+											  timer: 2000,
+											  showConfirmButton: false
+											});
+
+											setTimeout(function() {
+												window.location.reload();
+											}, 2500);
+
+										}
+									});
+
+								}
+							}
+						});
+		            } else {
+		            	$.notify('Silahkan cek form isian lot terlebih dahulu', 'warning');
+		            }
+
 				});
 
 				$('.problem-swal').click(function() {
@@ -552,26 +678,50 @@ window.LOT = (function($) {
 					$('.cancel-swal').hide();
 					
 					$('.save-swal').click(function() {
-						$.ajax({
-							url: window.APP.siteUrl + 'admin/dies/set_log',
-							type: 'post',
-							data: {
-								status: 29,
-								location: 1,
-								dies_id: $('.index-dice').val(),
-								dies_problem: $('.list-problem').val()
-							},
-							success: function() {
-								swal({
-								  title: "Dies telah di set Problem",
-								  text: "",
-								  type: "warning",
-								  timer: 2000,
-								  showConfirmButton: false
-								});
 
+						// cek isian lot terlebih dahulu
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/cek_isian_lot/' + masterDetailId,
+							success: function(response) {
+								if(response < 1) {
+									$('.cancel-swal').click();
+		            				$.notify('Silahkan cek form isian lot terlebih dahulu', 'warning');
+								} else {
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/dies/set_log',
+										type: 'post',
+										data: {
+											status: 29,
+											location: 1,
+											dies_id: $('.index-dice').val(),
+											dies_problem: $('.list-problem').val()
+										},
+										success: function() {
+											swal({
+											  title: "Dies telah di set Problem",
+											  text: "",
+											  type: "warning",
+											  timer: 2000,
+											  showConfirmButton: false
+											});
+
+											$.ajax({
+												url: window.APP.siteUrl + 'admin/lot/set_posting_header/' + masterDetailId,
+												success: function() {
+													console.log('success');
+												}
+											});
+
+											setTimeout(function() {
+												window.location.reload();
+											}, 2500);
+
+										}
+									});
+								}
 							}
 						});
+
 					});
 
 					$('.back-swal').click(function() {
@@ -960,6 +1110,7 @@ window.LOT = (function($) {
 							},
 							total: function() {
 								var sum = 0;
+								var hasilFix = 0;
 								var items = this.beratAktuals;
 
 								for(var i in items)
@@ -968,7 +1119,11 @@ window.LOT = (function($) {
 								}
 
 								var hasil = (sum / items.length * 2) / 1000;
-									var hasilFix = window.APP.decimal3(hasil);
+
+								if(items.length > 0) {
+									hasilFix = window.APP.decimal3(hasil);
+								}
+								
 								setTimeout(function() {
 									var rata2aktEl = $('#rata-berat-ak');
 									var addEl = $('.add-berat-actual');
@@ -979,7 +1134,13 @@ window.LOT = (function($) {
 
 									if(hasilFix > limit)
 									{
-										alert('Rata2 Akt/m melebihi Weight Upper Limit.');
+										swal({
+										  title: "Rata2 Akt/m melebihi Weight Upper Limit",
+										  text: "",
+										  type: "warning",
+										  timer: 1550,
+										  showConfirmButton: false
+										});
 										//addEl.hide();
 										//saveBeratActualEl.hide();
 										rata2aktEl.css({
@@ -999,7 +1160,7 @@ window.LOT = (function($) {
 
 								}, 200);
 								__this.rata2akt = hasilFix;
-									return hasilFix;//rata2aktEl.html(hasilFix);
+								return hasilFix;//rata2aktEl.html(hasilFix);
 							}
 						},
 					});
@@ -1064,6 +1225,7 @@ window.LOT = (function($) {
 				type: 'get',
 				dataType: 'json',
 				success: function(response) {
+
 					hasilData = response;
 
 					var hasilTable = new Vue({
@@ -1174,6 +1336,13 @@ window.LOT = (function($) {
 							}
 						},
 					});
+
+					setTimeout(function() {
+						var posted = $('.is-posted');
+						if(posted) {
+							$('.input-lot').attr('disabled', 'disabled');
+						}
+					}, 500);
 				}
 			});
 		},

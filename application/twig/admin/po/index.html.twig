@@ -32,6 +32,7 @@
 								<td class="bold">No. Dokumen</td>
 								<td class="bold">No. Dokumen PR</td>
 								<td class="bold">Tanggal Transaksi</td>
+								<td class="bold">Sudah Diposting ?</td>
 								<td class="bold"></td>
 							</tr>
 						</thead>
@@ -50,6 +51,17 @@
 										{{ row_header.PurchaseRequestNo }}
 									</td>
 									<td>{{ indonesian_date(row_header.TransactionDate, 'three') }}</td>	
+									<td>
+										{% if same(row_header.PostedDate, '') %}
+											<span class="color-red" title="belum">
+												<i class="material-icons">remove</i>
+											</span>
+										{% else %}
+											<span class="color-green" title="sudah">
+												<i class="material-icons">check</i>
+											</span>
+										{% endif %}
+									</td>
 									<td align="center">
 										{% if same(row_header.PostedDate, '') %}
 											<span class="btn btn-xs btn-danger delete-header-po" data-id="{{ row_header.PurchaseOrderHeaderId }}">

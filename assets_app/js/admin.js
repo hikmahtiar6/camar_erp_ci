@@ -135,7 +135,8 @@ $.AdminBSB.leftSideBar = {
             });
         }
 
-        if (width < 1700) {
+        
+        if (width < 360000) {
             $body.addClass('ls-closed');
             $openCloseBar.fadeIn();
         }

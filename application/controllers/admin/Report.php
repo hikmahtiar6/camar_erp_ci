@@ -74,6 +74,7 @@ class Report extends CI_Controller
 	 */
 	public function search()
 	{
+		$shift_array = array();
 		$post = $this->input->post();
 		$tanggal = (isset($post['tanggal'])) ? $post['tanggal'] : '' ;
 		$machine = (isset($post['machine'])) ? $post['machine'] : '' ;
@@ -113,7 +114,15 @@ class Report extends CI_Controller
 				# code...
 				if($shift == 0)
 				{
-					$shift = array('1', '2');
+					$ss = $this->detail_model->get_data_for_grid_dinamic('', $shift, true, $machine, $tgl);
+					if($ss)
+					{
+						foreach($ss as $s)
+						{
+							array_push($shift_array, $s->ShiftNo);
+						}
+					}
+					$shift = $shift_array;
 				}
 
 				
@@ -125,7 +134,15 @@ class Report extends CI_Controller
 				# code...
 				if($shift == 0)
 				{
-					$shift = array('1', '2');
+					$ss = $this->detail_model->get_data_for_grid_dinamic('', $shift, true, $machine, $tgl);
+					if($ss)
+					{
+						foreach($ss as $s)
+						{
+							array_push($shift_array, $s->ShiftNo);
+						}
+					}
+					$shift = $shift_array;
 				}
 
 				
@@ -146,6 +163,7 @@ class Report extends CI_Controller
 	 */
 	public function search_lot()
 	{
+		$shift_array = array();
 		$post = $this->input->post();
 		$tanggal = (isset($post['tanggal'])) ? $post['tanggal'] : '' ;
 		$machine = (isset($post['machine'])) ? $post['machine'] : '' ;
@@ -175,7 +193,15 @@ class Report extends CI_Controller
 		$this->twiggy->set('tgl', $tgl);
 		if($shift == 0)
 		{
-			$shift = array('1', '2', '3');
+			$ss = $this->detail_model->get_data_for_grid_dinamic('', $shift, true, $machine, $tgl);
+			if($ss)
+			{
+				foreach($ss as $s)
+				{
+					array_push($shift_array, $s->ShiftNo);
+				}
+			}
+			$shift = $shift_array;
 		}
 		
 		$this->twiggy->set('shift2', $shift);

@@ -271,8 +271,26 @@
 			<tr>
 				<td>{{ row.LogTime|date('d-M-Y H:i:s') }}</td>
 				<td>{{ row.DiesStatus }}</td>
-				<td>{{ row.PBilletActual }}</td>
-				<td>{{ row.JumlahBillet }}</td>
+				<td>
+				{% if row.MasterDetailId > 0 %}
+					{% set billet_data = get_isian_data_lot(row.MasterDetailId, 'billet') %}
+					{% if billet_data %}
+						{% for billet_row in billet_data %}
+							{{  billet_row.PBilletActual }} <br>
+						{% endfor %}
+					{% endif %}
+				{% endif %}
+				</td>
+				<td>
+				{% if row.MasterDetailId > 0 %}
+					{% set billet_data = get_isian_data_lot(row.MasterDetailId, 'billet') %}
+					{% if billet_data %}
+						{% for billet_row in billet_data %}
+								{{  billet_row.JumlahBillet }} <br>
+						{% endfor %}
+					{% endif %}
+				{% endif %}
+				</td>
 				<td>
 					{% set billet_weight = to_decimal(get_row_master('BilletWeight', '', row.section_id)) %}
 					{% set jumlah_kg = to_decimal(get_jumlah_billet_kg(row.PBilletActual, row.JumlahBillet, billet_weight)) %}
@@ -292,10 +310,7 @@
 				<td>{{ row.Korektor }}</td>
 			</tr>
 			{% endfor %}
-		{% else %}
-			<tr>
-				<td colspan="10">Data tidak tersedia</td>
-			</tr>
+		
 		{% endif %}
 	</tbody>
 </table>

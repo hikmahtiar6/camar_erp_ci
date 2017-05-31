@@ -78,6 +78,7 @@ class Dies extends CI_Controller
 		$dies_id = $this->input->post('dies_id');
 		$dies_problem = $this->input->post('dies_problem');
 		$date = $this->input->post('date');
+		$master_detail_id = $this->input->post('master_detail_id');
 
 		if(!$date)
 		{
@@ -104,6 +105,11 @@ class Dies extends CI_Controller
 					$data['DiesProblemId'] = $dies_problem;
 				}
 
+				if($master_detail_id)
+				{
+					$data['MasterDetailId'] = $master_detail_id;
+				}
+
 				$save = $this->indexdice_model->set_dies_log($data);
 			}
 			
@@ -121,6 +127,11 @@ class Dies extends CI_Controller
 			if($dies_problem)
 			{
 				$data['DiesProblemId'] = $dies_problem;
+			}
+
+			if($master_detail_id)
+			{
+				$data['MasterDetailId'] = $master_detail_id;
 			}
 
 			$save = $this->indexdice_model->set_dies_log($data);
@@ -308,11 +319,9 @@ class Dies extends CI_Controller
 	{
 		$sections = $this->section_model->get_section_grouping()->result();
 		$dices = $this->indexdice_model->get_data2()->result();
-		$seqno = $this->query_model->get_seq_no();
 
 		$this->twiggy->set('sections', $sections);
 		$this->twiggy->set('dices', $dices);
-		$this->twiggy->set('seqno', $seqno);
 		$this->twiggy->display('admin/dies/history.card');
 	}
 
@@ -340,6 +349,7 @@ class Dies extends CI_Controller
 		}
 
 		$data = $this->indexdice_model->filter_history_card_fix($section_id= '', $dice, $tanggal);
+
 		$this->twiggy->set('data', $data);
 		$this->twiggy->set('dice', $dice);
 		$this->twiggy->set('tgl_pembelian', $tgl_pembelian);
@@ -348,12 +358,64 @@ class Dies extends CI_Controller
 		$this->twiggy->display('admin/dies/history.card.result');
 	}
 
+	private function get_tanggal_pembelian($data)
+	{
+		$res = array();
+		$tgl_pembelian = '';
+
+		if($data)
+		{
+			foreach($data as $row)
+			{
+
+				$get_pembelian = $this->die_model->get_detail($row->DiesId);
+				if($get_pembelian != '')
+				{
+					$tgl_pembelian = change_format_date($get_pembelian, 'd-M-Y');
+				}
+
+				$res[$row->DiesId] = $tgl_pembelian;
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Menghilangkan data dies id yg sama
+	 */
+	private function super_unique_die($data)
+	{
+		$ress = array();
+		$res = array();
+
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				$res[] = array(
+					'dies_id'=> $row->DiesId
+				);
+			}
+		}
+
+		$result = array_map("unserialize", array_unique(array_map("serialize", $res)) );
+
+		foreach ($result as $rr) {
+			$ress[] = array(
+				'DiesId' => $rr['dies_id'],
+			);
+		}
+
+		return $ress;
+	}
+
 	/**
 	 * Dies History Card
 	 */
 	public function history_card_search_index()
 	{
-		$dice = $this->input->post('dice');
+		$dice = $this->input->post('seqno');
 		$section_id = $this->input->post('section');
 		$tanggal = $this->input->post('dies_year');
 		$tgl_pembelian = '';
@@ -365,25 +427,49 @@ class Dies extends CI_Controller
 			$section_description = $get_section_description->SectionDescription;
 		}
 
-		$get_pembelian = $this->die_model->get_detail($dice);
-		if($get_pembelian != '')
-		{
-			$tgl_pembelian = indonesian_date($get_pembelian);
-		}
-
-		$data = $this->indexdice_model->filter_history_card($section_id, $dice, $tanggal);
-		$this->twiggy->set('data', $data);
-		$this->twiggy->set('dice', $dice);
-		$this->twiggy->set('tgl_pembelian', $tgl_pembelian);
+		$data = $this->query_model->get_dies_history_card2($section_id, $tanggal, $dice);
+		$this->twiggy->set('data', $this->super_unique_die($data));
+		$this->twiggy->set('tgl_pembelian', $this->get_tanggal_pembelian($data));
 		$this->twiggy->set('section_id', $section_id);
 		$this->twiggy->set('section_description', $section_description);
-		$this->twiggy->display('admin/dies/history.card.result');
+		$this->twiggy->display('admin/dies/history.card.result2');
 	}
 
 	public function get_dies_year_by_section()
 	{
+		$response = '';
+
 		$section_id = $this->input->post('section_id');
 
+		$data = $this->query_model->get_dies_year_by_section($section_id);
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				$response .= '<option>'.$row->DiesYear.'</option>';
+			}
+		}
+
+		output_json($response);
+	}
+
+	public function get_dies_seq_no_by_section_year()
+	{
+		$response = '';
+
+		$section_id = $this->input->post('section_id');
+		$year = $this->input->post('year');
+
+		$data = $this->query_model->get_seq_no_by_section_year($section_id, $year);
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				$response .= '<option>'.$row->DiesSeqNo.'</option>';
+			}
+		}
+
+		output_json($response);
 	}
 }
 ?>

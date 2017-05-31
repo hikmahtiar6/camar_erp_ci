@@ -18,13 +18,19 @@
 		{% set machine = get_detail.MachineId %}
 	{% endif %}
 
+	{% set is_posted = '' %}
+	{% if get_detail_header %}
+		{% set is_posted = get_detail_header.is_posted %}
+	{% endif %}
+
 	<div class="modal-header">
 	    <h4 class="modal-title pull-left" id="defaultModalLabel">
 	    	Form Transaksi Lot
 	    </h4>
 
-
 		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
+
+		{% if same(is_posted, '') %}
 
 		<div class="pull-right" style="padding-right: 200px;">
 		    <button class="btn btn-info btn-posting-lot" datasa-toggle="modal" daasta-target=".defaultModal">
@@ -32,13 +38,16 @@
 		    </button>
 	    </div>
 
+	    {% endif %}
+
 	</div>
 	<div class="modal-body">
 
 		<form class="form-header-lot" method="post" action="{{ site_url('admin/lot/save_header') }}">
 
 		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
-
+		<input class="section-id" type="hidden" value="{{ section_id }}">
+		<input class="is-posted" type="hidden" value="{{ is_posted }}">
 
 		<table class="tbl-cstm" style="width: 100%;">
 			<tr>
@@ -132,11 +141,6 @@
 					</select>-->
 				</td>
 				<td>
-					<button class="btn btn-success btn-mulai-pukul" type="button">
-						Mulai Pukul
-					</button>
-				</td>
-				<td>
 					{% set mulai = "00:00" %}
 					{% set mulai_str = "" %}
 					{% if get_detail_header %}
@@ -145,7 +149,20 @@
 							{% set mulai = trims(get_detail_header.time_start) %}
 						{% endif %}
 					{% endif %}
-					<input class="form-control input-mulai-pukul" name="time_start" type="text" value="{{ mulai_str }}">
+
+					{% if same(is_posted, '') %}
+						<button class="btn btn-success btn-mulai-pukul" type="button">
+							Mulai Pukul
+						</button>
+					{% else %}
+						<label>Mulai Pukul</label>
+					{% endif %}
+
+					*
+
+				</td>
+				<td>
+					<input class="form-control input-lot input-mulai-pukul save-header-lot" name="time_start" type="text" value="{{ mulai_str }}" required="">
 				</td>
 			</tr>
 			<tr>
@@ -162,11 +179,6 @@
 					{{ to_decimal(get_row_master('InitialPullingLength', machine, section_id, len_id)) }}
 				</td>
 				<td>
-					<button class="btn btn-danger btn-selesai-pukul" type="button">
-						Selesai Pukul
-					</button>
-				</td>
-				<td>
 					{% set selesai = "00:00" %}
 					{% set selesai_str = "" %}
 					{% if get_detail_header %}
@@ -175,7 +187,19 @@
 							{% set selesai = trims(get_detail_header.time_finish) %}
 						{% endif %}
 					{% endif %}
-					<input class="form-control input-selesai-pukul" name="time_finish" type="text" value="{{ selesai_str }}">
+
+					{% if same(is_posted, '') %}
+						<button class="btn btn-danger btn-selesai-pukul" type="button">
+							Selesai Pukul
+						</button> 
+					{% else %}
+						<label>Selesai Pukul</label>
+					{% endif %}
+						*
+
+				</td>
+				<td>
+					<input class="form-control input-lot input-selesai-pukul save-header-lot" name="time_finish" type="text" value="{{ selesai_str }}" required>
 				</td>
 			</tr>
 			<tr>
@@ -186,11 +210,11 @@
 					{% if get_detail %} {{ get_detail.SectionDescription }} {% endif %}
 				</td>
 				<td>
-					<label>Pull Awal Actual</label>
+					<label>Pull Awal Actual *</label>
 				</td>
 				<td>
 
-					<input class="form-control" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}">
+					<input class="form-control input-lot" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required>
 				</td>
 				<td>
 					<label>Lama Produksi</label>
@@ -219,10 +243,10 @@
 					{% endif %}
 				</td>
 				<td>
-					<label>Downtime</label>
+					<label>Downtime *</label>
 				</td>
 				<td>
-					<input class="form-control" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}">
+					<input class="form-control input-lot" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}" required>
 				</td>
 			</tr>
 			<tr>
@@ -233,16 +257,16 @@
 					{{ to_decimal(get_row_master('F2_BilletLengthTotalMax', machine, section_id)) }}
 				</td>
 				<td>
-					<label>Bs. Blkg Actual</label>
+					<label>Bs. Blkg Actual *</label>
 				</td>
 				<td>
-					<input class="form-control" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}">
+					<input class="form-control input-lot" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required>
 				</td>
 				<td>
-					<label>DeadCycle</label>
+					<label>DeadCycle *</label>
 				</td>
 				<td>
-					<input class="form-control" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}">
+					<input class="form-control input-lot" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}" required>
 				</td>
 			</tr>
 			<tr>
@@ -253,16 +277,16 @@
 					{{ get_last_billet_actual('', machine, section_id) }}
 				</td>
 				<td>
-					<label>Pressure Bar</label>
+					<label>Pressure Bar *</label>
 				</td>
 				<td>
-					<input class="form-control" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}">
+					<input class="form-control input-lot save-header-lot" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}" required>
 				</td>
 				<td>
-					<label>Ram Speed</label>
+					<label>Ram Speed *</label>
 				</td>
 				<td>
-					<input class="form-control" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}">
+					<input class="form-control input-lot save-header-lot" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}" required>
 				</td>
 			</tr>
 			<tr>
@@ -279,17 +303,20 @@
 					{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id)) }}
 				</td>
 				<td>
-					<label>Keterangan Ext</label>
+					<label>Keterangan Ext *</label>
 				</td>
 				<td>
-					<textarea class="form-control" name="keterangan">{% if get_detail_header %}{{ get_detail_header.keterangan }}{% endif %}</textarea>
+					<textarea class="form-control input-lot save-header-lot" name="keterangan" required>{% if get_detail_header %}{{ get_detail_header.keterangan }}{% endif %}</textarea>
 				</td>
 			</tr>
 		</table>
 		</form>
+		
+		<br>
+
+		Keterangan : (*) wajib diisi
 
 		<div style="overflow: auto">
-			<br>
 
 			<!--
 			<table class="list-lot table table-hovered" id="list-lot" cellpadding="0" cellspacing="0" style="width: 100%">
@@ -317,7 +344,9 @@
 										<b>BILLET</b>
 									</td>
 									<td colspan="5">
+										{% if same(is_posted, '') %}
 										<button class="btn btn-primary" @click="addNewRowBillet">Tambah</button>
+										{% endif %}
 									</td>
 								</tr>
 								<tr align="center">
@@ -346,16 +375,16 @@
 								v-on:remove="removeRowBillet(idxbillet)">
 								<tr >
 									<td>
-										<input type="text" v-model="billet.pBilletActual" class="form-control" @change="saveBillet2(billet)" autofocus>
+										<input type="text" v-model="billet.pBilletActual" class="input-lot form-control" @change="saveBillet2(billet)" autofocus>
 									</td>
 									<td>
-										<input type="text" v-model="billet.jmlBillet" class="form-control" @change="saveBillet2(billet)">
+										<input type="text" v-model="billet.jmlBillet" class="input-lot form-control" @change="saveBillet2(billet)">
 									</td>
 									<td>
 									<!--
 										<input type="text" v-model="billet.billetVendorId" class="form-control" @keyup.enter="saveBillet(billet)">
 									-->
-									<select v-model="billet.billetVendorId" @change="saveBillet2(billet)">
+									<select class="input-lot" v-model="billet.billetVendorId" @change="saveBillet2(billet)">
 
 										{% for vendor_lot_row in vendor_lot_data %}
 											<option>{{ vendor_lot_row }}</option>
@@ -363,7 +392,7 @@
 									</select>
 									</td>
 									<td>
-										<input type="text" v-model="billet.keterangan" class="form-control" @change="saveBillet2(billet)">
+										<input type="text" v-model="billet.keterangan" class="input-lot form-control" @change="saveBillet2(billet)">
 									</td>
 									<td>
 										<% jumlahBillet[idxbillet] %>
@@ -374,9 +403,12 @@
 											<i class="material-icons">check</i>
 										</button>
 										-->
-										<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBillet(idxbillet)" title="Hapus">
-											<i class="material-icons">delete</i>
-										</button>
+										{% if same(is_posted, '') %}
+											<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBillet(idxbillet)" title="Hapus">
+												<i class="material-icons">delete</i>
+											</button>
+										{% endif %}
+										
 									</td>
 
 								</tr>
@@ -411,7 +443,9 @@
 										<b>BERAT AKTUAL</b>
 									</td>
 									<td colspan="3">
+										{% if same(is_posted, '') %}
 										<button class="btn btn-primary add-berat-actual" @click="addNewRowBeratAktual">Tambah</button>
+										{% endif %}
 									</td>
 
 								</tr>
@@ -444,7 +478,7 @@
 										</td>
 										-->
 										<td>
-										<input type="text" v-model="beratAktual.beratAkt" class="form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)" @change="saveBeratActual(beratAktual)">
+										<input type="text" v-model="beratAktual.beratAkt" class="input-lot form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)" @change="saveBeratActual(beratAktual)">
 										</td>
 										<td>
 											<% jmlBeratAktual50[idxBeratktual] %>
@@ -456,10 +490,13 @@
 											</button>
 
 											-->
+											{% if same(is_posted, '') %}
+												<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
+													<i class="material-icons">delete</i>
+												</button>
 
-											<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
-												<i class="material-icons">delete</i>
-											</button>
+											{% endif %}
+												
 										</td>
 
 								</tr>
@@ -485,7 +522,10 @@
 										<b>HASIL</b>
 									</td>
 									<td colspan="3">
-										<button class="btn btn-primary" @click="addNewRowHasil">Tambah</button>
+										{% if same(is_posted, '') %}
+											<button class="btn btn-primary" @click="addNewRowHasil">Tambah</button>
+										{% endif %}
+										
 									</td>
 								</tr>
 								<tr align="center">
@@ -507,10 +547,10 @@
 								<tr >
 
 									<td>
-										<input type="text" v-model="hasil.rak" class="form-control">
+										<input type="text" v-model="hasil.rak" class="input-lot form-control">
 									</td>
 									<td>
-										<input type="text" v-model="hasil.jmlRak" class="form-control" @change="saveHasil(hasil)">
+										<input type="text" v-model="hasil.jmlRak" class="input-lot form-control" @change="saveHasil(hasil)">
 									</td>
 									<td>
 										<% jumlahQty[idxhasil] %>
@@ -521,10 +561,13 @@
 											<i class="material-icons">check</i>
 										</button>
 										-->
+										{% if same(is_posted, '') %}
+											<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
+												<i class="material-icons">delete</i>
+											</button>
+										{% endif %}
+										
 
-										<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
-											<i class="material-icons">delete</i>
-										</button>
 									</td>
 
 								</tr>
@@ -578,7 +621,6 @@
 	</div>
 
 
-
 <script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.caret.min.js') }}"></script>
 <script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.tag-editor.min.js') }}"></script>
 <script type="text/javascript" src="{{ base_url('assets_app/js/lot.js') }}"></script>
@@ -592,7 +634,6 @@
 	window.LOT.handleMulaiPukul('.btn-mulai-pukul', '.input-mulai-pukul', el);
 	window.LOT.handleSelesaiPukul('.btn-selesai-pukul', '.input-mulai-pukul', '.input-selesai-pukul', '.div-selisih-waktu');
 	window.LOT.handlePosting('.btn-posting-lot');
-
 	window.LOT.handleLotBillet('#tbl-lot-billet');
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';

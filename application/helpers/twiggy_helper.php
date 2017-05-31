@@ -345,10 +345,10 @@ function sum_target_section($header_id, $machine, $shift, $tgl)
 }
 
 function number_float($val) {
-	return (float) number_format($val, 3, ',', '.');
+	return (float) number_format($val, 2, ',', '.');
 }
 
-function to_decimal($val, $num = 3)
+function to_decimal($val, $num = 2)
 {
 	return round($val, $num, PHP_ROUND_HALF_ODD);
 }
@@ -737,6 +737,19 @@ function get_jumlah_billet_kg($panjang = 0, $jumlah = 0, $billet_weight = 0)
 }
 
 /**
+ * get isian lot
+ */
+function get_isian_data_lot($master_detail_id, $type)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+	
+	$data = $ci->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, $type);
+
+	return $data;
+}
+
+/**
  * count die pr
  */
 function count_die_pr_by_header($header_id)
@@ -760,5 +773,26 @@ function super_unique_die($array)
 	}
 
 	return $res;
+}
+
+/**
+ * function get data history card by dies id
+ */
+function get_data_history_card_by_dies_id($dies)
+{
+	$ci =& get_instance();
+	$ci->load->model('master/indexdice_model');
+	return $ci->indexdice_model->filter_history_card_fix('', $dies, '');
+}
+
+/**
+ * convert last dies in pr
+ */
+function get_last_dies_pr($year, $seqno)
+{
+	$new_year = substr($year, 2, 2);
+	$seq = add_zero($seqno, 4);
+
+	return $new_year.$seq;
 }
 ?>

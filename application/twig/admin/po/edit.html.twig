@@ -19,14 +19,13 @@
 				</div>
 				
 				<div class="body">
-					<form class="form-pr" action="{{ site_url('admin/po/save_header') }}" method="post">
+					<form class="form-po" action="{{ site_url('admin/po/save_header') }}" method="post">
 						<table class="table table-bordered" style="width: 40%">
 							<tr>
 								<td>No. Dokumen PR</td>
 								<td>
 									<input class="po-id" name="id" type="hidden" value="{{ id }}">
-									<select class="pr-id" name="document_pr" required="required">
-										<option value=""> - Pilih - </option>
+									<select class="pr-id form-control" name="document_pr[]" required="required" multiple="">
 										{% if pr_header %}
 
 											{% for pr_row in pr_header %}
@@ -48,6 +47,13 @@
 								<td>No. Dokumen</td>
 								<td>
 									<input name="document_no" type="text" value="{{ document_no }}" readonly="readonly">
+								</td>
+							</tr>
+
+							<tr>
+								<td>No. PO</td>
+								<td>
+									<input name="po_no" type="text" value="" required>
 								</td>
 							</tr>
 							<tr>

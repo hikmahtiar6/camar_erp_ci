@@ -22,7 +22,7 @@ class Po extends CI_Controller {
 
     public function edit($id = 'new')
     {
-    	$pr_header = $this->pr_model->get_headers()->result();
+    	$pr_header = $this->pr_model->get_headers('po')->result();
 		$document_no = $this->generate_document_number(date('Y-m-d'));
 		$document_pr = '';
 		$tgl = date('d/m/Y');
@@ -58,6 +58,8 @@ class Po extends CI_Controller {
 			'PurchaseOrderNo'         => $document_no,
 			'TransactionDate'         => change_format_date($tgl),
 		);
+
+		return 0;
 
 		if($id != 'new')
 		{

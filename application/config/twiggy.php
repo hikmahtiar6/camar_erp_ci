@@ -249,7 +249,10 @@ $config['twiggy']['register_functions'] = array
 	'get_effective_item_dimension',
 	'count_die_pr_by_header',
 	'qty_pr_per_section',
-	'get_week'
+	'get_week',
+	'get_isian_data_lot',
+	'get_data_history_card_by_dies_id',
+	'get_last_dies_pr'
 );
 
 

@@ -13,6 +13,7 @@ class Section_model extends CI_Model {
 	const TABLE_FINISHING = 'Finishing';
 	const TABLE_NEWMASTER = 'NewMaster';
 	const TABLE_HEAD = 'SpkHeader';
+	const TABLE_LOT = 'SpkHeaderLot';
 
 	public function __construct()
 	{
@@ -134,11 +135,14 @@ class Section_model extends CI_Model {
 					e.ShiftNo, 
 					g.finishing_name, 
 					i.*,
+					lot.is_posted,
 					ROW_NUMBER() OVER(ORDER BY a.master_detail_id DESC) as RowNum
 				FROM
 					".static::TABLE." a
 				INNER JOIN 
 					".static::TABLE_HEAD." b ON a.header_id = b.header_id
+				LEFT JOIN 
+					".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id
 				LEFT JOIN
 					".static::TABLE_BARANG." c ON a.section_id = c.SectionId
 				INNER JOIN

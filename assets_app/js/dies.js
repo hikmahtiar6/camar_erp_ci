@@ -1,5 +1,8 @@
 window.DIES = (function($) {
 	return {
+
+		ajaxHistoryCompleteSet: true,
+
 		init: function() {
 			var _this = this;
 
@@ -117,8 +120,11 @@ window.DIES = (function($) {
 		},
 
 		handleFilterCard: function() {
+			var _this = this;
+
+			_this.handleTab();
+
 			$('.card-form').validate();
-			
 			var section = $('.section');
 			var dice = $('.dice');
 			var dice2 = $('.dice2');
@@ -148,7 +154,6 @@ window.DIES = (function($) {
 				});
 				
 			});
-			
 
 			var resultCardEl = $('.result-card');
 			
@@ -164,6 +169,117 @@ window.DIES = (function($) {
 					resultCardEl.slideDown();
 				}
 			});
+		},
+
+		handleTab: function() {
+			var _this = this;
+			var tab = $('.dies-tab');
+
+			tab.each(function() {
+				$(this).click(function() {
+					var resultCardEl = $('.result-card');
+					resultCardEl.html('');
+					resultCardEl.slideUp();
+
+					if(_this.ajaxHistoryCompleteSet) {
+						_this.handleFilterByCompleteSet();
+					}
+
+					_this.ajaxHistoryCompleteSet = false;
+
+				});
+			});
+		},
+
+		handleFilterByCompleteSet: function() {
+
+			var _this = this;
+
+			var form2 = $('.card-form2');
+			var section = $('.section2');
+			var dice2 = $('.dice2');
+			var wrapDiesYear = $('.dies-year-wrap');
+			var wrapDieSeqNo = $('.dies-index-wrap');
+			var diesYear = $('.dies-year');
+
+			wrapDiesYear.hide();
+			wrapDieSeqNo.hide();
+
+			form2.validate();
+
+			
+			section.select2().change(function() {
+
+				var sectionId = this.value;
+				
+				$.ajax({
+					url: window.APP.siteUrl + 'admin/dies/get_dies_year_by_section',
+					type: 'post',
+					data: {
+						section_id: this.value
+					},
+					dataType: 'json',
+					success: function(result) {
+						wrapDiesYear.show();
+						diesYear.html(result);
+						diesYear.select2();
+
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/dies/get_dies_seq_no_by_section_year',
+							type: 'post',
+							data: {
+								section_id: sectionId,
+								year: diesYear.val()
+							},
+							dataType: 'json',
+							success: function(result) {
+								wrapDieSeqNo.show();
+								dice2.html(result);
+								dice2.select2();
+
+							}
+						});
+
+						diesYear.change(function() {
+							var year = this.value;
+
+							$.ajax({
+							url: window.APP.siteUrl + 'admin/dies/get_dies_seq_no_by_section_year',
+							type: 'post',
+							data: {
+								section_id: sectionId,
+								year: year
+							},
+							dataType: 'json',
+							success: function(result) {
+								wrapDieSeqNo.show();
+								dice2.html(result);
+								dice2.select2();
+
+							}
+						});
+						});
+
+					}
+				});
+				
+			});
+
+			var resultCardEl = $('.result-card');
+			
+			form2.ajaxForm({
+				beforeSend: function() {
+					APP.loader().show();
+					resultCardEl.html('');
+					resultCardEl.slideUp();
+				},
+				success: function(response) {
+					APP.loader().hide();
+					resultCardEl.html(response);
+					resultCardEl.slideDown();
+				}
+			});
+
 		}
 	}
 })(jQuery);

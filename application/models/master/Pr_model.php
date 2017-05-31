@@ -18,13 +18,19 @@ class Pr_model extends CI_Model {
 	/**
 	 * get data headers
 	 */
-	public function get_headers()
+	public function get_headers($po = '')
 	{
 		$sql = $this->db;
 
 		$sql->select('ph.*, v.*');
 		$sql->from(static::PR_HEADER. ' ph');
 		$sql->join(static::VENDOR .' v', 'ph.VendorId = v.BusinessPartnerId', 'left');
+
+		if($po != '')
+		{
+			$sql->where('ph.IsUsed IS NULL');
+		}
+
 		$sql->order_by('ph.PurchaseRequestNo', 'asc');
 
 		$get = $sql->get();
