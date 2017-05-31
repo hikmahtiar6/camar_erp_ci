@@ -51,15 +51,15 @@ class Indexdice_model extends CI_Model {
 
 		if($machinetypeid != '')
 		{
-			/*if($machinetypeid == '0750T')
+			if($machinetypeid == '0750T')
 			{
 				$sql->where_in('MachineTypeId', array('0750T', '0690T'));
 			}
 			else
 			{
 				$sql->where('MachineTypeId', $machinetypeid);			
-			}*/
-				$sql->where('MachineTypeId', $machinetypeid);			
+			}
+				//$sql->where('MachineTypeId', $machinetypeid);			
 		}
 
 		$sql->order_by('DiesYear, DiesSeqNo, DiesSuffix, DieTypeComponentId, DieTypeSubComponentId');

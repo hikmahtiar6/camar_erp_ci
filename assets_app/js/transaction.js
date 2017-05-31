@@ -1185,7 +1185,8 @@ window.TRANSACTION = (function($) {
 						index:'machine_id', 
 						hidden: false,
 						editable:false,
-						width: 80
+						width: 80,
+						hidden: false
 					},
 					{
 						label: 'Billet<br><br>', 
@@ -1193,7 +1194,8 @@ window.TRANSACTION = (function($) {
 						index:'billet_id', 
 						hidden: false,
 						editable:false,
-						width: 50
+						width: 50,
+						hidden: true
 					},
 					{
 						label: 'Len (m) <br><br>',
@@ -1301,6 +1303,7 @@ window.TRANSACTION = (function($) {
 						    	var grid = $('.list-spk');
 						    	var rowId = $(el).parent().parent().attr('id');
 								var celMachine = grid.jqGrid ('getCell', rowId, 'machine_id');
+								//var celMachine = $('.machine-id').val();
 
 								$(el).attr('id', 'indexdice'+rowId);
 
@@ -1548,6 +1551,11 @@ window.TRANSACTION = (function($) {
 				add:false,
 				del:true,
 				search: false,
+				beforeRefresh: function () {
+			        setTimeout(function() {
+    					window.TRANSACTION.handleGridUpDinamic();
+					}, 1000);
+			    },
 			},{},{},{},
 			{
 				closeOnEscape:true,

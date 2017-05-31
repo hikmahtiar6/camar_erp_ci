@@ -170,6 +170,7 @@ class Master extends CI_Controller {
 
 		$row = array();
 
+
 		if($section_id == '')
 		{
 			$get_dice = $this->indexdice_model->get_data();

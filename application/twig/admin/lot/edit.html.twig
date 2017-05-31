@@ -263,7 +263,7 @@
 					<input class="form-control input-lot" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required>
 				</td>
 				<td>
-					<label>DeadCycle *</label>
+					<label>DeadCycle (menit) *</label>
 				</td>
 				<td>
 					<input class="form-control input-lot" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}" required>
@@ -277,13 +277,13 @@
 					{{ get_last_billet_actual('', machine, section_id) }}
 				</td>
 				<td>
-					<label>Pressure Bar *</label>
+					<label>Pressure (Bar) *</label>
 				</td>
 				<td>
 					<input class="form-control input-lot save-header-lot" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}" required>
 				</td>
 				<td>
-					<label>Ram Speed *</label>
+					<label>Ram Speed (m/s) *</label>
 				</td>
 				<td>
 					<input class="form-control input-lot save-header-lot" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}" required>

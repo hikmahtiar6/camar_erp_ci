@@ -658,7 +658,7 @@ class Transaction extends CI_Controller
 				'header_id'   => $header_id,
 				'tanggal'     => $tgl,
 				'section_id'  => $sec_id,
-				'shift'       => $get_last_data_detail->shift,
+				'shift'       => 'SH-15/10-0001',
 				'len'         => $get_last_data_detail->len,
 				'finishing'   => $get_last_data_detail->finishing,
 				'target_prod' => $get_last_data_detail->target_prod
