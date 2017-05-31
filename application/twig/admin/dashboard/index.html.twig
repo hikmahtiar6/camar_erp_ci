@@ -1,7 +1,6 @@
 {% extends 'admin/layout.html.twig' %}
 
 {% block content_title %}
-	Dashboard
 {% endblock %}
 
 {% block content %}
@@ -11,7 +10,7 @@
 	        <div class="card">
 	            <div class="header">
 	                <h2>
-	                    Dashboard
+	                    Selamat Datang {{ get_user('realname') }}
 	                </h2>
 	                <!--
 	                <ul class="header-dropdown m-r--5">
@@ -30,7 +29,126 @@
 	            </div>
 	            <div class="body">
 	                
-	                Selamat datang {{ get_user('realname') }}
+	                <div class="row">
+	                
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/transaction/create') }}">
+			                    <div class="card">
+			                        <div class="body bg-red">
+			                           	<h2 style="margin: 0">Pembuatan SPK</h2>
+			                           	<p>
+			                           		Pembuatan SPK
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/spk') }}">
+			                    <div class="card">
+			                        <div class="body bg-cyan">
+			                           	<h2 class="remove-margin">List SPK</h2>
+			                           	<p>
+			                           		List SPK
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/report') }}">
+			                    <div class="card">
+			                        <div class="body bg-green">
+			                           	<h2 class="remove-margin">Laporan SPK</h2>
+			                           	<p>
+			                           		Laporan SPK
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+
+	                </div>
+
+	                <div class="row">
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/report/lot') }}">
+			                    <div class="card">
+			                        <div class="body bg-orange">
+			                           	<h2 class="remove-margin">Laporan Lot</h2>
+			                           	<p>
+			                           		Laporan Lot
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/dies') }}">
+			                    <div class="card">
+			                        <div class="body bg-blue-grey">
+			                           	<h2 class="remove-margin">Dies Department</h2>
+			                           	<p>
+			                           		Dies Department
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/dies/history') }}">
+			                    <div class="card">
+			                        <div class="body bg-pink">
+			                           	<h2 class="remove-margin">Dies Status</h2>
+			                           	<p>
+			                           		Dies Status
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		            </div>
+
+		            <div class="row">
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/dies/history_card') }}">
+			                    <div class="card">
+			                        <div class="body bg-light-blue">
+			                           	<h2 class="remove-margin">Dies History Card</h2>
+			                           	<p>
+			                           		Dies History Card
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/pr') }}">
+			                    <div class="card">
+			                        <div class="body bg-light-green">
+			                           	<h2 class="remove-margin">Purchase Request</h2>
+			                           	<p>
+			                           		Purchase Request
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		                    <a class="remove-href-decoration" href="{{ site_url('admin/pr') }}">
+			                    <div class="card">
+			                        <div class="body bg-amber">
+			                           	<h2 class="remove-margin">Purchase Order</h2>
+			                           	<p>
+			                           		Purchase Order
+			                           	</p>
+			                        </div>
+			                    </div>
+		                    </a>
+		                </div>
+		            </div>
+	            
 
 	            </div>
 	        </div>
@@ -42,20 +160,10 @@
 {% block javascript %}
 	{{ parent() }}
 	<script type="text/javascript">
-		/*setTimeout(function() {
+		var $body = $('body');
+        var $openCloseBar = $('.navbar .navbar-header .bars');
+        var width = $body.width();
 
-			var $body = $('body');
-	        var $openCloseBar = $('.navbar .navbar-header .bars');
-	        var width = $body.width();
-
-	        if (width < 1100) {
-	            $body.addClass('ls-closed');
-	            $openCloseBar.fadeIn();
-	        }
-	        else {
-	            $body.removeClass('ls-closed');
-	            $openCloseBar.fadeOut();
-	        }
-		}, 500);*/
+        $openCloseBar.remove();
 	</script>
 {% endblock %}

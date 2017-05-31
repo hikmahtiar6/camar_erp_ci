@@ -97,3 +97,11 @@
 .color-green {
     color: #4CAF50;
 }
+
+.remove-margin {
+    margin: 0;
+}
+
+.remove-href-decoration:hover {
+    text-decoration: none;
+}
