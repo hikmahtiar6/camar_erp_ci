@@ -214,7 +214,7 @@
 				</td>
 				<td>
 
-					<input class="form-control input-lot" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required>
+					<input class="form-control input-lot number-only" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required>
 				</td>
 				<td>
 					<label>Lama Produksi</label>
@@ -260,13 +260,13 @@
 					<label>Bs. Blkg Actual *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required>
+					<input class="form-control input-lot number-only" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required>
 				</td>
 				<td>
 					<label>DeadCycle (menit) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}" required>
+					<input class="form-control input-lot number-only" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}" required>
 				</td>
 			</tr>
 			<tr>
@@ -280,13 +280,13 @@
 					<label>Pressure (Bar) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot save-header-lot" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}" required>
+					<input class="form-control input-lot save-header-lot number-only" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}" required>
 				</td>
 				<td>
 					<label>Ram Speed (m/s) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot save-header-lot" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}" required>
+					<input class="form-control input-lot save-header-lot number-only" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}" required>
 				</td>
 			</tr>
 			<tr>
@@ -375,10 +375,10 @@
 								v-on:remove="removeRowBillet(idxbillet)">
 								<tr >
 									<td>
-										<input type="text" v-model="billet.pBilletActual" class="input-lot form-control" @change="saveBillet2(billet)" autofocus>
+										<input type="text" v-model="billet.pBilletActual" class="input-lot form-control" onkeydown="window.INPUT.numberingKeyDown(event, this)" @change="saveBillet2(billet)" autofocus>
 									</td>
 									<td>
-										<input type="text" v-model="billet.jmlBillet" class="input-lot form-control" @change="saveBillet2(billet)">
+										<input type="text" v-model="billet.jmlBillet" class="input-lot form-control" onkeydown="window.INPUT.numberingKeyDown(event, this)" @change="saveBillet2(billet)">
 									</td>
 									<td>
 									<!--
@@ -478,7 +478,7 @@
 										</td>
 										-->
 										<td>
-										<input type="text" v-model="beratAktual.beratAkt" class="input-lot form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)" @change="saveBeratActual(beratAktual)">
+										<input type="text" v-model="beratAktual.beratAkt" class="input-lot form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)"  onkeydown="window.INPUT.numberingKeyDown(event, this)" @change="saveBeratActual(beratAktual)">
 										</td>
 										<td>
 											<% jmlBeratAktual50[idxBeratktual] %>
@@ -550,7 +550,7 @@
 										<input type="text" v-model="hasil.rak" class="input-lot form-control">
 									</td>
 									<td>
-										<input type="text" v-model="hasil.jmlRak" class="input-lot form-control" @change="saveHasil(hasil)">
+										<input type="text" v-model="hasil.jmlRak" onkeydown="window.INPUT.numberingKeyDown(event, this)" class="input-lot form-control" @change="saveHasil(hasil)">
 									</td>
 									<td>
 										<% jumlahQty[idxhasil] %>
@@ -635,6 +635,8 @@
 	window.LOT.handleSelesaiPukul('.btn-selesai-pukul', '.input-mulai-pukul', '.input-selesai-pukul', '.div-selisih-waktu');
 	window.LOT.handlePosting('.btn-posting-lot');
 	window.LOT.handleLotBillet('#tbl-lot-billet');
+
+	window.INPUT.numberingOnly('.number-only');
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
 

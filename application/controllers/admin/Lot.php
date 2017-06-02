@@ -296,8 +296,8 @@ class Lot extends CI_Controller {
 			{
 				$response[] = array(
 					'lotBilletId'   => $row->SpkLotBilletId,
-					'pBilletActual' => $row->PBilletActual,
-					'jmlBillet'     => $row->JumlahBillet,
+					'pBilletActual' => to_decimal($row->PBilletActual),
+					'jmlBillet'     => to_decimal($row->JumlahBillet),
 					'billetVendorId'=> $row->BilletVendorId,
 					'keterangan'    => $row->Keterangan,
 				);
@@ -608,7 +608,7 @@ class Lot extends CI_Controller {
 			{
 				$response[] = array(
 					'lotBeratId' => $row->SpkLotBeratActualId,
-					'beratAkt'         => $row->BeratAkt,
+					'beratAkt'         => to_decimal($row->BeratAkt),
 					'beratStd'         => '',
 					'rataAkt'          => '',
 				);

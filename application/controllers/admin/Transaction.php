@@ -645,14 +645,14 @@ class Transaction extends CI_Controller
 				$sec_id = '035';
 			}
 
-			if($tanggal == '')
+			/*if($tanggal == '')
 			{
 				$tgl = $get_last_data_detail->tanggal;
 			}
 			else
 			{
 				$tgl = date('Y-m-d', strtotime($tanggal));		
-			}
+			}*/
 
 			$data_insert_detail = array(
 				'header_id'   => $header_id,
