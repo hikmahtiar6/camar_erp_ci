@@ -184,7 +184,6 @@ class Pr extends CI_Controller {
 
 		$component_parent = $this->die_model->get_component_parent($die_type);
 		$get_initial_vendor = $this->vendor_model->get_data($vendor)->row();
-		$get_initial_vendor = $this->vendor_model->get_data($vendor)->row();
 		$get_machine_type = $this->machine_model->get_data_type_id($machine_type)->row();
 
 		$last_seq_no = $this->get_last_data($vendor, $section, $machine_type, $die_type, $billet_type, $year);

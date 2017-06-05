@@ -274,6 +274,7 @@ class Query_model extends CI_Model
 				AND MachineTypeId = pd.MachineTypeId
 				AND HoleCount = pd.HoleCount
 				AND BilletTypeId = pd.BilletTypeId
+				AND PurchaseRequestHeaderId = pd.PurchaseRequestHeaderId
 			) AS FirstDies,
 			(
 				SELECT MIN(DiesYear) FROM DiePurchaseRequestDetail 
@@ -282,6 +283,7 @@ class Query_model extends CI_Model
 				AND MachineTypeId = pd.MachineTypeId
 				AND HoleCount = pd.HoleCount
 				AND BilletTypeId = pd.BilletTypeId
+				AND PurchaseRequestHeaderId = pd.PurchaseRequestHeaderId
 			) AS FirstDiesYear,
 			(
 				SELECT MAX(CONVERT(VARCHAR, DiesId)) FROM DiePurchaseRequestDetail 
@@ -290,6 +292,7 @@ class Query_model extends CI_Model
 				AND MachineTypeId = pd.MachineTypeId
 				AND HoleCount = pd.HoleCount
 				AND BilletTypeId = pd.BilletTypeId
+				AND PurchaseRequestHeaderId = pd.PurchaseRequestHeaderId
 			) AS LastDies,
 			(
 				SELECT MAX(DiesYear) FROM DiePurchaseRequestDetail 
@@ -298,6 +301,7 @@ class Query_model extends CI_Model
 				AND MachineTypeId = pd.MachineTypeId
 				AND HoleCount = pd.HoleCount
 				AND BilletTypeId = pd.BilletTypeId
+				AND PurchaseRequestHeaderId = pd.PurchaseRequestHeaderId
 			) AS LastDiesYear,
 			(
 				SELECT MAX(DiesSeqNo) FROM DiePurchaseRequestDetail 
@@ -306,6 +310,7 @@ class Query_model extends CI_Model
 				AND MachineTypeId = pd.MachineTypeId
 				AND HoleCount = pd.HoleCount
 				AND BilletTypeId = pd.BilletTypeId
+				AND PurchaseRequestHeaderId = pd.PurchaseRequestHeaderId
 			) AS LastDiesSeqNo
 		FROM dbo.DiePurchaseRequestDetail pd
 		INNER JOIN Inventory.Sections s ON s.SectionId = pd.SectionId
@@ -402,6 +407,19 @@ class Query_model extends CI_Model
 
 		$query = $this->db->query($sql);
 		return $query->result();
+	}
+
+	public function get_machine_in_spk_detail($master_detail_id)
+	{
+		$sql = "
+		SELECT h.machine_id 
+		FROM dbo.SpkDetail d
+		INNER JOIN dbo.SpkHeader h ON d.header_id = h.header_id
+		WHERE d.master_detail_id = '".$master_detail_id."'
+		";
+
+		$query = $this->db->query($sql);
+		return $query->row();
 	}
 
 }

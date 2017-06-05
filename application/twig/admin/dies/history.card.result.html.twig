@@ -249,6 +249,7 @@
 		</tr>
 	</thead>
 	<tbody class="result-dies-idx">
+		{% if tgl > tgl2 %}
 		<tr>
 			<td>{{ tgl_pembelian }}</td>
 			<td>Pembelian</td>
@@ -262,53 +263,81 @@
 			<td></td>
 			<td></td>
 		</tr>
+		{% endif %}
+		
 		{% if data %}
 			
 			{% set jml_billet =  0 %}
 			{% set jml_kg =  0 %}
 			{% for key, row in data %}
 			
-			<tr>
-				<td>{{ row.LogTime|date('d-M-Y H:i:s') }}</td>
-				<td>{{ row.DiesStatus }}</td>
-				<td>
+			{% set billet_data = [] %}
 				{% if row.MasterDetailId > 0 %}
 					{% set billet_data = get_isian_data_lot(row.MasterDetailId, 'billet') %}
-					{% if billet_data %}
-						{% for billet_row in billet_data %}
-							{{  billet_row.PBilletActual }} <br>
-						{% endfor %}
-					{% endif %}
 				{% endif %}
-				</td>
-				<td>
-				{% if row.MasterDetailId > 0 %}
-					{% set billet_data = get_isian_data_lot(row.MasterDetailId, 'billet') %}
-					{% if billet_data %}
-						{% for billet_row in billet_data %}
+				
+				<tr>
+					<td>{{ row.LogTime|date('d-M-Y H:i:s') }}</td>
+					<td>{{ row.DiesStatus }}</td>
+					<td align="right">
+						{% if billet_data %}
+							{% for billet_row in billet_data %}
+
+								{{  to_decimal(billet_row.PBilletActual) }}<br>
+							{% endfor %}	
+						{% endif %}
+					</td>
+					<td align="right">
+						{% if billet_data %}
+							{% for billet_row in billet_data %}
 								{{  billet_row.JumlahBillet }} <br>
-						{% endfor %}
-					{% endif %}
-				{% endif %}
-				</td>
-				<td>
-					{% set billet_weight = to_decimal(get_row_master('BilletWeight', '', row.section_id)) %}
-					{% set jumlah_kg = to_decimal(get_jumlah_billet_kg(row.PBilletActual, row.JumlahBillet, billet_weight)) %}
-					{{ jumlah_kg|replace('0', ' ') }}
-				</td>
-				<td>
-					 {% set jml_billet =  jml_billet + row.JumlahBillet %}
-					 {{ jml_billet|replace('0', ' ') }}
-				</td>
-				<td>
-					{% set jml_kg =  jml_kg + jumlah_kg %}
-					{{ jml_kg|replace('0', ' ') }}
-				</td>
-				<td></td>
-				<td>{{ row.Problem }}</td>
-				<td>{{ row.Koreksi }}</td>
-				<td>{{ row.Korektor }}</td>
-			</tr>
+							{% endfor %}
+						{% endif %}
+					</td>
+					<td align="right">
+						{% if billet_data %}
+							{% for billet_row in billet_data %}
+
+								{% set machine = get_machine_in_spk_detail(row.MasterDetailId) %}
+								{% set billet_weight = to_decimal(get_detail_machine(machine, 'BilletWeight')) %}
+								{% set jumlah_kg = billet_weight * billet_row.PBilletActual * billet_row.JumlahBillet %}
+
+
+								{{  jumlah_kg }}<br>
+							{% endfor %}
+						{% endif %}
+					</td>
+					<td align="right">
+						{% if billet_data %}
+							{% for billet_row in billet_data %}
+								{% set jml_billet =  jml_billet + billet_row.JumlahBillet %}
+								{% if jml_billet > 0 %}
+								 {{ jml_billet }} <br>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					</td>
+					<td align="right">
+						{% if billet_data %}
+							{% for billet_row in billet_data %}
+
+								{% set machine = get_machine_in_spk_detail(row.MasterDetailId) %}
+								{% set billet_weight = to_decimal(get_detail_machine(machine, 'BilletWeight')) %}
+								{% set jumlah_kg = billet_weight * billet_row.PBilletActual * billet_row.JumlahBillet %}
+
+								{% set jml_kg =  jml_kg + jumlah_kg %}
+								{% if jml_billet > 0 %}
+									{{ jml_kg }} <br>
+								{% endif %}
+
+							{% endfor %}
+						{% endif %}
+					</td>
+					<td></td>
+					<td>{{ row.Problem }}</td>
+					<td>{{ row.Koreksi }}</td>
+					<td>{{ row.Korektor }}</td>
+				</tr>
 			{% endfor %}
 		
 		{% endif %}

@@ -27,6 +27,22 @@ class Die_model extends CI_Model {
 		return $get->result();
 	}
 
+	public function get_data_component($component_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::DIE_COMPONENT);
+
+		if($component_id != '')
+		{
+			$sql->where('ComponentId', $component_id);
+		}
+
+		$get = $sql->get();
+		return $get->result();
+	}
+
 	public function get_component_parent($die_type)
 	{
 		$sql = $this->db;
@@ -54,6 +70,8 @@ class Die_model extends CI_Model {
 		$sql->select('rh.*, rd.*');
 		$sql->from(static::R_HEADER.' rh');
 		$sql->join(static::R_DETAIL.' rd', 'rh.DieReceivingNo = rd.DieReceivingNo', 'inner');
+
+		$sql->where('DiesId', $dies_id);
 
 		$get = $sql->get();
 		$row = $get->row_array();

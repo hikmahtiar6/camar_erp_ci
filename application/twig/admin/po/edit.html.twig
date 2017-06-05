@@ -29,7 +29,7 @@
 										{% if pr_header %}
 
 											{% for pr_row in pr_header %}
-												<option value="{{ pr_row.PurchaseRequestHeaderId }}"
+												<option value="{{ pr_row.PurchaseRequestNo }}"
 												{% if same(pr_row.PurchaseRequestNo, document_pr) %}
 													selected="selected" 
 												{% endif %}
@@ -46,14 +46,14 @@
 							<tr>
 								<td>No. Dokumen</td>
 								<td>
-									<input name="document_no" type="text" value="{{ document_no }}" readonly="readonly">
+									<input class="document_no" name="document_no" type="text" value="{{ document_no }}" readonly="readonly">
 								</td>
 							</tr>
 
 							<tr>
 								<td>No. PO</td>
 								<td>
-									<input name="po_no" type="text" value="" required>
+									<input name="po_no" type="text" value="{{ sub_no }}" required>
 								</td>
 							</tr>
 							<tr>

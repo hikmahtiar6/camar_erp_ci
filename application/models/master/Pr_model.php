@@ -157,9 +157,17 @@ class Pr_model extends CI_Model {
 		return $this->db->delete(static::PR_HEADER);
 	}
 
-	public function update_header($id, $data)
+	public function update_header($id = '', $data, $no = '')
 	{
-		$this->db->where('PurchaseRequestHeaderId', $id);
+		if($no != '')
+		{
+			$this->db->where('PurchaseRequestNo', $no);
+		}
+
+		if($id != '')
+		{
+			$this->db->where('PurchaseRequestHeaderId', $id);
+		}
 		return $this->db->update(static::PR_HEADER, $data);
 	}
 
@@ -169,7 +177,7 @@ class Pr_model extends CI_Model {
 		return $this->db->update(static::PR_DETAIL, $data);
 	}
 
-	public function get_detail_by_header($header_id)
+	public function get_detail_by_header($header_id = '', $header_no = '')
 	{
 		$sql = $this->db;
 
@@ -179,8 +187,15 @@ class Pr_model extends CI_Model {
 		$sql->join(static::SECTION.' s', 's.SectionId = pd.SectionId', 'inner');
 		$sql->join(static::DIE_TYPE.' dt', 'dt.DieTypeId = pd.DieTypeId', 'inner');
 		$sql->join(static::BILLET_TYPE.' bt', 'bt.BilletTypeId = pd.BilletTypeId', 'inner');
+		if($header_id != '')
+		{
+			$sql->where('ph.PurchaseRequestHeaderId',$header_id);
+		}
 
-		$sql->where('ph.PurchaseRequestHeaderId',$header_id);
+		if($header_no != '')
+		{
+			$sql->where('ph.PurchaseRequestNo',$header_no);
+		}
 		$sql->order_by('pd.DiesSeqNo', 'asc');
 
 		$get = $sql->get();

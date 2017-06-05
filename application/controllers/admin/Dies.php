@@ -353,6 +353,8 @@ class Dies extends CI_Controller
 		$this->twiggy->set('data', $data);
 		$this->twiggy->set('dice', $dice);
 		$this->twiggy->set('tgl_pembelian', $tgl_pembelian);
+		$this->twiggy->set('tgl', change_format_date($tanggal));
+		$this->twiggy->set('tgl2', change_format_date($tgl_pembelian));
 		$this->twiggy->set('section_id', $section_id);
 		$this->twiggy->set('section_description', $section_description);
 		$this->twiggy->display('admin/dies/history.card.result');
@@ -430,6 +432,8 @@ class Dies extends CI_Controller
 		$data = $this->query_model->get_dies_history_card2($section_id, $tanggal, $dice);
 		$this->twiggy->set('data', $this->super_unique_die($data));
 		$this->twiggy->set('tgl_pembelian', $this->get_tanggal_pembelian($data));
+		$this->twiggy->set('tgl', change_format_date($tanggal));
+		$this->twiggy->set('tgl2', change_format_date($tgl_pembelian));
 		$this->twiggy->set('section_id', $section_id);
 		$this->twiggy->set('section_description', $section_description);
 		$this->twiggy->display('admin/dies/history.card.result2');

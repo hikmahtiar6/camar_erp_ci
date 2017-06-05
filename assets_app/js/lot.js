@@ -960,6 +960,8 @@ window.LOT = (function($) {
 							},
 						},
 					});
+
+					
 				}
 			});
 

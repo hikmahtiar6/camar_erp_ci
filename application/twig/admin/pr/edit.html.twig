@@ -60,7 +60,11 @@
 							<tr>
 								<td>Tanggal</td>
 								<td>
-									<input class="datepicker-pr" name="tgl" type="text" value="{{ tgl }}" required="required">
+									{% if same(posting, '') %}
+										<input class="datepicker-pr" name="tgl" type="text" value="{{ tgl }}" required="required">
+									{% else %}
+										<input name="tgl" type="text" value="{{ tgl }}" required="required" readonly="">
+									{% endif %}
 								</td>
 							</tr>
 							<!--

@@ -29,7 +29,7 @@
 
 			<td>
 				<input id="shift{{ key + 1 }}" type="hidden" value="{{ grid_row.ShiftNo }}">
-				<input class="form-control" id="scrap{{ key + 1 }}" type="text" value="{{ scrap_data['scrap'] }}">
+				<input class="form-control" id="scrap{{ key + 1 }}" type="text" value="{{ to_decimal(scrap_data['scrap']) }}">
 			</td>
 			<!--
 			<td>
@@ -37,7 +37,7 @@
 			</td>
 			-->
 			<td>
-				<input class="form-control" id="end_butt{{ key + 1 }}" type="text" value="{{ scrap_data['endbutt'] }}">
+				<input class="form-control" id="end_butt{{ key + 1 }}" type="text" value="{{ to_decimal(scrap_data['endbutt']) }}">
 			</td>
 			<td>
 				<select class="form-control " name="opr1" id="opr1{{ key + 1 }}">

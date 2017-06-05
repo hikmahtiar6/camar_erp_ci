@@ -373,8 +373,8 @@
 								v-bind:key="billet"
 								v-bind:title="billet"
 								v-on:remove="removeRowBillet(idxbillet)">
-								<tr >
-									<td>
+								<tr>
+									<td id="start-billet">
 										<input type="text" v-model="billet.pBilletActual" class="input-lot form-control" onkeydown="window.INPUT.numberingKeyDown(event, this)" @change="saveBillet2(billet)" autofocus>
 									</td>
 									<td>

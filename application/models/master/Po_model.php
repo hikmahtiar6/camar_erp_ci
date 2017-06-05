@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author HIkmahtiar <hikmahtiar.cool@gmail.com>
+ */
 class Po_model extends CI_Model {
 	const PO_HEADER = 'DiePurchaseOrderHeader';
 	const PO_DETAIL = 'DiePurchaseOrderDetail';
@@ -11,9 +14,8 @@ class Po_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('ph.*, prh.PurchaseRequestNo');
+		$sql->select('ph.*');
 		$sql->from(static::PO_HEADER .' ph');
-		$sql->join(static::PR_HEADER.' prh', 'prh.PurchaseRequestHeaderId = ph.PurchaseRequestHeaderId', 'inner');
 
 		if($id != '')
 		{
@@ -41,16 +43,25 @@ class Po_model extends CI_Model {
 		return '';
 	}
 
-	public function get_data_header()
+	public function get_data_header($po_id = '', $po_document = '')
 	{
 		$sql = $this->db;
 
-		$sql->select('poh.*, prh.PurchaseRequestNo');
+		$sql->select('poh.*');
 		$sql->from(static::PO_HEADER.' poh');
-		$sql->join(static::PR_HEADER.' prh', 'prh.PurchaseRequestHeaderId = poh.PurchaseRequestHeaderId', 'inner');
+
+		if($po_id != '') 
+		{
+			$sql->where('poh.PurchaseOrderHeaderId', $po_id);
+		}
+
+		if($po_document != '')
+		{
+			$sql->where('poh.PurchaseOrderNo', $po_document);
+		}
 
 		$get = $sql->get();
-		return $get->result();
+		return $get;
 	}
 
 	public function save_header($data)
@@ -68,6 +79,47 @@ class Po_model extends CI_Model {
 	{
 		$this->db->where('PurchaseOrderHeaderId', $id);
 		return $this->db->delete(static::PO_HEADER);
+	}
+
+	public function get_data_detail($id = '', $po_no = '', $dies_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('pd.*');
+		$sql->from(static::PO_DETAIL.' pd');
+
+		if($id != '') 
+		{
+			$sql->where('pd.PurchaseOrderDetailId', $id);
+		}
+
+		if($po_no != '')
+		{
+			$sql->where('pd.PurchaseOrderNo', $po_no);
+		}
+
+		if($dies_id != '')
+		{
+			$sql->where('pd.DiesId', $dies_id);
+		}
+
+		$get = $sql->get();
+		return $get;
+	}
+
+	public function save_detail($data, $batch = false)
+	{
+		if($batch)
+		{
+			return $this->db->insert_batch(static::PO_DETAIL, $data);
+		}
+		return $this->db->insert(static::PO_DETAIL, $data);
+	}
+
+	public function update_detail($dies_id, $data)
+	{
+		$this->db->where('DiesId', $dies_id);
+		return $this->db->update(static::PO_DETAIL, $data);
 	}
 
 }
