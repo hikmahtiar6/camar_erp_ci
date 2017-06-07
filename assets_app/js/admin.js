@@ -257,7 +257,7 @@ $.AdminBSB.navbar = {
 $.AdminBSB.input = {
     activate: function () {
         //On focus event
-        $('.form-control').focus(function () {
+        /*$('.form-control').focus(function () {
             $(this).parent().addClass('focused');
         });
 
@@ -275,7 +275,7 @@ $.AdminBSB.input = {
         //On label click
         $('body').on('click', '.form-float .form-line .form-label', function () {
             $(this).parent().find('input').focus();
-        });
+        });*/
     }
 }
 //==========================================================================================================================
@@ -439,7 +439,7 @@ $(function () {
     $.AdminBSB.rightSideBar.activate();
     $.AdminBSB.navbar.activate();
     $.AdminBSB.dropdownMenu.activate();
-    $.AdminBSB.input.activate();
+    //$.AdminBSB.input.activate();
     //$.AdminBSB.select.activate();
     $.AdminBSB.search.activate();
 

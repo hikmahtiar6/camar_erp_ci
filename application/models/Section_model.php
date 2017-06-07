@@ -131,6 +131,7 @@ class Section_model extends CI_Model {
 					c.SectionDescription, 
 					d.MachineTypeId as machine_type, 
 					e.ShiftDescription, 
+					e.ShiftRefId, 
 					e.ShiftStart, 
 					e.ShiftNo, 
 					g.finishing_name, 

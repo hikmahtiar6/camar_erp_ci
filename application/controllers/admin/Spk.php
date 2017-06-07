@@ -18,6 +18,8 @@ class Spk extends CI_Controller
 		$this->load->model('master/header_model');
 		$this->load->model('master/detail_model');
 		$this->load->model('master/shift_model');
+		$this->load->model('master/query_model');
+		$this->load->model('master/lot_model');
 	}
 
 	/**
@@ -47,6 +49,149 @@ class Spk extends CI_Controller
 		$this->twiggy->template('admin/spk/index')->display();
 	}
 
+	/**
+	 * Get data SPK
+	 * @return Json
+	 */
+	public function get_data($header_id = '')
+	{
+		$response = array();
+
+		$tgl = $this->input->post('tanggal');
+		$date = ($tgl != '') ? date('Y-m-d', strtotime($tgl)) : '';
+
+		$dt_start = date('Y-m-d', strtotime($this->session->userdata('date_start')));
+		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
+		$shift = $this->session->userdata('shift');
+
+		$get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, '', '');	
+		if($get_md)
+		{
+			foreach($get_md as $row)
+			{
+				$section_id = $row->section_id;
+
+				$get_master_query =  $this->query_model->get_master_advance($machine_id, $section_id)->row();
+
+				$target_prod = ($row->target_prod == null) ? '' : $row->target_prod;
+				$ppic = ($row->ppic_note == null) ? '' : $row->ppic_note;
+
+				$target_prod_btg = $target_prod;
+				$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
+				$weight_standard = ($get_master_query) ? to_decimal($get_master_query->WeightStandard) : '';
+				$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
+				$die_type = ($get_master_query) ? $get_master_query->DieTypeName : '-';
+
+				if($f2_estfg != NULL)
+				{
+					$target_prod_btg = $f2_estfg * $row->target_prod * $hole_count; 
+				}
+				$len = $row->Length;
+				$target_section = $weight_standard * $target_prod_btg * $len;
+
+				$tgl = ($row->tanggal == null) ? '' : date('d-m-Y', strtotime($row->tanggal));
+
+				$btn_lot = "Isi Lot";
+				$btn_class = "btn-primary";
+				if($row->is_posted)
+				{
+					$btn_class = "btn-success";
+					$btn_lot = "Lihat Lot";
+				} 
+
+				$response[] = array(
+					'master_detail_id'  => $row->master_detail_id,
+					'button'            => '<a href="javascript:;" class="btn btn-xs '.$btn_class.' waves-effect" data-toggle="modal" data-target="#defaultModal" data-backdrop="static" data-keyboard="false" onclick="window.TRANSACTION.handleModalLot('.$row->master_detail_id.')">'.$btn_lot.'</a>',
+					'tanggal'           => $tgl,
+					'shift'             => $row->ShiftDescription,
+					'shift_id'          => $row->ShiftRefId,
+					'section_name'      => $row->SectionDescription,
+					'section_id'        => $row->section_id,
+					'machine_id'        => $row->machine_id_header,
+					'len'				=> to_decimal($len),
+					'len_id'			=> $row->len,
+					'finishing'         => $row->finishing_name,
+					'dies'              => $this->convert_dice($row->index_dice),
+					'target_prod'       => $target_prod,
+					'ppic'              => $ppic,
+					'target_prod_btg'   => $target_prod_btg,
+					'weight_standard'   => to_decimal($weight_standard, 2, true),
+					'target_section'    => $target_section,
+					'die_type'          => $die_type,
+					'header_id'         => $row->header_id,
+					'posted'            => $row->is_posted,
+				);
+			}
+		}
+
+		output_json($response);
+	}
+
+	/**
+	 * Delete SPK Per ROw
+	 */
+	public function delete()
+	{
+		$id = $this->input->post('id');
+
+		$del = $this->detail_model->delete($id);
+
+		// cek hapus data utk menghasilkan response yg dikirim utk notifikasi
+		if($del)
+		{
+			$this->lot_model->delete_lot($id);
+			$this->lot_model->delete_head_lot($id);
+	
+			$response = array(
+				'status'  => 'success',
+				'message' => 'Berhasil menghapus data'
+			);
+		}
+		else
+		{
+			$response = array(
+				'status'  => 'error',
+				'message' => 'Gagal menghapus data'
+			);
+		}
+
+		output_json($response);
+	}
+
+	/**
+	 * Get Last Data
+	 */
+	public function get_last_data()
+	{
+
+	}
+
+	private function convert_dice($dice)
+	{
+		$dice_txt = ($dice == null) ? '' : $dice;
+		
+		$txt = '';
+		$expl = explode(",", $dice_txt);
+
+		if(count($expl) > 0)
+		{
+			foreach($expl as $rexpl)
+			{
+				if($rexpl != '' || $rexpl != null)
+				{
+					$txt .= $rexpl.', ';
+				}
+			}
+		}
+		else
+		{
+			$txt = $dice_txt;
+		}
+
+		return rtrim($txt, ', ');
+
+	}
+
 	public function cache_detail($header_id, $strtime_start, $strtime_finish, $shift)
 	{
 		$date_start = date('Y-m-d', $strtime_start);
@@ -65,5 +210,73 @@ class Spk extends CI_Controller
 		*/
 		redirect('admin/transaction/detail/'.$header_id);
 	}
+
+	/**
+	 * Save SPK
+	 */
+	public function save()
+	{
+		$master_detail_id = $this->input->post('master_detail_id');
+		$finishing = $this->input->post('finishing');
+		$len = $this->input->post('len');
+		$ppic = $this->input->post('ppic');
+		$section_id = $this->input->post('section_id');
+		$shift = $this->input->post('shift');
+		$tanggal = $this->input->post('tanggal');
+		$target_prod = $this->input->post('target_prod');
+		$dies = $this->input->post('dies');
+		$header_id = $this->input->post('header_id');
+
+		$data_save = array(
+			'shift'       => $shift,
+			'tanggal'     => change_format_date($tanggal),
+			'section_id'  => $section_id,
+			'len'         => $len,
+			'finishing'   => $finishing,
+			'ppic_note'   => $ppic,
+			'header_id'   => $header_id,
+			'index_dice'  => $this->set_idxdice($dies)
+
+		);
+
+		if($master_detail_id == '0')
+		{
+			$save = $this->section_model->save_detail($data_save);
+		}
+		else
+		{
+			$save = $this->section_model->update($master_detail_id, $data_save);
+		}
+
+		if($save)
+		{
+	
+			$response = array(
+				'status'  => 'success',
+				'message' => 'Berhasil menyimpan data'
+			);
+		}
+		else
+		{
+			$response = array(
+				'status'  => 'error',
+				'message' => 'Gagal menyimpan data'
+			);
+		}
+
+		output_json($response);
+	}
+
+	private function set_idxdice($array)
+	{
+		$str = '';
+		foreach($array as $row)
+		{
+			$str .= $row.', ';
+		}
+
+		return rtrim($str, ', ');
+	}
+
 }
 ?>

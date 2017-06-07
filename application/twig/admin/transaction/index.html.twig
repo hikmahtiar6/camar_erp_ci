@@ -1,60 +1,5 @@
 {% extends 'admin/layout.html.twig' %}
 
-
-{% block stylesheet %}
-	{{ parent() }}
-
-    <link href="{{ base_url('web/vendor/jqGrid/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ base_url('web/vendor/chosen/chosen.css') }}" rel="stylesheet">
-    <style type="text/css">
-		.ui-jqgrid tr.jqgrow td{
-	        white-space: normal !important;
-	    }
-
-	    th.ui-th-column div {
-		    white-space: normal !important;
-		    height: auto !important;
-		    padding: 2px;
-		}
-
-		.jqgrow.success.active {
-			background: lightgreen !important;
-		}
-
-		.success td {
-		    background-color:#00BCD4 !important;
-		}
-
-		div.chzn-container div.chzn-drop {
-		  z-index: 999 !important;
-		}
-
-		.select2-search__field {
-			color: #000 !important;
-		}
-
-		li.select2-selection__choice {
-			color: #000 !important;
-		}
-
-		.jqgrow  td {
-			position: relative !important;
-			z-index: 1 !important;
-			font-size: 12px !important;
-		}
-
-		.ui-th-div {
-			font-size: 12px !important;
-		}
-
-		.editable {
-			font-size: 12px !important;
-		}
-
-    </style>
-
-{% endblock %}
-
 {% block content_title %}
 {% endblock %}
 
@@ -62,7 +7,7 @@
 	
 	<div class="row clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	        <div class="card card-transaksi">
+	        <div class="card card-transaksi" id="spk-card">
 	            <div class="header">
 	                <h2 style="float: left">
 	                    Data SPK
@@ -88,6 +33,7 @@
 							Silahkan tunggu.....
 						</div>
 							
+						<!--
 						<div style="position: absolute; right: 0; top: 0; ">
 							<table style="width: 200px">
 								<tr>
@@ -112,12 +58,13 @@
 								</tr>
 							</table>
 						</div>
+						-->
 						
 		            	<form class="frm-scrap" method="post" action="{{ site_url('admin/dies/save_scrap') }}">
 		            	</form>
 
 		            	<br>
-		            	<button class="btn btn-primary tambah-transaksi waves-effect" data-header="{{ header_id }}">
+		            	<button class="btn btn-primary tambah-transaksi waves-effect" data-header="{{ header_id }}" @click="addRow">
 		            		Tambah
 		            	</button>
 						
@@ -160,73 +107,194 @@
 		            	<br>
 		            	<br>
 						
-						<div class="wrap-grid">
-							<table class="list-spk table table-hovered" id="list2" cellpadding="0" cellspacing="0" style="width: 100%"></table>
-							<div class="opr-spk" id="pager2" style="text-align:center;"></div>
-							
-						</div>
-
-		                
-		                <!--<table class="table table-bordered table-striped table-transaksi">
+						<table class="table table-bordered table-striped table-hover spk-table">
 		                	<thead>
-		                		<tr>
-									<th style="vertical-align: middle;">
-										<center>
-											<input id="basic_checkbox_2" class="filled-in parent-checkbox" type="checkbox">
-											<label for="basic_checkbox_2">&nbsp;</label>
-										</center>
-									</th>
-		                			<th style="vertical-align: middle;">No.</th>
-									<th style="vertical-align: middle;">Tanggal</th>
-									<th style="vertical-align: middle;">Shift</th>
-									<th style="vertical-align: middle;">Section Id</th>
-									<th style="vertical-align: middle;">Section Name</th>
-									<th style="vertical-align: middle;">Mesin</th>
-									<th style="vertical-align: middle;">Billet Id</th>
-									<th style="vertical-align: middle;">Len (m)</th>
-									<th style="vertical-align: middle;">Finishing</th>
-									<th style="vertical-align: middle;">
+		                		<tr class="bold font-12" align="center" style="vertical-align: middle;">
+		                			<td></td>
+		                			<td></td>
+									<td>Tanggal</td>
+									<td>Shift</td>
+									<td>Section <br> Name</td>
+									<td>Section  <br> Id</td>
+									<td>Len <br> (m)</td>
+									<td>Finishing</td>
+									<td>Index <br> Dies</td>
+									<td>
 										Target Prod <br>
 										(Billet)
-									</th>-->
-									<!--<th style="vertical-align: middle;">Day</th>
-									<th style="vertical-align: middle;">No. Lot</th>-->
-									<!--<th style="vertical-align: middle;">Index Dice</th>
-									<th style="vertical-align: middle;">Index Dice Qty</th>
-									<th style="vertical-align: middle;">PPIC Note</th>
-									<th style="vertical-align: middle;">
-										Target Prod <br>
-										(BTG)
-									</th>
-									<th style="vertical-align: middle;">
-										Berat Std <br>
-										(kg/m) 
-									</th>
-									<th style="vertical-align: middle;">
-										Target Section <br>
-										(kg)
-									</th>-->
-									<!--
-									<th style="vertical-align: middle;">
-										Total Target <br>
-										(kg)
-									</th>
-									<th style="vertical-align: middle;">Die Type</th>
-									-->
-									<!--
-									<th style="vertical-align: middle;">Pressure Time/Billet</th>
-									<th style="vertical-align: middle;">EstStart</th>
-									<th style="vertical-align: middle;">EstEnd</th>
-									<th style="vertical-align: middle;">EstDiesPrep</th>
-									--><!--
+									</td>
+									<td>
+										PPIC <br>
+										Note
+									</td>
+									<td>
+										Target Prod <br>(btg)
+									</td>
+									<td>Berat Std</td>
+									<td>Target <br> Section (kg)</td>
+									<td>Die <br> Type</td>
+									<td></td>
+		                		</tr>
+		                		<tr class="spk-loader">
+		                			<td colspan="15" v-show="loading" align="center">
+		                				<img src="{{ base_url('assets_app/images/loader.gif') }}" style="width: 20px;" >
+		                			</td>
 		                		</tr>
 		                	</thead>
 		                	<tbody>
+		                		<template v-for="(spk, index) in list">
+		                			<tr class="font-12">
+		                				<td align="right"><% index + 1 %>.</td>
+		                				<td>
+		                					<span v-html="spk.button">
+		                					</span>
+		                				</td>
+		                				<td @click="editRow(index)"><% spk.tanggal %></td>
+		                				<td @click="editRow(index)"><% spk.shift %></td>
+		                				<td @click="editRow(index)"><% spk.section_name %></td>
+		                				<td @click="editRow(index)"><% spk.section_id %></td>
+		                				<td @click="editRow(index)" align="right"><% spk.len %></td>
+		                				<td @click="editRow(index)"><% spk.finishing %></td>
+		                				<td @click="editRow(index)"><% spk.dies %></td>
+		                				<td @click="editRow(index)" align="right"><% spk.target_prod %></td>
+		                				<td @click="editRow(index)"><% spk.ppic %></td>
+		                				<td @click="editRow(index)" align="right"><% spk.target_prod_btg %></td>
+		                				<td @click="editRow(index)" align="right"><% spk.weight_standard %></td>
+		                				<td @click="editRow(index)" align="right"><% spk.target_section %></td>
+		                				<td @click="editRow(index)"><% spk.die_type %></td>
+		                				<td>
+		                					<span v-if="spk.posted"></span>
+		                					<button class="btn btn-danger btn-xs waves-effect" data-toggle="tooltip" title="Hapus Spk" @click="removeRow(index)" v-else="spk.posted">
+		                						<i class="material-icons">delete</i>
+		                					</button>
+		                				</td>
+		                			</tr>
+		                		</template>
 		                	</tbody>
-		                </table>-->
+		                </table>
 		            </div>
 
 	            </div>
+
+	            <div class="modal fade spk-modal" role="dialog">
+			    <div class="modal-dialog modal-lg" style="margin: 20px auto;">
+			        <div class="modal-content">
+			           	<div class="modal-header">
+						    <h4 class="modal-title pull-left" id="defaultModalLabel">
+						    	Form SPK
+						    </h4>
+
+							<button class="pull-right btn btn-link waves-effect spk-close-modal" type="button">CLOSE</button>
+
+						</div>
+						<div class="modal-body">
+						
+							<form class="spk-form" method="post" action="{{ site_url('admin/spk/save') }}">
+								<div class="row clearfix">
+
+								<div class="col-md-3">
+									<div class="form-group">
+										<label>Tanggal</label>
+
+										<input class="spk-detail-id" name="master_detail_id" type="hidden" v-model="detail_id">
+
+										<select class="form-control" name="tanggal">
+											{% if tanggal_data %}
+												{% for tanggal_row in tanggal_data %}
+													<option>{{ tanggal_row.value }}</option>
+												{% endfor %}
+											{% endif %}
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label>Shift</label>
+										<select class="form-control" name="shift" v-model="shift">
+											{% if shift_data %}
+												{% for shift_row in shift_data %}
+													<option value="{{ shift_row.ShiftRefId }}">{{ shift_row.ShiftDescription }}</option>
+												{% endfor %}
+											{% endif %}
+										</select>
+									</div>
+
+								</div>
+
+								<div class="col-md-3">
+
+									<div class="form-group">
+										<label>Section Name</label>
+										<select class="form-control spk-section-name" name="section_id" v-model="section_id">
+											{% if section_data %}
+												{% for section_row in section_data %}
+													<option value="{{ section_row.SectionId }}">{{ section_row.SectionDescription }}</option>
+												{% endfor %}
+											{% endif %}
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label>Section Id</label> 
+										<br>
+										<span class="spk-section-id">
+											<% section_id %>
+										</span>
+									</div>
+									
+								</div>
+
+								<div class="col-md-3">
+									
+									<div class="form-group">
+										<label>Len</label>
+										<select class="form-control spk-len" name="len" v-model="len">
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label>PPIC Note</label>
+										<input class="form-control" name="ppic" type="text" v-model="ppic">
+									</div>
+									
+								</div>
+
+								<div class="col-md-3">
+								
+									<div class="form-group">
+										<label>Finishing</label>
+										<select class="form-control" name="finishing">
+											{% if finishing_data %}
+												{% for finishing_row in finishing_data %}
+													<option value="{{ finishing_row.finishing_id }}">{{ finishing_row.finishing_name }}</option>
+												{% endfor %}
+											{% endif %}
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label>Target Prod (Billet) *</label>
+										<input class="form-control" name="target_prod" type="text" v-model="target_prod" required="">
+									</div>
+
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Index Die *</label>
+										<select class="form-control spk-dies spk-select" name="dies[]" multiple="multiple" required="">
+										</select>
+									</div>						
+								</div>
+								
+
+							</form>
+
+						</div>
+			        </div>
+			    </div>
+			    </div>
+
+
 	        </div>
 	    </div>
 	 </div>
@@ -245,21 +313,19 @@
 {% block javascript %}
 	{{ parent() }}
 
-	<script type="text/javascript" src="{{ base_url('web/vendor/jqGrid/js/i18n/grid.locale-en.js') }}"></script>
-	<script type="text/javascript" src="{{ base_url('web/vendor/jqGrid/js/jquery.jqGrid.min.js') }}"></script>
-	<script type="text/javascript" src="{{ base_url('web/vendor/chosen/chosen.jquery.js') }}"></script>
-
 	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/spk.js') }}"></script>
 	<script type="text/javascript">
 		//window.TRANSACTION.handleDatatable();
 		//window.TRANSACTION.handleModal();
 		
-		window.TRANSACTION.handlejqGrid();
-		window.TRANSACTION.handleDelete();
-		window.TRANSACTION.handleAddRow();
-		window.TRANSACTION.handleGridUpDinamic();
+		//window.TRANSACTION.handlejqGrid();
+		//window.TRANSACTION.handleDelete();
+		//window.TRANSACTION.handleAddRow();
 		//window.TRANSACTION.handleSaveScrap();
 		//window.TRANSACTION.handleFullscreen();
+		//window.TRANSACTION.handleGridUpDinamic();
+		window.SPK.init();
 	</script>
 
 {% endblock %}

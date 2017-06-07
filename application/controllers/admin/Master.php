@@ -90,17 +90,21 @@ class Master extends CI_Controller {
 		return $this->output->set_output(json_encode($row));
 	}
 
-	public function get_data_len($detail_id)
+	public function get_data_len($detail_id = '')
 	{
 		$row = array();
 		$data = $this->len_model->get_data()->result();
 		$machine_id = '';
+
+		$sec = $this->input->post('section_id');
+		$head = $this->input->post('header_id');
 
 		$get_detail = $this->detail_model->get_data_by_id($detail_id);
 		if($get_detail)
 		{
 
 			$section_id = $get_detail->section_id;
+			$section_id = (isset($sec)) ? $sec : $section_id; 
 			if($section_id == NULL)
 			{
 				$section_id = '035';
@@ -114,13 +118,26 @@ class Master extends CI_Controller {
 			$data = $this->len_model->get_data($machine_id, $section_id)->result();
 		}
 
+		if($detail_id == '0')
+		{
+			$section_id = (isset($sec)) ? $sec : '035';
+			$header_id = (isset($head)) ? $head : '1';
+
+			$get_header = $this->header_model->get_data_by_id($header_id);
+			if($get_header)
+			{
+				$machine_id = $get_header->machine_id;
+			}
+			$data = $this->len_model->get_data($machine_id, $section_id)->result();
+		}
+
 		if($data)
 		{
 			foreach($data as $r)
 			{
 				$row[] = array(
 					'value' => $r->LengthId,
-					'text'  => $r->Length,
+					'text'  => to_decimal($r->Length),
 				);		
 			}
 		}
@@ -155,11 +172,22 @@ class Master extends CI_Controller {
 	{
 		$section_id = '';
 		$machine_type_id = '';
+		$sec = $this->input->post('section_id');
 
 		$get_section_in_detail = $this->detail_model->get_data_by_id($id);
 		if($get_section_in_detail)
 		{
 			$section_id = $get_section_in_detail->section_id;
+		}
+		
+		if($id == '0')
+		{
+			$section_id = (isset($sec)) ? $sec : '0';
+
+			if($section_id == '0')
+			{
+				$section_id = '035';
+			} 
 		}
 
 		$get_machine = $this->machine_model->get_data_by_id($machine_id);

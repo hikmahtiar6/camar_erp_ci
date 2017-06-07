@@ -106,13 +106,20 @@
     text-decoration: none;
 }
 
-input:focus, select:focus, textarea:focus { 
-    outline: none !important;
-    border:3px solid blue !important;
-    box-shadow: 0 0 10px #719ECE !important;
-}
 
 button: focus {
     border: none !important;
     outline: none;
+}
+
+input.form-control, select.form-control, textarea.form-control {
+    border: 1px solid #CCC !important;
+    padding: 3px !important;
+    border-radius: 3px !important;
+}
+
+input:focus, select:focus, textarea:focus { 
+    outline: none !important;
+    border:3px solid blue !important;
+    box-shadow: 0 0 10px #719ECE !important;
 }

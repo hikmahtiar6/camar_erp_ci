@@ -1707,23 +1707,6 @@ window.TRANSACTION = (function($) {
 				dataType: 'html',
 				success: function(response) {
 					table.html(response);
-					
-					var listSpk = $('.wrap-grid');
-					$('.kanan').click(function() {
-						
-						var pos = listSpk.scrollLeft() + 300;
-						listSpk.animate({
-							scrollLeft:pos
-						}, 200);
-					});
-					
-					$('.kiri').click(function() {
-						
-						var pos = listSpk.scrollLeft() - 300;
-						listSpk.animate({
-							scrollLeft:pos
-						}, 200);
-					});
 				}
 			});
 			

@@ -23,6 +23,7 @@ class Transaction extends CI_Controller
 		$this->load->model('master/query_model');
 		$this->load->model('master/lot_model');
 		$this->load->model('master/operatorLot_model');
+		$this->load->model('master/finishing_model');
 	}
 
 	/**
@@ -70,7 +71,15 @@ class Transaction extends CI_Controller
 			$machine = $get_header->machine_id;
 			$dates = create_date_range($get_header->date_start,$get_header->date_finish);
 		}
+
+		$shift_data = $this->master_model->get_data_shift();
+		$section_data = $this->get_data_section($header_id);
+		$finishing_data = $this->finishing_model->get_data();
 		
+		$this->twiggy->set('shift_data', $shift_data);
+		$this->twiggy->set('finishing_data', $finishing_data);
+		$this->twiggy->set('section_data', $section_data);
+		$this->twiggy->set('tanggal_data', $this->get_tanggal($header_id));
 		$this->twiggy->set('dates', $dates);
 		$this->twiggy->set('header_id', $header_id);
 		$this->twiggy->set('machine_id', $machine);
@@ -357,7 +366,7 @@ class Transaction extends CI_Controller
 		{
 			$machine_id = $header_data->machine_id;
 
-			$data = create_date_range($header_data->date_start,$header_data->date_finish);
+			$data = create_date_range($header_data->date_start, $header_data->date_finish);
 		}
 
 		if($data)
@@ -372,6 +381,34 @@ class Transaction extends CI_Controller
 		}
 
 		return $this->output->set_output(json_encode($row));
+	}
+
+	private function get_tanggal($header_id)
+	{
+		$row = array();
+		$header_data = $this->header_model->get_data_by_id($header_id);
+
+		$data = false;
+
+		if($header_data)
+		{
+			$machine_id = $header_data->machine_id;
+
+			$data = create_date_range($header_data->date_start, $header_data->date_finish);
+		}
+
+		if($data)
+		{
+			foreach($data as $r)
+			{
+				$row[] = array(
+					'value' => date('d-m-Y', strtotime($r)),
+					'text'  => date('d-m-Y', strtotime($r)),
+				);
+			}
+		}
+
+		return $row;
 	}
 
 	/**
@@ -684,6 +721,8 @@ class Transaction extends CI_Controller
 		return $this->output->set_output(json_encode($response));
 	}
 
+	
+
 	/**
 	 * json jqgrid
 	 */
@@ -930,6 +969,26 @@ class Transaction extends CI_Controller
 		$this->twiggy->set('tgl', $tgl);
 		$this->twiggy->set('tanggal', $tanggal);
 		$this->twiggy->template('admin/transaction/grid.dinamic')->display();
+	}
+
+	/**
+	 * get data section
+	 */
+	private function get_data_section($header_id)
+	{
+		$row = array();
+		$header_data = $this->header_model->get_data_by_id($header_id);
+
+		$machine_id = '';
+
+		if($header_data)
+		{
+			$machine_id = $header_data->machine_id;
+		}
+
+		$data = $this->query_model->get_master_section($machine_id)->result();
+
+		return $data;
 	}
 
 }

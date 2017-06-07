@@ -348,9 +348,14 @@ function number_float($val) {
 	return (float) number_format($val, 2, ',', '.');
 }
 
-function to_decimal($val, $num = 2)
+function to_decimal($val, $num = 2, $add_null_after = false)
 {
-	return round($val, $num, PHP_ROUND_HALF_ODD);
+	$decimal = round($val, $num, PHP_ROUND_HALF_ODD);
+	if($add_null_after)
+	{
+		return sprintf("%0.2f",$decimal);	
+	}
+	return $decimal;
 }
 
 function check_array($array)
