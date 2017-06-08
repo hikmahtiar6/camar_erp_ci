@@ -15,6 +15,36 @@ window.SPK = (function() {
 			parentThis.handleVue();
 		},
 
+		removeArraySame: function(originalArray, objKey) {
+
+			var trimmedArray = [];
+			  var values = [];
+			  var value;
+
+			  for(var i = 0; i < originalArray.length; i++) {
+			    value = originalArray[i][objKey];
+
+			    if(values.indexOf(value) === -1) {
+			      trimmedArray.push(originalArray[i]);
+			      values.push(value);
+			    }
+			  }
+
+			  return trimmedArray;
+		},
+
+		sumArray: function(array, shiftNo) {
+			var sum = 0;
+
+			for(var i = 0; i < array.length; i++) {
+				if(array[i].shift_no == shiftNo) {
+					sum += array[i].target_section;
+				}
+			}
+
+			return window.APP.decimal3(sum);
+		},
+
 		handleVue: function() {
 			var parentThis = this;
 			var el = '#spk-card';
@@ -33,9 +63,28 @@ window.SPK = (function() {
 					section_id : '035',
 					detail_id  : '0',
 					len        : '',
-					ppic        : '',
-					dies        : '',
+					ppic       : '',
+					dies       : '',
 					posted     : '',
+					type       : 'add'
+				},
+				computed: {
+					getShift: function() {
+						var __this = this;
+						var shift = [];
+						var data = __this.list;
+
+						for(var i = 0; i < data.length; i++) {
+							shift.push({
+								shift          : data[i].shift_no,
+								target_section : parentThis.sumArray(data, data[i].shift_no),
+								machine_id     : data[i].machine_id
+							});
+						}
+
+						return parentThis.removeArraySame(shift, 'shift');
+						//return shift;
+					} 
 				},
 				methods: {
 					getData: function() {
@@ -52,7 +101,6 @@ window.SPK = (function() {
 								// set data utk vue ketika request data dari server berhasil
 								__this.$set(__this, 'list', response);
 								__this.$set(__this, 'loading', false);
-								window.TRANSACTION.handleGridUpDinamic();
 							}
 						});
 					},
@@ -71,6 +119,7 @@ window.SPK = (function() {
 						__this.$set(__this, 'detail_id', '0');
 						__this.$set(__this, 'shift', 'SH-15/10-0001');
 						__this.$set(__this, 'posted', '');
+						__this.$set(__this, 'type', 'add');
 						
 						
 						// menampilkan modal
@@ -91,16 +140,13 @@ window.SPK = (function() {
 						__this.$set(__this, 'len', __this.list[index].len_id);
 						__this.$set(__this, 'ppic', __this.list[index].ppic);
 						__this.$set(__this, 'posted', __this.list[index].posted);
+						__this.$set(__this, 'type', 'edit');
 
 						// menampilkan modal
 						$(parentThis.elModal).modal({backdrop: 'static', keyboard: false}, 'show');
 
 						__this.requestDataLen(__this.list[index].master_detail_id, __this.list[index].section_id, headerId);
 						__this.requestDataDies(__this.list[index].master_detail_id, __this.list[index].section_id, __this.list[index].dies);
-
-						
-
-
 
 						// cek validasi menggunakan validate.js
 						$(parentThis.elForm).valid();
@@ -148,6 +194,9 @@ window.SPK = (function() {
 
 						// nunggu 500 milidetik utk inisialisasi fungsi ajaxformnya
 						setTimeout(function() {
+
+							var spkLen = $('.spk-len option:selected');
+
 							$('.spk-select').select2({
 								width: '100%'
 							});
@@ -161,7 +210,8 @@ window.SPK = (function() {
 							$(parentThis.elForm).ajaxForm({
 								dataType: 'json',
 								data: {
-									header_id: headerId
+									header_id: headerId,
+									len      : spkLen.val()
 								},
 								success: function(response) {
 
@@ -212,6 +262,7 @@ window.SPK = (function() {
 					},
 
 					requestDataLen: function(detailId, sectionId, headerId) {
+						var __this = this;
 						var lenEl = $('.spk-len');
 
 						// request data len
@@ -225,8 +276,12 @@ window.SPK = (function() {
  							},
 							success : function(response) {
 								var html = '';
+								var selected = '';
 								for (var i = 0; i < response.length ; i++) {
-									html += '<option value="'+response[i]['value']+'">'+response[i]['text']+'</option>';
+									if(__this.len == response[i]['value']) {
+										selected = 'selected="selected"';
+									}
+									html += '<option value="'+response[i]['value']+'" '+selected+'>'+response[i]['text']+'</option>';
 								}
 
 								lenEl.html(html);

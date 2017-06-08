@@ -29,8 +29,21 @@
 
 		            <div class="col-md-12 body-width">
 						
-						<div class="grid-dinamic">
-							Silahkan tunggu.....
+						<div class="spk-dinamic" style="width: 70%">
+							<table class="table table-bordered">
+								<tr class="bold">
+									<td>No. Mesin</td>
+									<td>Shift</td>
+									<td>Target Produksi (kg)</td>
+								</tr>
+								<template v-for="(row_calc , ind_calc) in getShift">
+									<tr>
+										<td><% row_calc.machine_id %></td>
+										<td><% row_calc.shift %></td>
+										<td><% row_calc.target_section %></td>
+									</tr>
+								</template>
+							</table>
 						</div>
 							
 						<!--
@@ -184,7 +197,8 @@
 						    	Form SPK
 						    </h4>
 
-							<button class="pull-right btn btn-link waves-effect spk-close-modal" type="button">CLOSE</button>
+							<button class="pull-right btn bg-grey waves-effect"  data-dismiss="modal" type="button" style="margin-left: 10px;">BATAL</button>
+							<button class="pull-right btn btn-primary waves-effect spk-close-modal" type="button" >SIMPAN</button>
 
 						</div>
 						<div class="modal-body">
@@ -197,6 +211,7 @@
 										<label>Tanggal</label>
 
 										<input class="spk-detail-id" name="master_detail_id" type="hidden" v-model="detail_id">
+										<input class="spk-type" name="type" type="text" v-model="type">
 
 										<select class="form-control" name="tanggal">
 											{% if tanggal_data %}
@@ -246,8 +261,8 @@
 								<div class="col-md-3">
 									
 									<div class="form-group">
-										<label>Len</label>
-										<select class="form-control spk-len" name="len" v-model="len">
+										<label>Len <% len %></label>
+										<select class="form-control spk-len" name="len">
 										</select>
 									</div>
 

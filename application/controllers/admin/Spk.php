@@ -64,6 +64,13 @@ class Spk extends CI_Controller
 		$dt_finish = date('Y-m-d', strtotime($this->session->userdata('date_finish')));
 		$shift = $this->session->userdata('shift');
 
+		$machine = '';
+		$header_data = $this->header_model->get_data_by_id($header_id);
+		if($header_data)
+		{
+			$machine = $header_data->machine_id;
+		}
+
 		$get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, '', '');	
 		if($get_md)
 		{
@@ -71,14 +78,14 @@ class Spk extends CI_Controller
 			{
 				$section_id = $row->section_id;
 
-				$get_master_query =  $this->query_model->get_master_advance($machine_id, $section_id)->row();
+				$get_master_query =  $this->query_model->get_master_advance($machine, $section_id)->row();
 
 				$target_prod = ($row->target_prod == null) ? '' : $row->target_prod;
 				$ppic = ($row->ppic_note == null) ? '' : $row->ppic_note;
 
 				$target_prod_btg = $target_prod;
 				$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
-				$weight_standard = ($get_master_query) ? to_decimal($get_master_query->WeightStandard) : '';
+				$weight_standard = ($get_master_query) ? to_decimal($get_master_query->WeightStandard, 3) : '';
 				$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
 				$die_type = ($get_master_query) ? $get_master_query->DieTypeName : '-';
 
@@ -105,6 +112,7 @@ class Spk extends CI_Controller
 					'tanggal'           => $tgl,
 					'shift'             => $row->ShiftDescription,
 					'shift_id'          => $row->ShiftRefId,
+					'shift_no'          => $row->ShiftNo,
 					'section_name'      => $row->SectionDescription,
 					'section_id'        => $row->section_id,
 					'machine_id'        => $row->machine_id_header,
@@ -115,7 +123,7 @@ class Spk extends CI_Controller
 					'target_prod'       => $target_prod,
 					'ppic'              => $ppic,
 					'target_prod_btg'   => $target_prod_btg,
-					'weight_standard'   => to_decimal($weight_standard, 2, true),
+					'weight_standard'   => $weight_standard,
 					'target_section'    => $target_section,
 					'die_type'          => $die_type,
 					'header_id'         => $row->header_id,
@@ -235,7 +243,8 @@ class Spk extends CI_Controller
 			'finishing'   => $finishing,
 			'ppic_note'   => $ppic,
 			'header_id'   => $header_id,
-			'index_dice'  => $this->set_idxdice($dies)
+			'index_dice'  => $this->set_idxdice($dies),
+			'target_prod' => $target_prod
 
 		);
 

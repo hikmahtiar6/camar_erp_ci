@@ -199,8 +199,8 @@ function week_in_year($desc = false, $custom = '') {
 	$startMonth = 1;
 
 	$firstDayOfYear = mktime(0, 0, 0, $startMonth, 1, $year);
-	$nextMonday     = strtotime('monday', $firstDayOfYear);
-	$nextSunday     = strtotime('sunday', $nextMonday);
+	$nextMonday     = strtotime('sunday', $firstDayOfYear);
+	$nextSunday     = strtotime('saturday', $nextMonday);
 
 	$no = 1;
 	
@@ -350,7 +350,7 @@ function number_float($val) {
 
 function to_decimal($val, $num = 2, $add_null_after = false)
 {
-	$decimal = round($val, $num, PHP_ROUND_HALF_ODD);
+	$decimal = (float) round($val, $num, PHP_ROUND_HALF_ODD);
 	if($add_null_after)
 	{
 		return sprintf("%0.2f",$decimal);	
