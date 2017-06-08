@@ -77,17 +77,14 @@ class Spk extends CI_Controller
 			foreach($get_md as $row)
 			{
 				$section_id = $row->section_id;
-
-				$get_master_query =  $this->query_model->get_master_advance($machine, $section_id)->row();
-
 				$target_prod = ($row->target_prod == null) ? '' : $row->target_prod;
 				$ppic = ($row->ppic_note == null) ? '' : $row->ppic_note;
 
 				$target_prod_btg = $target_prod;
-				$f2_estfg = ($get_master_query) ? $get_master_query->F2_EstFG : '';
-				$weight_standard = ($get_master_query) ? to_decimal($get_master_query->WeightStandard, 3) : '';
-				$hole_count = ($get_master_query) ? $get_master_query->HoleCount : '';
-				$die_type = ($get_master_query) ? $get_master_query->DieTypeName : '-';
+				$f2_estfg =$row->F2_EstFG;
+				$weight_standard = to_decimal($row->WeightStandard, 3);
+				$hole_count = $row->HoleCount;
+				$die_type = $row->DieTypeName;
 
 				if($f2_estfg != NULL)
 				{

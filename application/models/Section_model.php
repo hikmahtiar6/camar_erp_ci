@@ -14,6 +14,8 @@ class Section_model extends CI_Model {
 	const TABLE_NEWMASTER = 'NewMaster';
 	const TABLE_HEAD = 'SpkHeader';
 	const TABLE_LOT = 'SpkHeaderLot';
+	const TABLE_DIE_TYPE = 'Inventory.MasterDieTypes';
+	const EXTRUSION = 'Extrusion.ExtrusionGuideFinal2()';
 
 	public function __construct()
 	{
@@ -137,6 +139,10 @@ class Section_model extends CI_Model {
 					g.finishing_name, 
 					i.*,
 					lot.is_posted,
+					final.F2_EstFG,
+					final.HoleCount, 
+					final.WeightStandard,
+					mdt.DieTypeName,
 					ROW_NUMBER() OVER(ORDER BY a.master_detail_id DESC) as RowNum
 				FROM
 					".static::TABLE." a
@@ -144,11 +150,15 @@ class Section_model extends CI_Model {
 					".static::TABLE_HEAD." b ON a.header_id = b.header_id
 				LEFT JOIN 
 					".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id
-				LEFT JOIN
+				INNER JOIN 
+					".static::EXTRUSION." final ON a.section_id = final.SectionId AND b.machine_id = final.MachineId AND final.BolsterTypeId != '' and final.BolsterTypeId IS NOT NULL 
+				INNER JOIN
 					".static::TABLE_BARANG." c ON a.section_id = c.SectionId
 				INNER JOIN
 					".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
 				LEFT JOIN
+					".static::TABLE_DIE_TYPE." mdt ON mdt.DieTypeId=c.DieTypeId
+				INNER JOIN
 					".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
 				LEFT JOIN
 					".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id

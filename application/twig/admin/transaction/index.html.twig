@@ -211,9 +211,10 @@
 										<label>Tanggal</label>
 
 										<input class="spk-detail-id" name="master_detail_id" type="hidden" v-model="detail_id">
-										<input class="spk-type" name="type" type="text" v-model="type">
+										<input class="spk-type" name="type" type="hidden" v-model="type">
 
-										<select class="form-control" name="tanggal">
+										<select class="form-control" name="tanggal" v-model="tanggal" required="">
+											<option value="">- Pilih Tanggal -</option>
 											{% if tanggal_data %}
 												{% for tanggal_row in tanggal_data %}
 													<option>{{ tanggal_row.value }}</option>

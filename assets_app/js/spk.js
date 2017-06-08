@@ -66,7 +66,8 @@ window.SPK = (function() {
 					ppic       : '',
 					dies       : '',
 					posted     : '',
-					type       : 'add'
+					type       : 'add',
+					tanggal    : ''
 				},
 				computed: {
 					getShift: function() {
@@ -120,6 +121,7 @@ window.SPK = (function() {
 						__this.$set(__this, 'shift', 'SH-15/10-0001');
 						__this.$set(__this, 'posted', '');
 						__this.$set(__this, 'type', 'add');
+						__this.$set(__this, 'tanggal', '');
 						
 						
 						// menampilkan modal
@@ -141,6 +143,7 @@ window.SPK = (function() {
 						__this.$set(__this, 'ppic', __this.list[index].ppic);
 						__this.$set(__this, 'posted', __this.list[index].posted);
 						__this.$set(__this, 'type', 'edit');
+						__this.$set(__this, 'tanggal', __this.list[index].tanggal);
 
 						// menampilkan modal
 						$(parentThis.elModal).modal({backdrop: 'static', keyboard: false}, 'show');
@@ -179,7 +182,7 @@ window.SPK = (function() {
 									parentThis.showNotification(response.message, response.status);
 
 									// refresh data vue
-									__this.getData();
+									__this.list.splice(index, 1);
 								}
 							})
 						});
