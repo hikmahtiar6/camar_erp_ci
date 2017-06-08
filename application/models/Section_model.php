@@ -124,46 +124,50 @@ class Section_model extends CI_Model {
 	public function get_data_detail_new($date_start = '', $date_finish = '', $shift = 0, $machine_id = '', $section_id = '', $header_id = '', $limit = '', $start = '', $date = '')
 	{
 		$sql = "
-			SELECT * 
+			SELECT 
+		 		DISTINCT
+		 		a.master_detail_id,
+		 		a.tanggal,
+		 		a.ppic_note,
+		 		a.header_id,
+		 		CONVERT(VARCHAR,a.index_dice, 250) as index_dice,
+		 		a.target_prod,
+		 		a.len,
+		 		a.section_id,
+				b.machine_id AS machine_id_header, 
+				c.SectionDescription, 
+				d.MachineTypeId as machine_type, 
+				e.ShiftDescription, 
+				e.ShiftRefId, 
+				e.ShiftStart, 
+				e.ShiftNo, 
+				g.finishing_name, 
+				i.*,
+				lot.is_posted,
+				final.F2_EstFG,
+				final.HoleCount, 
+				final.WeightStandard,
+				mdt.DieTypeName
 			FROM
-			 (
-			 	SELECT 
-					a.*, 
-					b.machine_id AS machine_id_header, 
-					c.SectionDescription, 
-					d.MachineTypeId as machine_type, 
-					e.ShiftDescription, 
-					e.ShiftRefId, 
-					e.ShiftStart, 
-					e.ShiftNo, 
-					g.finishing_name, 
-					i.*,
-					lot.is_posted,
-					final.F2_EstFG,
-					final.HoleCount, 
-					final.WeightStandard,
-					mdt.DieTypeName,
-					ROW_NUMBER() OVER(ORDER BY a.master_detail_id DESC) as RowNum
-				FROM
-					".static::TABLE." a
-				INNER JOIN 
-					".static::TABLE_HEAD." b ON a.header_id = b.header_id
-				LEFT JOIN 
-					".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id
-				LEFT JOIN 
-					".static::EXTRUSION." final ON a.section_id = final.SectionId AND b.machine_id = final.MachineId AND final.BolsterTypeId != '' and final.BolsterTypeId IS NOT NULL 
-				INNER JOIN
-					".static::TABLE_BARANG." c ON a.section_id = c.SectionId
-				INNER JOIN
-					".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
-				LEFT JOIN
-					".static::TABLE_DIE_TYPE." mdt ON mdt.DieTypeId=c.DieTypeId
-				INNER JOIN
-					".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
-				LEFT JOIN
-					".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
-				LEFT JOIN
-					".static::TABLE_LEN." i ON a.len = i.LengthId ";
+				".static::TABLE." a
+			INNER JOIN 
+				".static::TABLE_HEAD." b ON a.header_id = b.header_id
+			LEFT JOIN 
+				".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id
+			left JOIN 
+				".static::EXTRUSION." final ON a.section_id = final.SectionId AND b.machine_id = final.MachineId AND final.LengthId = a.len
+			INNER JOIN
+				".static::TABLE_BARANG." c ON a.section_id = c.SectionId
+			INNER JOIN
+				".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
+			LEFT JOIN
+				".static::TABLE_DIE_TYPE." mdt ON mdt.DieTypeId=c.DieTypeId
+			INNER JOIN
+				".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
+			LEFT JOIN
+				".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
+			inner JOIN
+				".static::TABLE_LEN." i ON a.len = i.LengthId ";
 				
 		if($date != '')
 		{
@@ -200,7 +204,7 @@ class Section_model extends CI_Model {
 			$sql .= "AND b.header_id = '$header_id' ";
 		}
 
-		$sql .= " ) AS t ";
+		//$sql .= " ) AS t ";
 
 		$sql = str_replace("i.LengthId AND", "i.LengthId WHERE", $sql);
 
@@ -216,7 +220,7 @@ class Section_model extends CI_Model {
 
 		$sql .= " ORDER BY tanggal ASC, ShiftNo ASC,  master_detail_id DESC";
 
-		$sql = str_replace("t AND", "t WHERE", $sql);
+		$sql = str_replace("i.LengthId AND", "i.LengthId WHERE", $sql);
 
 		$query = $this->db->query($sql);
 		return $query->result();
