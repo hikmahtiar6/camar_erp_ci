@@ -150,7 +150,7 @@ class Section_model extends CI_Model {
 					".static::TABLE_HEAD." b ON a.header_id = b.header_id
 				LEFT JOIN 
 					".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id
-				INNER JOIN 
+				LEFT JOIN 
 					".static::EXTRUSION." final ON a.section_id = final.SectionId AND b.machine_id = final.MachineId AND final.BolsterTypeId != '' and final.BolsterTypeId IS NOT NULL 
 				INNER JOIN
 					".static::TABLE_BARANG." c ON a.section_id = c.SectionId
