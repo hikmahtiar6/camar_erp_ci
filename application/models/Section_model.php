@@ -204,7 +204,7 @@ class Section_model extends CI_Model {
 			$sql .= "AND RowNum > '".$start."' ";
 		}
 
-		$sql .= " ORDER BY ShiftNo ASC , tanggal ASC, master_detail_id DESC";
+		$sql .= " ORDER BY tanggal ASC, ShiftNo ASC,  master_detail_id DESC";
 
 		$sql = str_replace("t AND", "t WHERE", $sql);
 
