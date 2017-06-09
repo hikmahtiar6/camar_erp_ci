@@ -16,6 +16,7 @@ class Section_model extends CI_Model {
 	const TABLE_LOT = 'SpkHeaderLot';
 	const TABLE_DIE_TYPE = 'Inventory.MasterDieTypes';
 	const EXTRUSION = 'Extrusion.ExtrusionGuideFinal2()';
+	const RECEIVING = 'Purchasing.DieReceivingDetail';
 
 	public function __construct()
 	{
@@ -130,7 +131,7 @@ class Section_model extends CI_Model {
 		 		a.tanggal,
 		 		a.ppic_note,
 		 		a.header_id,
-		 		CONVERT(VARCHAR,a.index_dice, 250) as index_dice,
+		 		CONVERT(VARCHAR(250),a.index_dice) as index_dice,
 		 		a.target_prod,
 		 		a.len,
 		 		a.section_id,
@@ -153,9 +154,20 @@ class Section_model extends CI_Model {
 			INNER JOIN 
 				".static::TABLE_HEAD." b ON a.header_id = b.header_id
 			LEFT JOIN 
-				".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id
-			left JOIN 
-				".static::EXTRUSION." final ON a.section_id = final.SectionId AND b.machine_id = final.MachineId AND final.LengthId = a.len
+				".static::TABLE_LOT." lot ON a.master_detail_id = lot.master_detail_id 
+			LEFT JOIN ".static::RECEIVING." receiv 
+				ON receiv.DiesId = CONVERT(VARCHAR(250),a.index_dice)
+				AND receiv.SectionId = a.section_id
+			LEFT JOIN ".static::EXTRUSION." final 
+				ON a.section_id = final.SectionId 
+				AND b.machine_id = final.MachineId 
+				AND final.LengthId = a.len
+				AND final.HoleCount = CAST(
+				CASE
+					WHEN receiv.HoleCount IS NULL THEN 1 
+				ELSE
+					receiv.HoleCount
+				END AS INT)
 			INNER JOIN
 				".static::TABLE_BARANG." c ON a.section_id = c.SectionId
 			INNER JOIN

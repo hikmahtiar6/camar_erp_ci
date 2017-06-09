@@ -91,11 +91,38 @@ window.SPK = (function() {
 					getData: function() {
 
 						var __this = this;
+						var spkDateChange = $('.spk-tgl-change');
+
 
 						// mengambil data dengan ajax
 						$.ajax({
 							url      : window.APP.siteUrl + 'admin/spk/get_data/' + headerId,
-							type     : 'GET',
+							type     : 'POST',
+							dataType : 'json',
+							data     : {
+								tanggal : spkDateChange.val()
+							},
+							success  : function(response) {
+
+								// set data utk vue ketika request data dari server berhasil
+								__this.$set(__this, 'list', response);
+								__this.$set(__this, 'loading', false);
+							}
+						});
+					},
+
+					getDataWithDate: function(e) {
+						var __this = this;
+
+						var val = e.target.options[e.target.options.selectedIndex].value;
+
+						// mengambil data dengan ajax
+						$.ajax({
+							url      : window.APP.siteUrl + 'admin/spk/get_data/' + headerId,
+							type     : 'POST',
+							data     : {
+								tanggal: val
+							},
 							dataType : 'json',
 							success  : function(response) {
 

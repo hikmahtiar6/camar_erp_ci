@@ -71,7 +71,7 @@ class Spk extends CI_Controller
 			$machine = $header_data->machine_id;
 		}
 
-		$get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, '', '');	
+		$get_md = $this->section_model->get_data_detail_new($dt_start, $dt_finish, $shift, $machine_id = '', $section_id = '',$header_id, '', '', $date);	
 		if($get_md)
 		{
 			foreach($get_md as $row)

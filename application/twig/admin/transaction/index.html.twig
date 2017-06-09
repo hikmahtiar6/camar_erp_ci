@@ -83,7 +83,7 @@
 						
 						Tanggal : 
 						<span>
-							<select class="tgl-transaction" style="padding: 5px;">
+							<select class="spk-tgl-change" style="padding: 5px;" @change="getDataWithDate">
 								<option value="">Semua</option>
 								{% if dates %}
 									{% for dt in dates %}
