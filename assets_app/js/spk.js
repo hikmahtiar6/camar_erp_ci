@@ -30,7 +30,16 @@ window.SPK = (function() {
 			    }
 			  }
 
-			  return trimmedArray;
+			trimmedArray.sort(function(a, b){
+				var keyA = a.shift,
+				    keyB = b.shift;
+				// Compare the 2 dates
+				if(keyA < keyB) return -1;
+				if(keyA > keyB) return 1;
+				return 0;
+			});
+
+			return trimmedArray;
 		},
 
 		sumArray: function(array, shiftNo) {

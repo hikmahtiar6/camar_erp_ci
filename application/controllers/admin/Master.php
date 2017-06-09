@@ -173,14 +173,27 @@ class Master extends CI_Controller {
 		$section_id = '';
 		$machine_type_id = '';
 		$sec = $this->input->post('section_id');
-		
-		$section_id = (isset($sec)) ? $sec : '0';
 
-		if($section_id == '0')
+		$get_section_in_detail = $this->detail_model->get_data_by_id($id);
+		if($get_section_in_detail)
 		{
-			$section_id = '035';
-		} 
+			$section_id = $get_section_in_detail->section_id;
+		}
 		
+		if($id == '0')
+		{
+			$section_id = (isset($sec)) ? $sec : '0';
+
+			if($section_id == '0')
+			{
+				$section_id = '035';
+			} 
+		}
+		else
+		{
+			$section_id = (isset($sec)) ? $sec : $section_id;
+		}
+
 		$get_machine = $this->machine_model->get_data_by_id($machine_id);
 		if($get_machine)
 		{
