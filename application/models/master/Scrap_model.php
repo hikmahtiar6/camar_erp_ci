@@ -48,6 +48,41 @@ class Scrap_model extends CI_Model {
 
 		return $get->row();
 	}
+
+	/**
+	 * Get data berdasarkan parameter yg disediakan
+	 */
+	public function get_data_advance($id = '', $spk_header_id = '', $tanggal = '', $shift = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE);
+
+		if($id != '')
+		{
+			$sql->where('LotScrapId', $id);		
+		}
+
+		if($spk_header_id != '')
+		{
+			$sql->where('SpkHeaderId', $spk_header_id);		
+		}
+
+		if($shift != '')
+		{
+			$sql->where('Shift', $shift);		
+		}
+
+		if($tanggal != '')
+		{
+			$sql->where('Tanggal', date('Y-m-d', strtotime($tanggal)));		
+		}
+
+		$get = $sql->get();
+
+		return $get;
+	}
 	
 	/**
 	 * Suming for Reporting Lot Harian

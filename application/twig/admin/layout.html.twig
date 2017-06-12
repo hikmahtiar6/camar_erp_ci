@@ -1210,11 +1210,23 @@
             decimal3: function(total) {
                 return Math.round(total * 1000) / 1000;
             },
+            decimal2: function(total) {
+                return Math.round(total * 100) / 100;
+            },
             decimalSum: function(integer) {
                 return Math.round((integer) * 1e12) / 1e12;
             },
             loader: function() {
                 return $('.loader');
+            },
+            requestAjax: function(url, type, data, dataType, fn) {
+                $.ajax({
+                    url: url,
+                    type: type,
+                    data: data,
+                    dataType: dataType,
+                    success: fn
+                });
             }
         }
     </script>

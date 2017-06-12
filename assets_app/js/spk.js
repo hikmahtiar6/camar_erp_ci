@@ -76,7 +76,8 @@ window.SPK = (function() {
 					dies       : '',
 					posted     : '',
 					type       : 'add',
-					tanggal    : ''
+					tanggal    : '',
+					changeDate : ''
 				},
 				computed: {
 					getShift: function() {
@@ -102,7 +103,6 @@ window.SPK = (function() {
 						var __this = this;
 						var spkDateChange = $('.spk-tgl-change');
 
-
 						// mengambil data dengan ajax
 						$.ajax({
 							url      : window.APP.siteUrl + 'admin/spk/get_data/' + headerId,
@@ -119,11 +119,13 @@ window.SPK = (function() {
 							}
 						});
 					},
-
+					// get data spk jika user memilih tanggal
 					getDataWithDate: function(e) {
 						var __this = this;
 
-						var val = e.target.options[e.target.options.selectedIndex].value;
+						var val = $(e.target).val();
+
+						__this.$set(__this, 'changeDate', val);
 
 						// mengambil data dengan ajax
 						$.ajax({
@@ -138,6 +140,81 @@ window.SPK = (function() {
 								// set data utk vue ketika request data dari server berhasil
 								__this.$set(__this, 'list', response);
 								__this.$set(__this, 'loading', false);
+
+								// ajax utk mengambil data scrap endbutt dan gram
+								window.APP.requestAjax(
+									window.APP.siteUrl + 'admin/spk/get_data_scrap',
+									'post',
+									{
+										tanggal: val,
+										header_id: headerId
+									},
+									'json',
+									function(response) {
+										// jika response kosong
+										if(response.length == 0) {
+											var element = $('.spk-scrap-endbutt-gram');
+
+											element.val('');
+										} else {
+
+											// jika tidak kosong
+											// maka menampilkan data ke text
+											for(var i = 0; i < response.length; i++) {
+												var thisis = response[i].shift;
+												var scrap = $('#scrap' + thisis);
+												var endbutt = $('#endbutt' + thisis);
+												var gram = $('#gram' + thisis);
+												var shift = $('#shift' + thisis);
+												var op1 = $('#op1' + thisis);
+												var op2 = $('#op2' + thisis);
+												var header = $('#header' + thisis);
+
+												// set manual value to element
+												scrap.val(window.APP.decimal2(response[i].scrap));
+												endbutt.val(window.APP.decimal2(response[i].endbutt));
+												gram.val(window.APP.decimal2(response[i].gram));
+												op1.val(window.APP.decimal2(response[i].op1));
+												op2.val(window.APP.decimal2(response[i].op2));
+												
+											}
+										}
+
+									}
+								);
+							}
+						});
+					},
+
+					saveScrap: function(e) {
+						__this = this;
+
+						var thisis = $(e.target).attr('id');
+						var scrap = $('#scrap' + thisis);
+						var endbutt = $('#endbutt' + thisis);
+						var gram = $('#gram' + thisis);
+						var shift = $('#shift' + thisis);
+						var op1 = $('#op1' + thisis);
+						var op2 = $('#op2' + thisis);
+						var header = $('#header' + thisis);
+
+
+						$.ajax({
+							url : window.APP.siteUrl + 'admin/spk/save_scrap',
+							type: 'post',
+							dataType : 'json',
+							data: {
+								scrap   : scrap.val(),
+								endbutt : endbutt.val(),
+								gram    : gram.val(),
+								shift    : shift.val(),
+								header  : header.val(),
+								op1     : op1.val(),
+								op2     : op2.val(),
+								tanggal : __this.changeDate
+							},
+							success: function(response) {
+								$.notify(response.message, response.status);
 							}
 						});
 					},

@@ -75,7 +75,12 @@ class Transaction extends CI_Controller
 		$shift_data = $this->master_model->get_data_shift();
 		$section_data = $this->get_data_section($header_id);
 		$finishing_data = $this->finishing_model->get_data();
+
+		$get_operator = $this->operatorLot_model->get_data_by(array('grup' => 'operator'));
+		$get_operator2 = $this->operatorLot_model->get_data_by(array('grup' => 'wakil'));
 		
+		$this->twiggy->set('operator1', $get_operator);
+		$this->twiggy->set('operator2', $get_operator2);
 		$this->twiggy->set('shift_data', $shift_data);
 		$this->twiggy->set('finishing_data', $finishing_data);
 		$this->twiggy->set('section_data', $section_data);

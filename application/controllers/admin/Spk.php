@@ -20,6 +20,7 @@ class Spk extends CI_Controller
 		$this->load->model('master/shift_model');
 		$this->load->model('master/query_model');
 		$this->load->model('master/lot_model');
+		$this->load->model('master/scrap_model');
 	}
 
 	/**
@@ -273,6 +274,60 @@ class Spk extends CI_Controller
 		output_json($response);
 	}
 
+	/**
+	 * Save Scrap
+	 */
+	public function save_scrap()
+	{
+		$scrap = $this->input->post('scrap');
+		$tanggal = $this->input->post('tanggal');
+		$shift = $this->input->post('shift');
+		$gram = $this->input->post('gram');
+		$endbutt = $this->input->post('endbutt');
+		$header_id = $this->input->post('header');
+		$opr1 = $this->input->post('op1');
+		$opr2 = $this->input->post('op2');
+
+		$data_save = array(
+			'Scrap'      => $scrap,
+			'EndButt'    => $endbutt,
+			'Shift'      => $shift,
+			'Gram'       => $gram,
+			'Tanggal'    => date('Y-m-d', strtotime($tanggal)),
+			'SpkHeaderId'=> $header_id,
+			'Opr1'       => $opr1,
+			'Opr2'       => $opr2,
+		);
+
+		$check_data = $this->scrap_model->get_data_tgl_header($header_id, $tanggal, $shift);
+		if($check_data)
+		{
+			$save = $this->scrap_model->update($check_data->LotScrapId, $data_save);
+		}
+		else
+		{
+			$save = $this->scrap_model->save($data_save);
+		}
+
+		if($save)
+		{
+			$response = array(
+				'message' => 'Berhasil menyimpan scrap , End butt, dan Gram',
+				'status'  => 'success'
+			);
+		}
+		else
+		{
+			$response = array(
+				'message' => 'Gagal menyimpan scrap dan End butt',
+				'status'  => 'danger'
+			);
+		}
+
+		$this->output->set_output(json_encode($response));
+
+	}
+
 	private function set_idxdice($array)
 	{
 		$str = '';
@@ -282,6 +337,40 @@ class Spk extends CI_Controller
 		}
 
 		return rtrim($str, ', ');
+	}
+
+	/**
+	 * get data scrap, endbut, gram berdasarkan spk header, shift dan tanggal
+	 */
+	public function get_data_scrap()
+	{
+		// post
+		$header_id = $this->input->post('header_id');
+		$tanggal = $this->input->post('tanggal');
+		
+		// data
+		$response = array();
+		$data = $this->scrap_model->get_data_advance('', $header_id, $tanggal)->result();
+
+		// jika data tersedia
+		// maka looping data tsb
+		if($data)
+		{
+			foreach($data as $row)
+			{
+				// set response baru
+				$response[] = array(
+					'shift'   => $row->Shift,
+					'scrap'   => $row->Scrap,
+					'endbutt' => $row->EndButt,
+					'gram'    => $row->Gram,
+					'op1'     => $row->Opr1,
+					'op2'     => $row->Opr2
+				);
+			}
+		}
+
+		output_json($response);
 	}
 
 }

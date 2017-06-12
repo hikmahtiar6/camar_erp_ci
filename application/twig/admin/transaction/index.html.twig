@@ -35,12 +35,69 @@
 									<td>No. Mesin</td>
 									<td>Shift</td>
 									<td>Target Produksi (kg)</td>
+									<td v-if="changeDate != ''">
+										Scrap (kg)
+									</td>
+									<td v-if="changeDate != ''">
+										End Butt (kg)
+									</td>
+									<td v-if="changeDate != ''">
+										Gram
+									</td>
+									<td v-if="changeDate != ''">
+										Operator 1
+									</td>
+									<td v-if="changeDate != ''">
+										Operator 2
+									</td>
+									<td v-if="changeDate != ''">
+										Tools
+									</td>
 								</tr>
 								<template v-for="(row_calc , ind_calc) in getShift">
 									<tr>
 										<td><% row_calc.machine_id %></td>
 										<td><% row_calc.shift %></td>
 										<td><% row_calc.target_section %></td>
+										<td v-if="changeDate != ''">
+											<input :id="'header' + row_calc.shift" type="hidden" value="{{ header_id }}" style="width: 50px;">
+											<input class="spk-scrap-endbutt-gram" :id="'scrap' + row_calc.shift" type="text" value="" style="width: 50px;">
+										</td>
+										<td v-if="changeDate != ''">
+											<input class="spk-scrap-endbutt-gram" :id="'endbutt' + row_calc.shift" type="text" style="width: 50px;">
+											<input :id="'shift' + row_calc.shift" type="hidden" v-model="row_calc.shift" style="width: 50px;">
+										</td>
+										<td v-if="changeDate != ''">
+											<input class="spk-scrap-endbutt-gram" :id="'gram' + row_calc.shift" type="text" style="width: 50px;">
+										</td>
+										<td v-if="changeDate != ''">
+											<select class="spk-scrap-endbutt-gram" :id="'op1' + row_calc.shift">
+												<option value="">
+													- Pilih -
+												</option>
+												{% if operator1 %}
+													{% for row_opr in operator1 %}
+														<option value="{{ row_opr.operator_id }}">{{ row_opr.name }}</option>
+													{% endfor %}
+												{% endif %}
+											</select>
+										</td>
+										<td v-if="changeDate != ''">
+											<select class="spk-scrap-endbutt-gram" :id="'op2' + row_calc.shift">
+												<option value="">
+													- Pilih -
+												</option>
+												{% if operator2 %}
+													{% for row_opr in operator2 %}
+														<option value="{{ row_opr.operator_id }}">{{ row_opr.name }}</option>
+													{% endfor %}
+												{% endif %}
+											</select>
+										</td>
+										<td v-if="changeDate != ''">
+											<button class="btn btn-primary" :id="row_calc.shift" type="submit" @click="saveScrap">Simpan</button>
+										</td>
+
 									</tr>
 								</template>
 							</table>

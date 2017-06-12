@@ -260,59 +260,6 @@ class Dies extends CI_Controller
 	} 
 
 	/**
-	 * Save Scrap
-	 */
-	public function save_scrap()
-	{
-		$scrap = $this->input->post('scrap');
-		$tanggal = $this->input->post('tanggal');
-		$shift = $this->input->post('shift');
-		$lost = $this->input->post('lost');
-		$endbutt = $this->input->post('endbutt');
-		$header_id = $this->input->post('header_id');
-		$opr1 = $this->input->post('opr1');
-		$opr2 = $this->input->post('opr2');
-
-		$data_save = array(
-			'Scrap'      => $scrap,
-			'EndButt'    => $endbutt,
-			'Shift'      => $shift,
-			'Tanggal'    => date('Y-m-d', strtotime($tanggal)),
-			'SpkHeaderId'=> $header_id,
-			'Opr1'       => $opr1,
-			'Opr2'       => $opr2,
-		);
-
-		$check_data = $this->scrap_model->get_data_tgl_header($header_id, $tanggal, $shift);
-		if($check_data)
-		{
-			$save = $this->scrap_model->update($check_data->LotScrapId, $data_save);
-		}
-		else
-		{
-			$save = $this->scrap_model->save($data_save);
-		}
-
-		if($save)
-		{
-			$response = array(
-				'message' => 'Berhasil menyimpan scrap dan End butt',
-				'status'  => 'success'
-			);
-		}
-		else
-		{
-			$response = array(
-				'message' => 'Gagal menyimpan scrap dan End butt',
-				'status'  => 'danger'
-			);
-		}
-
-		$this->output->set_output(json_encode($response));
-
-	}
-
-	/**
 	 * Dies History Card
 	 */
 	public function history_card()
