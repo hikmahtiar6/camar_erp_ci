@@ -422,8 +422,19 @@ window.SPK = (function() {
 
 								var html = '';
 								$.each(response, function(key, val) {
+
+
 						        	if( defaultValue.indexOf(val.value) > -1) {
-										selected = 'selected="selected"';
+
+						        		// check koma
+						        		if(defaultValue.indexOf(',') > -1) {
+											selected = 'selected="selected"';
+						        		} else {
+							        		if(defaultValue ==  val.value) {
+												selected = 'selected="selected"';
+							        		}
+						        		}
+
 									} else {
 										selected = '';
 									}

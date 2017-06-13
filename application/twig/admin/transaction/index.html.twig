@@ -346,7 +346,7 @@
 
 									<div class="form-group">
 										<label>Target Prod (Billet) *</label>
-										<input class="form-control" name="target_prod" type="text" v-model="target_prod" required="">
+										<input class="form-control" name="target_prod" type="text" v-model="target_prod" onkeydown="window.INPUT.numberingKeyDown(event, this)" required="">
 									</div>
 
 								</div>
