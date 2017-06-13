@@ -60,7 +60,12 @@
 			                		<td>{{ header_row.date_finish|date('d-m-Y') }}</td>
 			                		<td>{{ get_record_detail_by_header(header_row.header_id, shift) }}</td>
 			                		<td>
-			                			<a class="btn btn-info" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish) ~ '/' ~ shift) }}">Lihat Detail</a>
+			                			<a class="btn btn-info waves-effect btn-xs" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish) ~ '/' ~ shift) }}" title="Lihat Detail" data-toggle="tooltip">
+			                				<i class="material-icons">visibility</i>
+			                			</a>
+			                			<a class="btn btn-danger waves-effect btn-xs" id="{{ header_row.header_id }}" href="{{ site_url('admin/spk/delete') }}" title="Hapus" data-toggle="tooltip">
+			                				<i class="material-icons">delete</i>
+			                			</a>
 			                		</td>
 		                		</tr>
 		                		{% endfor %}

@@ -377,13 +377,17 @@
 				var aktBillet = $('.total-akt-billet').html();
 				var hasilProdKg = $('.total-hasil-prod-kg').html();
 				
-				for(var i = 1; i<= 2; i++) {
+				for(var i = 1; i<= 3; i++) {
+
+					var aktBilletShift = $('#total-akt-billet-shift'+i).html();
+					var hasilProdKgShift = $('#total-hasil-prod-kg-shift'+i).html();
+
 					var sumTarget = 0;
 					var shiftTotal = $('.total-loss-shift'+i);
 					var endButtTotal = $('#total-endbutt-shift'+i).html();
 					var scrapTotal = $('#total-scrap-shift'+i).html();
 					
-					var hasilLoss = aktBillet - hasilProdKg - endButtTotal - scrapTotal;
+					var hasilLoss = aktBilletShift - hasilProdKgShift - endButtTotal - scrapTotal;
 					
 					shiftTotal.html(decimal3(hasilLoss));
 				}
@@ -391,7 +395,7 @@
 			
 			function setTotalPershift(elTotal, elCounting)
 			{
-				for(var i = 1; i<= 2; i++) {
+				for(var i = 1; i<= 3; i++) {
 					var sumTarget = 0;
 					var shiftTotal = $(elTotal+i);
 					var shiftCounting = $(elCounting+i);
