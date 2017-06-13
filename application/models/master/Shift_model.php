@@ -17,6 +17,7 @@ class Shift_model extends CI_Model {
 
 		$sql->select('*');
 		$sql->from(static::TABLE);
+		$sql->where('IsActive', 1);
 
 		$get = $sql->get();
 		return $get->result();
