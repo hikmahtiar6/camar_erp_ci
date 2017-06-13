@@ -213,7 +213,7 @@
 		                	</thead>
 		                	<tbody>
 		                		<template v-for="(spk, index) in list">
-		                			<tr class="font-12">
+		                			<tr v-bind:class="spk.time_finish + ' font-12'">
 		                				<td align="right"><% index + 1 %>.</td>
 		                				<td>
 		                					<span v-html="spk.button">

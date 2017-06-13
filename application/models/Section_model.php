@@ -145,6 +145,7 @@ class Section_model extends CI_Model {
 				g.finishing_name, 
 				i.*,
 				lot.is_posted,
+				lot.time_finish,
 				final.F2_EstFG,
 				final.HoleCount, 
 				final.WeightStandard,

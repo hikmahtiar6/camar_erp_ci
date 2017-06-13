@@ -353,7 +353,7 @@ function to_decimal($val, $num = 2, $add_null_after = false)
 	$decimal = (float) round($val, $num, PHP_ROUND_HALF_ODD);
 	if($add_null_after)
 	{
-		return sprintf("%0.2f",$decimal);	
+		return sprintf("%0.".$num."f",$decimal);	
 	}
 	return $decimal;
 }

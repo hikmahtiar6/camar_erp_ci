@@ -86,7 +86,7 @@ AND d.MachineTypeId='0690T'
 
 		$sql->select('*');
 		$sql->from(static::TABLE_SHIFT);
-		//$sql->where('IsActive', true);
+		$sql->where('IsActive', true);
 		$get = $sql->get();
 
 		return $get->result();

@@ -83,7 +83,7 @@ class Spk extends CI_Controller
 
 				$target_prod_btg = $target_prod;
 				$f2_estfg =$row->F2_EstFG;
-				$weight_standard = to_decimal($row->WeightStandard, 3);
+				$weight_standard = to_decimal($row->WeightStandard, 3, true);
 				$hole_count = $row->HoleCount;
 				$die_type = $row->DieTypeName;
 
@@ -126,6 +126,7 @@ class Spk extends CI_Controller
 					'die_type'          => $die_type,
 					'header_id'         => $row->header_id,
 					'posted'            => $row->is_posted,
+					'time_finish'       => ($row->time_finish != '') ? 'bg-orange' : ''
 				);
 			}
 		}

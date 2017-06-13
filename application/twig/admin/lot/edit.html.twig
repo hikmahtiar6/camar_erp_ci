@@ -113,12 +113,12 @@
 				<td>
 					<!-- berat standard -->
 					<span id="berat-standard" style="display: none;">
-						{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id)) }}
+						{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id), 3) }}
 					</span>
 
 					<!-- billet weight -->
 					<span class="billet-weight">
-						{{ to_decimal(get_detail_machine(machine, 'BilletWeight')) }}
+						{{ to_decimal(get_detail_machine(machine, 'BilletWeight'), 3) }}
 					</span>
 
 					<!--
@@ -294,13 +294,13 @@
 					<label>Weight Upper Limit</label>
 				</td>
 				<td>
-					<span class="weight-upperlimit">{{ to_decimal(get_effective_item_dimension(section_id)) }}</span>
+					<span class="weight-upperlimit">{{ to_decimal(get_effective_item_dimension(section_id), 3) }}</span>
 				</td>
 				<td class="bold">
 					Berat Std
 				</td>
 				<td>
-					{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id)) }}
+					{{ to_decimal(get_row_master('WeightStandard', machine, section_id, len_id), 3) }}
 				</td>
 				<td>
 					<label>Keterangan Ext *</label>
