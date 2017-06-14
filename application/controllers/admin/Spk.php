@@ -374,5 +374,36 @@ class Spk extends CI_Controller
 		output_json($response);
 	}
 
+	/**
+	 * Menghapus data header
+	 */
+	public function delete_header()
+	{
+		$response = array(
+			'message' => 'Data gagal dihapus',
+			'status'  => 'error'
+		);
+		$header_id = $this->input->post('id');
+
+		// delete header
+		$delete_header = $this->detail_model->delete_header($header_id);
+
+		// jika sukses menghapus
+		// maka menghapus detailnya juga
+		// dan memberi response utk notifikasi
+		if($delete_header)
+		{
+			// delete detail
+			$this->detail_model->delete_detail_by_header($header_id);
+			$response = array(
+				'message' => 'Data berhasil dihapus',
+				'status'  => 'success'
+			);
+		}
+
+		output_json($response);
+
+	}
+
 }
 ?>

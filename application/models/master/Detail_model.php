@@ -221,6 +221,31 @@ class Detail_model extends CI_Model {
 		return $get->row();
 	}
 
+	/**
+	 * get data detail dinamis
+	 */
+	public function get_data_advance($id = '', $header_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE);
+
+		if($id != '')
+		{
+			$sql->where('master_detail_id', $id);
+		}
+
+		if($header_id != '')
+		{
+			$sql->where('header_id', $header_id);
+		}
+
+
+		$get = $sql->get();
+		return $get;
+	}
+
 	public function save($data)
 	{
 		return $this->db->insert(static::TABLE, $data);
@@ -235,6 +260,24 @@ class Detail_model extends CI_Model {
 	public function delete($id)
 	{
 		$this->db->where('master_detail_id', $id);
+		return $this->db->delete(static::TABLE);
+	}
+
+	/**
+	 * delete header
+	 */
+	public function delete_header($id)
+	{
+		$this->db->where('header_id', $id);
+		return $this->db->delete(static::TABLE_HEAD);
+	}
+
+	/**
+	 * delete detail by header
+	 */
+	public function delete_detail_by_header($header_id)
+	{
+		$this->db->where('header_id', $header_id);
 		return $this->db->delete(static::TABLE);
 	}
 

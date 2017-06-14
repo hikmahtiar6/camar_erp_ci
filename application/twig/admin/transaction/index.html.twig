@@ -61,14 +61,14 @@
 										<td><% row_calc.target_section %></td>
 										<td v-if="changeDate != ''">
 											<input :id="'header' + row_calc.shift" type="hidden" value="{{ header_id }}" style="width: 50px;">
-											<input class="spk-scrap-endbutt-gram" :id="'scrap' + row_calc.shift" type="text" value="" style="width: 50px;">
+											<input class="spk-scrap-endbutt-gram" :id="'scrap' + row_calc.shift" type="text" value="" style="width: 50px;" onkeydown="window.INPUT.numberingKeyDown(event, this)">
 										</td>
 										<td v-if="changeDate != ''">
-											<input class="spk-scrap-endbutt-gram" :id="'endbutt' + row_calc.shift" type="text" style="width: 50px;">
+											<input class="spk-scrap-endbutt-gram" :id="'endbutt' + row_calc.shift" type="text" style="width: 50px;" onkeydown="window.INPUT.numberingKeyDown(event, this)">
 											<input :id="'shift' + row_calc.shift" type="hidden" v-model="row_calc.shift" style="width: 50px;">
 										</td>
 										<td v-if="changeDate != ''">
-											<input class="spk-scrap-endbutt-gram" :id="'gram' + row_calc.shift" type="text" style="width: 50px;">
+											<input class="spk-scrap-endbutt-gram" :id="'gram' + row_calc.shift" type="text" style="width: 50px;" onkeydown="window.INPUT.numberingKeyDown(event, this)">
 										</td>
 										<td v-if="changeDate != ''">
 											<select class="spk-scrap-endbutt-gram" :id="'op1' + row_calc.shift">

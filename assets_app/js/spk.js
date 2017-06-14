@@ -466,6 +466,50 @@ window.SPK = (function() {
 				type: status,
 				showConfirmButton: false
 			});
+		},
+
+		// handle remove header
+		handleRemoveHeader: function() {
+			var parentThis = this;
+			var btnRemove = $('.spk-remove');
+
+			// ketika click button
+			btnRemove.click(function() {
+
+				var id = $(this).attr('id');
+
+				// alert
+				swal({  
+					title: "Apa Anda Yakin?",
+					text: "Anda Akan Menghapus ini!",   
+					type: "warning",   
+					showCancelButton: true,   
+					confirmButtonColor: "#DD6B55",   
+					confirmButtonText: "Ya, Hapus!",   
+					closeOnConfirm: false 
+				}, function(){   
+
+					// jika yakin menghapus maka menjalankan ajax request hapus data
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/spk/delete_header',
+						type: 'post',
+						dataType: 'json',
+						data: {
+							id: id
+						},
+						success: function(response) {
+							// menampilkan alert
+							parentThis.showNotification(response.message, response.status);
+
+							setTimeout(function() {
+								window.location.reload();
+							}, 2500);
+
+							// row removed
+						}
+					})
+				});
+			});
 		}
 	}
 })(jQuery);

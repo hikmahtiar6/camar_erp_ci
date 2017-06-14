@@ -63,9 +63,9 @@
 			                			<a class="btn btn-info waves-effect btn-xs" href="{{ site_url('admin/spk/cache_detail/' ~ header_row.header_id ~ '/' ~ date_to_time(dtstart) ~ '/' ~ date_to_time(dtfinish) ~ '/' ~ shift) }}" title="Lihat Detail" data-toggle="tooltip">
 			                				<i class="material-icons">visibility</i>
 			                			</a>
-			                			<a class="btn btn-danger waves-effect btn-xs" id="{{ header_row.header_id }}" href="{{ site_url('admin/spk/delete') }}" title="Hapus" data-toggle="tooltip">
+			                			<button class="btn btn-danger waves-effect btn-xs spk-remove" id="{{ header_row.header_id }}" href="javascript:;" title="Hapus" data-toggle="tooltip" type="button">
 			                				<i class="material-icons">delete</i>
-			                			</a>
+			                			</button>
 			                		</td>
 		                		</tr>
 		                		{% endfor %}
@@ -181,8 +181,10 @@
 	{{ parent() }}
 
 	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
+	<script type="text/javascript" src="{{ base_url('assets_app/js/spk.js') }}"></script>
 	<script type="text/javascript">
 		window.TRANSACTION.handleWeek();
+		window.SPK.handleRemoveHeader();
 		/*
 		window.TRANSACTION.handleModal();
 		window.TRANSACTION.handleDelete();
