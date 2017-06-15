@@ -15,6 +15,10 @@
 				<td rowspan="2" style="vertical-align: middle;"><b>Keterangan</b></td>
 				<td colspan="3"><b>Hasil Press</b></td>
 				<td colspan="2"><b>Akumulasi</b></td>
+				<td class="bold" rowspan="2" style="vertical-align: middle;">
+					Berat Aktual <br> 
+					(rata2 kg/m)
+				</td>
 				<td rowspan="2" style="vertical-align: middle;"><b>OK/NG</b></td>
 				<td rowspan="2" style="vertical-align: middle;"><b>Problem</b></td>
 				<td rowspan="2" style="vertical-align: middle;"><b>Koreksi</b></td>
@@ -33,6 +37,7 @@
 			<tr>
 				<td>{{ tgl_pembelian[row.DiesId] }}</td>
 				<td>Pembelian</td>
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -113,6 +118,7 @@
 							{% endfor %}
 						{% endif %}
 					</td>
+					<td></td>
 					<td></td>
 					<td>{{ row.Problem }}</td>
 					<td>{{ row.Koreksi }}</td>
