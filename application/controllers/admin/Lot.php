@@ -500,7 +500,7 @@ class Lot extends CI_Controller {
 				$response[] = array(
 					'lotHasilId'   => $row->SpkLotHasilId,
 					'rak'          => $row->Rak,
-					'jmlRak'       => $row->JumlahBtgRak,
+					'jmlRak'       => to_decimal($row->JumlahBtgRak),
 				);
 			}
 			

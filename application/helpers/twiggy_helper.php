@@ -400,13 +400,13 @@ function trims($str)
 	return trim($str);
 }
 
-function get_hasil_prod_btg($mesin_id = '', $section_id = '', $shift = '', $tgl = '')
+function get_hasil_prod_btg($mesin_id = '', $section_id = '', $shift = '', $tgl = '', $master_detail_id = '')
 {
 	error_reporting(0);
 	$ci =& get_instance();
 	$ci->load->model('master/lot_model');
 
-	return $ci->lot_model->get_hasil_prod_btg($mesin_id, $section_id, $shift, $tgl);
+	return $ci->lot_model->get_hasil_prod_btg($mesin_id, $section_id, $shift, $tgl, $master_detail_id);
 }
 
 function get_berat_hasil($master_detail_id, $machine_id, $section_id)

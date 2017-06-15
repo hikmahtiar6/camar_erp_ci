@@ -486,7 +486,7 @@ class Lot_model extends CI_Model {
 	/**
 	 * Get Hasil Prod (btg)
 	 */
-	public function get_hasil_prod_btg($mesin_id = '', $section_id = '', $shift = '', $tgl = '')
+	public function get_hasil_prod_btg($mesin_id = '', $section_id = '', $shift = '', $tgl = '', $master_detail_id = '')
 	{
 		$sql = $this->db;
 
@@ -514,6 +514,16 @@ class Lot_model extends CI_Model {
 		if($tgl != '')
 		{
 			$sql->where('b.tanggal', date('Y-m-d', strtotime($tgl)));
+		}
+
+		if($shift != '')
+		{
+			$sql->where('s.ShiftNo', $shift);
+		}
+
+		if($master_detail_id != '')
+		{
+			$sql->where('b.master_detail_id', $master_detail_id);
 		}
 
 		$get = $sql->get();
