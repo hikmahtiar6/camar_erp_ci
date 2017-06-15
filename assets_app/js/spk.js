@@ -503,7 +503,7 @@ window.SPK = (function() {
 
 							setTimeout(function() {
 								window.location.reload();
-							}, 2500);
+							}, 2100);
 
 							// row removed
 						}

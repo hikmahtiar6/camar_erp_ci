@@ -175,7 +175,7 @@ window.PR = (function($) {
 						}
 					});
 
-					$(tableEl).dataTable();
+					//$(tableEl).dataTable();
 
 
 				}
