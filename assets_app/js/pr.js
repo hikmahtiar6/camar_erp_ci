@@ -109,6 +109,8 @@ window.PR = (function($) {
 
 		handleTable: function() {
 
+			var parentThis = this;
+
 			var dataPr = [];
 			var headerEl = $('.header-data');
 			var postingEl = $('.posting-pr');
@@ -138,18 +140,35 @@ window.PR = (function($) {
 						},
 						methods: {
 							removePr: function(row) {
-								$.ajax({
-									url: window.APP.siteUrl + 'admin/pr/delete_detail',
-									type: 'post',
-									data: {
-										'id': this.prData[row].prId
-									},
-									dataType: 'json',
-									success: function(response) {
-										$.notify(response.message, response.status);
-									}
+
+								var __this = this;
+
+								// alert
+								swal({  
+									title: "Apa Anda Yakin?",
+									text: "Anda Akan Menghapus ini!",   
+									type: "warning",   
+									showCancelButton: true,   
+									confirmButtonColor: "#DD6B55",   
+									confirmButtonText: "Ya, Hapus!",   
+									closeOnConfirm: false 
+								}, function(){   
+
+									// jika yakin menghapus maka menjalankan ajax request hapus data
+									$.ajax({
+										url: window.APP.siteUrl + 'admin/pr/delete_detail',
+										type: 'post',
+										data: {
+											'id': __this.prData[row].prId
+										},
+										dataType: 'json',
+										success: function(response) {
+											parentThis.showNotification(response.message, response.status);
+
+										}
+									});
+									__this.prData.splice(row, 1);
 								});
-								this.prData.splice(row, 1);
 							},
 							showModalEdit: function(row) {
 								$('.result-edit-pr').load(window.APP.siteUrl + 'admin/pr/edit_detail/' + this.prData[row].prId, function() {
@@ -231,6 +250,18 @@ window.PR = (function($) {
 					});
 				}
 			});
-		}
+		},
+
+		// menampilkan notifikasi/alert dengan plugin sweetalert
+		showNotification: function(message, status) {
+			// menampilkan sweet alert
+			swal({
+				title: message,
+				text: "",
+				timer: 1000,
+				type: status,
+				showConfirmButton: false
+			});
+		},
 	}
 })(jQuery);

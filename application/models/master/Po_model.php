@@ -6,6 +6,8 @@ class Po_model extends CI_Model {
 	const PO_HEADER = 'DiePurchaseOrderHeader';
 	const PO_DETAIL = 'DiePurchaseOrderDetail';
 	const PR_HEADER = 'DiePurchaseRequestHeader';	
+	const PR_DETAIL = 'DiePurchaseRequestDetail';
+	const SECTIONS  = 'Inventory.Sections';	
 
 	/**
 	 * get last data by month year
@@ -64,6 +66,33 @@ class Po_model extends CI_Model {
 		return $get;
 	}
 
+	/**
+	 * Get data detail advance
+	 */
+	public function get_detail_advance($id = '', $po_no = '', $pr_detail_id = '')
+	{
+		$sql = $this->db;
+
+		$sql->select('pod.*, sec.SectionDescription');
+		$sql->from(static::PO_DETAIL.' pod');
+		$sql->join(static::SECTIONS.' sec', 'pod.SectionId = sec.SectionId', 'inner');
+
+		if($id != '') 
+		{
+			$sql->where('pod.PurchaseOrderDetailId', $id);
+		}
+
+		if($po_no != '')
+		{
+			$sql->where('pod.PurchaseOrderNo', $po_no);
+		}
+
+		$sql->order_by('DiesSeqNo');
+
+		$get = $sql->get();
+		return $get;
+	}
+
 	public function save_header($data)
 	{
 		return $this->db->insert(static::PO_HEADER, $data);
@@ -79,6 +108,15 @@ class Po_model extends CI_Model {
 	{
 		$this->db->where('PurchaseOrderHeaderId', $id);
 		return $this->db->delete(static::PO_HEADER);
+	}
+
+	/**
+	 * Delete data detail po
+	 */
+	public function delete_detail($id)
+	{
+		$this->db->where('PurchaseOrderDetailId', $id);
+		return $this->db->delete(static::PO_DETAIL);
 	}
 
 	public function get_data_detail($id = '', $po_no = '', $dies_id = '')

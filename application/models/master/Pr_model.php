@@ -1,6 +1,7 @@
 <?php
 class Pr_model extends CI_Model {
 	
+	const PO_HEADER = 'DiePurchaseOrderHeader';
 	const PR_HEADER = 'DiePurchaseRequestHeader';
 	const R_HEADER = 'Purchasing.DieReceivingHeader';
 	const PR_DETAIL = 'DiePurchaseRequestDetail';
@@ -26,12 +27,44 @@ class Pr_model extends CI_Model {
 		$sql->from(static::PR_HEADER. ' ph');
 		$sql->join(static::VENDOR .' v', 'ph.VendorId = v.BusinessPartnerId', 'left');
 
-		if($po != '')
-		{
-			$sql->where('ph.IsUsed IS NULL');
-		}
-
 		$sql->order_by('ph.PurchaseRequestNo', 'asc');
+
+		$get = $sql->get();
+		return $get;
+	}
+
+	/**
+	 * Get data header for PO
+	 */
+	public function get_header_for_po()
+	{
+		$sql = $this->db;
+
+		$sql->select('prh.*, poh.PurchaseOrderHeaderId');
+		$sql->from(static::PR_HEADER. ' prh');
+		$sql->join(static::PO_HEADER. ' poh', 'prh.PurchaseRequestNo = poh.PurchaseRequestNo', 'left');
+		$sql->where('prh.PostedDate IS NOT NULL');
+		$sql->where('poh.PurchaseOrderHeaderId IS NULL');
+
+		$sql->order_by('prh.PurchaseRequestNo', 'asc');
+
+		$get = $sql->get();
+		return $get->result();
+	}
+
+	/**
+	 * Get data header for PO
+	 */
+	public function get_header_by_po($po_no)
+	{
+		$sql = $this->db;
+
+		$sql->select('prh.*, poh.PurchaseOrderHeaderId');
+		$sql->from(static::PR_HEADER. ' prh');
+		$sql->join(static::PO_HEADER. ' poh', 'prh.PurchaseRequestNo = poh.PurchaseRequestNo', 'left');
+		$sql->where('poh.PurchaseOrderNo', $po_no);
+
+		$sql->order_by('prh.PurchaseRequestNo', 'asc');
 
 		$get = $sql->get();
 		return $get;

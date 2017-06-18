@@ -1,134 +1,206 @@
 window.PO = (function($) {
     return {
     	init: function() {
-
     		var _this = this;
 
+    		_this.handleVue();
     		_this.handleSelectPR();
-    		_this.handleForm();
+    	},
+
+    	handleVue: function() {
+
+    		var parentThis = this;
+
+			var elPO = '#card-po';
+
+    		var vueTable = new Vue({
+				el: elPO,
+				delimiters: ['<%', '%>'],
+				data: {
+					poData: [],
+					submitted: false
+				},
+				methods: {
+					getData: function() {
+
+						var __this = this;
+						var po_number = $('.document_no').val();
+
+						// mengambil data dengan ajax
+						$.ajax({
+							url      : window.APP.siteUrl + 'admin/po/get_data',
+							type     : 'POST',
+							dataType : 'json',
+							data     : {
+								po_no: po_number
+							},
+							success  : function(response) {
+
+								// set data utk vue ketika request data dari server berhasil
+								__this.$set(__this, 'poData', response);
+								//__this.setDatatable();
+							}
+						});
+					},
+
+					handleForm: function() {
+						var __this = this;
+
+						var formEl = $('.form-po');
+
+			    		formEl.ajaxForm({
+			    			dataType: 'json',
+			    			success: function(response) {
+
+								var dataPR = [];
+
+			    				if(response.id != 'new') {
+									$('.po-id').val(response.id);
+								}
+
+			    				var headerVal = $('.pr-id').val();
+			    				var poNo = $('.document_no').val();
+
+			    				$.ajax({
+									url      : window.APP.siteUrl + 'admin/po/get_detail_po_from_pr/',
+									type     : 'POST',
+									dataType : 'json',
+									data     : {
+										purchase_request_no: headerVal,
+										purchase_order_no : poNo 
+									},
+									success  : function(response) {
+										__this.getData();
+									}
+								});
+								
+
+			    			}
+			    		});
+					},
+					
+					removePo: function(row) {
+
+						var __this = this;
+
+						// alert konfirmasi
+						swal({   
+							title: "Apa Anda Yakin?",
+							text: "Anda Akan Menghapus ini!",   
+							type: "warning",   
+							showCancelButton: true,   
+							confirmButtonColor: "#DD6B55",   
+							confirmButtonText: "Ya, Hapus!",   
+							closeOnConfirm: false 
+						}, function(){
+
+							$.ajax({
+								url: window.APP.siteUrl + 'admin/po/delete_detail',
+								type: 'post',
+								data: {
+									'id': __this.poData[row].pod_id
+								},
+								dataType: 'json',
+								success: function(response) {
+									parentThis.showNotification(response.message, response.status);
+									__this.poData.splice(row, 1);
+								}
+							});
+
+
+							
+						});
+
+						
+					},
+
+					savePrice: function(row) {
+						var __this = this;
+
+						var typingTimer;
+						var doneTypingInterval = 1000;
+
+						clearTimeout(typingTimer);
+					    if (__this.poData[row].price_idr != "") {
+					        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+					    }
+
+					    function doneTyping() {
+							$.ajax({
+								url: window.APP.siteUrl + 'admin/po/save_price',
+								type: 'post',
+								data: {
+									dies_id : __this.poData[row].dies_po_id,
+									price_idr : __this.poData[row].price_idr,
+									price_chn : __this.poData[row].price_chn,
+								},
+								success: function(response) {
+
+								}
+							});
+					    }
+
+					}
+				},
+				mounted: function() {
+					var __this = this;
+
+					__this.getData();
+					__this.handleForm();
+				}
+			});
+
     	},
 
     	handleSelectPR: function() {
     		var prEl = $('.pr-id');
+    		
     		var poId = $('.po-id').val();
 
     		if(poId != 'new') {
+	    		// request PR No
+	    		$.ajax({
+	    			url      : window.APP.siteUrl + 'admin/po/get_pr_no',
+	    			type     : 'post',
+	    			data     : {
+	    				po_no: poId
+	    			},
+	    			dataType : 'json',
+	    			success  : function(response) {
+				    	var output = "";
+
+				    	for(var i = 0; i < response['data'].length; i++) {
+				    		var selected = '';
+				    		var defaultValue = response['used'];
+
+				    		if( defaultValue.indexOf(response['data'][i].value) > -1) {
+								// check koma
+				        		if(defaultValue.indexOf(',') > -1) {
+									selected = 'selected="selected"';
+				        		} else {
+					        		if(defaultValue ==  response['data'][i].value) {
+										selected = 'selected="selected"';
+					        		}
+				        		}
+							} else {
+								selected = '';
+							}
+
+				        	output += '<option value="' + response['data'][i].value + '" '+selected+'>' + response['data'][i].text + '</option>';
+				    	}
+					    
+					    $(prEl).html(output);
 
 
-    		var url = window.APP.siteUrl + 'admin/po/get_header_pr_by_po_id/' + poId;
+	    			}
+	    		});
 
-			$.getJSON(url  , function(data) {
 
-			    var output = "";
-			    var defaultValue = "";
-
-			    $.each(data, function(key, val) {
-			    	//if( defaultValue.indexOf(val.value) > -1) {
-						selected = 'selected="selected"';
-					/*} else {
-						selected = '';
-					}*/
-			        output += '<option value="' + val.value + '" '+selected+'>' + val.text + '</option>';
-			    });
-			    $(prEl).html(output);
-
-			    //$(el).multipleSelect();
-
-			});
-
-    		}
-		    $(prEl).select2({
+			}
+    		$(prEl).select2({
 		        width: "100%",
 			});
 
-
-    	},
-
-    	handleForm: function() {
-
-    		var formEl = $('.form-po');
-
-    		formEl.ajaxForm({
-    			dataType: 'json',
-    			beforeSend: function() {
-    				$("#result").slideUp(500);
-    			},
-    			success: function(response) {
-
-					var dataPR = [];
-					var tableEl = '.po-table';
-
-    				if(response.id != 'new') {
-						$('.po-id').val(response.id);
-					}
-    				$("#result").slideDown(500);
-
-    				var headerVal = $('.pr-id').val();
-    				var poNo = $('.document_no').val();
-
-    				$.ajax({
-						url      : window.APP.siteUrl + 'admin/po/get_detail_po_from_pr/',
-						type     : 'POST',
-						dataType : 'json',
-						data     : {
-							purchase_request_no: headerVal,
-							purchase_order_no : poNo 
-						},
-						success  : function(response) {
-							dataPR = response;
-
-							var vueTable = new Vue({
-								el: tableEl,
-								delimiters: ['<%', '%>'],
-								data: {
-									prData: dataPR,
-									submitted: false
-								},
-								methods: {
-									removePr: function(row) {
-										$.ajax({
-											url: window.APP.siteUrl + 'admin/po/delete_detail',
-											type: 'post',
-											data: {
-												'id': this.prData[row].prId
-											},
-											dataType: 'json',
-											success: function(response) {
-												$.notify(response.message, response.status);
-											}
-										});
-										this.prData.splice(row, 1);
-									},
-									showModalEdit: function(row) {
-										$('.result-edit-pr').load(window.APP.siteUrl + 'admin/pr/edit_detail/' + this.prData[row].prId, function() {
-											$('.form-edit-pr').ajaxForm({
-												dataType: 'json',
-												beforeSend: function() {
-													APP.loader().show();
-												},
-												success: function(response) {
-													APP.loader().hide();
-
-													$.notify(response.message, response.status);
-
-													if(response.status == 'success') {
-														setTimeout(function() {
-															window.location = window.APP.siteUrl + 'admin/pr/edit/'+response.id
-														}, 1000);
-													}
-												}
-											});
-										});
-									}
-								}
-							});
-
-						}
-					});
-					
-
-    			}
-    		});
     	},
 
     	handleDeleteHeader: function() {
@@ -153,6 +225,18 @@ window.PO = (function($) {
 					});
 				}
 			});
-		}
+		},
+
+		// menampilkan notifikasi/alert dengan plugin sweetalert
+		showNotification: function(message, status) {
+			// menampilkan sweet alert
+			swal({
+				title: message,
+				text: "",
+				timer: 2000,
+				type: status,
+				showConfirmButton: false
+			});
+		},
     }
 })(jQuery);

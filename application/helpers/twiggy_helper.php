@@ -800,4 +800,12 @@ function get_last_dies_pr($year, $seqno)
 
 	return $new_year.$seq;
 }
+
+/**
+ * Replaced Text
+ */
+function replaced_text($subject = '', $search = '/', $replace = 'cmr')
+{
+	return str_replace($search, $replace, $subject);
+}
 ?>

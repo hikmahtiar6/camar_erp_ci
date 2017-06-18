@@ -42,8 +42,8 @@
 							{% for key, row_header in data_headers %}
 								<tr>
 									<td align="right">{{ key + 1 }}</td>
-									<td>
-										<a href="{{ site_url('admin/po/edit/' ~ row_header.PurchaseOrderHeaderId) }}">
+									<td class="td-group">
+										<a href="{{ site_url('admin/po/edit/' ~ replaced_text(row_header.PurchaseOrderNo)) }}">
 											{{ row_header.PurchaseOrderNo }}
 										</a>
 									</td>
@@ -62,9 +62,9 @@
 											</span>
 										{% endif %}
 									</td>
-									<td align="center">
+									<td class="td-group2" align="center">
 										{% if same(row_header.PostedDate, '') %}
-											<span class="btn btn-xs btn-danger delete-header-po" data-id="{{ row_header.PurchaseOrderHeaderId }}">
+											<span class="btn btn-xs btn-danger delete-header-po" data-id="{{ replaced_text(row_header.PurchaseOrderNo) }}">
 												<i class="material-icons">delete</i>
 											</span>
 										{% else %}
@@ -119,6 +119,7 @@
 				 span       = 1;
 			  }
 			});
+
 		});
 
 	</script>

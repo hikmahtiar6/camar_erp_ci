@@ -253,7 +253,8 @@ $config['twiggy']['register_functions'] = array
 	'get_isian_data_lot',
 	'get_data_history_card_by_dies_id',
 	'get_last_dies_pr',
-	'get_machine_in_spk_detail'
+	'get_machine_in_spk_detail',
+	'replaced_text'
 );
 
 
