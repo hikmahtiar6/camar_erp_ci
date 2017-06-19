@@ -39,14 +39,15 @@ class Transaction extends CI_Controller
 	 */
 	public function create($search = '')
 	{
-		$shift_data = $this->shift_model->get_data();
+		// data
+		$shift_data = $this->shift_model->get_data_type();
 		$machine_data = $this->master_model->get_data_machine();
-		$this->twiggy->set('machine_data', $machine_data);
-		$this->twiggy->set('shift_data', $shift_data);
 
 		$week = date('W') - 5;
 		$week_next = $week + 10;
 
+		$this->twiggy->set('machine_data', $machine_data);
+		$this->twiggy->set('shift_data', $shift_data);
 		$this->twiggy->set('week', $week);
 		$this->twiggy->set('week_next', $week_next);
 

@@ -46,6 +46,22 @@
 				                    </div>
 				                </div>
 
+				                <label for="email_address">Jenis Shift</label>
+				                <div class="form-group">
+				                    <div class="form-line">
+				                    	
+					                    <select class="form-control" name="tipe" required="required">
+					                        <option value="">-- Silahkan Pilih --</option>
+					                        {% if shift_data %}
+						                        {% for shift_row in shift_data %}
+						                        <option value="{{ shift_row.ShiftTypeId }}">{{ shift_row.ShiftTypeName }}</option>
+						                        {% endfor %}
+					                        {% endif %}
+
+					                    </select>
+				                    </div>
+				                </div>
+
 				                <label for="email_address">Week</label>
 				                <div class="form-group">
 				                    <div class="form-line">
