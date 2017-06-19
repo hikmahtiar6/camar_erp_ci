@@ -35,6 +35,22 @@ class Lot_model extends CI_Model {
 		return $get->result();
 	}
 
+	/**
+	 * Get data header lot
+	 */
+	public function get_data_header()
+	{
+		$sql = $this->db;
+
+		$sql->select('*');
+		$sql->from(static::TABLE_HEAD_LOT);
+
+		$sql->order_by('header_lot_id', 'asc');
+
+		$get = $sql->get();
+		return $get->result();
+	}
+
 	public function get_data_by($array)
 	{
 		$sql = $this->db;

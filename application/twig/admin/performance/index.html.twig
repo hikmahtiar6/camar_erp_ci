@@ -1,0 +1,98 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content_title %}
+{% endblock %}
+
+{% block content %}
+		
+	<div class="row clearfix">
+	    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	        <div class="card" style="width: 40%; margin: 0px auto;">
+	            <div class="header">
+	                <h2>
+	                    Laporan Performance
+	                </h2>
+	                <ul class="header-dropdown m-r--5">
+	                    
+	                </ul>
+	            </div>
+	            <div class="body">
+	                <div class="row clearfix">
+	                    
+	                    <div class="col-md-12">
+
+	                    	<form method="post" action="{{ site_url('admin/report/performance/search') }}" target="_blank">
+
+		                    	<div class="form-group">
+
+		                    		<label>Minggu Ke</label>
+		                    		<select class="form-control week-options" required="required">
+		                    			<option value="">-- Silahkan Pilih --</option>
+
+
+
+					                        {% if week_in_year('true', 'yes') %}
+
+					                        	{% for key, week_row in week_in_year('true', 'yes') %}
+
+					                        		{% if week_row['no'] <= week_next and week_row['no'] >= week  %}
+						                        		<option value="{{ week_row['date_start'] ~ '-' ~ week_row['date_finish'] }}"
+						                        		{% if same(get_week(), week_row['no']) %}
+						                        			selected="selected" 
+						                        		{% endif %}
+						                        		>
+						                        			{{ week_row['no'] ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
+						                        		</option>
+					                        		{% endif %}
+					                        	{% endfor %}
+
+					                        {% endif %}
+		                    		</select>
+				                   	<input class="week-number form-control" type="hidden" name="week">
+
+		                    	</div>
+
+		                    	<div class="form-group">
+
+		                    		<label>Mesin</label>
+		                    		<select class="form-control" name="mesin" required="required">
+					                        <option value="">-- Silahkan Pilih --</option>
+					                        {% if machine_data %}
+
+					                        	{% for machine_row in machine_data %}
+
+					                        		<option value="{{ machine_row.MachineId }}" {% if same(get_header.machine_id, machine_row.MachineId) %} selected="selected" {% endif %}>
+					                        			{{ machine_row.MachineId }}
+					                        		</option>
+					                        	{% endfor %}
+
+					                        {% endif %}
+					                    </select>
+				                   	<input class="week-number form-control" type="hidden" name="week">
+
+		                    	</div>
+
+		                    	<div class="form-group">
+		                    		<button class="btn btn-primary waves-effect">Submit</button>
+		                    	</div>
+
+	                    	</form>
+
+	                    </div>
+
+
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{ base_url('assets_app/js/transaction.js') }}"></script>
+	<script type="text/javascript">
+		window.TRANSACTION.handleWeek();
+	</script>
+{% endblock %}

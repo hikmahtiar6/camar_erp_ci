@@ -15,6 +15,7 @@ class Report extends CI_Controller
 		$this->auth->_is_authentication();
 
 		// load model section
+		$this->load->model('master_model');
 		$this->load->model('section_model');
 		$this->load->model('master/machine_model');
 		$this->load->model('master_model');
@@ -206,6 +207,34 @@ class Report extends CI_Controller
 		
 		$this->twiggy->set('shift2', $shift);
 		$this->twiggy->template('admin/report/lot/layar')->display();
+	}
+
+	/**
+	 * Report Performance per week
+	 */
+	public function performance($search = '')
+	{
+
+		if($search == '')
+		{
+			$week = date('W') - 5;
+			$week_next = $week + 10;
+			$machine_data = $this->master_model->get_data_machine();
+
+			$this->twiggy->set('machine_data', $machine_data);
+			$this->twiggy->set('week', $week);
+			$this->twiggy->set('week_next', $week_next);
+			$this->twiggy->display('admin/performance/index');
+		}
+		else
+		{
+			$week_search = $this->input->post('week');
+			$mesin = $this->input->post('mesin');
+
+			$this->twiggy->set('week_search', $week_search);
+			$this->twiggy->set('mesin', $mesin);
+			$this->twiggy->display('admin/report/performance/layar');
+		}
 	}
 }
 ?>

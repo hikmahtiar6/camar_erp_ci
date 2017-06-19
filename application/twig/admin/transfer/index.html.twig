@@ -24,8 +24,13 @@
 	                    	<div class="form-group">
 
 	                    		<label>Lot Tiket</label>
-	                    		<select class="form-control">
-	                    			<option>Test</option>
+	                    		<select class="form-control" required="">
+	                    			<option value=""> - Pilih -</option>
+	                    			{% if lot_data %}
+		                    			{% for lot_row in lot_data %}
+		                    				<option value="{{ lot_row.header_lot_id }}"> Lot Tiket {{ lot_row.header_lot_id }}</option>
+		                    			{% endfor %}
+	                    			{% endif %}
 	                    		</select>
 
 	                    	</div>

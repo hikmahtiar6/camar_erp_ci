@@ -11,6 +11,9 @@ class Transfer extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
+		// load model
+		$this->load->model('master/lot_model');
 	}
 
 	/**
@@ -20,7 +23,12 @@ class Transfer extends CI_Controller {
 	 */
 	public function index()
 	{
+		$lot_data = $this->lot_model->get_data_header();
+
+
 		// load view with Twig
+		$this->twiggy->set('lot_data', $lot_data);
 		$this->twiggy->display('admin/transfer/index');
+		dump($lot_data);
 	}
 }

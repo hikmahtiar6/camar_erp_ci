@@ -918,7 +918,7 @@ window.TRANSACTION = (function($) {
 
 			var selectedText = $('.week-options option:selected').text();
 			var splt2 = selectedText.split('-');
-			weekNumberEl.val(splt2[0]);
+			weekNumberEl.val(splt2[0].trim());
 
 
 			weekEl.change(function() {
