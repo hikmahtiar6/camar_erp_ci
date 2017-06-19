@@ -5,6 +5,7 @@
 class Finishing_model extends CI_Model {
 
 	const TABLE = 'Finishing';
+	const TABLE2 = 'Inventory.MasterFinishing';
 
 	public function __construct()
 	{
@@ -16,7 +17,7 @@ class Finishing_model extends CI_Model {
 		$sql = $this->db;
 
 		$sql->select('*');
-		$sql->from(static::TABLE);
+		$sql->from(static::TABLE2);
 
 		$get = $sql->get();
 		return $get->result();

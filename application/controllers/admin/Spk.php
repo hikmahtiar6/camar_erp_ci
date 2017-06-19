@@ -116,7 +116,7 @@ class Spk extends CI_Controller
 					'machine_id'        => $row->machine_id_header,
 					'len'				=> to_decimal($len),
 					'len_id'			=> $row->len,
-					'finishing'         => $row->finishing_name,
+					'finishing'         => $row->FinishingId,
 					'dies'              => $this->convert_dice($row->index_dice),
 					'target_prod'       => $target_prod,
 					'ppic'              => $ppic,

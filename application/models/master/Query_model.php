@@ -115,7 +115,7 @@ class Query_model extends CI_Model
 				
 			FROM dbo.SpkDetail d
 			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
-			LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+			LEFT JOIN Inventory.MasterFinishing f ON d.finishing=f.FinishingId
 			LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
 			INNER JOIN Factory.Shifts sh ON d.shift = sh.ShiftRefId
 			LEFT JOIN 
@@ -133,7 +133,7 @@ class Query_model extends CI_Model
 			SELECT d.*,
 				sh.ShiftNo,
 				h.machine_id as machine_id2,
-				f.finishing_name,
+				f.FinishingId,
 				s.SectionDescription,
 				g.ThicknessStandard,
 				g.ThicknessLowerLimit,
@@ -154,7 +154,7 @@ class Query_model extends CI_Model
 				
 			FROM dbo.SpkDetail d
 			INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
-			LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+			LEFT JOIN Inventory.MasterFinishing f ON d.finishing=f.FinishingId
 			LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
 			INNER JOIN Factory.Shifts sh ON d.shift = sh.ShiftRefId
 			LEFT JOIN 
@@ -195,7 +195,7 @@ class Query_model extends CI_Model
 		$sql = "
 		SELECT d.*,
 			h.machine_id as machine_id2,
-			f.finishing_name,
+			f.FinishingId,
 			s.SectionDescription,
 			hl.pot_end_butt,
 			lent.Length
@@ -203,7 +203,7 @@ class Query_model extends CI_Model
 		FROM dbo.SpkDetail d
 		INNER JOIN dbo.SpkHeader h ON h.header_id=d.header_id
 		INNER JOIN Inventory.MasterDimensionLength lent ON d.len = lent.LengthId
-		LEFT JOIN dbo.Finishing f ON d.finishing=f.finishing_id
+		LEFT JOIN Inventory.MasterFinishing f ON d.finishing=f.FinishingId
 		LEFT JOIN Inventory.Sections s ON d.section_id=s.SectionId
 		INNER JOIN Factory.Shifts sh ON d.shift = sh.ShiftRefId
 		LEFT JOIN dbo.SpkHeaderLot hl ON d.master_detail_id = hl.master_detail_id ";

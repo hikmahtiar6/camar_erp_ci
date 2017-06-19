@@ -10,12 +10,12 @@ class Section_model extends CI_Model {
 	const TABLE_LEN = 'Inventory.MasterDimensionLength';
 	const TABLE_SHIFT = 'Factory.Shifts';
 	const TABLE_DIMENSION = 'Inventory.SectionsDimension';
-	const TABLE_FINISHING = 'Finishing';
+	const TABLE_FINISHING = 'Inventory.MasterFinishing';
 	const TABLE_NEWMASTER = 'NewMaster';
 	const TABLE_HEAD = 'SpkHeader';
 	const TABLE_LOT = 'SpkHeaderLot';
 	const TABLE_DIE_TYPE = 'Inventory.MasterDieTypes';
-	const EXTRUSION = 'Extrusion.ExtrusionGuideFinal2()';
+	const EXTRUSION = 'Extrusion.ExtrusionGuideFinal2WithFin()';
 	const RECEIVING = 'Purchasing.DieReceivingDetail';
 
 	public function __construct()
@@ -142,7 +142,8 @@ class Section_model extends CI_Model {
 				e.ShiftRefId, 
 				e.ShiftStart, 
 				e.ShiftNo, 
-				g.finishing_name, 
+				g.FinishingId, 
+				g.Description, 
 				i.*,
 				lot.is_posted,
 				lot.time_finish,
@@ -159,6 +160,16 @@ class Section_model extends CI_Model {
 			LEFT JOIN ".static::RECEIVING." receiv 
 				ON receiv.DiesId = CONVERT(VARCHAR(250),a.index_dice)
 				AND receiv.SectionId = a.section_id
+			INNER JOIN
+				".static::TABLE_BARANG." c ON a.section_id = c.SectionId
+			INNER JOIN
+				".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
+			LEFT JOIN
+				".static::TABLE_DIE_TYPE." mdt ON mdt.DieTypeId=c.DieTypeId
+			INNER JOIN
+				".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
+			LEFT JOIN
+				".static::TABLE_FINISHING." g ON a.finishing = g.FinishingId
 			LEFT JOIN ".static::EXTRUSION." final 
 				ON a.section_id = final.SectionId 
 				AND b.machine_id = final.MachineId 
@@ -169,16 +180,7 @@ class Section_model extends CI_Model {
 				ELSE
 					receiv.HoleCount
 				END AS INT)
-			INNER JOIN
-				".static::TABLE_BARANG." c ON a.section_id = c.SectionId
-			INNER JOIN
-				".static::TABLE_MACHINE." d ON b.machine_id = d.MachineId
-			LEFT JOIN
-				".static::TABLE_DIE_TYPE." mdt ON mdt.DieTypeId=c.DieTypeId
-			INNER JOIN
-				".static::TABLE_SHIFT." e ON a.shift = e.ShiftRefId
-			LEFT JOIN
-				".static::TABLE_FINISHING." g ON a.finishing = g.finishing_id
+				AND final.FinishingType = g.FinishingType
 			inner JOIN
 				".static::TABLE_LEN." i ON a.len = i.LengthId ";
 				
