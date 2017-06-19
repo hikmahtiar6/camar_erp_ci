@@ -7,7 +7,7 @@
 		
 	<div class="row clearfix">
 	    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	        <div class="card">
+	        <div class="card card-transfer">
 	            <div class="header">
 	                <h2>
 	                    Transfer Billet ke Aging Oven
@@ -74,6 +74,8 @@
 
 {% block javascript %}
 	{{ parent() }}
+	<script type="text/javascript" src="{{ base_url('assets_app/js/transfer.js') }}"></script>
 	<script type="text/javascript">
+		window.TRANSFER.init();
 	</script>
 {% endblock %}
