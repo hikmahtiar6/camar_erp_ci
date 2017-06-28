@@ -2,7 +2,8 @@
 /**
  * Class Transfer
  *
- * @author Hikmahtiar <hikmahtiar.cool@gmail.com>
+ * @author Hikmahtiar <hikmahtiar.cool@gmail.com
+ * Camar Software, Juni 2017
  */
 class Transfer extends CI_Controller {
 	/**
@@ -45,8 +46,10 @@ class Transfer extends CI_Controller {
 			foreach ($data as $row) {
 
 				$response[] = array(
-					'jumlah_billet' => $row->JumlahBtgRak,
-					'rak'           => $row->Rak
+					'hasil_id'      => $row->SpkLotHasilId,
+					'jumlah_billet' => to_decimal($row->JumlahBtgRak),
+					'rak'           => $row->Rak,
+					'jumlah_aging'  => $row->JumlahBillet
 				);
 			}
 		}

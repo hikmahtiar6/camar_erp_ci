@@ -24,7 +24,7 @@
 	                    	<div class="form-group">
 
 	                    		<label>Lot Tiket</label>
-	                    		<select class="form-control" required="">
+	                    		<select class="form-control transfer-lot" required="" @change="getDataWithChange">
 	                    			<option value=""> - Pilih -</option>
 	                    			{% if lot_data %}
 		                    			{% for lot_row in lot_data %}
@@ -43,22 +43,33 @@
 
 	                    <div class="col-md-12">
 
-	                    <table class="table table-stripped table-bordered">
+	                    <table class="table table-stripped table-bordered" style="width: 50%">
 	                    	<thead>
 	                    		<tr>
 	                    			<td class="bold">No. </td>
 	                    			<td class="bold">Rak </td>
 	                    			<td class="bold">Quantity Extrusion</td>
 	                    			<td class="bold">Quantity Aging Oven</td>
+									<td class="bold">Tools</td>
 	                    		</tr>
 	                    	</thead>
 	                    	<tbody>
-	                    		<tr>
-	                    			<td></td>
-	                    			<td></td>
-	                    			<td></td>
-	                    			<td></td>
-	                    		</tr>
+								<template v-for="(row, idx) in list" :key="idx">
+									<tr>
+										<td><% idx + 1 %></td>
+										<td><% row.rak %></td>
+										<td><% row.jumlah_billet %></td>
+										<td>
+											<input class="form-control" :id="'transfer-jumlah-aging' + idx" type="text" onkeydown="window.INPUT.numberingKeyDown(event, this)" v-model="row.jumlah_aging" @change="saveAgingLot(idx)">
+										</td>
+										<td>
+											<button class="btn btn-xs bg-purple waves-effect" @click="setPosted(idx)">Posting</button>
+										</td>
+									</tr>
+								</template>
+								<tr class="transfer-no-data not-show">
+									<td colspan="4">Data tidak tersedia.</td>
+								</tr>
 	                    	</tbody>
 	                    </table>
 

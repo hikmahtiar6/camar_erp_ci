@@ -43,7 +43,7 @@ class Lot_model extends CI_Model {
 	{
 		$sql = $this->db;
 
-		$sql->select('hsl.*');
+		$sql->select('hsl.*, aging.JumlahBillet');
 		$sql->from(static::TABLE_HASIL .' hsl');
 		$sql->join(static::TABLE_HEAD_LOT .' lot', 'hsl.MasterDetailId = lot.master_detail_id', 'inner');
 		$sql->join(static::TABLE_AGING_OVEN .' aging', 'aging.SpkLotHasilId = hsl.SpkLotHasilId', 'left');
