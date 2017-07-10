@@ -254,7 +254,8 @@ $config['twiggy']['register_functions'] = array
 	'get_data_history_card_by_dies_id',
 	'get_last_dies_pr',
 	'get_machine_in_spk_detail',
-	'replaced_text'
+	'replaced_text',
+	'directory_image_lot'
 );
 
 

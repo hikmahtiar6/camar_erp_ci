@@ -1354,6 +1354,25 @@ window.LOT = (function($) {
 			});
 		},
 
+		handleModalImage: function() {
+			var el = '.lot-view-image';
+			var elModal = '.lot-modal-image';
+			var elCancel = '.lot-cancel-image';
+
+			$(el).click(function() {
+
+				$(elModal).modal('show');
+
+				$(elCancel).click(function() {
+
+					$(elModal).modal('hide');
+
+				});
+			});
+
+
+		},
+
 		grupRowspan: function(elSpan) {
 			var span = 1;
 			var prevTD = "";

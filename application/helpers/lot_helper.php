@@ -76,4 +76,12 @@ function cek_isian_lot($master_detail_id = '')
 
 	return count($exists);
 }
+
+function directory_image_lot()
+{
+	$ci =& get_instance();
+
+	return $ci->config->item('directory_image_lot');
+}
+
 ?>

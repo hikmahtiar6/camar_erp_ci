@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'form', 'twiggy', 'user', 'date', 'query', 'l
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('twiggy');
+$autoload['config'] = array('twiggy', 'app');
 
 /*
 | -------------------------------------------------------------------

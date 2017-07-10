@@ -39,7 +39,7 @@
 		{% if same(is_posted, '') %}
 
 		<div class="pull-right" style="padding-right: 10px;">
-		    <button class="btn btn-info btn-posting-lot" datasa-toggle="modal" daasta-target=".defaultModal">
+		    <button class="btn btn-info btn-posting-lot" datasa-.toggle="modal" daasta-target=".defaultModal">
 		    	Posting
 		    </button>
 	    </div>
@@ -674,6 +674,26 @@
 	    </div>
 	</div>
 
+	<div class="modal fade lot-modal-image" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" style="width: 100%; margin: 20px auto;">
+	    <div class="modal-content">
+	        <div class="modal-header">
+			    <h4 class="modal-title pull-left" id="defaultModalLabel">
+			    	Gambar Section
+			    </h4>
+
+			    <button class="pull-right btn bg-grey waves-effect lot-cancel-image" type="button" style="margin-left: 10px;">BATAL</button>
+
+			</div>
+			<div class="modal-body">
+				<center>
+					<img src="{{ base_url() ~ directory_image_lot() ~ section_id }}.png">
+				</center>
+			</div>
+	    </div>
+	</div>
+	</div>
+
 
 <script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.caret.min.js') }}"></script>
 <script type="text/javascript" src="{{ base_url('web/vendor/jquery-tag-editor/jquery.tag-editor.min.js') }}"></script>
@@ -691,6 +711,8 @@
 	window.LOT.handleLotBillet('#tbl-lot-billet');
 
 	window.INPUT.numberingOnly('.number-only');
+
+	window.LOT.handleModalImage();
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
 
