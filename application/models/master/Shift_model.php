@@ -38,6 +38,11 @@ class Shift_model extends CI_Model {
 		$sql->join(static::SHIFT_TYPE.' b', 'a.ShiftTypeId = b.ShiftTypeId', 'inner');
 		$sql->where('IsActive', 1);
 
+		if($type_id != '')
+		{
+			$sql->where('a.ShiftTypeId', $type_id);
+		}
+
 		$get = $sql->get();
 		return $get;
 	}

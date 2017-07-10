@@ -47,4 +47,33 @@ function get_effective_item_dimension($section_id, $show = 'WeightUpperLimit')
 
 	return '';
 }
+
+/**
+ * Cek isian lot
+ */
+function cek_isian_lot($master_detail_id = '')
+{
+	$ci =& get_instance();
+	$ci->load->model('master/lot_model');
+
+	$exists = array();
+
+	$cek_billet = $ci->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, 'billet');
+	$cek_berat_aktual = $ci->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, 'berat_aktual');
+	$cek_hasil = $ci->lot_model->get_isian_billet_by_master_detail_id($master_detail_id, 'hasil');
+
+	if(count($cek_billet) > 0) {
+		array_push($exists, 1);
+	}
+
+	if(count($cek_berat_aktual) > 0) {
+		array_push($exists, 1);
+	}
+
+	if(count($cek_hasil) > 0) {
+		array_push($exists, 1);
+	}
+
+	return count($exists);
+}
 ?>

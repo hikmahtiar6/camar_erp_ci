@@ -102,7 +102,18 @@ class Spk extends CI_Controller
 				{
 					$btn_class = "btn-success";
 					$btn_lot = "Lihat Lot";
-				} 
+				}
+
+				$background = '';
+				if($row->time_finish != '')
+				{
+					$background = 'bg-orange';
+
+					if(cek_isian_lot($row->master_detail_id) == 3)
+					{
+						$background = 'bg-green';
+					}
+				}
 
 				$response[] = array(
 					'master_detail_id'  => $row->master_detail_id,
@@ -126,7 +137,7 @@ class Spk extends CI_Controller
 					'die_type'          => $die_type,
 					'header_id'         => $row->header_id,
 					'posted'            => $row->is_posted,
-					'time_finish'       => ($row->time_finish != '') ? 'bg-orange' : ''
+					'background'        => $background 
 				);
 			}
 		}

@@ -213,7 +213,7 @@
 		                	</thead>
 		                	<tbody>
 		                		<template v-for="(spk, index) in list">
-		                			<tr v-bind:class="spk.time_finish + ' font-12'">
+		                			<tr v-bind:class="spk.background + ' font-12'">
 		                				<td align="right"><% index + 1 %>.</td>
 		                				<td>
 		                					<span v-html="spk.button">
@@ -282,7 +282,7 @@
 
 									<div class="form-group">
 										<label>Shift</label>
-										<select class="form-control" name="shift" v-model="shift">
+										<select class="form-control spk-shift" name="shift">
 											{% if shift_data %}
 												{% for shift_row in shift_data %}
 													<option value="{{ shift_row.ShiftRefId }}">{{ shift_row.ShiftDescription }}</option>

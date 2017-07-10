@@ -163,11 +163,11 @@
 							<td>{{ to_decimal(row_data.InitialPullingLength, 2) }}m</td>
 							<td>{{ to_decimal(row_data.BadEndLength, 2) }}m</td>
 							<td>{{ to_decimal(row_data.F2_PullingLength, 1) }}m</td>
-							<td>{{ to_decimal(row_data.WeightUpperLimit, 2) }}m</td>
-							<td>{{ to_decimal(row_data.WeightLowerLimit, 2) }}m</td>
+							<td>{{ to_decimal(row_data.WeightUpperLimit, 3, 'true') }} kg/m</td>
+							<td>{{ to_decimal(row_data.WeightLowerLimit, 3, 'true') }} kg/m</td>
 							<td>{{ row_data.F2_EstFG }} BTG</td>
-							<td>{{ to_decimal(row_data.F2_EstBilletLengthMin, 2) }}cm</td>
-							<td>{{ to_decimal(row_data.F2_EstBilletLengthMax, 2) }}cm</td>
+							<td>{{ to_decimal(row_data.F2_EstBilletLengthMin, 3) }}cm</td>
+							<td>{{ to_decimal(row_data.F2_EstBilletLengthMax, 3) }}cm</td>
 							<td>{{ '' }}</td>
 							<td>{{ row_data.F2_FreqBillet }} Blt</td>
 							<td>{{ row_data.F2_FreqCut }}xPot</td>

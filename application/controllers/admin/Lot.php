@@ -643,7 +643,6 @@ class Lot extends CI_Controller {
 		}
 
 		echo count($exists);
-
 	}
 
 	/**

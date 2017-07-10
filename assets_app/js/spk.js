@@ -240,7 +240,9 @@ window.SPK = (function() {
 						// menampilkan modal
 						$(parentThis.elModal).modal({backdrop: 'static', keyboard: false}, 'show');
 						__this.requestDataLen('0', '035', headerId);
+						__this.requestDataShift(headerId, 'SH-15/10-0001');
 						__this.requestDataDies('0', '035', '');
+
 					},
 
 					// edit data per baris dan kirim data ke modal
@@ -263,6 +265,7 @@ window.SPK = (function() {
 
 						__this.requestDataLen(__this.list[index].master_detail_id, __this.list[index].section_id, headerId);
 						__this.requestDataDies(__this.list[index].master_detail_id, __this.list[index].section_id, __this.list[index].dies);
+						__this.requestDataShift(headerId, __this.list[index].shift_id);
 
 						// cek validasi menggunakan validate.js
 						$(parentThis.elForm).valid();
@@ -373,6 +376,7 @@ window.SPK = (function() {
 
 							__this.requestDataLen(detailIdEl.val(), this.value, headerId);
 							__this.requestDataDies(detailIdEl.val(), this.value, '');
+							__this.requestDataShift(headerId, '');
 							
 						});
 					},
@@ -401,6 +405,32 @@ window.SPK = (function() {
 								}
 
 								lenEl.html(html);
+							}
+						});
+					},
+
+					requestDataShift: function(headerId, shiftId) {
+						var __this = this;
+						var shiftEl = $('.spk-shift');
+
+						// request data len
+						$.ajax({
+							url     : window.APP.siteUrl + 'admin/master/get_data_shift/' + headerId,
+							type    : 'get',
+							dataType: 'json',
+							success : function(response) {
+								var html = '';
+								var selected = '';
+								for (var i = 0; i < response.length ; i++) {
+									if(shiftId == response[i]['value']) {
+										selected = 'selected="selected"';
+									} else {
+										selected = '';
+									}
+									html += '<option value="'+response[i]['value']+'" '+selected+'>'+response[i]['text']+'</option>';
+								}
+
+								shiftEl.html(html);
 							}
 						});
 					},

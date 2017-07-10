@@ -16,12 +16,25 @@ class Master extends CI_Controller {
 		$this->load->model('master/indexdice_model');
 		$this->load->model('master/machine_model');
 		$this->load->model('master/query_model');
+		$this->load->model('master/shift_model');
 	}
 
-	public function get_data_shift()
+	public function get_data_shift($header_id = '')
 	{
 		$row = array();
+		$shift_type = '';
 		$data = $this->master_model->get_data_shift();
+
+		if($header_id != '')
+		{
+			$get_data = $this->header_model->get_data_by_id($header_id);
+			if($get_data)
+			{
+				$shift_type = $get_data->shift_type_id;
+
+				$data = $this->shift_model->get_data_advance('', $shift_type)->result();
+			}
+		}
 
 		if($data)
 		{
@@ -29,7 +42,7 @@ class Master extends CI_Controller {
 			{
 				$row[] = array(
 					'value' => $r->ShiftRefId,
-					'text' => $r->ShiftDescription,
+					'text'  => $r->ShiftDescription,
 				);
 			}
 		}

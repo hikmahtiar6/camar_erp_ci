@@ -377,6 +377,11 @@ window.LOT = (function($) {
 					formHeaderLot.submit();
 				}
 
+				setTimeout(function() {
+					window.location.reload();
+				}, 1000);
+
+
 				/*var grid = $('.list-lot');
 
 				var rowKey = grid.jqGrid('getGridParam',"selrow");

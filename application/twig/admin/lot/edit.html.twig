@@ -30,9 +30,15 @@
 
 		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
 
+		<div class="pull-right" style="padding-right: 40px;">
+		    <button class="btn bg-indigo lot-view-image">
+		    	LIhat Gambar
+		    </button>
+	    </div>
+
 		{% if same(is_posted, '') %}
 
-		<div class="pull-right" style="padding-right: 200px;">
+		<div class="pull-right" style="padding-right: 10px;">
 		    <button class="btn btn-info btn-posting-lot" datasa-toggle="modal" daasta-target=".defaultModal">
 		    	Posting
 		    </button>
@@ -51,10 +57,10 @@
 
 		<table class="tbl-cstm" style="width: 100%;">
 			<tr>
-				<td style="width: 150px;">
+				<td style="width: 200px;">
 					<label>Mesin</label>
 				</td>
-				<td style="width: 250px;">
+				<td style="width: 100px;">
 					{{ machine }}
 				</td>
 				<td>
@@ -251,13 +257,13 @@
 			</tr>
 			<tr>
 				<td>
-					<label>Panjang Billet Max</label>
+					<label>P. Billet Max</label>
 				</td>
 				<td>
 					{{ to_decimal(get_row_master('F2_BilletLengthTotalMax', machine, section_id)) }}
 				</td>
 				<td>
-					<label>Bs. Blkg Actual *</label>
+					<label>Bs. Blkg Act. *</label>
 				</td>
 				<td>
 					<input class="form-control input-lot number-only" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required>
@@ -266,12 +272,12 @@
 					<label>DeadCycle (menit) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot number-only" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% endif %}" required>
+					<input class="form-control input-lot number-only" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% else %}{{ '2' }}{% endif %}" required>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<label>Panjang Billet Actual Terakhir</label>
+					<label>P. Billet Act. Terakhir</label>
 				</td>
 				<td>
 					{{ get_last_billet_actual('', machine, section_id) }}
@@ -307,6 +313,54 @@
 				</td>
 				<td>
 					<textarea class="form-control input-lot save-header-lot" name="keterangan" required>{% if get_detail_header %}{{ get_detail_header.keterangan }}{% endif %}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>P. Tarik (m)</label>
+				</td>
+				<td>
+					<span class="">
+						{{ to_decimal(get_row_master('F2_PullingLength', machine, section_id, len_id), 3) }}
+					</span>
+				</td>
+				<td class="bold">
+					Billet Max (kg/m)
+				</td>
+				<td>
+					{{ to_decimal(get_row_master('F2_EstBilletLengthMax', machine, section_id, len_id), 3) }}
+					
+				</td>
+				<td>
+					<label>Billet Min (kg/m)</label>
+				</td>
+				<td>
+					{{ to_decimal(get_row_master('F2_EstBilletLengthMin', machine, section_id, len_id), 3) }}
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Freq. Billet</label>
+				</td>
+				<td>
+					<span class="">
+						{{ to_decimal(get_row_master('F2_FreqBillet', machine, section_id, len_id), 3) }}
+						
+					</span>
+				</td>
+				<td class="bold">
+					Freq. Potong
+				</td>
+				<td>
+					<span class="">
+						{{ to_decimal(get_row_master('F2_FreqCut', machine, section_id, len_id), 3) }}					
+					</span>
+					
+				</td>
+				<td>
+				</td>
+				<td>
 				</td>
 			</tr>
 		</table>

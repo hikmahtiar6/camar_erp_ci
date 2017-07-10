@@ -274,14 +274,16 @@ class Transaction extends CI_Controller
 		$id = $post['id'];
 		$machine_id  = $post['mesin'];
 		$week  = $post['week'];
+		$tipe = $post['tipe'];
 		$date_start =  str_replace('/', '-', $post['date_start']);
 		$date_finish =  str_replace('/', '-', $post['date_finish']);
 
 		$data_for_insert_header = array(
-			'machine_id'  => $machine_id,
-			'date_start'  => date('Y-m-d', strtotime($date_start)),
-			'date_finish' => date('Y-m-d', strtotime($date_finish)),
-			'week'        => ltrim($week),
+			'machine_id'   => $machine_id,
+			'date_start'   => date('Y-m-d', strtotime($date_start)),
+			'date_finish'  => date('Y-m-d', strtotime($date_finish)),
+			'week'         => ltrim($week),
+			'shift_type_id'=> $tipe
 		);
 
 		$searching = array(
@@ -301,7 +303,7 @@ class Transaction extends CI_Controller
 				'date_finish' => date('Y-m-d', strtotime($date_finish)),
 			);*/
 
-			//$update_header = $this->header_model->update($get_header->header_id, $data_for_update_header);
+			$update_header = $this->header_model->update($get_header->header_id, $data_for_insert_header);
 
 			$url = site_url('admin/transaction/detail/'.$get_header->header_id);
 
