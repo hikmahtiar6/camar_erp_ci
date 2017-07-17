@@ -1227,131 +1227,148 @@ window.LOT = (function($) {
 			var typingTimer;
 			var doneTypingInterval = 1000;
 
-			$.ajax({
-				url: window.APP.siteUrl + 'admin/lot/get_hasil/' + $('.master-detail-id').val(),
-				type: 'get',
-				dataType: 'json',
-				success: function(response) {
+			var hasilTable = new Vue({
+				el: elTable,
+				delimiters: ['<%', '%>'],
+				data: {
+					hasils: hasilData,
+					submitted: false
+				},
+				
+				methods: {
+					addNewRowHasil: function() {
+						this.hasils.push({
+							rak: '',
+							jmlRak: '',
+							none: ''
+						});
+					},
+					saveHasil: function(row) {
 
-					hasilData = response;
+						var _this = this;
 
-					var hasilTable = new Vue({
-						el: elTable,
-						delimiters: ['<%', '%>'],
-						data: {
-							hasils: hasilData,
-							submitted: false
-						},
-						
-						methods: {
-							addNewRowHasil: function() {
-								this.hasils.push({
-									rak: '',
-									jmlRak: '',
-									none: ''
-								});
-							},
-							saveHasil: function(row) {
+						clearTimeout(typingTimer);
+					    if (row.jmlRak != "") {
+					        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+					    }
 
-								var _this = this;
+						function doneTyping () {
 
-								clearTimeout(typingTimer);
-							    if (row.jmlRak != "") {
-							        typingTimer = setTimeout(doneTyping, doneTypingInterval);
-							    }
+							var postData = {
+								lot_hasil_id     : row.lotHasilId,
+								rak              : row.rak,
+								jml_rak          : row.jmlRak,
+								master_detail_id : $('.master-detail-id').val()
+							};
 
-								function doneTyping () {
+							$.ajax({
+								url: window.APP.siteUrl + 'admin/lot/save_hasil',
+								type: 'post',
+								dataType: 'json',
+								data: postData,
+								success: function(response) {
+									_this.$set(row, 'lotHasilId', response.id);
 
-									var postData = {
-										lot_hasil_id     : row.lotHasilId,
-										rak              : row.rak,
-										jml_rak          : row.jmlRak,
-										master_detail_id : $('.master-detail-id').val()
-									};
-
-									$.ajax({
-										url: window.APP.siteUrl + 'admin/lot/save_hasil',
-										type: 'post',
-										dataType: 'json',
-										data: postData,
-										success: function(response) {
-											_this.$set(row, 'lotHasilId', response.id);
-
-											//$.notify(response.message, response.status);
-										}
-									});
+									//$.notify(response.message, response.status);
 								}
+							});
+						}
+					},
+					removeRowHasil: function(row) {
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/delete_hasil',
+							type: 'post',
+							data: {
+								'id': this.hasils[row].lotHasilId
 							},
-							removeRowHasil: function(row) {
-								$.ajax({
-									url: window.APP.siteUrl + 'admin/lot/delete_hasil',
-									type: 'post',
-									data: {
-										'id': this.hasils[row].lotHasilId
-									},
-									dataType: 'json',
-									success: function(response) {
-										$.notify(response.message, response.status);
-									}
-								});
-								this.hasils.splice(row, 1);
+							dataType: 'json',
+							success: function(response) {
+								$.notify(response.message, response.status);
 							}
-						},
+						});
+						this.hasils.splice(row, 1);
+					},
 
-						computed: {
-							jumlahQty: function() {
-					            return this.hasils.map(function(item) {
-									var len = $('.lot-length').html();
+					requestData: function() {
+						var _thid = this;
 
-										
-									var hasil = window.APP.decimal3(len * __this.rata2akt * item.jmlRak);
-						            return hasil;
-					            });
-							},
-							totalQty: function() {
-								var items = this.hasils;
-								var totalPerRow = 0;
+						$.ajax({
+							url: window.APP.siteUrl + 'admin/lot/get_hasil/' + $('.master-detail-id').val(),
+							type: 'get',
+							dataType: 'json',
+							success: function(response) {
 
-								for(var i in items)
-								{
-									var jmlRak = window.APP.decimalSum(items[i].jmlRak);
-
-									totalPerRow += jmlRak;
-								}
-
-								return window.APP.decimal3(totalPerRow);
-							},
-							totalHasil: function() {
-
-								var sum = 0;
-								var items = this.hasils;
-
-								for(var i in items)
-								{
-									sum += window.APP.decimalSum(items[i].jmlRak);
-								}
+								_thid.$set(_thid, 'hasils', response);
 
 								setTimeout(function() {
-									var len = $('.lot-length').html();
-									var rata2akt = $('#rata-berat-ak').html();
-
-									var lotHasil = window.APP.decimal3(sum * len * __this.rata2akt);
-									$('#hasil-berat-billet').html(lotHasil);
-									//$('#berat-standard2').html($('#berat-standard').html());
-									//$('#rata-berat-ak').html(window.APP.decimal3(hasil));
+									var posted = $('.is-posted').val();
+									if(posted == 1) {
+										$('.input-lot').attr('disabled', 'disabled');
+									}
 								}, 500);
 							}
-						},
-					});
+						});	
+					}
+				},
 
-					setTimeout(function() {
-						var posted = $('.is-posted').val();
-						if(posted == 1) {
-							$('.input-lot').attr('disabled', 'disabled');
+				computed: {
+					jumlahQty: function() {
+			            return this.hasils.map(function(item) {
+							var len = $('.lot-length').html();
+
+								
+							var hasil = window.APP.decimal3(len * __this.rata2akt * item.jmlRak);
+				            return hasil;
+			            });
+					},
+					totalQty: function() {
+						var items = this.hasils;
+						var totalPerRow = 0;
+
+						for(var i in items)
+						{
+							var jmlRak = window.APP.decimalSum(items[i].jmlRak);
+
+							totalPerRow += jmlRak;
 						}
-					}, 500);
+
+						return window.APP.decimal3(totalPerRow);
+					},
+					totalHasil: function() {
+
+						var sum = 0;
+						var items = this.hasils;
+
+						for(var i in items)
+						{
+							sum += window.APP.decimalSum(items[i].jmlRak);
+						}
+
+						setTimeout(function() {
+							var len = $('.lot-length').html();
+							var rata2akt = $('#rata-berat-ak').html();
+
+							var lotHasil = window.APP.decimal3(sum * len * __this.rata2akt);
+							$('#hasil-berat-billet').html(lotHasil);
+							//$('#berat-standard2').html($('#berat-standard').html());
+							//$('#rata-berat-ak').html(window.APP.decimal3(hasil));
+						}, 500);
+					}
+				},
+				mounted: function() {
+					this.requestData();
 				}
 			});
+
+			
+		},
+
+		handleLotHasil2: function() {
+			$('.lot-refresh-hasil').load(window.APP.siteUrl + 'admin/lot/refresh_hasil');
+		},
+
+		handleAktual2: function() {
+			$('.lot-refresh-aktual').load(window.APP.siteUrl + 'admin/lot/refresh_aktual');
 		},
 
 		handleModalImage: function() {
@@ -1361,7 +1378,7 @@ window.LOT = (function($) {
 
 			$(el).click(function() {
 
-				$(elModal).modal('show');
+				$(elModal).modal({backdrop: 'static', keyboard: false}, 'show');
 
 				$(elCancel).click(function() {
 
@@ -1371,6 +1388,34 @@ window.LOT = (function($) {
 			});
 
 
+		},
+
+		refreshAktualHasil: function() {
+			__this.handleAktual2();
+			__this.handleLotHasil2();
+		},
+
+		handlePullAwal: function() {
+
+			var typingTimer;
+			var doneTypingInterval = 1000;
+
+			$('.lot-pull-awal').keyup(function() {
+				clearTimeout(typingTimer);
+			    if (this.value != "") {
+			        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+			    }
+
+				function doneTyping () {
+					
+					$.ajax({
+						url: window.APP.siteUrl + 'admin/lot/get_p_tarik',
+						type: 'post',
+						
+					});
+
+				}
+			});
 		},
 
 		grupRowspan: function(elSpan) {

@@ -1,0 +1,79 @@
+<table class="tbl-cstm tbl-lot-hasil" id="tbl-lot-hasil" style="width: 100%;">
+	<tr>
+		<td align="center">
+			<b>HASIL</b>
+		</td>
+		<td colspan="3">
+			{% if same(is_posted, '') %}
+				{% if same(get_user('role'), 'Cutting') or same(get_user('role'), 'Administrator') %}
+					<button class="btn btn-primary" @click="addNewRowHasil">Tambah</button>
+				{% endif %}
+			{% endif %}
+			
+		</td>
+	</tr>
+	<tr align="center">
+
+		<td>
+			Rak #
+		</td>
+		<td>
+			Quantity (btg)
+		</td>
+		<td>Berat (kg)</td>
+		<td></td>
+
+	</tr>
+	<template v-for="(hasil, idxhasil) in hasils"
+		is="hasil-item"
+		v-bind:key="hasil"
+		v-bind:title="hasil">
+	<tr >
+
+		<td>
+			<input type="text" v-model="hasil.rak" class="input-lot form-control">
+		</td>
+		<td>
+			<input type="text" v-model="hasil.jmlRak" onkeydown="window.INPUT.numberingKeyDown(event, this)" class="input-lot form-control" @change="saveHasil(hasil)">
+		</td>
+		<td>
+			<% jumlahQty[idxhasil] %>
+		</td>
+		<td>
+			<!--
+			<button class="btn btn-success btn-xs" @click="saveHasil(hasil)" title="Simpan">
+				<i class="material-icons">check</i>
+			</button>
+			-->
+			{% if same(is_posted, '') %}
+				<button class="btn btn-danger btn-xs" @click="removeRowHasil(idxhasil)" title="Hapus">
+					<i class="material-icons">delete</i>
+				</button>
+			{% endif %}
+			
+
+		</td>
+
+	</tr>
+	</template>
+	<tr>
+		<td></td>
+		<td>
+			<% totalQty %>
+		</td>
+		
+		<td id="hasil-berat-billet">
+			<% totalHasil %>
+		</td>
+		<td></td>
+	</tr>
+</table>
+
+<script type="text/javascript" src="{{ base_url('assets_app/js/lot.js') }}"></script>
+
+<script type="text/javascript">
+
+		//window.LOT.handleLotHasil('.tbl-lot-hasil');
+		//window.LOT.handleLotBeratAktual('#tbl-lot-berat-aktual');
+
+</script>

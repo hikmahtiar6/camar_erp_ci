@@ -5,6 +5,7 @@ window.PO = (function($) {
 
     		_this.handleVue();
     		_this.handleSelectPR();
+    		_this.handleDelete();
     	},
 
     	handleVue: function() {
@@ -225,6 +226,70 @@ window.PO = (function($) {
 					});
 				}
 			});
+		},
+
+		handleCheckbox: function() {
+			var checkboxes = $('.po-parent-checkbox');
+
+	        for(var i=0, n=checkboxes.length;i<n;i++) {
+	            checkboxes[i].checked = $('.po-sub-checkbox').attr('checked', 'checked');
+	        }
+		},
+
+		handleDelete: function() {
+
+			var elBtnDel = '.po-btn-delete';
+
+			$(elBtnDel).click(function() {
+				var items = $('.po-table').find('input[class="po-sub-checkbox"]:checked');
+
+	            var users = [];
+	            for (var i=0; i<items.length;i++) {
+	                users.push($(items[i]).val());
+	            }
+
+	            if(!users.length) {
+	                // menampilkan sweet alert
+					swal({
+						title: 'Anda belum memilih yg akan dihapus',
+						text: "",
+						timer: 2000,
+						type: 'error',
+						showConfirmButton: false
+					});
+	                
+	                return false;
+	            } else {
+
+	            	// alert
+					swal({  
+						title: "Apa Anda Yakin?",
+						text: "Anda Akan Menghapus ini!",   
+						type: "warning",   
+						showCancelButton: true,   
+						confirmButtonColor: "#DD6B55",   
+						confirmButtonText: "Ya, Hapus!",   
+						closeOnConfirm: false 
+					}, function(){   
+
+						// jika yakin menghapus maka menjalankan ajax request hapus data
+						$.ajax({
+							type: "POST",
+							url: window.APP.siteUrl + 'admin/po/delete',
+							data: {
+							    id:users,
+							},
+							success: function(response) {
+								window.location.reload();
+							}
+		           		});
+					});
+	            }
+			});
+                                    
+            
+           
+
 		},
 
 		// menampilkan notifikasi/alert dengan plugin sweetalert

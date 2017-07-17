@@ -429,6 +429,23 @@ class Po extends CI_Controller {
 		output_json($response);
 	}
 
+	public function delete()
+	{
+		$id = $this->input->post('id');
+
+		foreach($id as $i)
+		{
+			// delete data
+			$del = $this->po_model->delete_detail($i);
+		}
+
+		$response = array(
+			'status'  => 'success',
+			'message' => 'Berhasil menghapus PO terpilih'
+		);
+		output_json($response);
+	}
+
 	private function generate_dies_id($vendorInitial, $component, $section_id, $machine_type, $hole, $year, $numbering)
 	{
 		return $vendorInitial.'.'.$component.'.'.$section_id.'.'.$machine_type.'.'.$hole.'.'.$year.add_zero($numbering, 4);

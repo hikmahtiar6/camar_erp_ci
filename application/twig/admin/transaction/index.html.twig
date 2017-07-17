@@ -36,6 +36,9 @@
 									<td>Shift</td>
 									<td>Target Produksi (kg)</td>
 									<td v-if="changeDate != ''">
+										Estimasi Sisa
+									</td>
+									<td v-if="changeDate != ''">
 										Scrap (kg)
 									</td>
 									<td v-if="changeDate != ''">
@@ -59,6 +62,9 @@
 										<td><% row_calc.machine_id %></td>
 										<td><% row_calc.shift %></td>
 										<td><% row_calc.target_section %></td>
+										<td v-if="changeDate != ''">
+											-
+										</td>
 										<td v-if="changeDate != ''">
 											<input :id="'header' + row_calc.shift" type="hidden" value="{{ header_id }}" style="width: 50px;">
 											<input class="spk-scrap-endbutt-gram" :id="'scrap' + row_calc.shift" type="text" value="" style="width: 50px;" onkeydown="window.INPUT.numberingKeyDown(event, this)">

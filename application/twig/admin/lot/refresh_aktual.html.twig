@@ -1,0 +1,86 @@
+<table class="tbl-cstm" id="tbl-lot-berat-aktual" style="width: 100%;">
+	<tr>
+		<td align="center">
+			<b>BERAT AKTUAL</b>
+		</td>
+		<td colspan="3">
+			{% if same(is_posted, '') %}
+			{% if same(get_user('role'), 'Cutting') or same(get_user('role'), 'Administrator') %}
+				<button class="btn btn-primary add-berat-actual" @click="addNewRowBeratAktual">Tambah</button>
+			{% else %}
+				<button class="btn bg-grey lot-refreshing" onclick="window.LOT.refreshAktualHasil()">Refresh</button>
+			{% endif %}
+			{% endif %}
+		</td>
+
+	</tr>
+	<tr align="center">
+		<!--
+		<td>
+			Berat<br>Std
+		</td>
+		-->
+		<td>
+			Berat<br>Aktual/50 (g)<br>
+
+		</td>
+		<td>
+			Rata2<br>Aktual/m
+			<br>
+		</td>
+		<td></td>
+	</tr>
+<template id="template-berat-actual"
+	v-for="(beratAktual, idxBeratktual) in beratAktuals"
+		is="berat-actual-item"
+		v-bind:key="beratAktual"
+		v-bind:title="beratAktual">
+	<tr
+		>
+		  	<!--
+		  	<td id="berat-standard2">
+
+			</td>
+			-->
+			<td>
+			<input type="text" v-model="beratAktual.beratAkt" class="input-lot form-control inp-berat-akt" @keyup.entaser="saveBeratActual(beratAktual)"  onkeydown="window.INPUT.numberingKeyDown(event, this)" @change="saveBeratActual(beratAktual)">
+			</td>
+			<td>
+				<% jmlBeratAktual50[idxBeratktual] %>
+			</td>
+			<td>
+				<!--
+				<button class="btn btn-success btn-xs save-berat-actual" @click="saveBeratActual(beratAktual)" title="Simpan">
+					<i class="material-icons">check</i>
+				</button>
+
+				-->
+				{% if same(is_posted, '') %}
+					<button class="btn btn-danger btn-xs" style="margin-top: 5px;" @click="removeRowBeratAktual(idxBeratktual)" title="Hapus">
+						<i class="material-icons">delete</i>
+					</button>
+
+				{% endif %}
+					
+			</td>
+
+	</tr>
+</template>
+	<tr>
+		<td>
+			<% totalBeratAktual50 %>
+		</td>
+		<td class="rata-berat-ak" id="rata-berat-ak">
+			<% total %>
+		</td>
+		<td></td>
+	</tr>
+</table>
+
+<script type="text/javascript" src="{{ base_url('assets_app/js/lot.js') }}"></script>
+
+<script type="text/javascript">
+
+		window.LOT.handleLotBeratAktual('#tbl-lot-berat-aktual');
+
+</script>

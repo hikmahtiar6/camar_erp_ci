@@ -47,7 +47,7 @@
 	    {% endif %}
 
 	</div>
-	<div class="modal-body">
+	<div class="modal-body" style="max-height: calc(110vh - 190px); overflow-y: auto;">
 
 		<form class="form-header-lot" method="post" action="{{ site_url('admin/lot/save_header') }}">
 
@@ -220,7 +220,7 @@
 				</td>
 				<td>
 
-					<input class="form-control input-lot number-only" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required>
+					<input class="form-control input-lot number-only lot-pull-awal" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required>
 				</td>
 				<td>
 					<label>Lama Produksi</label>
@@ -399,7 +399,10 @@
 									</td>
 									<td colspan="5">
 										{% if same(is_posted, '') %}
-										<button class="btn btn-primary" @click="addNewRowBillet">Tambah</button>
+											{% if same(get_user('role'), 'Operator') or same(get_user('role'), 'Administrator') %}
+												<button class="btn btn-primary" @click="addNewRowBillet">Tambah</button>
+											{% endif %}
+											
 										{% endif %}
 									</td>
 								</tr>
@@ -490,7 +493,7 @@
 
 						</td>
 
-						<td valign="top">
+						<td valign="top" class="lot-refresh-aktual">
 							<table class="tbl-cstm" id="tbl-lot-berat-aktual" style="width: 100%;">
 								<tr>
 									<td align="center">
@@ -498,7 +501,11 @@
 									</td>
 									<td colspan="3">
 										{% if same(is_posted, '') %}
-										<button class="btn btn-primary add-berat-actual" @click="addNewRowBeratAktual">Tambah</button>
+										{% if same(get_user('role'), 'Cutting') or same(get_user('role'), 'Administrator') %}
+											<button class="btn btn-primary add-berat-actual" @click="addNewRowBeratAktual">Tambah</button>
+										{% else %}
+											<button class="btn bg-grey lot-refreshing" onclick="window.LOT.refreshAktualHasil()">Refresh</button>
+										{% endif %}
 										{% endif %}
 									</td>
 
@@ -569,15 +576,17 @@
 
 						</td>
 
-						<td valign="top">
-							<table class="tbl-cstm" id="tbl-lot-hasil" style="width: 100%;">
+						<td valign="top" class="lot-refresh-hasil">
+							<table class="tbl-cstm tbl-lot-hasil" id="tbl-lot-hasil" style="width: 100%;">
 								<tr>
 									<td align="center">
 										<b>HASIL</b>
 									</td>
 									<td colspan="3">
 										{% if same(is_posted, '') %}
-											<button class="btn btn-primary" @click="addNewRowHasil">Tambah</button>
+											{% if same(get_user('role'), 'Cutting') or same(get_user('role'), 'Administrator') %}
+												<button class="btn btn-primary" @click="addNewRowHasil">Tambah</button>
+											{% endif %}
 										{% endif %}
 										
 									</td>
@@ -682,12 +691,12 @@
 			    	Gambar Section
 			    </h4>
 
-			    <button class="pull-right btn bg-grey waves-effect lot-cancel-image" type="button" style="margin-left: 10px;">BATAL</button>
+			    <button class="pull-right btn bg-grey waves-effect lot-cancel-image" type="button" style="margin-left: 10px;">Tutup</button>
 
 			</div>
 			<div class="modal-body">
 				<center>
-					<img src="{{ base_url() ~ directory_image_lot() ~ section_id }}.png">
+					<img src="{{ base_url() ~ directory_image_lot() ~ replaced_text(section_id, ' ', '') }}.png">
 				</center>
 			</div>
 	    </div>
@@ -754,3 +763,18 @@
 		$('.index-dice').prop("disabled", true);
 	</script>
 {% endif %}
+
+{% if same(get_user('role'), 'Operator') %}
+<script type="text/javascript">
+
+	setInterval(function() {
+		window.LOT.handleLotHasil2();
+		window.LOT.handleAktual2();
+		//window.LOT.handleLotBeratAktual('#tbl-lot-berat-aktual');
+	}, 10000);
+
+</script>
+{% endif %}
+
+
+

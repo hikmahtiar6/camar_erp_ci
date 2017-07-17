@@ -75,6 +75,7 @@
 								<td colspan="2">
 									<a class="btn bg-blue-grey waves-effect" href="{{ site_url('admin/po') }}">Kembali</a>
 									<button class="btn btn-primary call-modal waves-effect" type="submit" >Proses</button>
+									<button class="btn btn-danger waves-effect po-btn-delete" type="submit" >Hapus</button>
 
 									{% if same(posting, '') %}
 										<button class="btn bg-indigo waves-effect posting-po" type="button">
@@ -90,6 +91,10 @@
 						<table class="table table-bordered po-table">
 							<thead>
 							<tr>
+								<td>
+									<input class="po-parent-checkbox" type="checkbox" id="md_checkbox_" class="filled-in chk-col-blue" onclick="window.PO.handleCheckbox()"/>
+									<label for="md_checkbox_"></label>
+								</td>
 								<td class="bold">
 									No.
 								</td>
@@ -125,6 +130,10 @@
 								v-for="(poRow, poIdx) in poData"
 								v-bind:key="poRow">
 									<tr>
+										<td>
+											<input class="po-sub-checkbox" type="checkbox" id="md_checkbox_21" class="filled-in chk-col-blue" v-bind:id="'po' + poIdx + 1" v-bind:value="poRow.pod_id"/>
+											<label v-bind:for="'po' + poIdx + 1"></label>
+										</td>
 										<td align="right">
 											<% poIdx + 1 %>
 										</td>

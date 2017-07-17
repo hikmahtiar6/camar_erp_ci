@@ -2,7 +2,7 @@
 /**
  * global user
  */
-function get_user($show)
+function get_user($show = '')
 {
 	$ci =& get_instance();
 	$ci->load->model('login_model');
@@ -10,7 +10,12 @@ function get_user($show)
 	$user = $ci->login_model->get_user_by_session_id();
 	if($user)
 	{
-		return $user[$show];
+		if($show != '')
+		{
+			return $user[$show];
+		}
+
+		return $user;
 	}
 	else
 	{

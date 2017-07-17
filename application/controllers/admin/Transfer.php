@@ -56,4 +56,32 @@ class Transfer extends CI_Controller {
 
 		output_json($response);
 	}
+
+	public function save_data()
+	{
+		$response = array();
+
+		$hasil_id = $this->input->post('hasil_id');
+		$jumlah_aging = $this->input->post('jumlah_aging');
+
+		$data_save = array(
+			'SpkLotHasilId' => $hasil_id,
+			'JumlahBillet'  => $jumlah_aging
+		);
+
+		$data_update = array(
+			'JumlahBillet'  => $jumlah_aging
+		);
+
+		$get_data = $this->db->query('select * from dbo.SpkLotAgingOven where SpkLotHasilId = '.$hasil_id.'')->row();
+		if($get_data)
+		{
+			$this->db->where('SpkLotHasilId', $hasil_id);
+			return $this->db->update('dbo.SpkLotAgingOven', $data_update);
+		} else
+		{
+			return $this->db->insert('dbo.SpkLotAgingOven', $data_save);
+		}
+
+	}
 }

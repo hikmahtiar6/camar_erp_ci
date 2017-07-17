@@ -14,6 +14,38 @@ class Lot extends CI_Controller {
 		$this->load->model('master/operatorLot_model');
 	}
 
+	/**
+	 * Get master p.tarik dkk
+	 */
+	public function get_p_tarik()
+	{
+		$section = $this->input->post('section_id');
+		$machine_id = $this->input->post('machine_id');
+		$finishing_type = $this->input->post('finishing');
+		$pull_awal_actual = $this->input->post('pull_awal_actual');
+
+		$query = "SELECT * FROM
+		Extrusion.ExtrusionGuideFinal2ActualWithFin('".$section."', '".$pull_awal_actual."', '".$machine_id."')
+		WHERE FinishingType = '".$finishing_type."'";
+
+		$data = $this->db->query($query)->row();
+
+		$response = array();
+
+		if($data)
+		{
+			$response = array(
+				'p_tarik'     => $data->F2_PullingLength,
+				'billet_max'  => $data->BilletMaxLength,
+				'billet_min'  => $data->BilletMinLength,
+				'freq_billet' => $data->F2_FreqBillet,
+				'freq_potong' => $data->F2_FreqCut,
+			);
+		}
+
+		output_json($response);
+	}
+
 	public function json($master_detail_id)
 	{
 		$page  = ($this->input->post('page')) ? $this->input->post('page') : 1;
@@ -654,6 +686,16 @@ class Lot extends CI_Controller {
 			'is_posted' => 1
 		);
 		return $this->lot_model->update_header($master_detail_id, $data_update);
+	}
+
+	public function refresh_aktual()
+	{
+		$this->twiggy->display('admin/lot/refresh_aktual');
+	}
+
+	public function refresh_hasil()
+	{
+		$this->twiggy->display('admin/lot/refresh');
 	}
 
 }
