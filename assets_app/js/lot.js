@@ -9,7 +9,8 @@ window.LOT = (function($) {
 		jqGrid: null, 
 		masterDetailId: null,
 		formHeaderLot: null,
-		rata2akt: 0, 
+		rata2akt: 0,
+		appLoader : '.app-loader', 
 
 		handleJqgrid: function(elJqgrid, elJqgridPager) {
 		    
@@ -1397,16 +1398,17 @@ window.LOT = (function($) {
 
 		handlePullAwal: function() {
 
+			var parentThis = this;
+
 			var elSection = '.section-id';
 			var elPullAwal = '.lot-pull-awal';
 			var elBsBlkg = '.lot-bs-blkg-act';
 			var elMachine = '.machine-id';
 			var elFinishing = '.finishing-type';
+			var elLoaderPullAwal = '#load-pull-awal';
+			var elLoaderBsBlkg = '#load-bs-blkg';
 
-			var parentThis = this;
-
-			parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg);
-
+			parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg, '');
 
 			var typingTimer;
 			var doneTypingInterval = 1000;
@@ -1418,7 +1420,7 @@ window.LOT = (function($) {
 			    }
 
 				function doneTyping () {
-					parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg);
+					parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg, elLoaderPullAwal);
 				}
 			});
 
@@ -1430,20 +1432,21 @@ window.LOT = (function($) {
 
 				function doneTyping () {
 					
-					parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg);
+					parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg, elLoaderBsBlkg);
 
 				}
 			});
 		},
 
-		refreshPullBsBlkg: function(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg) {
+		refreshPullBsBlkg: function(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg, elLoader) {
+
+			var parentThis = this;
 
 			var elPTarik = 'span.p-tarik';
 			var elBilletMax = 'span.billet-max';
 			var elBIlletMin = 'span.billet-min';
 			var elFreqBillet = 'span.freq-billet';
 			var elFreqPotong = 'span.freq-potong';
-
 
 			$.ajax({
 				url     : window.APP.siteUrl + 'admin/lot/get_p_tarik',
@@ -1456,7 +1459,11 @@ window.LOT = (function($) {
 					bs_blkg_actual   : $(elBsBlkg).val()
 				},
 				dataType: 'json',
+				beforeSend: function() {
+					$(elLoader).show();
+				},
 				success : function(response) {
+					$(elLoader).hide();
 					if(response.status == 'success') {
 						$(elPTarik).html(response.p_tarik);
 						$(elBilletMax).html(response.billet_max);

@@ -123,3 +123,7 @@ input:focus, select:focus, textarea:focus {
     border:3px solid blue !important;
     box-shadow: 0 0 10px #719ECE !important;
 }
+
+.app-loader {
+    display: none;
+}

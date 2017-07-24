@@ -77,7 +77,8 @@ window.SPK = (function() {
 					posted     : '',
 					type       : 'add',
 					tanggal    : '',
-					changeDate : ''
+					changeDate : '',
+					finishing  : 'BL'
 				},
 				computed: {
 					getShift: function() {
@@ -235,6 +236,7 @@ window.SPK = (function() {
 						__this.$set(__this, 'posted', '');
 						__this.$set(__this, 'type', 'add');
 						__this.$set(__this, 'tanggal', '');
+						__this.$set(__this, 'finishing', 'BL');
 						
 						
 						// menampilkan modal
@@ -259,6 +261,7 @@ window.SPK = (function() {
 						__this.$set(__this, 'posted', __this.list[index].posted);
 						__this.$set(__this, 'type', 'edit');
 						__this.$set(__this, 'tanggal', __this.list[index].tanggal);
+						__this.$set(__this, 'finishing', __this.list[index].finishing);
 
 						// menampilkan modal
 						$(parentThis.elModal).modal({backdrop: 'static', keyboard: false}, 'show');
