@@ -35,7 +35,6 @@
 
 					                        	{% for key, week_row in week_in_year('true', 'yes') %}
 
-					                        		{% if week_row['no'] <= week_next and week_row['no'] >= week  %}
 						                        		<option value="{{ week_row['date_start'] ~ '-' ~ week_row['date_finish'] }}"
 						                        		{% if same(get_week(), week_row['no']) %}
 						                        			selected="selected" 
@@ -43,7 +42,6 @@
 						                        		>
 						                        			{{ week_row['no'] ~ ' - ' ~ week_row['date_start'] ~ ' - ' ~ week_row['date_finish'] }}
 						                        		</option>
-					                        		{% endif %}
 					                        	{% endfor %}
 
 					                        {% endif %}

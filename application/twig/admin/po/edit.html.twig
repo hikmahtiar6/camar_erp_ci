@@ -117,11 +117,13 @@
 									Price CHY
 								</td>
 								
+								<!--
 								{% if same(posting, '') %}
 									<td class="bold">
 										Setting
 									</td>
 								{% endif %}
+								-->
 							</tr>
 							</thead>
 							<tbody>
@@ -151,6 +153,7 @@
 										<td>
 											<input type="text" v-model="poRow.price_chn" @change="savePrice(poIdx)" onkeydown="window.INPUT.numberingKeyDown(event, this)">
 										</td>
+										<!--
 										{% if same(posting, '') %}
 											<td>
 												<span>
@@ -160,6 +163,7 @@
 												</span>
 											</td>
 										{% endif %}
+										-->
 
 									</tr>
 

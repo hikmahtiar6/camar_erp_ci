@@ -1397,10 +1397,32 @@ window.LOT = (function($) {
 
 		handlePullAwal: function() {
 
+			var elSection = '.section-id';
+			var elPullAwal = '.lot-pull-awal';
+			var elBsBlkg = '.lot-bs-blkg-act';
+			var elMachine = '.machine-id';
+			var elFinishing = '.finishing-type';
+
+			var parentThis = this;
+
+			parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg);
+
+
 			var typingTimer;
 			var doneTypingInterval = 1000;
 
-			$('.lot-pull-awal').keyup(function() {
+			$(elPullAwal).keyup(function() {
+				clearTimeout(typingTimer);
+			    if (this.value != "") {
+			        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+			    }
+
+				function doneTyping () {
+					parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg);
+				}
+			});
+
+			$(elBsBlkg).keyup(function() {
 				clearTimeout(typingTimer);
 			    if (this.value != "") {
 			        typingTimer = setTimeout(doneTyping, doneTypingInterval);
@@ -1408,13 +1430,42 @@ window.LOT = (function($) {
 
 				function doneTyping () {
 					
-					$.ajax({
-						url: window.APP.siteUrl + 'admin/lot/get_p_tarik',
-						type: 'post',
-						
-					});
+					parentThis.refreshPullBsBlkg(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg);
 
 				}
+			});
+		},
+
+		refreshPullBsBlkg: function(elSection, elMachine, elFinishing, elPullAwal, elBsBlkg) {
+
+			var elPTarik = 'span.p-tarik';
+			var elBilletMax = 'span.billet-max';
+			var elBIlletMin = 'span.billet-min';
+			var elFreqBillet = 'span.freq-billet';
+			var elFreqPotong = 'span.freq-potong';
+
+
+			$.ajax({
+				url     : window.APP.siteUrl + 'admin/lot/get_p_tarik',
+				type    : 'post',
+				data    : {
+					section_id       : $(elSection).val(),
+					machine_id       : $(elMachine).val(),
+					finishing        : $(elFinishing).val(),
+					pull_awal_actual : $(elPullAwal).val(),
+					bs_blkg_actual   : $(elBsBlkg).val()
+				},
+				dataType: 'json',
+				success : function(response) {
+					if(response.status == 'success') {
+						$(elPTarik).html(response.p_tarik);
+						$(elBilletMax).html(response.billet_max);
+						$(elBIlletMin).html(response.billet_min);
+						$(elFreqBillet).html(response.freq_billet);
+						$(elFreqPotong).html(response.freq_potong);
+					}
+				}
+				
 			});
 		},
 

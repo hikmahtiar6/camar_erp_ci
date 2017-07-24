@@ -395,6 +395,35 @@ function selisih_waktu($waktu_akhir, $waktu_awal)
 	return $res;
 }
 
+function selisih_waktu_performance($waktu_akhir, $waktu_awal)
+{
+	$awal  = new DateTime($waktu_awal);
+	$akhir = new DateTime($waktu_akhir);
+
+	$diff  = $awal->diff($akhir);
+	
+	$res = '';
+
+	if($diff->h > 0)
+	{
+		$res = $diff->h;
+	}
+
+	if($diff->i > 0)
+	{
+		$menit = $diff->i;
+		$menit_fix = to_decimal($menit / 60); 
+		$res = $res + $menit_fix;
+	}
+	
+	if($res == '')
+	{
+		return 0;
+	}
+
+	return $res;
+}
+
 function trims($str)
 {
 	return trim($str);

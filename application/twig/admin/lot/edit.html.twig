@@ -10,8 +10,11 @@
 	{% set machine = '' %}
 	{% set len_id = '' %}
 	{% set len = '' %}
+	{% set finishing_type = '' %}
+
 
 	{% if get_detail %}
+		{% set finishing_type = get_detail.FinishingType %}
 		{% set len_id = get_detail.len %}
 		{% set len = get_detail.Length %}
 		{% set section_id = get_detail.section_id %}
@@ -28,7 +31,7 @@
 	    	Form Transaksi Lot
 	    </h4>
 
-		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal">CLOSE</button>
+		<button class="pull-right btn btn-link waves-effect close-modal" type="button" data-dismiss="modal" @click="getData">CLOSE</button>
 
 		<div class="pull-right" style="padding-right: 40px;">
 		    <button class="btn bg-indigo lot-view-image">
@@ -53,7 +56,10 @@
 
 		<input class="master-detail-id" name="master_detail_id" type="hidden" value="{{ master_detail_id }}">
 		<input class="section-id" type="hidden" value="{{ section_id }}">
+		<input class="machine-id" type="hidden" value="{{ machine }}">
 		<input class="is-posted" type="hidden" value="{{ is_posted }}">
+		<input class="finishing-type" type="hidden" value="{{ finishing_type }}">
+		
 
 		<table class="tbl-cstm" style="width: 100%;">
 			<tr>
@@ -168,7 +174,7 @@
 
 				</td>
 				<td>
-					<input class="form-control input-lot input-mulai-pukul save-header-lot" name="time_start" type="text" value="{{ mulai_str }}" required="">
+					<input class="form-control input-lot input-mulai-pukul save-header-lot" name="time_start" type="text" value="{{ mulai_str }}" required="" tabindex="1">
 				</td>
 			</tr>
 			<tr>
@@ -205,7 +211,7 @@
 
 				</td>
 				<td>
-					<input class="form-control input-lot input-selesai-pukul save-header-lot" name="time_finish" type="text" value="{{ selesai_str }}" required>
+					<input class="form-control input-lot input-selesai-pukul save-header-lot" name="time_finish" type="text" value="{{ selesai_str }}" required="" tabindex="2">
 				</td>
 			</tr>
 			<tr>
@@ -220,7 +226,7 @@
 				</td>
 				<td>
 
-					<input class="form-control input-lot number-only lot-pull-awal" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required>
+					<input class="form-control input-lot number-only lot-pull-awal" name="pull_awal_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.pull_awal_actual }}{% endif %}" required="" tabindex="3">
 				</td>
 				<td>
 					<label>Lama Produksi</label>
@@ -252,7 +258,7 @@
 					<label>Downtime *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}" required>
+					<input class="form-control input-lot" name="downtime" type="text" value="{% if get_detail_header %}{{ get_detail_header.downtime }}{% endif %}" required="" tabindex="6">
 				</td>
 			</tr>
 			<tr>
@@ -266,13 +272,13 @@
 					<label>Bs. Blkg Act. *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot number-only" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required>
+					<input class="form-control input-lot number-only lot-bs-blkg-act" name="blkg_actual" type="text" value="{% if get_detail_header %}{{ get_detail_header.blkg_actual }}{% endif %}" required="" tabindex="4">
 				</td>
 				<td>
 					<label>DeadCycle (menit) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot number-only" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% else %}{{ '2' }}{% endif %}" required>
+					<input class="form-control input-lot number-only" name="deadcycle" type="text" value="{% if get_detail_header %}{{ get_detail_header.deadcycle }}{% else %}{{ '2' }}{% endif %}" required="" tabindex="7">
 				</td>
 			</tr>
 			<tr>
@@ -286,13 +292,13 @@
 					<label>Pressure (Bar) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot save-header-lot number-only" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}" required>
+					<input class="form-control input-lot save-header-lot number-only" name="pressure_bar" type="text" value="{% if get_detail_header %}{{ get_detail_header.pressure_bar }}{% endif %}" required="" tabindex="5">
 				</td>
 				<td>
 					<label>Ram Speed (m/s) *</label>
 				</td>
 				<td>
-					<input class="form-control input-lot save-header-lot number-only" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}" required>
+					<input class="form-control input-lot save-header-lot number-only" name="ram_speed" type="text" value="{% if get_detail_header %}{{ get_detail_header.ram_speed }}{% endif %}" required="" tabindex="8">
 				</td>
 			</tr>
 			<tr>
@@ -312,7 +318,7 @@
 					<label>Keterangan Ext *</label>
 				</td>
 				<td>
-					<textarea class="form-control input-lot save-header-lot" name="keterangan" required>{% if get_detail_header %}{{ get_detail_header.keterangan }}{% endif %}</textarea>
+					<textarea class="form-control input-lot save-header-lot" name="keterangan" required="" tabindex="9">{% if get_detail_header %}{{ get_detail_header.keterangan }}{% endif %}</textarea>
 				</td>
 			</tr>
 			<tr>
@@ -320,7 +326,7 @@
 					<label>P. Tarik (m)</label>
 				</td>
 				<td>
-					<span class="">
+					<span class="p-tarik">
 						{{ to_decimal(get_row_master('F2_PullingLength', machine, section_id, len_id), 3) }}
 					</span>
 				</td>
@@ -328,15 +334,17 @@
 					Billet Max (kg/m)
 				</td>
 				<td>
+					<span class="billet-max">
 					{{ to_decimal(get_row_master('F2_EstBilletLengthMax', machine, section_id, len_id), 3) }}
-					
+					</span>
 				</td>
 				<td>
 					<label>Billet Min (kg/m)</label>
 				</td>
 				<td>
+					<span class="billet-min">
 					{{ to_decimal(get_row_master('F2_EstBilletLengthMin', machine, section_id, len_id), 3) }}
-					
+					</span>
 				</td>
 			</tr>
 			<tr>
@@ -344,7 +352,7 @@
 					<label>Freq. Billet</label>
 				</td>
 				<td>
-					<span class="">
+					<span class="freq-billet">
 						{{ to_decimal(get_row_master('F2_FreqBillet', machine, section_id, len_id), 3) }}
 						
 					</span>
@@ -353,7 +361,7 @@
 					Freq. Potong
 				</td>
 				<td>
-					<span class="">
+					<span class="freq-potong">
 						{{ to_decimal(get_row_master('F2_FreqCut', machine, section_id, len_id), 3) }}					
 					</span>
 					
@@ -686,7 +694,7 @@
 	<div class="modal fade lot-modal-image" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" style="width: 100%; margin: 20px auto;">
 	    <div class="modal-content">
-	        <div class="modal-header">
+	        <div class="modal-header" style="z-index: 2; position: relative;">
 			    <h4 class="modal-title pull-left" id="defaultModalLabel">
 			    	Gambar Section
 			    </h4>
@@ -696,7 +704,7 @@
 			</div>
 			<div class="modal-body">
 				<center>
-					<img src="{{ base_url() ~ directory_image_lot() ~ replaced_text(section_id, ' ', '') }}.png">
+					<img src="{{ base_url() ~ directory_image_lot() ~ replaced_text(section_id, ' ', '') }}.png" style="margin-top: -100px; width: 60%; position: relative; z-index: 1">
 				</center>
 			</div>
 	    </div>
@@ -722,6 +730,7 @@
 	window.INPUT.numberingOnly('.number-only');
 
 	window.LOT.handleModalImage();
+	window.LOT.handlePullAwal();
 
 	var url = window.APP.siteUrl + 'admin/master/get_data_index_dice/'+"{{ master_detail_id }}"+'/'+ "{{ machine }}" + '';
 

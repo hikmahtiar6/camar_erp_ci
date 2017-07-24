@@ -39,13 +39,14 @@ class Lot_model extends CI_Model {
 	/**
 	 * get lot advance
 	 */
-	public function get_data_advance($master_detail_id = '', $lot_id = '')
+	public function get_data_advance($master_detail_id = '', $lot_id = '', $tanggal = '')
 	{
 		$sql = $this->db;
 
 		$sql->select('hsl.*, aging.JumlahBillet');
 		$sql->from(static::TABLE_HASIL .' hsl');
 		$sql->join(static::TABLE_HEAD_LOT .' lot', 'hsl.MasterDetailId = lot.master_detail_id', 'inner');
+		$sql->join(static::TABLE_DETAIL .' detail', 'detail.master_detail_id = lot.master_detail_id', 'inner');
 		$sql->join(static::TABLE_AGING_OVEN .' aging', 'aging.SpkLotHasilId = hsl.SpkLotHasilId', 'left');
 
 		if($master_detail_id != '')
@@ -56,6 +57,11 @@ class Lot_model extends CI_Model {
 		if($lot_id != '')
 		{
 			$sql->where('lot.header_lot_id', $lot_id);
+		}
+
+		if($tanggal != '')
+		{
+			$sql->where('detail.tanggal', $tanggal);
 		}
 
 		$get = $sql->get();

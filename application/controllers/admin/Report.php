@@ -23,6 +23,7 @@ class Report extends CI_Controller
 		$this->load->model('master/query_model');
 		$this->load->model('master/detail_model');
 		$this->load->model('master/lot_model');
+		$this->load->model('Performance_model');
 
 	}
 
@@ -231,6 +232,26 @@ class Report extends CI_Controller
 			$week_search = $this->input->post('week');
 			$mesin = $this->input->post('mesin');
 
+			$waktu_target = $this->Performance_model->get_data_advance('', $week_search, $mesin)->result();
+			$waktu_target_fix = 0;
+			$waktu_target_aktual_fix = 0;
+
+			if($waktu_target)
+			{
+				foreach($waktu_target as $waktu_target_row)
+				{
+					$waktu_target_data = selisih_waktu_performance($waktu_target_row->ShiftEnd, $waktu_target_row->ShiftStart);
+					$waktu_target_fix = $waktu_target_fix + $waktu_target_data;
+
+					$waktu_target_aktual_data = selisih_waktu_performance($waktu_target_row->time_finish, $waktu_target_row->time_start);
+					$waktu_target_aktual_fix = $waktu_target_aktual_fix + $waktu_target_aktual_data;   
+					//echo .'<br>';
+					//$waktu_target_row->ShiftStart.' - '.$waktu_target_row->ShiftEnd.' <br>';
+				}
+			}
+
+			$this->twiggy->set('waktu_target_fix', $waktu_target_fix);
+			$this->twiggy->set('waktu_target_aktual_fix', $waktu_target_aktual_fix);
 			$this->twiggy->set('week_search', $week_search);
 			$this->twiggy->set('mesin', $mesin);
 			$this->twiggy->display('admin/report/performance/layar');

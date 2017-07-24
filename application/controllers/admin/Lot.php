@@ -23,23 +23,25 @@ class Lot extends CI_Controller {
 		$machine_id = $this->input->post('machine_id');
 		$finishing_type = $this->input->post('finishing');
 		$pull_awal_actual = $this->input->post('pull_awal_actual');
+		$bs_blkg_actual = $this->input->post('bs_blkg_actual');
 
 		$query = "SELECT * FROM
-		Extrusion.ExtrusionGuideFinal2ActualWithFin('".$section."', '".$pull_awal_actual."', '".$machine_id."')
+		Extrusion.ExtrusionGuideFinal2ActualWithFin('".$section."', '".$pull_awal_actual."', '".$machine_id."', '".$bs_blkg_actual."')
 		WHERE FinishingType = '".$finishing_type."'";
 
 		$data = $this->db->query($query)->row();
 
-		$response = array();
+		$response = array('status' => 'error');
 
 		if($data)
 		{
 			$response = array(
-				'p_tarik'     => $data->F2_PullingLength,
-				'billet_max'  => $data->BilletMaxLength,
-				'billet_min'  => $data->BilletMinLength,
-				'freq_billet' => $data->F2_FreqBillet,
-				'freq_potong' => $data->F2_FreqCut,
+				'p_tarik'     => to_decimal($data->F2_PullingLength),
+				'billet_max'  => to_decimal($data->BilletMaxLength),
+				'billet_min'  => to_decimal($data->BilletMinLength),
+				'freq_billet' => to_decimal($data->F2_FreqBillet),
+				'freq_potong' => to_decimal($data->F2_FreqCut),
+				'status'      => 'success'
 			);
 		}
 

@@ -46,11 +46,20 @@
 							<td rowspan="3" align="center">{{ mesin }}</td>
 							<td align="right">1.</td>
 							<td>Waktu</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td align="right">{{ to_decimal(1/3 * 100) }} %</td>
-							<td></td>
+							<td align="right">{{ waktu_target_fix }}</td>
+							<td align="right">{{ waktu_target_aktual_fix }}</td>
+							<td align="right">
+								{% set percentage = 0 %}
+								{% if waktu_target_fix > 0 %}
+									{% set percentage = to_decimal(waktu_target_fix / waktu_target_aktual_fix) %}
+								{% endif %}
+								{{ percentage }} %
+							</td>
+							<td align="right">
+								{% set bobot = to_decimal(1/3 * 100) %}
+								{{ bobot }} %
+							</td>
+							<td align="right">{{ to_decimal(percentage * bobot) }} %</td>
 						</tr>
 						<tr>
 							<td align="right">2.</td>

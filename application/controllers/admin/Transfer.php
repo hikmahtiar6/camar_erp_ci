@@ -39,8 +39,10 @@ class Transfer extends CI_Controller {
 		$response = array();
 
 		$lot_id = $this->input->post('lot_id');
+		$tanggal = $this->input->post('tanggal');
+		$date_now = change_format_date($tanggal, 'Y-m-d');
 
-		$data = $this->lot_model->get_data_advance('', $lot_id)->result();
+		$data = $this->lot_model->get_data_advance('', '', $date_now)->result();
 		if($data)
 		{
 			foreach ($data as $row) {

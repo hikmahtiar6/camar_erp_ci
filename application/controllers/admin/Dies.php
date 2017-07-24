@@ -231,12 +231,14 @@ class Dies extends CI_Controller
 			$get_last_data = $this->indexdice_model->get_last_log_by_dies($dies_id);
 		
 			$data_update = array(
+				'LogTime'        => date('Y-m-d H:i:s'),
+				'DiesId'         => $dies_id,
 				'DiesProblemId' => $problem_id,
 				'Koreksi'       => $koreksi,
 				'Korektor'       => $korektor,
 				'DiesLocationId' => 2
 			);
-			$update = $this->indexdice_model->update_log($data_update, $get_last_data->DiesHistoryCardLogId);
+			$update = $this->indexdice_model->set_dies_log($data_update);
 			
 			if($update)
 			{

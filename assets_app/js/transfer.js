@@ -28,8 +28,35 @@ window.TRANSFER = (function($) {
 					list : []
 				},
 				delimiters : ['<%', '%>'],
-				methods: {
-					getData : function(lotId) {
+				computed: {
+					counting : function() {
+
+						var vue = this;
+
+						return this.list.map(function(item) {
+			                var total = '-';
+
+			                if(item.jumlah_aging > 0) {
+
+				                var total = window.APP.decimal3(item.jumlah_aging - item.jumlah_billet);
+				                if(total == 0) {
+				                	var total = '-';
+				                } 
+
+				                if(total < 0) {
+				                	var total = total.toString().replace("-","");
+
+				                	total = '<span class="color-red">('+total+')</span>';
+				                }
+			                }
+
+			                return total;
+			            });
+
+					}
+				},
+				methods : {
+					getData : function(tanggal) {
 						// this vue
 						var vue = this;
 						
@@ -39,7 +66,7 @@ window.TRANSFER = (function($) {
 							type     : 'POST',
 							dataType : 'json',
 							data     : {
-								lot_id : lotId
+								tanggal : tanggal
 							},
 							success  : function(response) {
 								// jika data tersedia maka generate data list Vue
@@ -61,6 +88,16 @@ window.TRANSFER = (function($) {
 					getDataWithChange: function(e) {
 						var inputThis = $(e.target);
 						var vue = this;
+						
+						// get data ulang dan mengirim ke vue
+						vue.getData(inputThis.val());
+					},
+
+					// ketika click button
+					getDataWithButton: function() {
+						var vue = this;
+
+						var inputThis = $('.transfer-date')
 						
 						// get data ulang dan mengirim ke vue
 						vue.getData(inputThis.val());
